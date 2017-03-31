@@ -3,6 +3,7 @@ var utils = require('./utils');
 var webpack = require('webpack');
 var config = require('../config');
 var merge = require('webpack-merge');
+var CleanWebpackPlugin = require('clean-webpack-plugin');
 var baseWebpackConfig = require('./webpack.base.conf');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -27,6 +28,9 @@ var webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('[id].[chunkhash].js')
   },
   plugins: [
+    new CleanWebpackPlugin(['./dist'], {
+      root: path.resolve(__dirname, '../')
+    }),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
@@ -93,8 +97,6 @@ for (var page in pages) {
     name: 'vendor-'+page,
     chunks: [page],
     minChunks: function (module, count) {
-      console.log(count);
-      console.log(module.resource);
       // any required modules inside node_modules are extracted to vendor
       return (
         module.resource &&

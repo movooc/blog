@@ -5,7 +5,7 @@ import App from './App';
 import router from './router';
 
 Vue.config.productionTip = false;
-console.log('aaaa3');
+console.log('aaa1111a3');
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
