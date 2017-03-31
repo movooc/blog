@@ -30,7 +30,8 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
 
     console.log(chalk.cyan('  Build complete.\n'));
     console.log(chalk.yellow(
-      '  Tip: Waiting for recombinating the files...\n'
+      '  Tip: Waiting for recombinating the files...\n'+
+      '  Ready...\n'
     ));
 
     Recombination();
@@ -42,15 +43,54 @@ function Recombination() {
   // get all files in dist
   var distPath = path.resolve(__dirname, '../dist')
   var htmlPath = fs.readdirSync(distPath);
+  var outStaticPath = distPath + '/static';
   // create dir
-  fs.mkdir(distPath+'/'+pckVersion, 0755);
-  for(var _html in htmlPath){
-    
+  fs.mkdirSync(distPath+'/'+pckVersion, 0755);
 
-
+  // 根据filename创建文件
+  for(let _html of htmlPath){
+    if(/\.html$/.test(_html)){
+      var fileName = _html.replace(/\.html$/,'');
+      var dirPath = distPath+'/'+pckVersion;
+      var filePath = dirPath+'/'+fileName;
+      var staticPath = filePath+'/static';
+      // create dir
+      if(!fs.existsSync(filePath))fs.mkdirSync(filePath, 0755);
+      // create static dir
+      if(!fs.existsSync(staticPath))fs.mkdirSync(staticPath, 0755);
+      // move the html files
+      fs.renameSync(distPath+'/'+_html, filePath+'/'+_html);
+      // search static files
+      var staticFile = fs.readdirSync(outStaticPath);
+      // check if file
+      for(let _static of staticFile){
+        //
+        if(/\.\w+$/.test(_static) && new RegExp(fileName).test(_static)){
+          // move files
+          fs.renameSync(outStaticPath+'/'+_static, staticPath+'/'+_static);
+        }else if(!(/\.\w+$/.test(_static))){
+          // search current directory
+          Rename(outStaticPath+'/'+_static, staticPath);
+        }
+      }
+      // end
+      console.log(`  compile ${fileName} modules success!!!\n`);
+    }
   };
+}
 
-  // 移动html
-
-  console.log(htmlPath);
+function Rename(from, to, fileName){
+  // search static files
+  var fromFile = fs.readdirSync(from);
+  // create dir
+  if(!fs.existsSync(to))fs.mkdirSync(to, 0755);
+  //
+  for(let file of fromFile){
+    if(/\.\w+$/.test(file) && new RegExp(fileName).test(from)){
+      // move files
+      fs.renameSync(from+'/'+file, to+'/'+file);
+    }else if(!(/\.\w+$/.test(file))){
+      Rename(from+'/'+file, to+'/'+file);
+    }
+  }
 }
