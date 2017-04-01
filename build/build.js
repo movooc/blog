@@ -60,7 +60,7 @@ function Recombination() {
       // create static dir
       if(!fs.existsSync(staticPath))fs.mkdirSync(staticPath, 0755);
       // move the html files
-      fs.renameSync(distPath+'/'+_html, filePath+'/'+_html);
+      fs.renameSync(distPath+'/'+_html, filePath+'/index.html');
       // search static files
       var staticFile = fs.readdirSync(outStaticPath);
       // check if file
@@ -92,13 +92,13 @@ function Recombination() {
     }
   };
   // completes all files
-  console.log(`  compile all modules success!!!\n`);
+  console.log(chalk.yellow(`  compile all modules success!!!\n`));
   // unlink outstatic files
   console.log(`  start delete out static files...\n`);
   // start removing
   fsExtra.remove(outStaticPath, function (err) {
     if(err)return console.log(err);
-    console.log('  delete success!!!');
+    console.log(chalk.yellow('  delete success!!!'));
   });
 }
 
