@@ -11,5 +11,10 @@ export default new Router({
       name: 'Hello',
       component: Hello,
     },
+    {
+      path: '/live',
+      name: 'Hello',
+      component: Hello,
+    },
   ],
 });

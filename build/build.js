@@ -2,32 +2,32 @@ require('./check-versions')();
 
 process.env.NODE_ENV = 'production';
 
-var ora = require('ora');
-var fs = require('fs');
-var fsExtra = require('fs-extra');
-var rm = require('rimraf');
-var path = require('path');
-var chalk = require('chalk');
-var webpack = require('webpack');
-var pckVersion = require('../package.json').version;
-var config = require('../config');
-var webpackConfig = require('./webpack.prod.conf');
+const ora = require('ora');
+const fs = require('fs');
+const fsExtra = require('fs-extra');
+const rm = require('rimraf');
+const path = require('path');
+const chalk = require('chalk');
+const webpack = require('webpack');
+const pckVersion = require('../package.json').version;
+let config = require('../config');
+let webpackConfig = require('./webpack.prod.conf');
 
-var spinner = ora('building for production...');
+const spinner = ora('building for production...');
 spinner.start();
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
-  if (err) throw err
+  if (err) throw err;
   webpack(webpackConfig, function (err, stats) {
-    spinner.stop()
-    if (err) throw err
+    spinner.stop();
+    if (err) throw err;
     process.stdout.write(stats.toString({
       colors: true,
       modules: false,
       children: false,
       chunks: false,
       chunkModules: false
-    }) + '\n\n')
+    }) + '\n\n');
 
     console.log(chalk.cyan('  Build complete.\n'));
     console.log(chalk.yellow(
@@ -42,19 +42,19 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
 // recombination dist files
 function Recombination() {
   // get all files in dist
-  var distPath = path.resolve(__dirname, '../dist')
-  var htmlPath = fs.readdirSync(distPath);
-  var outStaticPath = distPath + '/static';
+  let distPath = path.resolve(__dirname, '../dist')
+  let htmlPath = fs.readdirSync(distPath);
+  let outStaticPath = distPath + '/static';
   // create dir
   fs.mkdirSync(distPath+'/'+pckVersion, 0755);
 
   // 根据filename创建文件
   for(let _html of htmlPath){
     if(/\.html$/.test(_html)){
-      var fileName = _html.replace(/\.html$/,'');
-      var dirPath = distPath+'/'+pckVersion;
-      var filePath = dirPath+'/'+fileName;
-      var staticPath = filePath+'/static';
+      let fileName = _html.replace(/\.html$/,'');
+      let dirPath = distPath+'/'+pckVersion;
+      let filePath = dirPath+'/'+fileName;
+      let staticPath = filePath+'/static';
       // create dir
       if(!fs.existsSync(filePath))fs.mkdirSync(filePath, 0755);
       // create static dir
@@ -62,7 +62,7 @@ function Recombination() {
       // move the html files
       fs.renameSync(distPath+'/'+_html, filePath+'/index.html');
       // search static files
-      var staticFile = fs.readdirSync(outStaticPath);
+      let staticFile = fs.readdirSync(outStaticPath);
       // check if file
       for(let _static of staticFile){
         //
@@ -82,7 +82,7 @@ function Recombination() {
               // move files
               fs.renameSync(from+'/'+file, to+'/'+file);
             }else if(new RegExp(fileName).test(file)){
-              Rename(from+'/'+file, to+'/'+file, fileName);
+              Rename(from+'/'+file, to+'/'+file);
             }
           }
         }
@@ -90,7 +90,7 @@ function Recombination() {
       // end modules
       console.log(`  compile ${fileName} modules success!!!\n`);
     }
-  };
+  }
   // completes all files
   console.log(chalk.yellow(`  compile all modules success!!!\n`));
   // unlink outstatic files
@@ -102,9 +102,9 @@ function Recombination() {
   });
 }
 
-function Rename(from, to, fileName){
+function Rename(from, to){
   // search static files
-  var fromFile = fs.readdirSync(from);
+  let fromFile = fs.readdirSync(from);
   // create dir
   if(!fs.existsSync(to))fs.mkdirSync(to, 0755);
   //

@@ -1,17 +1,17 @@
-var utils = require('./utils');
-var webpack = require('webpack');
-var config = require('../config');
-var merge = require('webpack-merge')
-var baseWebpackConfig = require('./webpack.base.conf');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+const utils = require('./utils');
+const webpack = require('webpack');
+const config = require('../config');
+const merge = require('webpack-merge');
+const baseWebpackConfig = require('./webpack.base.conf');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
 });
 
-var webpackConfig = merge(baseWebpackConfig, {
+let webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
@@ -34,11 +34,11 @@ var webpackConfig = merge(baseWebpackConfig, {
 });
 
 // https://github.com/ampedandwired/html-webpack-plugin
-var pages = utils.getEntries('./view/**/*.html');
+let pages = utils.getEntries('./view/**/*.html');
 
-for (var page in pages) {
+for (let page in pages) {
   // 配置html文件
-  var _config = {
+  let _config = {
     filename: page+'.html',
     template: pages[page], // 模板路径
     inject: true,

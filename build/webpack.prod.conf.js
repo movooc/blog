@@ -1,20 +1,20 @@
-var path = require('path');
-var utils = require('./utils');
-var webpack = require('webpack');
-var config = require('../config');
-var merge = require('webpack-merge');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
-var baseWebpackConfig = require('./webpack.base.conf');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+const path = require('path');
+const utils = require('./utils');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const baseWebpackConfig = require('./webpack.base.conf');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+let   config = require('../config');
 
-var env = process.env.NODE_ENV === 'testing'
+let env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
   : config.build.env;
 
-var webpackConfig = merge(baseWebpackConfig, {
+let webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
@@ -64,7 +64,7 @@ var webpackConfig = merge(baseWebpackConfig, {
 });
 
 if (config.build.productionGzip) {
-  var CompressionWebpackPlugin = require('compression-webpack-plugin');
+  let CompressionWebpackPlugin = require('compression-webpack-plugin');
 
   webpackConfig.plugins.push(
     new CompressionWebpackPlugin({
@@ -82,18 +82,18 @@ if (config.build.productionGzip) {
 }
 
 if (config.build.bundleAnalyzerReport) {
-  var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+  let BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
 // get page list
-var pages = utils.getEntries('./view/**/*.html');
+let pages = utils.getEntries('./view/**/*.html');
 
 // according page name to vendor
 // split vendor js into its own file
-for (var page in pages) {
+for (let page in pages) {
   // common
-  var _common = {
+  let _common = {
     name: 'vendor-'+page,
     chunks: [page],
     minChunks: function (module, count) {
@@ -109,7 +109,7 @@ for (var page in pages) {
   };
 
   // manifest
-  var _manifest = {
+  let _manifest = {
     name: 'manifest-'+page,
     chunks: ['vendor-'+page]
   };
@@ -120,32 +120,32 @@ for (var page in pages) {
   // extract webpack runtime and module manifest to its own file in order to
   // prevent vendor hash from being updated whenever app bundle is updated
   webpackConfig.plugins.push(new webpack.optimize.CommonsChunkPlugin(_manifest));
-};
+}
 
 // https://github.com/ampedandwired/html-webpack-plugin
 // html webpack plugin
-for (var page in pages) {
+for (let page in pages) {
   // 配置html文件
-  var _config = {
+  let _config = {
     filename: page+'.html',
     template: pages[page], // 模板路径
     inject: true,
-    excludeChunks: Object.keys(pages).filter(item => {
-      return (item != page)
-}),
-  // minify: {
-  //   removeComments: true,
-  //     collapseWhitespace: true,
-  //     removeAttributeQuotes: true
-  //   // more options:
-  //   // https://github.com/kangax/html-minifier#options-quick-reference
-  // },
+    chunks: [`manifest-${page}`,`vendor-${page}`,`${page}`],
+    // excludeChunks: Object.keys(pages).filter(item => {
+    //   return (item != page)
+    // }),
+    minify: {
+      removeComments: true,
+      collapseWhitespace: true,
+      removeAttributeQuotes: true
+      // more options:
+      // https://github.com/kangax/html-minifier#options-quick-reference
+    },
   // necessary to consistently work with multiple chunks via CommonsChunkPlugin
   chunksSortMode: 'dependency'
 };
   // 需要配置后生成的html
   webpackConfig.plugins.push(new HtmlWebpackPlugin(_config))
-};
-
+}
 
 module.exports = webpackConfig;

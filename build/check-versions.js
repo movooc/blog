@@ -1,12 +1,12 @@
-var chalk = require('chalk')
-var semver = require('semver')
-var packageConfig = require('../package.json')
+const chalk = require('chalk')
+const semver = require('semver')
+const packageConfig = require('../package.json')
 
 function exec (cmd) {
   return require('child_process').execSync(cmd).toString().trim()
 }
 
-var versionRequirements = [
+const versionRequirements = [
   {
     name: 'node',
     currentVersion: semver.clean(process.version),
