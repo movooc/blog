@@ -4,6 +4,7 @@ process.env.NODE_ENV = 'production';
 
 var ora = require('ora');
 var fs = require('fs');
+var fsExtra = require('fs-extra');
 var rm = require('rimraf');
 var path = require('path');
 var chalk = require('chalk');
@@ -69,14 +70,36 @@ function Recombination() {
           // move files
           fs.renameSync(outStaticPath+'/'+_static, staticPath+'/'+_static);
         }else if(!(/\.\w+$/.test(_static))){
-          // search current directory
-          Rename(outStaticPath+'/'+_static, staticPath);
+          let from = outStaticPath+'/'+_static;
+          let to = staticPath+'/'+_static;
+          // search static files
+          let fromFile = fs.readdirSync(from);
+          // create dir
+          if(!fs.existsSync(to))fs.mkdirSync(to, 0755);
+          //
+          for(let file of fromFile){
+            if(/\.\w+$/.test(file) && new RegExp(fileName).test(from)){
+              // move files
+              fs.renameSync(from+'/'+file, to+'/'+file);
+            }else if(new RegExp(fileName).test(file)){
+              Rename(from+'/'+file, to+'/'+file, fileName);
+            }
+          }
         }
       }
-      // end
+      // end modules
       console.log(`  compile ${fileName} modules success!!!\n`);
     }
   };
+  // completes all files
+  console.log(`  compile all modules success!!!\n`);
+  // unlink outstatic files
+  console.log(`  start delete out static files...\n`);
+  // start removing
+  fsExtra.remove(outStaticPath, function (err) {
+    if(err)return console.log(err);
+    console.log('  delete success!!!');
+  });
 }
 
 function Rename(from, to, fileName){
@@ -86,10 +109,10 @@ function Rename(from, to, fileName){
   if(!fs.existsSync(to))fs.mkdirSync(to, 0755);
   //
   for(let file of fromFile){
-    if(/\.\w+$/.test(file) && new RegExp(fileName).test(from)){
+    if(/\.\w+$/.test(file)){
       // move files
       fs.renameSync(from+'/'+file, to+'/'+file);
-    }else if(!(/\.\w+$/.test(file))){
+    }else{
       Rename(from+'/'+file, to+'/'+file);
     }
   }
