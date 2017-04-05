@@ -3,10 +3,10 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
-import moment from 'moment';
+import moment from 'normalize.css';
 
 Vue.config.productionTip = false;
-console.log(moment());
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
