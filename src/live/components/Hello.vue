@@ -33,6 +33,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus" rel="stylesheet/stylus">
+  @import '~@lib/css/index.styl';
 h1, h2 {
   font-weight: normal;
 }

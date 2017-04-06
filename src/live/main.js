@@ -3,14 +3,22 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
-import moment from 'normalize.css';
+import FastClick from 'fastclick';
+import '@lib/js/rem';
+import 'normalize.css';
 
-Vue.config.productionTip = false;
+/*
+ * fastclick
+ */
+if ('addEventListener' in document) {
+  document.addEventListener('DOMContentLoaded', function() {
+    FastClick.attach(document.body);
+  }, false);
+}
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
   router,
   template: '<App/>',
   components: { App },
-});
+}).$mount('#app');
