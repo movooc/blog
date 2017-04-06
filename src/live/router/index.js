@@ -1,20 +1,36 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Hello from '@live/components/Hello';
-
-Vue.use(Router);
-
-export default new Router({
-  routes: [
+// require.ensure 是 Webpack 的特殊语法，用来设置 组件到底路径
+/**
+ * 1.定义路由，每个路由应该映射一个组件
+ * path : 浏览器的显示的路径
+ * name ： 路由的名字
+ * component : 路由的组件路径
+ */
+export default [{
+  path: '/',
+  name: 'index',
+  component(resolve) {
+    require.ensure([], () => {
+      resolve(require('../components/Hello.vue'));
+    });
+  },
+  children: [
     {
-      path: '/',
-      name: 'Hello',
-      component: Hello,
-    },
-    {
-      path: '/live',
-      name: 'Hello',
-      component: Hello,
-    },
-  ],
-});
+      path: '/hello',
+      name: 'hello',
+      component(resolve) {
+        require.ensure([], () => {
+          resolve(require('../components/Hello.vue'));
+        });
+      }
+    }, {
+      path: '/day',
+      name: 'day',
+      component(resolve) {
+        require.ensure([], () => {
+          resolve(require('../components/Hello.vue'));
+        });
+      },
+      meta: {requiresAuth: true}
+    }]
+}];
+
