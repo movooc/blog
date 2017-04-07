@@ -5,6 +5,7 @@ em, i {
 }
 
 ol, ul {
+  margin: 0
   padding: 0
 }
 
@@ -12,17 +13,89 @@ li
   list-style-type: none
 
 .live-page
-  position: absolute;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: vertical;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-flex-direction: column;
+  position: relative;
   height: 100%;
   width: 100%;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  background: #ECEDF1;
   overflow: hidden;
 
+.live-header
+    position: relative;
+    display: block;
+    background: #fff;
+    margin: 34px;
+    padding: 30px;
+    px2px(font-size, 28px);
+    border: solid 1px #ededed;
+    title
+      color: #333;
+    li
+      list-style-type: decimal;
+      margin-left: 45px;
+      padding: 17px 15px 0 0;
+      color: gray;
+      px2px(line-height, 32px);
+
+.live-sms-list
+  padding-bottom: 50px;
+  li
+    position: relative;
+    display: block;
+    padding: 40px 34px 0 113px;
+    .user-img
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      overflow: hidden;
+      cursor: pointer;
+      px2px(top, 40px);
+      px2px(left, 34px);
+      img
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+    .live-sms
+      .speaker-name
+        color: #aaa;
+        padding-bottom: 11px;
+        px2px(line-height, 28px);
+        px2px(font-size, 28px);
+      .sms-content
+        padding: 20px 13px;
+        max-width: 80%;
+        background: #fff;
+        px2px(border-radius, 12px);
+        .content-text
+          position: relative;
+          color: #3C4A55;
+          px2px(line-height, 46px);
+          px2px(font-size, 32px);
+        .content-img
+          display: -webkit-box;
+          display: box;
+          a
+            display: -webkit-box;
+            display: box;
+            padding: 0 2px;
+            -webkit-box-flex: 1;
+            box-flex: 1;
+            img
+              width: 100%;
+        .icon-triangle
+            position: absolute;
+
+.live-body
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 0 0 0;
+  overflow: auto;
+  overflow-x: hidden;
+  background: #f2f2f2;
+  -webkit-overflow-scrolling: touch;

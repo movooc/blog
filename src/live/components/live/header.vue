@@ -1,19 +1,22 @@
 <template>
-  <div class="l-chatbox">
-    <a href=""></a>
-    <textarea name="" id=""></textarea>
-    <button>提交</button>
+  <!-- live header -->
+  <div class="live-header">
+    <span class="title">听课指南</span>
+    <ul>
+      <li>听不到声音请往下翻，点击语音即可播放，并确认手机没有静音。</li>
+      <li>哈哈哈哈</li>
+      <li>哈哈</li>
+    </ul>
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   import {mapState} from 'vuex';
 
   export default
   {
-    name: 'v-chatbox',
+    name: 'l-header',
     components: {
-
     },
     data() {
       return {
@@ -29,6 +32,7 @@
     }
   };
 </script>
+
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "index.styl";
+
 </style>

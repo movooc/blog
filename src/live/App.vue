@@ -1,6 +1,6 @@
 <template>
-  <div class="app">
-    <v-header></v-header>
+  <div class="app" :class="{'is-header':isHeader}">
+    <v-header v-if="isHeader"></v-header>
     <v-loading :show="loadingShow"></v-loading>
     <router-view></router-view>
   </div>
@@ -19,11 +19,11 @@
     },
     computed: {
       ...mapState([
-        'loadingShow'
+        'loadingShow',
+        'isHeader'
       ])
     },
     methods: {
-
     }
   };
 </script>
@@ -31,18 +31,20 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import '~@lib/css/index.styl';
 
-  body
-    margin 0
-
-  #app
+  html, body
+    margin: 0;
+    height: 100%;
+    overflow-y: hidden;
+  .app
     font-family: Microsoft YaHei, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     max-width: 750px;
+    height: 100%;
     margin: 0 auto;
     color: #3C4A55;
-
+    &.is-header
+      padding-top: 100px;
     .show
       transform: translateX(250px);
     .page-cover

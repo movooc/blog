@@ -14,6 +14,7 @@ const state = {
   headerTitle: '直播',
   loadShow: false,
   menuShow: false,
+  isHeader: true,
 };
 
 /* mutations serials */
