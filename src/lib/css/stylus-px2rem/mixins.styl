@@ -6,28 +6,29 @@
     小于 12px 或者 75% 的字体大小 rem 确实不支持这种换算
 */
 html-font-size ?= 75px;
-// style-names ?= width height min-height max-height min-width max-width border margin margin-top margin-bottom margin-left margin-right padding padding-left padding-right padding-bottom padding-top line-height;
-style-names ?= "min-height" "max-height" "min-width" "max-width" "width" "height" "border" "margin" "margin-top" "margin-bottom" "margin-left" "margin-right" "padding" "padding-left" "padding-right" "padding-bottom" "padding-top" "line-height"
+// style-names ?= "min-height" "max-height" "min-width" "max-width" "width" "height" "border" "margin" "margin-top" "margin-bottom" "margin-left" "margin-right" "padding" "padding-left" "padding-right" "padding-bottom" "padding-top" "line-height"
+style-names ?= "min-height" "max-height" "min-width" "max-width" "width" "height" "border" "margin" "margin-top" "margin-bottom" "margin-left" "margin-right" "padding" "padding-left" "padding-right" "padding-bottom" "padding-top"
 // value less then ignore_limit will be ignored and return the original value
 px2rem_ignore_limit ?= 1
 
 px2rem(prop, values){
     values-px = null;
     values-rem = null;
-    need_normalize = !prop in style-names
+    need_normalize = prop in style-names
     for value in values {
         //match('-gradient\(', ''+arguments)
         if (typeof(value) == 'unit' && value != 0 && match('px$',''+value)) {
             if(abs(value) <= px2rem_ignore_limit){
                 value-rem = value;
-            }else if(!need_normalize){
+            }else if(need_normalize){
                 value-rem = unit(value / html-font-size,'rem');
             }else{
-                value-rem = unit(value ,'rem');
+                value-rem = value;
+                //value-rem = unit(value ,'rem');
             }
-            push(values-rem,value-rem)
+            push(values-rem, value-rem)
         } else {
-            push(values-rem,value)
+            push(values-rem, value)
         }
     }
     {prop} : values-rem;

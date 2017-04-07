@@ -1,8 +1,7 @@
 <template>
-  <div>
+  <div class="app">
     <v-header></v-header>
     <v-loading :show="loadingShow"></v-loading>
-    <img src="./assets/img/logo.png">
     <router-view></router-view>
   </div>
 </template>
@@ -31,6 +30,9 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   @import '~@lib/css/index.styl';
+
+  body
+    margin 0
 
   #app
     font-family: Microsoft YaHei, Helvetica, Arial, sans-serif;

@@ -7,10 +7,10 @@
  */
 export default [{
   path: '/',
-  name: 'index',
+  name: 'v-live',
   component(resolve) {
     require.ensure([], () => {
-      resolve(require('../components/Hello.vue'));
+      resolve(require('../components/teacher/index.vue'));
     });
   },
   children: [
@@ -23,8 +23,8 @@ export default [{
         });
       }
     }, {
-      path: '/day',
-      name: 'day',
+      path: '/live',
+      name: 'live',
       component(resolve) {
         require.ensure([], () => {
           resolve(require('../components/Hello.vue'));

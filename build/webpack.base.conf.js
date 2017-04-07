@@ -24,7 +24,7 @@ module.exports = {
       '@teacher': resolve('src/teacher'),
       '@student': resolve('src/student'),
       '@live': resolve('src/live'),
-      '@lib': resolve('src/lib')
+      '@lib': resolve('src/lib'),
     }
   },
   module: {

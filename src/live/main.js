@@ -5,8 +5,10 @@ import VueRouter from 'vue-router';
 import App from './App';
 import store from './vuex/store';
 import routes from './router';
+import infiniteScroll from 'vue-infinite-scroll';  // 引入滑动模块
 import FastClick from 'fastclick';
 import '@lib/js/rem';
+import '@lib/css/font.styl';
 import 'normalize.css';
 
 /*
@@ -18,7 +20,8 @@ if ('addEventListener' in document) {
   }, false);
 }
 
-/* register */
+/* register compoent */
+Vue.use(infiniteScroll);
 Vue.use(VueRouter);
 
 /* bind router */
