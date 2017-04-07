@@ -11,7 +11,7 @@ style-names ?= "min-height" "max-height" "min-width" "max-width" "width" "height
 // value less then ignore_limit will be ignored and return the original value
 px2rem_ignore_limit ?= 1
 
-px2rem(prop,values){
+px2rem(prop, values){
     values-px = null;
     values-rem = null;
     need_normalize = !prop in style-names
@@ -33,7 +33,7 @@ px2rem(prop,values){
     {prop} : values-rem;
 }
 
-px2px(prop,values){
+px2px(prop, values){
     values-px = null;
     values-px = round(values / 2) * 1px;
     {prop} : values-px;

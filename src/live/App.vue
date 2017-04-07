@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-header></v-header>
-    <loading :show="loadingShow"></loading>
+    <v-loading :show="loadingShow"></v-loading>
     <img src="./assets/img/logo.png">
     <router-view></router-view>
   </div>
