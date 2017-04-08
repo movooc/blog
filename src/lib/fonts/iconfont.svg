@@ -2,7 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
 <svg xmlns="http://www.w3.org/2000/svg">
 <metadata>
-Created by FontForge 20120731 at Fri Apr  7 13:51:28 2017
+Created by FontForge 20120731 at Sat Apr  8 15:36:05 2017
  By admin
 </metadata>
 <defs>
@@ -46,6 +46,8 @@ d="M595 339q0 -45 32 -77t77 -32t77 32t32 77v0q0 45 -32 77t-77 32t-77 -32t-32 -77
 d="M701 655l-60 59l-406 -406v0v0l406 -406l60 60l-347 346z" />
     <glyph glyph-name="triangle" unicode="&#xe821;" 
 d="M1022 694l-510 -620l-510 620h1020z" />
+    <glyph glyph-name="dot1" unicode="&#xe6e7;" 
+d="M512 465zM448 464.5q0 -26.5 19 -45t45 -18.5t45 18.5t19 45t-19 45t-45 18.5t-45 -18.5t-19 -45z" />
     <glyph glyph-name="voice" unicode="&#xe65c;" 
 d="M679 -63q-7 -7 -18 -7t-19 7.5t-8 18.5t8 18q81 80 126.5 186t45.5 224t-45.5 224t-126.5 185q-8 8 -8 19t7.5 18.5t19 7.5t18.5 -7q89 -87 138.5 -202.5t49.5 -244.5t-49.5 -244.5t-137.5 -202.5h-1zM472 141q-8 -7 -19 -7t-18.5 7.5t-7.5 18.5t8 18q86 85 86 206
 t-86 206q-8 7 -8 18t7.5 18.5t18.5 7.5t19 -7q49 -47 75.5 -110t26.5 -133t-26.5 -133t-75.5 -110v0zM177.5 335.5q-20.5 20.5 -21 49t19.5 48.5t49 20t49 -20.5t20.5 -49t-19.5 -48.5t-48.5 -20t-49 20.5z" />

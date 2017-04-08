@@ -2,11 +2,12 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import vueResource from 'vue-resource';
+import FastClick from 'fastclick';
 import App from './App';
 import store from './vuex/store';
 import routes from './router';
 import infiniteScroll from 'vue-infinite-scroll';  // 引入滑动模块
-import FastClick from 'fastclick';
 import '@lib/js/rem';
 import '@lib/css/font.styl';
 import 'normalize.css';
@@ -23,6 +24,7 @@ if ('addEventListener' in document) {
 /* register compoent */
 Vue.use(infiniteScroll);
 Vue.use(VueRouter);
+Vue.use(vueResource);
 
 /* bind router */
 const router = new VueRouter({

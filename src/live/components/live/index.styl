@@ -41,7 +41,7 @@ li
       px2px(line-height, 32px);
 
 .live-sms-list
-  padding-bottom: 50px;
+  padding-bottom: 150px;
   li
     position: relative;
     display: block;
@@ -60,16 +60,32 @@ li
         height: 100%;
         border-radius: 4px;
     .live-sms
+      position: relative;
+      padding-left: 14px;
       .speaker-name
         color: #aaa;
         padding-bottom: 11px;
         px2px(line-height, 28px);
         px2px(font-size, 28px);
       .sms-content
+        position: relative;
         padding: 20px 13px;
         max-width: 80%;
         background: #fff;
         px2px(border-radius, 12px);
+        &:before
+          position: absolute;
+          font-family:"iconfont" !important;
+          font-style:normal;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          content: "\e821";
+          color: #fff;
+          px2px(top, -7px);
+          px2px(left, -14px);
+          px2px(font-size, 28px);
+        &.w65per
+          width: 65%;
         .content-text
           position: relative;
           color: #3C4A55;
@@ -86,8 +102,38 @@ li
             box-flex: 1;
             img
               width: 100%;
-        .icon-triangle
+        .content-audio
+          px2px(font-size, 32px);
+          &:after, .voice:before
             position: absolute;
+            font-family:"iconfont" !important;
+            font-style:normal;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+          &:after
+            content: "\e651";
+            color: #FB6666;
+            px2px(top, -24px);
+            px2px(right, -60px);
+            px2px(font-size, 50px);
+          .voice
+            display: inline-block;
+            margin-left: -20px;
+            width: 77px;
+            &:before
+              width: 30px;
+              height: 42px;
+              color: #12B7F5;
+              px2px(font-size, 32px);
+            &.icon-dot1:before
+              px2px(left, 20px);
+              px2px(top, 22px);
+            &.icon-voice:before
+              px2px(left, 30px);
+              px2px(top, 22px);
+          .timer
+            color: #B5B5B5;
+            px2px(font-size, 28px);
 
 .live-body
   position: absolute;

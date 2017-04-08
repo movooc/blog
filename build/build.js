@@ -34,7 +34,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       '  Tip: Waiting for recombinating the files...\n'+
       '  Ready...\n'
     ));
-
+    // recombination start
     Recombination();
   })
 })

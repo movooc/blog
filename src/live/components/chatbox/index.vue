@@ -1,8 +1,12 @@
 <template>
   <div class="l-chatbox">
-    <a href=""></a>
-    <textarea name="" id=""></textarea>
-    <button>提交</button>
+    <span class="box-more">
+      <button>
+        <span class="iconfont icon-dot-more"></span>
+      </button>
+    </span>
+    <textarea class="box-msg" placeholder="请输入文字..."></textarea>
+    <button class="box-send">提交</button>
   </div>
 </template>
 

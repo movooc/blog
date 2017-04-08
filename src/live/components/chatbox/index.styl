@@ -2,12 +2,46 @@
 
 .l-chatbox
   position: fixed;
-  display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   bottom: 0;
   right: 0;
   left: 0;
-  width: 100%;
+  padding: 15px 20px 15px 34px;
+  //height: 70px;
   box-shadow: 0 0 5px rgba(0,0,0,.1);
+  background: #ECEDF1;
   z-index: 10;
+  >*
+    -webkit-flex: 1;
+    flex: 1;
+    border: 0 none;
+    height: 70px;
+    px2px(border-radius, 8px);
+    px2px(font-size, 30px);
+
+    &.box-more
+      margin-right: 8px;
+      text-align: center;
+      button
+        width: 70px;
+        height: 100%;
+        border: 0 none;
+        background: #fff;
+        px2px(border-radius, 8px);
+      .iconfont
+        color: #12B7F5;
+        px2px(font-size, 30px);
+    &.box-msg
+      -webkit-flex: 5;
+      flex: 5;
+      padding: 20px 10px;
+      height: 30px;
+      color: #333;
+      overflow: auto;
+      overflow-x: hidden;
+      resize: none;
+      px2px(line-height, 30px);
+    &.box-send
+      margin-left: 20px;
+      background: #fff;

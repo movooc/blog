@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="{'is-header':isHeader}">
+  <div class="app" :class="{'is-header':isHeader,'is-pc':isPC}">
     <v-header v-if="isHeader"></v-header>
     <v-loading :show="loadingShow"></v-loading>
     <router-view></router-view>
@@ -10,6 +10,21 @@
   import vHeader from '@live/components/header/index.vue';
   import vLoading from '@live/components/loading/index.vue';
   import { mapState } from 'vuex';
+
+  //平台、设备和操作系统
+  var isPC = false;
+  var p = navigator.platform;
+  var mySystem = {
+    win  : p.indexOf("Win") == 0,
+    mac  : p.indexOf("Mac") == 0,
+    xll  : (p == "X11") || (p.indexOf("Linux") == 0),
+    ipad : (navigator.userAgent.match(/iPad/i) != null)?true:false
+  };
+
+  //跳转语句，如果是手机访问就自动跳转到wap.baidu.com页面
+  if (mySystem.win || mySystem.mac || mySystem.xll||mySystem.ipad) {
+    isPC = true;
+  }
 
   export default {
     name: 'app',
@@ -22,6 +37,11 @@
         'loadingShow',
         'isHeader'
       ])
+    },
+    data() {
+      return {
+        isPC
+      };
     },
     methods: {
     }
@@ -39,12 +59,13 @@
     font-family: Microsoft YaHei, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    max-width: 750px;
     height: 100%;
     margin: 0 auto;
     color: #3C4A55;
     &.is-header
       padding-top: 100px;
+    &.is-pc
+      px2px(max-width, 750px);
     .show
       transform: translateX(250px);
     .page-cover
