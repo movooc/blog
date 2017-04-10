@@ -86,7 +86,7 @@ function onCustomGroupNotify(notify) {
 }
 
 //监听 群资料变化 群提示消息
-window.onGroupInfoChangeNotify = (groupInfo) => {
+function onGroupInfoChangeNotify(groupInfo) {
     webim.Log.warn("执行 群资料变化 回调： " + JSON.stringify(groupInfo));
     var groupId = groupInfo.GroupId;
     var newFaceUrl = groupInfo.GroupFaceUrl;//新群组图标, 为空，则表示没有变化

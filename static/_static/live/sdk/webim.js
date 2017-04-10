@@ -4,7 +4,7 @@
 
 /* webim API definitions
  */
-window.webim = { // namespace object webim
+var webim = { // namespace object webim
 
     /* function init
      *   sdk登录

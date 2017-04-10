@@ -7,10 +7,10 @@
  */
 export default [{
   path: '/',
-  name: 'v-live',
+  name: 'index',
   component(resolve) {
     require.ensure([], () => {
-      resolve(require('../components/teacher/index.vue'));
+      resolve(require('../components/Hello.vue'));
     });
   },
   children: [
@@ -22,15 +22,14 @@ export default [{
           resolve(require('../components/Hello.vue'));
         });
       }
-    }, {
-      path: '/live',
-      name: 'live',
-      component(resolve) {
-        require.ensure([], () => {
-          resolve(require('../components/Hello.vue'));
-        });
-      },
-      meta: {requiresAuth: true}
     }]
+},{
+  path: '/teacher',
+  name: 'v-teacher',
+  component(resolve) {
+    require.ensure([], () => {
+      resolve(require('../components/teacher/index.vue'));
+    });
+  }
 }];
 

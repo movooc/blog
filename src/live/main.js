@@ -29,7 +29,7 @@ Vue.use(vueResource);
 /* bind router */
 const router = new VueRouter({
   'linkActiveClass': 'active',
-  routes
+  routes,
 });
 
 /* el app */

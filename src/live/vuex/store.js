@@ -15,6 +15,8 @@ const state = {
   loadShow: false,
   menuShow: false,
   isHeader: true,
+  userInfo: null,
+  teacherInfo: null,
 };
 
 /* mutations serials */

@@ -123,24 +123,24 @@ function showMsg(msg) {
     if (!fromAccountNick) {
         fromAccountNick = '未知用户';
     }
-    ul = document.getElementById("live_sms_list");
+    ul = document.getElementById("video_sms_list");
     var maxDisplayMsgCount = 4;
     //var opacityStep=(1.0/4).toFixed(2);
     var opacityStep = 0.2;
     var opacity;
-    var childrenLiList = $("#live_sms_list").children();
+    var childrenLiList = $("#video_sms_list").children();
     if (childrenLiList.length == maxDisplayMsgCount) {
-        $("#live_sms_list").children(":first").remove();
+        $("#video_sms_list").children(":first").remove();
         for (var i = 0; i < maxDisplayMsgCount; i++) {
             opacity = opacityStep * (i + 1) + 0.2;
-            $('#live_sms_list').children().eq(i).css("opacity", opacity);
+            $('#video_sms_list').children().eq(i).css("opacity", opacity);
         }
     }
     li = document.createElement("li");
     paneDiv = document.createElement("div");
-    paneDiv.setAttribute('class', 'live-sms-pane');
+    paneDiv.setAttribute('class', 'video-sms-pane');
     textDiv = document.createElement("div");
-    textDiv.setAttribute('class', 'live-sms-text');
+    textDiv.setAttribute('class', 'video-sms-text');
     nickNameSpan = document.createElement("span");
 
     var colorList = ['red', 'green', 'blue', 'org'];
@@ -483,7 +483,7 @@ function onChangePlayAudio(obj) {
 }
 
 //单击评论图片
-export function smsPicClick() {
+function smsPicClick() {
     if (!loginInfo.identifier) {//未登录
         if (accountMode == 1) {//托管模式
             //将account_type保存到cookie中,有效期是1天
@@ -663,29 +663,29 @@ function sendGroupLoveMsg() {
 }
 //隐藏评论文本框
 function hideDiscussForm() {
-    $(".live-discuss-form").hide();
+    $(".video-discuss-form").hide();
 }
 //显示评论文本框
 function showDiscussForm() {
-    $(".live-discuss-form").show();
+    $(".video-discuss-form").show();
 }
 //隐藏评论工具栏
 function hideDiscussTool() {
-    $(".live-discuss-tool").hide();
+    $(".video-discuss-tool").hide();
 }
 //显示评论工具栏
 function showDiscussTool() {
-    $(".live-discuss-tool").show();
+    $(".video-discuss-tool").show();
 }
 //隐藏表情框
 function hideDiscussEmotion() {
-    $(".live-discuss-emotion").hide();
-    //$(".live-discuss-emotion").fadeOut("slow");
+    $(".video-discuss-emotion").hide();
+    //$(".video-discuss-emotion").fadeOut("slow");
 }
 //显示表情框
 function showDiscussEmotion() {
-    $(".live-discuss-emotion").show();
-    //$(".live-discuss-emotion").fadeIn("slow");
+    $(".video-discuss-emotion").show();
+    //$(".video-discuss-emotion").fadeIn("slow");
 
 }
 //展示点赞动画
@@ -693,7 +693,7 @@ function showLoveMsgAnimation() {
     //点赞数加1
     var loveCount = $('#user-icon-like').html();
     $('#user-icon-like').html(parseInt(loveCount) + 1);
-    var toolDiv = document.getElementById("live-discuss-tool");
+    var toolDiv = document.getElementById("video-discuss-tool");
     var loveSpan = document.createElement("span");
     var colorList = ['red', 'green', 'blue'];
     var max = colorList.length - 1;
@@ -743,7 +743,7 @@ function quitBigGroup() {
         function (resp) {
 
             webim.Log.info('退群成功');
-            $("#live_sms_list").find("li").remove();
+            $("#video_sms_list").find("li").remove();
             //webim.Log.error('进入另一个大群:'+avChatRoomId2);
             //applyJoinBigGroup(avChatRoomId2);//加入大群
         },
@@ -761,7 +761,7 @@ function logout() {
             webim.Log.info('登出成功');
             loginInfo.identifier = null;
             loginInfo.userSig = null;
-            $("#live_sms_list").find("li").remove();
+            $("#video_sms_list").find("li").remove();
             var indexUrl = window.location.href;
             var pos = indexUrl.indexOf('?');
             if (pos >= 0) {
@@ -771,7 +771,3 @@ function logout() {
         }
     );
 }
-
-// 转为全局变量
-window.jsonpCallback = jsonpCallback
-window.smsPicClick = smsPicClick
