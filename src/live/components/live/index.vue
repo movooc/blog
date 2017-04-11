@@ -89,7 +89,7 @@
   let sdkAppID = 1400001692;
   let accountType = 884;
 
-  let avChatRoomId = '@TGS#aJIPTVAEE'; //默认房间群ID，群类型必须是直播聊天室（AVChatRoom），这个为官方测试ID(托管模式)
+  window.avChatRoomId = '@TGS#aJIPTVAEE'; //默认房间群ID，群类型必须是直播聊天室（AVChatRoom），这个为官方测试ID(托管模式)
 
   if (webim.Tool.getQueryString("groupid")) {
     avChatRoomId = webim.Tool.getQueryString("groupid");//用户自定义房间群id
@@ -104,7 +104,7 @@
 
 
   //当前用户身份
-  var loginInfo = {
+  window.loginInfo = {
     'sdkAppID': sdkAppID, //用户所属应用id,必填
     'appIDAt3rd': sdkAppID, //用户所属应用id，必填
     'accountType': accountType, //用户所属应用帐号类型，必填
@@ -147,7 +147,7 @@
   };
 
   //监听事件
-  var listeners = {
+  window.listeners = {
     "onConnNotify": onConnNotify, //选填
     "jsonpCallback": jsonpCallback, //IE9(含)以下浏览器用到的jsonp回调函数,移动端可不填，pc端必填
     "onBigGroupMsgNotify": onBigGroupMsgNotify, //监听新消息(大群)事件，必填
@@ -155,41 +155,41 @@
     "onGroupSystemNotifys": onGroupSystemNotifys, //监听（多终端同步）群系统消息事件，必填
     "onGroupInfoChangeNotify": onGroupInfoChangeNotify//监听群资料变化事件，选填
   };
-//
-//  var isAccessFormalEnv = true;//是否访问正式环境
-//
-//  if (webim.Tool.getQueryString("isAccessFormalEnv") == "false") {
-//    isAccessFormalEnv = false;//访问测试环境
-//  }
-//
-//  var isLogOn = true;//是否在浏览器控制台打印sdk日志
-//
-//  //其他对象，选填
-//  var options = {
-//    'isAccessFormalEnv': isAccessFormalEnv,//是否访问正式环境，默认访问正式，选填
-//    'isLogOn': isLogOn//是否开启控制台打印日志,默认开启，选填
-//  };
-//
-//  var curPlayAudio = null;//当前正在播放的audio对象
-//
-//  var openEmotionFlag = false;//是否打开过表情
-//
-//  if (accountMode == 1) {//托管模式
-//    //判断是否已经拿到临时身份凭证
-//    if (webim.Tool.getQueryString('tmpsig')) {
-//      if (loginInfo.identifier == null) {
-//        webim.Log.info('start fetchUserSig');
-//        //获取正式身份凭证，成功后会回调tlsGetUserSig(res)函数
-//        TLSHelper.fetchUserSig();
-//      }
-//    } else {//未登录,无登录态模式
-//      //sdk登录
-//      sdkLogin();
-//    }
-//  } else {//独立模式
-//    //sdk登录
-//    sdkLogin();
-//  }
+
+ var isAccessFormalEnv = true;//是否访问正式环境
+
+ if (webim.Tool.getQueryString("isAccessFormalEnv") == "false") {
+   isAccessFormalEnv = false;//访问测试环境
+ }
+
+ var isLogOn = true;//是否在浏览器控制台打印sdk日志
+
+ //其他对象，选填
+ window.options = {
+   'isAccessFormalEnv': isAccessFormalEnv,//是否访问正式环境，默认访问正式，选填
+   'isLogOn': isLogOn//是否开启控制台打印日志,默认开启，选填
+ };
+
+ var curPlayAudio = null;//当前正在播放的audio对象
+
+ var openEmotionFlag = false;//是否打开过表情
+
+ if (accountMode == 1) {//托管模式
+   //判断是否已经拿到临时身份凭证
+   if (webim.Tool.getQueryString('tmpsig')) {
+     if (loginInfo.identifier == null) {
+       webim.Log.info('start fetchUserSig');
+       //获取正式身份凭证，成功后会回调tlsGetUserSig(res)函数
+       TLSHelper.fetchUserSig();
+     }
+   } else {//未登录,无登录态模式
+     //sdk登录
+     sdkLogin();
+   }
+ } else {//独立模式
+   //sdk登录
+   sdkLogin();
+ }
 
   export default
   {
