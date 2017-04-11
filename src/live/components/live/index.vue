@@ -1,6 +1,6 @@
 <template>
   <!-- live start -->
-  <div class="live-page" @click="isShow" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
+  <div class="live-page" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
     <!-- live entity -->
     <div class="live-body">
       <!-- header -->
@@ -12,7 +12,7 @@
               <img src="~@live/assets/img/user-img.png" width="45px">
             </div>
             <div class="live-sms">
-                <div class="speaker-name">主讲人</div>
+                <div class="speaker-name">{{ menuShow }}</div>
                 <div class="sms-content">
                   <div class="content-text">养殖户大会后付款是否可好可好看是否可哈萨克发挥开发和客户发卡号是分开哈萨克的发挥</div>
                 </div>
@@ -83,7 +83,7 @@
   import vChatbox from '@live/components/chatbox/index.vue';
 
   //帐号模式，0-表示独立模式，1-表示托管模式。
-  let accountMode=1;
+  window.accountMode=1;
 
   //官方 demo appid,需要开发者自己修改（托管模式）
   let sdkAppID = 1400001692;
@@ -95,13 +95,12 @@
     avChatRoomId = webim.Tool.getQueryString("groupid");//用户自定义房间群id
   }
 
-  var selType = webim.SESSION_TYPE.GROUP;
-  var selToID = avChatRoomId;//当前选中聊天id（当聊天类型为私聊时，该值为好友帐号，否则为群号）
-  var selSess = null;//当前聊天会话
+  window.selType = webim.SESSION_TYPE.GROUP;
+  window.selSess = null;//当前聊天会话
+  window.selToID = avChatRoomId;//当前选中聊天id（当聊天类型为私聊时，该值为好友帐号，否则为群号）
 
   //默认群组头像(选填)
-  var selSessHeadUrl = 'img/2017.jpg';
-
+  window.selSessHeadUrl = 'img/2017.jpg';
 
   //当前用户身份
   window.loginInfo = {
@@ -113,10 +112,11 @@
     'userSig': null, //当前用户身份凭证，必须是字符串类型，选填
     'headurl': 'img/2016.gif'//当前用户默认头像，选填
   };
+
   //监听（多终端同步）群系统消息方法，方法都定义在demo_group_notice.js文件中
   //注意每个数字代表的含义，比如，
   //1表示监听申请加群消息，2表示监听申请加群被同意消息，3表示监听申请加群被拒绝消息等
-  var onGroupSystemNotifys = {
+  let onGroupSystemNotifys = {
     //"1": onApplyJoinGroupRequestNotify, //申请加群请求（只有管理员会收到,暂不支持）
     //"2": onApplyJoinGroupAcceptNotify, //申请加群被同意（只有申请人能够收到,暂不支持）
     //"3": onApplyJoinGroupRefuseNotify, //申请加群被拒绝（只有申请人能够收到,暂不支持）
@@ -132,7 +132,7 @@
   };
 
   //监听连接状态回调变化事件
-  var onConnNotify = function (resp) {
+  let onConnNotify = function (resp) {
     switch (resp.ErrorCode) {
       case webim.CONNECTION_STATUS.ON:
         //webim.Log.warn('连接状态正常...');
@@ -156,40 +156,44 @@
     "onGroupInfoChangeNotify": onGroupInfoChangeNotify//监听群资料变化事件，选填
   };
 
- var isAccessFormalEnv = true;//是否访问正式环境
+  let isAccessFormalEnv = true;//是否访问正式环境
 
- if (webim.Tool.getQueryString("isAccessFormalEnv") == "false") {
+  if (webim.Tool.getQueryString("isAccessFormalEnv") == "false") {
    isAccessFormalEnv = false;//访问测试环境
  }
 
- var isLogOn = true;//是否在浏览器控制台打印sdk日志
+  //是否在浏览器控制台打印sdk日志
+  let isLogOn = true;
 
- //其他对象，选填
- window.options = {
+  //其他对象，选填
+  window.options = {
    'isAccessFormalEnv': isAccessFormalEnv,//是否访问正式环境，默认访问正式，选填
    'isLogOn': isLogOn//是否开启控制台打印日志,默认开启，选填
  };
 
- var curPlayAudio = null;//当前正在播放的audio对象
+  var curPlayAudio = null;//当前正在播放的audio对象
 
- var openEmotionFlag = false;//是否打开过表情
+  var openEmotionFlag = false;//是否打开过表情
 
- if (accountMode == 1) {//托管模式
-   //判断是否已经拿到临时身份凭证
-   if (webim.Tool.getQueryString('tmpsig')) {
-     if (loginInfo.identifier == null) {
-       webim.Log.info('start fetchUserSig');
-       //获取正式身份凭证，成功后会回调tlsGetUserSig(res)函数
-       TLSHelper.fetchUserSig();
-     }
-   } else {//未登录,无登录态模式
-     //sdk登录
-     sdkLogin();
+  if (accountMode == 1) {
+    //托管模式
+    //判断是否已经拿到临时身份凭证
+    if (webim.Tool.getQueryString('tmpsig')) {
+        if (loginInfo.identifier == null) {
+           webim.Log.info('start fetchUserSig');
+           //获取正式身份凭证，成功后会回调tlsGetUserSig(res)函数
+           TLSHelper.fetchUserSig();
+        }
+   } else {
+          //未登录,无登录态模式
+          //sdk登录
+          sdkLogin();
    }
- } else {//独立模式
-   //sdk登录
-   sdkLogin();
- }
+  } else {
+      //独立模式
+      //sdk登录
+      sdkLogin();
+  }
 
   export default
   {
@@ -208,21 +212,22 @@
     },
     computed: {
       ...mapState([
-        'headerTitle', 'userInfo', 'teacherInfo'
+        'headerTitle', 'userInfo', 'teacherInfo', 'menuShow'
       ])
     },
     created(){
-      //console.log(this.$store.state);
+
     },
     methods: {
       isShow() {
-        this.$store.commit('UPDATE_MENUSHOW');
+        //this.$store.commit('UPDATE_MENUSHOW');
       },
       loadMore() {
         this.busy = true;
       }
     }
   };
+
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

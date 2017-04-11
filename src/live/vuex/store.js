@@ -17,6 +17,7 @@ const state = {
   isHeader: true,
   userInfo: null,
   teacherInfo: null,
+  messageInfo: [],
 };
 
 /* mutations serials */
@@ -28,6 +29,14 @@ const mutations = {
   //
   UPDATE_LOADING(state, data){
     state.loadShow = data;
+  },
+  //
+  UPDATE_MESSAGE(state, data){
+    if(Array.isArray(data)){
+      state.messageInfo = [...state.messageInfo, ...data];
+    }else if(Object.prototype.toString.call(data) == '[object Object]'){
+      state.messageInfo = [...state.messageInfo, data];
+    }
   },
   //
   UPDATE_MENUSHOW(state, data){

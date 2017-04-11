@@ -1,7 +1,8 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <button @click="startLive()">点击参与直播</button>
+    <button @click="startLive('create')">点击创建直播</button>
+    <button @click="startLive('join')">点击参与直播</button>
   </div>
 </template>
 
@@ -14,8 +15,10 @@ export default {
     };
   },
   methods: {
-    startLive() {
-      this.$router.push('teacher');
+    startLive(str) {
+      str == 'create' ? this.$router.push({path:'teacher', query: {createRoom:true}}) :
+                        this.$router.push('teacher');
+
     }
   },
 };

@@ -5,13 +5,14 @@
         <span class="iconfont icon-dot-more"></span>
       </button>
     </span>
-    <textarea class="box-msg" placeholder="请输入文字..."></textarea>
-    <button class="box-send">提交</button>
+    <textarea v-model="msgVal" class="box-msg" placeholder="请输入文字..." @blur="v_blur"></textarea>
+    <button class="box-send" @click="sendMsg">提交</button>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapState} from 'vuex';
+  import { mapState } from 'vuex';
+  import { vSendMsg } from '@live/assets/js/webim';
 
   export default
   {
@@ -21,14 +22,24 @@
     },
     data() {
       return {
-        show: false
+        show: false,
+        msgVal: '',
       };
     },
     computed: {
     },
     methods: {
+      sendMsg() {
+        vSendMsg(this.msgVal).then((err, data) => {
+          this.msgVal = '';
+        },(err, data) => {
+          console.log(err);
+        });
+      },
       isShow() {
         this.$store.commit('UPDATE_MENUSHOW');
+      },
+      v_blur() {
       }
     }
   };

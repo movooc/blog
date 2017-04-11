@@ -7,7 +7,7 @@ export const setStore = (name, content) => {
 		content = JSON.stringify(content);
 	}
 	window.localStorage.setItem(name, content);
-}
+};
 
 /**
  * 获取localStorage
@@ -15,7 +15,7 @@ export const setStore = (name, content) => {
 export const getStore = name => {
 	if (!name) return;
 	return window.localStorage.getItem(name);
-}
+};
 
 /**
  * 删除localStorage
@@ -23,7 +23,7 @@ export const getStore = name => {
 export const removeStore = name => {
 	if (!name) return;
 	window.localStorage.removeItem(name);
-}
+};
 
 /**
  * 获取style样式
@@ -31,16 +31,16 @@ export const removeStore = name => {
 export const getStyle = (element, attr, NumberMode = 'int') => {
     let target;
     // scrollTop 获取方式不同，没有它不属于style，而且只有document.body才能用
-    if (attr === 'scrollTop') { 
+    if (attr === 'scrollTop') {
         target = element.scrollTop;
     }else if(element.currentStyle){
-        target = element.currentStyle[attr]; 
-    }else{ 
-        target = document.defaultView.getComputedStyle(element,null)[attr]; 
+        target = element.currentStyle[attr];
+    }else{
+        target = document.defaultView.getComputedStyle(element,null)[attr];
     }
     //在获取 opactiy 时需要获取小数 parseFloat
     return  NumberMode == 'float'? parseFloat(target) : parseInt(target);
-} 
+};
 
 /**
  * 页面到达底部，加载更多
@@ -75,7 +75,7 @@ export const loadMore = (element, callback) => {
        	oldScrollTop = document.body.scrollTop;
        	moveEnd();
     },{passive: true})
-    
+
     const moveEnd = () => {
         requestFram = requestAnimationFrame(() => {
             if (document.body.scrollTop != oldScrollTop) {
@@ -96,7 +96,7 @@ export const loadMore = (element, callback) => {
             callback();
         }
     }
-}
+};
 
 /**
  * 显示返回顶部按钮，开始、结束、运动 三个过程中调用函数判断是否达到目标点
@@ -120,7 +120,7 @@ export const showBack = callback => {
         oldScrollTop = document.body.scrollTop;
         moveEnd();
     },{passive: true})
-    
+
     const moveEnd = () => {
         requestFram = requestAnimationFrame(() => {
             if (document.body.scrollTop != oldScrollTop) {
@@ -141,8 +141,22 @@ export const showBack = callback => {
             callback(false);
         }
     }
-}
+};
 
+/**
+ * 去除首位空格
+ */
+export const trimStr = (str) => str.replace(/(^\s*)|(\s*$)/g,'');
+
+/**
+ * 根据名字获取hash参数值
+ */
+export const getQueryString = (name) => {
+  var reg = new RegExp('(^|&|\\?)' + name + '=([^&]*)(&|$)', 'i');
+  var r = window.location.hash.substr(1).match(reg);
+  if (r != null) return unescape(r[2]);
+  return null;
+};
 
 /**
  * 运动效果
@@ -172,7 +186,7 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
 
     //获取dom样式
     const attrStyle = attr => {
-        if (attr === "opacity") { 
+        if (attr === "opacity") {
             return Math.round(getStyle(element, attr, 'float') * 100);
         } else {
             return getStyle(element, attr);
@@ -214,7 +228,7 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
             let speedBase = 0; //目标点需要减去的基础值，三种运动状态的值都不同
             let intervalTime; //将目标值分为多少步执行，数值越大，步长越小，运动时间越长
             switch(mode){
-                case 'ease-out': 
+                case 'ease-out':
                     speedBase = iCurrent;
                     intervalTime = duration*5/400;
                     break;
@@ -229,7 +243,7 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
                     break;
                 default:
                     speedBase = iCurrent;
-                    intervalTime = duration*5/400; 
+                    intervalTime = duration*5/400;
             }
             if (mode !== 'ease-in') {
                 iSpeed = (target[attr] - speedBase) / intervalTime;
@@ -237,8 +251,8 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
             }
             //判断是否达步长之内的误差距离，如果到达说明到达目标点
             switch(mode){
-                case 'ease-out': 
-                    status = iCurrent != target[attr]; 
+                case 'ease-out':
+                    status = iCurrent != target[attr];
                     break;
                 case 'linear':
                     status = Math.abs(Math.abs(iCurrent) - Math.abs(target[attr])) > Math.abs(iSpeed);
@@ -247,11 +261,11 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
                     status = Math.abs(Math.abs(iCurrent) - Math.abs(target[attr])) > Math.abs(iSpeed);
                     break;
                 default:
-                    status = iCurrent != target[attr]; 
+                    status = iCurrent != target[attr];
             }
 
             if (status) {
-                flag = false; 
+                flag = false;
                 //opacity 和 scrollTop 需要特殊处理
                 if (attr === "opacity") {
                     element.style.filter = "alpha(opacity:" + (iCurrent + iSpeed) + ")";
@@ -273,4 +287,5 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
             }
         })
     }, 20);
-}
+};
+

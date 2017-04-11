@@ -27,7 +27,7 @@ let webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      inject: false
+      inject: true
     }),
     new FriendlyErrorsPlugin()
   ]

@@ -100,6 +100,7 @@ function applyJoinBigGroup(groupId) {
             if (resp.JoinedStatus && resp.JoinedStatus == 'JoinedSuccess') {
                 webim.Log.info('进群成功');
                 selToID = groupId;
+                //loginInfo.identifier = true;
             } else {
                 alert('进群失败');
             }
@@ -500,10 +501,10 @@ function smsPicClick() {
     }
 }
 
-//发送消息(普通消息)
-function onSendMsg() {
-
-    if (!loginInfo.identifier) {//未登录
+// @发送消息(普通消息)
+function onSendMsg(msgtosend, callback) {
+    // 未登录
+    if (!loginInfo.identifier) {
         if (accountMode == 1) {//托管模式
             //将account_type保存到cookie中,有效期是1天
             webim.Tool.setCookie('accountType', loginInfo.accountType, 3600 * 24);
@@ -512,21 +513,19 @@ function onSendMsg() {
         } else {//独立模式
             alert('请填写帐号和票据');
         }
-        return;
+        return callback('请先登录!');
     }
 
+    // 是否成功进入房间
     if (!selToID) {
-        alert("您还没有进入房间，暂不能聊天");
-        $("#send_msg_text").val('');
-        return;
+        return callback('您还没有进入房间，暂不能聊天!');
     }
     //获取消息内容
-    var msgtosend = $("#send_msg_text").val();
+    var msgtosend = msgtosend;
     var msgLen = webim.Tool.getStrBytes(msgtosend);
 
     if (msgtosend.length < 1) {
-        alert("发送的消息不能为空!");
-        return;
+        return callback('发送的消息不能为空!');
     }
 
     var maxLen, errInfo;
@@ -538,8 +537,7 @@ function onSendMsg() {
         errInfo = "消息长度超出限制(最多" + Math.round(maxLen / 3) + "汉字)";
     }
     if (msgLen > maxLen) {
-        alert(errInfo);
-        return;
+        return callback(errInfo);
     }
 
     if (!selSess) {
@@ -563,7 +561,9 @@ function onSendMsg() {
         //webim.C2C_MSG_SUB_TYPE.COMMON-普通消息,
         subType = webim.C2C_MSG_SUB_TYPE.COMMON;
     }
+
     var msg = new webim.Msg(selSess, isSend, seq, random, msgTime, loginInfo.identifier, subType, loginInfo.identifierNick);
+
     //解析文本和表情
     var expr = /\[[^[\]]{1,3}\]/mg;
     var emotions = msgtosend.match(expr);
@@ -571,44 +571,17 @@ function onSendMsg() {
     if (!emotions || emotions.length < 1) {
         text_obj = new webim.Msg.Elem.Text(msgtosend);
         msg.addText(text_obj);
-    } else {//有表情
-
-        for (var i = 0; i < emotions.length; i++) {
-            tmsg = msgtosend.substring(0, msgtosend.indexOf(emotions[i]));
-            if (tmsg) {
-                text_obj = new webim.Msg.Elem.Text(tmsg);
-                msg.addText(text_obj);
-            }
-            emotionIndex = webim.EmotionDataIndexs[emotions[i]];
-            emotion = webim.Emotions[emotionIndex];
-            if (emotion) {
-                face_obj = new webim.Msg.Elem.Face(emotionIndex, emotions[i]);
-                msg.addFace(face_obj);
-            } else {
-                text_obj = new webim.Msg.Elem.Text(emotions[i]);
-                msg.addText(text_obj);
-            }
-            restMsgIndex = msgtosend.indexOf(emotions[i]) + emotions[i].length;
-            msgtosend = msgtosend.substring(restMsgIndex);
-        }
-        if (msgtosend) {
-            text_obj = new webim.Msg.Elem.Text(msgtosend);
-            msg.addText(text_obj);
-        }
     }
+
     webim.sendMsg(msg, function (resp) {
         if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
             showMsg(msg);
         }
-        webim.Log.info("发消息成功");
-        $("#send_msg_text").val('');
-
-        hideDiscussForm();//隐藏评论表单
-        showDiscussTool();//显示评论工具栏
-        hideDiscussEmotion();//隐藏表情
+        webim.Log.info('发消息成功');
+        callback(null, msg);
     }, function (err) {
-        webim.Log.error("发消息失败:" + err.ErrorInfo);
-        alert("发消息失败:" + err.ErrorInfo);
+        webim.Log.error('发消息失败:' + err.ErrorInfo);
+        callback(err.ErrorInfo);
     });
 }
 
@@ -645,7 +618,6 @@ function sendGroupLoveMsg() {
     //webim.GROUP_MSG_SUB_TYPE.TIP-提示消息(不支持发送，用于区分群消息子类型)，
     //webim.GROUP_MSG_SUB_TYPE.REDPACKET-红包消息，优先级最高
     var subType = webim.GROUP_MSG_SUB_TYPE.LOVEMSG;
-
     var msg = new webim.Msg(selSess, isSend, seq, random, msgTime, loginInfo.identifier, subType, loginInfo.identifierNick);
     var msgtosend = 'love_msg';
     var text_obj = new webim.Msg.Elem.Text(msgtosend);
@@ -671,7 +643,7 @@ function showDiscussForm() {
 }
 //隐藏评论工具栏
 function hideDiscussTool() {
-    $(".video-discuss-tool").hide();
+    //$(".video-discuss-tool").hide();
 }
 //显示评论工具栏
 function showDiscussTool() {
@@ -706,16 +678,16 @@ function showLoveMsgAnimation() {
 
 //初始化表情
 function initEmotionUL() {
-    for (var index in webim.Emotions) {
-        var emotions = $('<img>').attr({
-            "id": webim.Emotions[index][0],
-            "src": webim.Emotions[index][1],
-            "style": "cursor:pointer;"
-        }).click(function () {
-            selectEmotionImg(this);
-        });
-        $('<li>').append(emotions).appendTo($('#emotionUL'));
-    }
+    // for (var index in webim.Emotions) {
+    //     var emotions = $('<img>').attr({
+    //         "id": webim.Emotions[index][0],
+    //         "src": webim.Emotions[index][1],
+    //         "style": "cursor:pointer;"
+    //     }).click(function () {
+    //         selectEmotionImg(this);
+    //     });
+    //     $('<li>').append(emotions).appendTo($('#emotionUL'));
+    // }
 }
 
 //打开或显示表情
