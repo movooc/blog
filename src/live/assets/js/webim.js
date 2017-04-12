@@ -22,6 +22,46 @@ export const vSendMsg = (str, callback) => {
   }
 };
 
+//
+export const sendPic = (images,imgName) => {
+  var friendHeadUrl = 'img/friend.jpg';
+  // selSess
+  if (!selSess) {
+    selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl, Math.round(new Date().getTime() / 1000));
+  }
+  var msg = new webim.Msg(selSess, true, -1, -1, -1, loginInfo.identifier, 0, loginInfo.identifierNick);
+  var images_obj = new webim.Msg.Elem.Images(images.File_UUID);
+  for (var i in images.URL_INFO) {
+    var img = images.URL_INFO[i];
+    var newImg;
+    var type;
+    //
+    switch (img.PIC_TYPE) {
+        case 1://原图
+            type = 1;//原图
+            break;
+        case 2://小图（缩略图）
+            type = 3;//小图
+            break;
+        case 4://大图
+            type = 2;//大图
+            break;
+    }
+    newImg = new webim.Msg.Elem.Images.Image(type, img.PIC_Size, img.PIC_Width, img.PIC_Height, img.DownUrl);
+    images_obj.addImage(newImg);
+  }
+  msg.addImage(images_obj);
+  //调用发送图片消息接口
+  webim.sendMsg(msg, function (resp) {
+    if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
+        //addMsg(msg);
+    }
+    webim.Log.info('发消息成功');
+  }, function (err) {
+    alert(err.ErrorInfo);
+  });
+};
+
 // 发送并接收消息
 function sendMsgCallBack (msgtosend, callback) {
   // return new Promise(() => {
@@ -128,6 +168,7 @@ function assembleMsg(msg) {
     //会话类型为私聊时，子类型为：webim.C2C_MSG_SUB_TYPE
     assemble.subType = msg.getSubType();
     assemble.isSelfSend = msg.getIsSend();//消息是否为自己发的
+
     // 封装消息
     switch (assemble.subType) {
       //群普通消息
@@ -159,7 +200,8 @@ function convertMsg(msg) {
   var contents = "", elems, elem, type, content;
 
   elems = msg.getElems();//获取消息包含的元素数组
-
+    console.log(112233)
+    console.log(msg)
   for (var i in elems) {
     elem = elems[i];
     type = elem.getType();//获取元素类型

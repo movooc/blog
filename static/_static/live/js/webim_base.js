@@ -193,7 +193,7 @@ function showMsg(msg) {
 function convertMsgtoHtml(msg) {
   var html = "", elems, elem, type, content;
   elems = msg.getElems();//获取消息包含的元素数组
-  console.log(elems);
+
   for (var i in elems) {
     elem = elems[i];
     type = elem.getType();//获取元素类型
