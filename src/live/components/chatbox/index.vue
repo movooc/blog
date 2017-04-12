@@ -5,8 +5,17 @@
         <span class="iconfont icon-dot-more"></span>
       </button>
     </span>
-    <textarea v-model="msgVal" class="box-msg" placeholder="请输入文字..." @blur="v_blur"></textarea>
+    <div class="box-msg">
+      <textarea v-model="msgVal" placeholder="请输入文字..." @blur="v_blur"></textarea>
+      <span class="iconfont icon-hssiconsrecord"></span>
+    </div>
     <button class="box-send" @click="sendMsg">提交</button>
+    <ul class="more-choice">
+      <li>
+        <button>上传图片</button>
+      </li>
+      <li>2</li>
+    </ul>
   </div>
 </template>
 
@@ -30,10 +39,10 @@
     },
     methods: {
       sendMsg() {
-        vSendMsg(this.msgVal).then((err, data) => {
-          this.msgVal = '';
-        },(err, data) => {
-          console.log(err);
+        vSendMsg(this.msgVal, (err, data) => {
+          if(!err){
+              this.msgVal = '';
+          }
         });
       },
       isShow() {
