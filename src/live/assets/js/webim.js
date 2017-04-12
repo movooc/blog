@@ -17,16 +17,16 @@ export const vSendMsg = (str) => {
 };
 
 // @显示消息（群普通+点赞+提示+红包）
-// const showMsg = (msg) => {
-//   return new Promise((resolve, reject) => {
-//
-//   });
-// };
+const _showMsg = (msg) => {
+  return new Promise((resolve, reject) => {
+
+  });
+};
 
 function showMsg(msg) {
   var isSelfSend, fromAccount, fromAccountNick, sessType, subType;
   var ul, li, paneDiv, textDiv, nickNameSpan, contentSpan;
-debugger
+
   fromAccount = msg.getFromAccount();
   if (!fromAccount) {
     fromAccount = '';

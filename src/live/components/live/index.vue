@@ -163,7 +163,7 @@
  }
 
   //是否在浏览器控制台打印sdk日志
-  let isLogOn = true;
+  let isLogOn = false;
 
   //其他对象，选填
   window.options = {
