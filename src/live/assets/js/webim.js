@@ -3,7 +3,6 @@ import { trimStr } from '@lib/js/mUtils';
 //监听大群新消息（普通，点赞，提示，红包）
 export const vBigGroupMsgNotify = function(msgList) {
   for (var i = msgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
-
     var msg = msgList[i];
     webim.Log.warn('receive a new avchatroom group msg: ' + msg.getFromAccountNick());
     // 组装消息

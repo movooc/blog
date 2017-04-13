@@ -14,7 +14,9 @@
             <div class="live-sms">
                 <div class="speaker-name">{{ menuShow }}</div>
                 <div class="sms-content">
-                  <div class="content-text">养殖户大会后付款是否可好可好看是否可哈萨克发挥开发和客户发卡号是分开哈萨克的发挥</div>
+                  <div class="content-text">
+                    <audio autoplay="true" src="http://183.192.197.114/asn.com/stddownload_common_file?authkey=3043020101043c303a02010102010102040d08314a02037a1aff020472c5c0b7020472c5c0b702037a1dbb02043880337902044c803379020458f7911b020421ffa7150400&bid=10001&subbid=1400001692&fileid=304d0201000446304402010004013002037a1afd02041f16a3b4020458efa86c042531363136333837383132333131343330393638325fab8e6b4370dffcfcc1b5855bf948f1140201000201000400&filetype=2107&openid=@v_tls&ver=0&filename=4018834830"></audio>
+                  </div>
                 </div>
             </div>
         </li>
@@ -72,6 +74,9 @@
               <div class="content-text" v-text="con.text" v-if="con.type==msg.MSG_ELEMENT_TYPE.TEXT"></div>
               <div class="content-text" v-if="con.type==msg.MSG_ELEMENT_TYPE.FILE">
                 <a v-for="file in con.fileArr" href="">{{file.url}}</a>
+              </div>
+              <div class="content-text" v-if="con.type==msg.MSG_ELEMENT_TYPE.FILE">
+                <audio src=""></audio>
               </div>
               <div class="content-img" v-if="con.type==msg.MSG_ELEMENT_TYPE.IMAGE">
                 <a href="" v-for="img in con.imgArr"><img v-bind:src="img"></a>

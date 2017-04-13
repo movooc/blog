@@ -92,13 +92,13 @@
           return;
         }
 
-        var uploadFile = event.target;
-        var file = uploadFile.files[0];
+        var uploadFiles = event.target;
+        var file = uploadFiles.files[0];
         var fileSize = file.size;
         var el = this;
 
         //先检查图片类型和大小
-        if (!checkPic(uploadFile, fileSize)) {
+        if (!checkPic(uploadFiles, fileSize)) {
           return;
         }
 
@@ -130,8 +130,8 @@
           return;
         }
 
-        var uploadFile = event.target;
-        var file = uploadFile.files[0];
+        var uploadFiles = event.target;
+        var file = uploadFiles.files[0];
         var fileSize = file.size;
 
         //先检查图片类型和大小

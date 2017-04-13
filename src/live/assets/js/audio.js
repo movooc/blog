@@ -1,3 +1,4 @@
+import { uploadFile } from '@live/assets/js/webim';
 /*-----*/
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
@@ -22,8 +23,16 @@ function gotBuffers( buffers ) {
 }
 
 function doneEncoding( blob ) {
-  Recorder.setupDownload( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
+  var url = (window.URL || window.webkitURL).createObjectURL(blob);
+  var link = document.getElementById("save");
+  link.href = url;
+  link.download = "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" || 'output.wav';
   recIndex++;
+  // 开始上传
+  uploadFile(blob, (err, data) => {
+    if(err)alert(err.ErrorInfo);
+    console.log('上传成功!');
+  });
 }
 
 function gotStream(stream) {
@@ -50,12 +59,14 @@ function gotStream(stream) {
 export const toggleRecording = function( self ) {
   if (self.active) {
     // stop recording
+    self.active = false;
     audioRecorder.stop();
     audioRecorder.getBuffers( gotBuffers );
   } else {
     // start recording
     if (!audioRecorder)
       return;
+    self.active = true;
     audioRecorder.clear();
     audioRecorder.record();
   }
