@@ -1,15 +1,14 @@
-import Recorder from 'recorderjs';
-
+/*-----*/
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 var audioContext = new AudioContext();
 var audioInput = null,
   realAudioInput = null,
   inputPoint = null,
-  audioRecorder = null;
-var analyserNode = null;
-var zeroGain = null;
-var recIndex = 0;
+  audioRecorder = null,
+  analyserNode = null,
+  zeroGain = null,
+  recIndex = 0;
 
 /* TODO:
 
@@ -25,22 +24,6 @@ function gotBuffers( buffers ) {
 function doneEncoding( blob ) {
   Recorder.setupDownload( blob, "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" );
   recIndex++;
-}
-
-function toggleRecording( e ) {
-  if (e.classList.contains("recording")) {
-    // stop recording
-    audioRecorder.stop();
-    e.classList.remove("recording");
-    audioRecorder.getBuffers( gotBuffers );
-  } else {
-    // start recording
-    if (!audioRecorder)
-      return;
-    e.classList.add("recording");
-    audioRecorder.clear();
-    audioRecorder.record();
-  }
 }
 
 function gotStream(stream) {
@@ -61,7 +44,21 @@ function gotStream(stream) {
   zeroGain.gain.value = 0.0;
   inputPoint.connect( zeroGain );
   zeroGain.connect( audioContext.destination );
-  //updateAnalysers();
+}
+
+
+export const toggleRecording = function( self ) {
+  if (self.active) {
+    // stop recording
+    audioRecorder.stop();
+    audioRecorder.getBuffers( gotBuffers );
+  } else {
+    // start recording
+    if (!audioRecorder)
+      return;
+    audioRecorder.clear();
+    audioRecorder.record();
+  }
 }
 
 export const initAudio = function() {

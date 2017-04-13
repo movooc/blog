@@ -5,7 +5,7 @@ import App from './App';
 import router from './router';
 
 Vue.config.productionTip = false;
-console.log('aaaa1');
+console.log('teacher');
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

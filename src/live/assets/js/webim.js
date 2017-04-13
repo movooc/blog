@@ -1,8 +1,9 @@
-import { trimStr, checkPic } from '@lib/js/mUtils';
+import { trimStr } from '@lib/js/mUtils';
 
 //监听大群新消息（普通，点赞，提示，红包）
 export const vBigGroupMsgNotify = function(msgList) {
   for (var i = msgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
+
     var msg = msgList[i];
     webim.Log.warn('receive a new avchatroom group msg: ' + msg.getFromAccountNick());
     // 组装消息
@@ -23,9 +24,8 @@ export const vSendMsg = (str, callback) => {
 };
 
 // 上传图片
-export const uploadImage = (file, callback) => {
-  var uploadFiles = document.getElementById('upd_pic');
-  var file = uploadFiles.files[0];
+export const uploadImage = (uploadFiles, callback) => {
+  var file = uploadFiles;
   var businessType;//业务类型，1-发群图片，2-向好友发图片
   if (selType == webim.SESSION_TYPE.C2C) {//向好友发图片
     businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.C2C_MSG;
@@ -46,6 +46,39 @@ export const uploadImage = (file, callback) => {
     function (resp) {
       //上传成功发送图片
       sendPic(resp, file.name);
+      callback(null);
+    },
+    function (err) {
+      callback(err);
+    }
+  );
+};
+
+// 上传文件
+export const uploadFile = (uploadFiles, callback) => {
+  var file = uploadFiles;
+
+  var businessType;//业务类型，1-发群文件，2-向好友发文件
+  if (selType == webim.SESSION_TYPE.C2C) {//向好友发文件
+    businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.C2C_MSG;
+  } else if (selType == webim.SESSION_TYPE.GROUP) {//发群文件
+    businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.GROUP_MSG;
+  }
+
+  //封装上传图片请求
+  var opt = {
+    'file': file, //图片对象
+    //'onProgressCallBack': onProgressCallBack, //上传图片进度条回调函数
+    'To_Account': selToID, //接收者
+    'businessType': businessType, //业务类型
+    'fileType': webim.UPLOAD_RES_TYPE.FILE//表示上传文件
+  };
+
+  //上传图片
+  webim.uploadFile(opt,
+    function (resp) {
+      //上传成功发送文件
+      sendFile(resp,file.name);
       callback(null);
     },
     function (err) {
@@ -93,6 +126,35 @@ function sendPic(images, imgName) {
     alert(err.ErrorInfo);
   });
 };
+
+//发送文件消息
+function sendFile(file,fileName) {
+  var friendHeadUrl = 'img/friend.jpg';
+  if (!selSess) {
+    selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl, Math.round(new Date().getTime() / 1000));
+  }
+  var msg = new webim.Msg(selSess, true, -1, -1, -1, loginInfo.identifier, 0, loginInfo.identifierNick);
+  var uuid=file.File_UUID;//文件UUID
+  var fileSize=file.File_Size;//文件大小
+  var senderId=loginInfo.identifier;
+  var downloadFlag=file.Download_Flag;
+
+  if(!fileName){
+    var random=Math.round(Math.random() * 4294967296);
+    fileName=random.toString();
+  }
+  var fileObj=new webim.Msg.Elem.File(uuid,fileName, fileSize, senderId, selToID, downloadFlag, selType);
+  msg.addFile(fileObj);
+  //调用发送文件消息接口
+  webim.sendMsg(msg, function (resp) {
+    if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
+      addMsg(msg);
+    }
+    webim.Log.info('发消息成功');
+  }, function (err) {
+    alert(err.ErrorInfo);
+  });
+}
 
 // 发送并接收消息
 function sendMsgCallBack (msgtosend, callback) {
@@ -253,6 +315,7 @@ function convertMsg(msg) {
     contents[i] = {
       type: type,
       text: '',
+      audioSrc: '',
       imgArr: [],
       fileArr: [],
     };
@@ -260,16 +323,16 @@ function convertMsg(msg) {
     content = elem.getContent();//获取元素对象
     switch (type) {
       case webim.MSG_ELEMENT_TYPE.TEXT:
-        contents[i].text += convertTextMsg(content);
+        contents[i].text = convertTextMsg(content);
         break;
       case webim.MSG_ELEMENT_TYPE.FACE:
-        contents[i].text += convertFaceMsgToHtml(content);
+        contents[i].text = convertFaceMsgToHtml(content);
         break;
       case webim.MSG_ELEMENT_TYPE.IMAGE:
         contents[i].imgArr = contents[i].imgArr.concat(convertImageMsg(content));
         break;
       case webim.MSG_ELEMENT_TYPE.SOUND:
-        contents[i].text += convertSoundMsg(content);
+        contents[i].audioSrc = convertSoundMsg(content);
         break;
       case webim.MSG_ELEMENT_TYPE.FILE:
         contents[i].fileArr = contents[i].imgArr.concat(convertFileMsg(content));
@@ -278,10 +341,10 @@ function convertMsg(msg) {
         //html += convertLocationMsgToHtml(content);
         break;
       case webim.MSG_ELEMENT_TYPE.CUSTOM:
-        contents[i].text += convertCustomMsgToHtml(content);
+        contents[i].text = convertCustomMsgToHtml(content);
         break;
       case webim.MSG_ELEMENT_TYPE.GROUP_TIP:
-        contents[i].text += convertGroupTipMsgToHtml(content);
+        contents[i].text = convertGroupTipMsgToHtml(content);
         break;
       default:
         webim.Log.error('未知消息元素类型: elemType=' + type);
@@ -310,7 +373,7 @@ function convertImageMsg(content) {
   }
   return `${smallImage.getUrl()}#${bigImage.getUrl()}#${oriImage.getUrl()}`;
   // return "<img src='" + smallImage.getUrl() + "#" + bigImage.getUrl() + "#" + oriImage.getUrl() + "' style='CURSOR: hand' id='" + content.getImageId() + "' bigImgUrl='" + bigImage.getUrl() + "' onclick='imageClick(this)' />";
-}
+};
 
 //解析文件消息元素
 function convertFileMsg(content) {
