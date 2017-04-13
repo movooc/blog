@@ -1,4 +1,4 @@
-import { trimStr } from '@lib/js/mUtils';
+import { trimStr, checkPic } from '@lib/js/mUtils';
 
 //监听大群新消息（普通，点赞，提示，红包）
 export const vBigGroupMsgNotify = function(msgList) {
@@ -22,8 +22,40 @@ export const vSendMsg = (str, callback) => {
   }
 };
 
-//
-export const sendPic = (images,imgName) => {
+// 上传图片
+export const uploadImage = (file, callback) => {
+  var uploadFiles = document.getElementById('upd_pic');
+  var file = uploadFiles.files[0];
+  var businessType;//业务类型，1-发群图片，2-向好友发图片
+  if (selType == webim.SESSION_TYPE.C2C) {//向好友发图片
+    businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.C2C_MSG;
+  } else if (selType == webim.SESSION_TYPE.GROUP) {//发群图片
+    businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.GROUP_MSG;
+  }
+  //封装上传图片请求
+  var opt = {
+    'file': file, //图片对象
+    //'onProgressCallBack': onProgressCallBack, //上传图片进度条回调函数
+    //'abortButton': document.getElementById('upd_abort'), //停止上传图片按钮
+    'To_Account': selToID, //接收者
+    'businessType': businessType//业务类型
+  };
+
+  //上传图片
+  webim.uploadPic(opt,
+    function (resp) {
+      //上传成功发送图片
+      sendPic(resp, file.name);
+      callback(null);
+    },
+    function (err) {
+      callback(err);
+    }
+  );
+};
+
+// 发送图片
+function sendPic(images, imgName) {
   var friendHeadUrl = 'img/friend.jpg';
   // selSess
   if (!selSess) {
@@ -37,15 +69,15 @@ export const sendPic = (images,imgName) => {
     var type;
     //
     switch (img.PIC_TYPE) {
-        case 1://原图
-            type = 1;//原图
-            break;
-        case 2://小图（缩略图）
-            type = 3;//小图
-            break;
-        case 4://大图
-            type = 2;//大图
-            break;
+      case 1://原图
+        type = 1;//原图
+        break;
+      case 2://小图（缩略图）
+        type = 3;//小图
+        break;
+      case 4://大图
+        type = 2;//大图
+        break;
     }
     newImg = new webim.Msg.Elem.Images.Image(type, img.PIC_Size, img.PIC_Width, img.PIC_Height, img.DownUrl);
     images_obj.addImage(newImg);
@@ -54,7 +86,7 @@ export const sendPic = (images,imgName) => {
   //调用发送图片消息接口
   webim.sendMsg(msg, function (resp) {
     if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
-        //addMsg(msg);
+      //addMsg(msg);
     }
     webim.Log.info('发消息成功');
   }, function (err) {
@@ -151,8 +183,19 @@ function sendMsgCallBack (msgtosend, callback) {
 // 封装消息
 function assembleMsg(msg) {
     let assemble = {
+      MSG_ELEMENT_TYPE: {
+        'TEXT': 'TIMTextElem',//文本
+        'FACE': 'TIMFaceElem',//表情
+        'IMAGE': 'TIMImageElem',//图片
+        'CUSTOM': 'TIMCustomElem',//自定义
+        'SOUND': 'TIMSoundElem',//语音,只支持显示
+        'FILE': 'TIMFileElem',//文件,只支持显示
+        'LOCATION': 'TIMLocationElem',//地理位置
+        'GROUP_TIP': 'TIMGroupTipElem'//群提示消息,只支持显示
+      },
       nickname: '',
       account: '',
+      content: [],
     };
 
     // assign
@@ -177,60 +220,68 @@ function assembleMsg(msg) {
         break;
       //群红包消息
       case webim.GROUP_MSG_SUB_TYPE.REDPACKET:
-        assemble.content = `[群红包消息] ${convertMsg(msg)}`;
+        assemble.content = convertMsg(msg);
+        //assemble.content = `[群红包消息] ${convertMsg(msg)}`;
         break;
       //群点赞消息
       case webim.GROUP_MSG_SUB_TYPE.LOVEMSG:
         //业务自己可以增加逻辑，比如展示点赞动画效果
-        assemble.content = `[群点赞消息] ${convertMsg(msg)}`;
+        assemble.content = convertMsg(msg);
+        //assemble.content = `[群点赞消息] ${convertMsg(msg)}`;
         //展示点赞动画
         showLoveMsgAnimation();
         break;
       //群提示消息
       case webim.GROUP_MSG_SUB_TYPE.TIP:
-        assemble.content = `[群提示消息] ${convertMsg(msg)}`;
+        assemble.content = convertMsg(msg);
+        //assemble.content = `[群提示消息] ${convertMsg(msg)}`;
         break;
     }
 
-  return assemble;
+    return assemble;
 }
 
 // 获取消息内容
 function convertMsg(msg) {
-  var contents = "", elems, elem, type, content;
+  var contents = [], elems, elem, type, content;
 
   elems = msg.getElems();//获取消息包含的元素数组
-    console.log(112233)
-    console.log(msg)
+
   for (var i in elems) {
     elem = elems[i];
     type = elem.getType();//获取元素类型
-
+    contents[i] = {
+      type: type,
+      text: '',
+      imgArr: [],
+      fileArr: [],
+    };
+    //
     content = elem.getContent();//获取元素对象
     switch (type) {
       case webim.MSG_ELEMENT_TYPE.TEXT:
-        contents += convertTextMsg(content);
+        contents[i].text += convertTextMsg(content);
         break;
       case webim.MSG_ELEMENT_TYPE.FACE:
-        contents += convertFaceMsgToHtml(content);
+        contents[i].text += convertFaceMsgToHtml(content);
         break;
       case webim.MSG_ELEMENT_TYPE.IMAGE:
-        contents += convertImageMsgToHtml(content);
+        contents[i].imgArr = contents[i].imgArr.concat(convertImageMsg(content));
         break;
       case webim.MSG_ELEMENT_TYPE.SOUND:
-        contents += convertSoundMsg(content);
+        contents[i].text += convertSoundMsg(content);
         break;
       case webim.MSG_ELEMENT_TYPE.FILE:
-        contents += convertFileMsgToHtml(content);
+        contents[i].fileArr = contents[i].imgArr.concat(convertFileMsg(content));
         break;
       case webim.MSG_ELEMENT_TYPE.LOCATION://暂不支持地理位置
         //html += convertLocationMsgToHtml(content);
         break;
       case webim.MSG_ELEMENT_TYPE.CUSTOM:
-        contents += convertCustomMsgToHtml(content);
+        contents[i].text += convertCustomMsgToHtml(content);
         break;
       case webim.MSG_ELEMENT_TYPE.GROUP_TIP:
-        contents += convertGroupTipMsgToHtml(content);
+        contents[i].text += convertGroupTipMsgToHtml(content);
         break;
       default:
         webim.Log.error('未知消息元素类型: elemType=' + type);
@@ -245,6 +296,32 @@ function convertMsg(msg) {
 function convertTextMsg(content) {
   return content.getText();
 };
+
+//解析图片消息元素
+function convertImageMsg(content) {
+  var smallImage = content.getImage(webim.IMAGE_TYPE.SMALL);//小图
+  var bigImage = content.getImage(webim.IMAGE_TYPE.LARGE);//大图
+  var oriImage = content.getImage(webim.IMAGE_TYPE.ORIGIN);//原图
+  if (!bigImage) {
+    bigImage = smallImage;
+  }
+  if (!oriImage) {
+    oriImage = smallImage;
+  }
+  return `${smallImage.getUrl()}#${bigImage.getUrl()}#${oriImage.getUrl()}`;
+  // return "<img src='" + smallImage.getUrl() + "#" + bigImage.getUrl() + "#" + oriImage.getUrl() + "' style='CURSOR: hand' id='" + content.getImageId() + "' bigImgUrl='" + bigImage.getUrl() + "' onclick='imageClick(this)' />";
+}
+
+//解析文件消息元素
+function convertFileMsg(content) {
+  var fileSize = Math.round(content.getSize() / 1024);
+  return [{
+    url: content.getDownUrl(),
+    name: content.getName(),
+    size: fileSize,
+  }];
+  // return '<a href="' + content.getDownUrl() + '" title="点击下载文件" ><i class="glyphicon glyphicon-file">&nbsp;' + content.getName() + '(' + fileSize + 'KB)</i></a>';
+}
 
 //解析语音消息元素
 function convertSoundMsg(content) {

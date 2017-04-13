@@ -15,6 +15,7 @@
   "dependencies": {
     "fastclick": "^1.0.6",
     "moment": "^2.18.1",
+    "recorderjs": "^1.0.1",
     "vue": "^2.2.2",
     "vue-awesome-swiper": "^2.4.0",
     "vue-infinite-scroll": "^2.0.1",

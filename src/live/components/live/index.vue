@@ -67,8 +67,12 @@
           </div>
           <div class="live-sms">
             <div class="speaker-name" v-text="msg.account"></div>
-            <div class="sms-content">
-              <div class="content-text" v-text="msg.content">msg.content</div>
+            <div class="sms-content" v-for="con in msg.content">
+              <div class="content-text" v-text="con.text" v-if="con.type==msg.MSG_ELEMENT_TYPE.GROUP_TIP"></div>
+              <div class="content-text" v-text="con.text" v-if="con.type==msg.MSG_ELEMENT_TYPE.TEXT"></div>
+              <div class="content-img" v-if="con.type==msg.MSG_ELEMENT_TYPE.IMAGE">
+                <a href="" v-for="img in con.imgArr"><img v-bind:src="img"></a>
+              </div>
             </div>
           </div>
         </li>
