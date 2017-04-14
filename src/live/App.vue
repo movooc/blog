@@ -65,7 +65,7 @@
     &.is-header
       padding-top: 100px;
     &.is-pc
-      px2px(max-width, 750px);
+      max-width, 750px;
     .show
       transform: translateX(250px);
     .page-cover

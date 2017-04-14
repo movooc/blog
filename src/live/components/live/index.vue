@@ -43,7 +43,7 @@
             <div class="speaker-name">主讲人</div>
             <div class="sms-content w65per">
               <div class="content-audio" data-audio-src="">
-                    <span class="voice icon-dot1"></span>
+                <span class="voice icon-dot1"></span>
                 <span class="timer">53"</span>
               </div>
             </div>
@@ -75,8 +75,14 @@
               <div class="content-text" v-if="con.type==msg.MSG_ELEMENT_TYPE.FILE">
                 <a v-for="file in con.fileArr" href="">{{file.url}}</a>
               </div>
-              <div class="content-text" v-if="con.type==msg.MSG_ELEMENT_TYPE.FILE">
-                <audio src=""></audio>
+              <div class="content-text" v-if="con.type==msg.MSG_ELEMENT_TYPE.CUSTOM">
+                <div class="aa" v-for="cus in con.custom">
+                  <div class="content-audio" :data-audio-src="cus.type" v-if="cus.type == 'SOUND'">
+                    <!--<span class="voice icon-voice"></span>-->
+                    <!--<span class="timer">53"</span>-->
+                    <audio autoplay="true" v-bind:src="cus.src" controls></audio>
+                  </div>
+                </div>
               </div>
               <div class="content-img" v-if="con.type==msg.MSG_ELEMENT_TYPE.IMAGE">
                 <a href="" v-for="img in con.imgArr"><img v-bind:src="img"></a>
@@ -92,8 +98,6 @@
     <v-comment></v-comment>
     <!-- chatbox -->
     <v-chatbox></v-chatbox>
-    <!-- audio -->
-    <v-audio></v-audio>
   </div>
 </template>
 
@@ -101,7 +105,7 @@
   import {mapState} from 'vuex';
   import lHeader from './header.vue';
   import vPopular from './popular.vue';
-  import vAudio from './audio.vue';
+  //import vAudio from './audio.vue';
   import { vBigGroupMsgNotify } from '@live/assets/js/webim';
   import vComment from '@live/components/comment/index.vue';
   import vChatbox from '@live/components/chatbox/index.vue';
@@ -115,7 +119,7 @@
       vPopular,
       lHeader,
       vChatbox,
-      vAudio,
+      //vAudio,
     },
     data() {
       return {

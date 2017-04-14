@@ -1,4 +1,4 @@
-import { uploadFile } from '@live/assets/js/webim';
+import { uploadSound } from '@live/assets/js/webim';
 /*-----*/
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
@@ -29,7 +29,7 @@ function doneEncoding( blob ) {
   link.download = "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" || 'output.wav';
   recIndex++;
   // 开始上传
-  uploadFile(blob, (err, data) => {
+  uploadSound(blob, (err, data) => {
     if(err)alert(err.ErrorInfo);
     console.log('上传成功!');
   });
@@ -82,6 +82,7 @@ export const initAudio = function() {
 
   navigator.getUserMedia(
     {
+      //'audio': true,
       "audio": {
         "mandatory": {
           "googEchoCancellation": "false",

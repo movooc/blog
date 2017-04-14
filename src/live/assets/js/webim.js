@@ -77,7 +77,40 @@ export const uploadFile = (uploadFiles, callback) => {
   webim.uploadFile(opt,
     function (resp) {
       //上传成功发送文件
-      sendFile(resp,file.name);
+      sendFile(resp, file.name);
+      callback(null);
+    },
+    function (err) {
+      callback(err);
+    }
+  );
+};
+
+// 上传语音
+export const uploadSound = (uploadFiles, callback) => {
+  var file = uploadFiles;
+
+  var businessType;//业务类型，1-发群文件，2-向好友发文件
+  if (selType == webim.SESSION_TYPE.C2C) {//向好友发文件
+    businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.C2C_MSG;
+  } else if (selType == webim.SESSION_TYPE.GROUP) {//发群文件
+    businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.GROUP_MSG;
+  }
+
+  //封装上传图片请求
+  var opt = {
+    'file': file, //图片对象
+    //'onProgressCallBack': onProgressCallBack, //上传图片进度条回调函数
+    'To_Account': selToID, //接收者
+    'businessType': businessType, //业务类型
+    'fileType': webim.UPLOAD_RES_TYPE.FILE//表示上传文件
+  };
+
+  //上传图片
+  webim.uploadFile(opt,
+    function (resp) {
+      //上传成功发送文件
+      sendSound(resp, file.name);
       callback(null);
     },
     function (err) {
@@ -127,23 +160,56 @@ function sendPic(images, imgName) {
 };
 
 //发送文件消息
-function sendFile(file,fileName) {
+function sendFile(file, fileName) {
+  let identifier = loginInfo.identifier;
   var friendHeadUrl = 'img/friend.jpg';
   if (!selSess) {
     selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl, Math.round(new Date().getTime() / 1000));
   }
-  var msg = new webim.Msg(selSess, true, -1, -1, -1, loginInfo.identifier, 0, loginInfo.identifierNick);
+  var msg = new webim.Msg(selSess, true, -1, -1, -1, identifier, 0, loginInfo.identifierNick);
   var uuid=file.File_UUID;//文件UUID
   var fileSize=file.File_Size;//文件大小
-  var senderId=loginInfo.identifier;
+  var senderId=identifier;
   var downloadFlag=file.Download_Flag;
 
   if(!fileName){
     var random=Math.round(Math.random() * 4294967296);
     fileName=random.toString();
   }
-  var fileObj=new webim.Msg.Elem.File(uuid,fileName, fileSize, senderId, selToID, downloadFlag, selType);
+  var fileObj=new webim.Msg.Elem.File(uuid, fileName, fileSize, senderId, selToID, downloadFlag, selType);
   msg.addFile(fileObj);
+  //调用发送文件消息接口
+  webim.sendMsg(msg, function (resp) {
+    if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
+      addMsg(msg);
+    }
+    webim.Log.info('发消息成功');
+  }, function (err) {
+    alert(err.ErrorInfo);
+  });
+}
+
+//发送文件消息
+function sendSound(file, fileName) {
+  let identifier = loginInfo.identifier;
+  var friendHeadUrl = 'img/friend.jpg';
+  if (!selSess) {
+    selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl, Math.round(new Date().getTime() / 1000));
+  }
+  var msg = new webim.Msg(selSess, true, -1, -1, -1, identifier, 0, loginInfo.identifierNick);
+  var uuid=file.File_UUID;//文件UUID
+  var fileSize=file.File_Size;//文件大小
+  var senderId=identifier;
+  var downloadFlag=file.Download_Flag;
+
+  if(!fileName){
+    var random=Math.round(Math.random() * 4294967296);
+    fileName=random.toString();
+  }
+  var soundObj=new webim.Msg.Elem.File(uuid, fileName, fileSize, senderId, selToID, downloadFlag, selType);
+
+  // add file
+  msg.addCustom({data: soundObj.downUrl, desc: 'SOUND'});
   //调用发送文件消息接口
   webim.sendMsg(msg, function (resp) {
     if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
@@ -305,7 +371,6 @@ function assembleMsg(msg) {
 // 获取消息内容
 function convertMsg(msg) {
   var contents = [], elems, elem, type, content;
-
   elems = msg.getElems();//获取消息包含的元素数组
 
   for (var i in elems) {
@@ -317,6 +382,7 @@ function convertMsg(msg) {
       audioSrc: '',
       imgArr: [],
       fileArr: [],
+      custom: [],
     };
     //
     content = elem.getContent();//获取元素对象
@@ -340,7 +406,7 @@ function convertMsg(msg) {
         //html += convertLocationMsgToHtml(content);
         break;
       case webim.MSG_ELEMENT_TYPE.CUSTOM:
-        contents[i].text = convertCustomMsgToHtml(content);
+        contents[i].custom = convertCustomMsg(content);
         break;
       case webim.MSG_ELEMENT_TYPE.GROUP_TIP:
         contents[i].text = convertGroupTipMsgToHtml(content);
@@ -378,7 +444,7 @@ function convertImageMsg(content) {
 function convertFileMsg(content) {
   var fileSize = Math.round(content.getSize() / 1024);
   return [{
-    url: content.getDownUrl(),
+    url: content.getDownUrl().replace(/#.*&/, '&'),
     name: content.getName(),
     size: fileSize,
   }];
@@ -393,6 +459,20 @@ function convertSoundMsg(content) {
     return '[这是一条语音消息]demo暂不支持ie8(含)以下浏览器播放语音,语音URL:' + downUrl;
   }
   return '<audio src="' + downUrl + '" controls="controls" onplay="onChangePlayAudio(this)" preload="none"></audio>';
+};
+
+//解析自定义消息元素
+function convertCustomMsg(content) {
+  switch (content.desc) {
+    case 'SOUND':
+      return [{
+        type: 'SOUND',
+        src : content.data.replace(/#.*&/, '&'),
+      }]
+      break;
+    default:
+      break;
+  }
 };
 
 //切换播放audio对象
