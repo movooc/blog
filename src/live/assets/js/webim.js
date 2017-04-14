@@ -1,5 +1,11 @@
 import { trimStr } from '@lib/js/mUtils';
 
+//IE9(含)以下浏览器用到的jsonp回调函数
+export const jsonpCallback = (rspData) => {
+  //设置接口返回的数据
+  webim.setJsonpLastRspData(rspData);
+};
+
 //监听大群新消息（普通，点赞，提示，红包）
 export const vBigGroupMsgNotify = function(msgList) {
   for (var i = msgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
@@ -7,6 +13,16 @@ export const vBigGroupMsgNotify = function(msgList) {
     webim.Log.warn('receive a new avchatroom group msg: ' + msg.getFromAccountNick());
     // 组装消息
     this.$store.commit('UPDATE_MESSAGE', assembleMsg(msg));
+  }
+};
+
+//监听新消息(私聊(包括普通消息、全员推送消息)，普通群(非直播聊天室)消息)事件
+//newMsgList 为新消息数组，结构为[Msg]
+export const onMsgNotify = (newMsgList) => {
+  var newMsg;
+  for (var j in newMsgList) {//遍历新消息
+    newMsg = newMsgList[j];
+    handlderMsg(newMsg);//处理新消息
   }
 };
 
@@ -19,6 +35,52 @@ export const vSendMsg = (str, callback) => {
       //
       callback(err, msg);
     })
+  }
+};
+
+//处理消息（私聊(包括普通消息和全员推送消息)，普通群(非直播聊天室)消息）
+function handlderMsg(msg) {
+  var fromAccount, fromAccountNick, sessType, subType, contentHtml;
+
+  fromAccount = msg.getFromAccount();
+  if (!fromAccount) {
+    fromAccount = '';
+  }
+  fromAccountNick = msg.getFromAccountNick();
+  if (!fromAccountNick) {
+    fromAccountNick = fromAccount;
+  }
+
+  //解析消息
+  //获取会话类型
+  //webim.SESSION_TYPE.GROUP-群聊，
+  //webim.SESSION_TYPE.C2C-私聊，
+  sessType = msg.getSession().type();
+  //获取消息子类型
+  //会话类型为群聊时，子类型为：webim.GROUP_MSG_SUB_TYPE
+  //会话类型为私聊时，子类型为：webim.C2C_MSG_SUB_TYPE
+  subType = msg.getSubType();
+
+  switch (sessType) {
+    case webim.SESSION_TYPE.C2C://私聊消息
+      switch (subType) {
+        case webim.C2C_MSG_SUB_TYPE.COMMON://c2c普通消息
+          //业务可以根据发送者帐号fromAccount是否为app管理员帐号，来判断c2c消息是否为全员推送消息，还是普通好友消息
+          //或者业务在发送全员推送消息时，发送自定义类型(webim.MSG_ELEMENT_TYPE.CUSTOM,即TIMCustomElem)的消息，在里面增加一个字段来标识消息是否为推送消息
+          contentHtml = convertMsg(msg);
+          webim.Log.warn('receive a new c2c msg: fromAccountNick=' + fromAccountNick + ", content=" + contentHtml);
+          //c2c消息一定要调用已读上报接口
+          var opts = {
+            'To_Account': fromAccount,//好友帐号
+            'LastedMsgTime': msg.getTime()//消息时间戳
+          };
+          webim.c2CMsgReaded(opts);
+          alert('收到一条c2c消息(好友消息或者全员推送消息): 发送人=' + fromAccountNick + ", 内容=" + contentHtml);
+          break;
+      }
+      break;
+    case webim.SESSION_TYPE.GROUP://普通群消息，对于直播聊天室场景，不需要作处理
+      break;
   }
 };
 
@@ -409,7 +471,7 @@ function convertMsg(msg) {
         contents[i].custom = convertCustomMsg(content);
         break;
       case webim.MSG_ELEMENT_TYPE.GROUP_TIP:
-        contents[i].text = convertGroupTipMsgToHtml(content);
+        contents[i].text = convertGroupTipMsg(content);
         break;
       default:
         webim.Log.error('未知消息元素类型: elemType=' + type);
@@ -419,6 +481,137 @@ function convertMsg(msg) {
   // 返回
   return contents;
 };
+
+//解析群提示消息元素
+function convertGroupTipMsg(content) {
+  var WEB_IM_GROUP_TIP_MAX_USER_COUNT = 10;
+  var text = "";
+  var maxIndex = WEB_IM_GROUP_TIP_MAX_USER_COUNT - 1;
+  var opType, opUserId, userIdList;
+  var memberCount;
+  opType = content.getOpType();//群提示消息类型（操作类型）
+  opUserId = content.getOpUserId();//操作人id
+  switch (opType) {
+    case webim.GROUP_TIP_TYPE.JOIN://加入群
+      userIdList = content.getUserIdList();
+      //text += opUserId + "邀请了";
+      for (var m in userIdList) {
+        text += userIdList[m] + ",";
+        if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
+          text += "等" + userIdList.length + "人";
+          break;
+        }
+      }
+      text = text.substring(0, text.length - 1);
+      text += "进入房间";
+      //房间成员数加1
+      // memberCount = $('#user-icon-fans').html();
+      // $('#user-icon-fans').html(parseInt(memberCount) + 1);
+      break;
+    case webim.GROUP_TIP_TYPE.QUIT://退出群
+      text += opUserId + "离开房间";
+      //房间成员数减1
+      // memberCount = parseInt($('#user-icon-fans').html());
+      // if (memberCount > 0) {
+      //   $('#user-icon-fans').html(memberCount - 1);
+      // }
+      break;
+    case webim.GROUP_TIP_TYPE.KICK://踢出群
+      text += opUserId + "将";
+      userIdList = content.getUserIdList();
+      for (var m in userIdList) {
+        text += userIdList[m] + ",";
+        if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
+          text += "等" + userIdList.length + "人";
+          break;
+        }
+      }
+      text += "踢出该群";
+      break;
+    case webim.GROUP_TIP_TYPE.SET_ADMIN://设置管理员
+      text += opUserId + "将";
+      userIdList = content.getUserIdList();
+      for (var m in userIdList) {
+        text += userIdList[m] + ",";
+        if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
+          text += "等" + userIdList.length + "人";
+          break;
+        }
+      }
+      text += "设为管理员";
+      break;
+    case webim.GROUP_TIP_TYPE.CANCEL_ADMIN://取消管理员
+      text += opUserId + "取消";
+      userIdList = content.getUserIdList();
+      for (var m in userIdList) {
+        text += userIdList[m] + ",";
+        if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
+          text += "等" + userIdList.length + "人";
+          break;
+        }
+      }
+      text += "的管理员资格";
+      break;
+
+    case webim.GROUP_TIP_TYPE.MODIFY_GROUP_INFO://群资料变更
+      text += opUserId + "修改了群资料：";
+      var groupInfoList = content.getGroupInfoList();
+      var type, value;
+      for (var m in groupInfoList) {
+        type = groupInfoList[m].getType();
+        value = groupInfoList[m].getValue();
+        switch (type) {
+          case webim.GROUP_TIP_MODIFY_GROUP_INFO_TYPE.FACE_URL:
+            text += "群头像为" + value + "; ";
+            break;
+          case webim.GROUP_TIP_MODIFY_GROUP_INFO_TYPE.NAME:
+            text += "群名称为" + value + "; ";
+            break;
+          case webim.GROUP_TIP_MODIFY_GROUP_INFO_TYPE.OWNER:
+            text += "群主为" + value + "; ";
+            break;
+          case webim.GROUP_TIP_MODIFY_GROUP_INFO_TYPE.NOTIFICATION:
+            text += "群公告为" + value + "; ";
+            break;
+          case webim.GROUP_TIP_MODIFY_GROUP_INFO_TYPE.INTRODUCTION:
+            text += "群简介为" + value + "; ";
+            break;
+          default:
+            text += "未知信息为:type=" + type + ",value=" + value + "; ";
+            break;
+        }
+      }
+      break;
+
+    case webim.GROUP_TIP_TYPE.MODIFY_MEMBER_INFO://群成员资料变更(禁言时间)
+      text += opUserId + "修改了群成员资料:";
+      var memberInfoList = content.getMemberInfoList();
+      var userId, shutupTime;
+      for (var m in memberInfoList) {
+        userId = memberInfoList[m].getUserId();
+        shutupTime = memberInfoList[m].getShutupTime();
+        text += userId + ": ";
+        if (shutupTime != null && shutupTime !== undefined) {
+          if (shutupTime == 0) {
+            text += "取消禁言; ";
+          } else {
+            text += "禁言" + shutupTime + "秒; ";
+          }
+        } else {
+          text += " shutupTime为空";
+        }
+        if (memberInfoList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
+          text += "等" + memberInfoList.length + "人";
+          break;
+        }
+      }
+      break;
+    default:
+      text += "未知群提示消息类型：type=" + opType;
+      break;
+  }
+  return text;
+}
 
 //解析文本消息元素
 function convertTextMsg(content) {
@@ -443,8 +636,9 @@ function convertImageMsg(content) {
 //解析文件消息元素
 function convertFileMsg(content) {
   var fileSize = Math.round(content.getSize() / 1024);
+
   return [{
-    url: content.getDownUrl().replace(/#.*&/, '&'),
+    url: content.getDownUrl().replace(/#((?!&).)*/g, ''),
     name: content.getName(),
     size: fileSize,
   }];
@@ -467,7 +661,7 @@ function convertCustomMsg(content) {
     case 'SOUND':
       return [{
         type: 'SOUND',
-        src : content.data.replace(/#.*&/, '&'),
+        src : content.data.replace(/#((?!&).)*/g, ''),
       }]
       break;
     default:
@@ -485,5 +679,80 @@ function onChangePlayAudio(obj) {
     }
   } else {
     curPlayAudio = obj;//记录当前播放的语音
+  }
+};
+
+//sdk登录
+function sdkLogin() {
+  //web sdk 登录
+  webim.login(loginInfo, listeners, options,
+    function (identifierNick) {
+      //identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
+      webim.Log.info('webim登录成功');
+      applyJoinBigGroup(avChatRoomId);//加入大群
+    },
+    function (err) {
+      alert(err.ErrorInfo);
+    }
+  );//
+};
+
+//进入大群
+function applyJoinBigGroup(groupId) {
+  var options = {
+    'GroupId': groupId//群id
+  };
+  webim.applyJoinBigGroup(
+    options,
+    function (resp) {
+      //JoinedSuccess:加入成功; WaitAdminApproval:等待管理员审批
+      if (resp.JoinedStatus && resp.JoinedStatus == 'JoinedSuccess') {
+        webim.Log.info('进群成功');
+        selToID = groupId;
+      } else {
+        alert('进群失败');
+      }
+    },
+    function (err) {
+      alert(err.ErrorInfo);
+    }
+  );
+};
+
+//tls登录
+window.tlsLogin = () => {
+  //跳转到TLS登录页面
+  TLSHelper.goLogin({
+    sdkappid: loginInfo.sdkAppID,
+    acctype: loginInfo.accountType,
+    url: window.location.href
+  });
+};
+
+//第三方应用需要实现这个函数，并在这里拿到UserSig
+window.tlsGetUserSig = (res) => {
+  //成功拿到凭证
+  if (res.ErrorCode == webim.TLS_ERROR_CODE.OK) {
+    //从当前URL中获取参数为identifier的值
+    loginInfo.identifier = webim.Tool.getQueryString("identifier");
+    //拿到正式身份凭证
+    loginInfo.userSig = res.UserSig;
+    //从当前URL中获取参数为sdkappid的值
+    loginInfo.sdkAppID = loginInfo.appIDAt3rd = Number(webim.Tool.getQueryString("sdkappid"));
+    //从cookie获取accountType
+    var accountType = webim.Tool.getCookie('accountType');
+    if (accountType) {
+      loginInfo.accountType = accountType;
+      sdkLogin();//sdk登录
+    } else {
+      location.href = location.href.replace(/\?.*$/gi,"");
+    }
+  } else {
+    //签名过期，需要重新登录
+    if (res.ErrorCode == webim.TLS_ERROR_CODE.SIGNATURE_EXPIRATION) {
+      tlsLogin();
+    } else {
+      alert("[" + res.ErrorCode + "]" + res.ErrorInfo);
+    }
   }
 };

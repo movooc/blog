@@ -73,10 +73,10 @@
               <div class="content-text" v-text="con.text" v-if="con.type==msg.MSG_ELEMENT_TYPE.GROUP_TIP"></div>
               <div class="content-text" v-text="con.text" v-if="con.type==msg.MSG_ELEMENT_TYPE.TEXT"></div>
               <div class="content-text" v-if="con.type==msg.MSG_ELEMENT_TYPE.FILE">
-                <a v-for="file in con.fileArr" href="">{{file.url}}</a>
+                <a v-for="file in con.fileArr" :href="file.url" target="__blank">点击下载</a>
               </div>
               <div class="content-text" v-if="con.type==msg.MSG_ELEMENT_TYPE.CUSTOM">
-                <div class="aa" v-for="cus in con.custom">
+                <div class="custom" v-for="cus in con.custom">
                   <div class="content-audio" :data-audio-src="cus.type" v-if="cus.type == 'SOUND'">
                     <!--<span class="voice icon-voice"></span>-->
                     <!--<span class="timer">53"</span>-->
@@ -106,7 +106,8 @@
   import lHeader from './header.vue';
   import vPopular from './popular.vue';
   //import vAudio from './audio.vue';
-  import { vBigGroupMsgNotify } from '@live/assets/js/webim';
+  import { vBigGroupMsgNotify, jsonpCallback, onMsgNotify } from '@live/assets/js/webim';
+  import { onDestoryGroupNotify, onRevokeGroupNotify, onCustomGroupNotify, onGroupInfoChangeNotify } from '@live/assets/js/webim_group_notice';
   import vComment from '@live/components/comment/index.vue';
   import vChatbox from '@live/components/chatbox/index.vue';
 
