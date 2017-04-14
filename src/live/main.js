@@ -10,6 +10,7 @@ import routes from './router';
 import infiniteScroll from 'vue-infinite-scroll';  // 引入滑动模块
 import '@lib/js/rem';
 import '@lib/css/font.styl';
+import '@lib/css/audio.css';
 import 'normalize.css';
 
 /*

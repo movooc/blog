@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="{'is-header':isHeader,'is-pc':isPC}">
+  <div class="app" :class="{'is-header':isHeader,'is-pcs':isPC}">
     <v-header v-if="isHeader"></v-header>
     <v-loading :show="loadingShow"></v-loading>
     <router-view></router-view>
@@ -65,7 +65,7 @@
     &.is-header
       padding-top: 100px;
     &.is-pc
-      max-width, 750px;
+      px2px(max-width, 750px);
     .show
       transform: translateX(250px);
     .page-cover

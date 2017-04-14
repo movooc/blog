@@ -29,7 +29,6 @@
 
       //第三方应用需要实现这个函数，并在这里拿到UserSig
       function tlsGetUserSig(res) {
-          debugger
         //成功拿到凭证
         if (res.ErrorCode == webim.TLS_ERROR_CODE.OK) {
           //从当前URL中获取参数为identifier的值
@@ -56,24 +55,10 @@
         }
       };
 
-      //sdk登录
-      function sdkLogin() {
-        //web sdk 登录
-        webim.login(loginInfo, listeners, options,
-          function (identifierNick) {
-            //identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
-            webim.Log.info('webim登录成功');
-            applyJoinBigGroup(avChatRoomId);//加入大群
-          },
-          function (err) {
-            alert(err.ErrorInfo);
-          }
-        );//
-      };
-
     </script>
+    <!--audiojs-->
+    <script type="text/javascript" src="static/_static/live/js/audiojs/audio.min.js"></script>
     <!--recorderjs-->
-    <!--<script type="text/javascript" src="static/_static/live/js/recorderjs/recorderWorker.js"></script>-->
     <script type="text/javascript" src="static/_static/live/js/recorderjs/recorder.js"></script>
     <!-- built files will be auto injected -->
   </body>

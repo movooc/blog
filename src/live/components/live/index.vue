@@ -80,7 +80,7 @@
                   <div class="content-audio" :data-audio-src="cus.type" v-if="cus.type == 'SOUND'">
                     <!--<span class="voice icon-voice"></span>-->
                     <!--<span class="timer">53"</span>-->
-                    <audio autoplay="true" v-bind:src="cus.src" controls></audio>
+                    <audio :id="cus.id" autoplay="true" v-bind:src="cus.src" controls></audio>
                   </div>
                 </div>
               </div>
@@ -106,7 +106,7 @@
   import lHeader from './header.vue';
   import vPopular from './popular.vue';
   //import vAudio from './audio.vue';
-  import { vBigGroupMsgNotify, jsonpCallback, onMsgNotify } from '@live/assets/js/webim';
+  import { vBigGroupMsgNotify, jsonpCallback, onMsgNotify, exportSdkLogin } from '@live/assets/js/webim';
   import { onDestoryGroupNotify, onRevokeGroupNotify, onCustomGroupNotify, onGroupInfoChangeNotify } from '@live/assets/js/webim_group_notice';
   import vComment from '@live/components/comment/index.vue';
   import vChatbox from '@live/components/chatbox/index.vue';
@@ -259,12 +259,12 @@
       } else {
         //未登录,无登录态模式
         //sdk登录
-        sdkLogin();
+        exportSdkLogin();
       }
     } else {
       //独立模式
       //sdk登录
-      sdkLogin();
+      exportSdkLogin();
     }
   }
 
