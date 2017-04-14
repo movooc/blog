@@ -453,7 +453,7 @@ function convertMsg(msg) {
         contents[i].text = convertTextMsg(content);
         break;
       case webim.MSG_ELEMENT_TYPE.FACE:
-        contents[i].text = convertFaceMsgToHtml(content);
+        contents[i].text = convertFaceMsg(content);
         break;
       case webim.MSG_ELEMENT_TYPE.IMAGE:
         contents[i].imgArr = contents[i].imgArr.concat(convertImageMsg(content));
@@ -480,6 +480,23 @@ function convertMsg(msg) {
   }
   // 返回
   return contents;
+};
+
+//解析表情消息元素
+function convertFaceMsg(content) {
+  var faceUrl = null;
+  var data = content.getData();
+  var index = webim.EmotionDataIndexs[data];
+
+  var emotion = webim.Emotions[index];
+  if (emotion && emotion[1]) {
+    faceUrl = emotion[1];
+  }
+  if (faceUrl) {
+    return faceUrl;
+  } else {
+    return data;
+  }
 };
 
 //解析群提示消息元素
@@ -611,7 +628,7 @@ function convertGroupTipMsg(content) {
       break;
   }
   return text;
-}
+};
 
 //解析文本消息元素
 function convertTextMsg(content) {
@@ -682,21 +699,6 @@ function onChangePlayAudio(obj) {
   }
 };
 
-//sdk登录
-function sdkLogin() {
-  //web sdk 登录
-  webim.login(loginInfo, listeners, options,
-    function (identifierNick) {
-      //identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
-      webim.Log.info('webim登录成功');
-      applyJoinBigGroup(avChatRoomId);//加入大群
-    },
-    function (err) {
-      alert(err.ErrorInfo);
-    }
-  );//
-};
-
 //进入大群
 function applyJoinBigGroup(groupId) {
   var options = {
@@ -730,7 +732,7 @@ window.tlsLogin = () => {
 };
 
 //第三方应用需要实现这个函数，并在这里拿到UserSig
-window.tlsGetUserSig = (res) => {
+window.tlsGetUserSig = function(res) {
   //成功拿到凭证
   if (res.ErrorCode == webim.TLS_ERROR_CODE.OK) {
     //从当前URL中获取参数为identifier的值
@@ -755,4 +757,19 @@ window.tlsGetUserSig = (res) => {
       alert("[" + res.ErrorCode + "]" + res.ErrorInfo);
     }
   }
+};
+
+//sdk登录
+window.sdkLogin = () => {
+  //web sdk 登录
+  webim.login(loginInfo, listeners, options,
+    function (identifierNick) {
+      //identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
+      webim.Log.info('webim登录成功');
+      applyJoinBigGroup(avChatRoomId);//加入大群
+    },
+    function (err) {
+      alert(err.ErrorInfo);
+    }
+  );//
 };

@@ -25,7 +25,7 @@ let webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('[id].[chunkhash].js')
+    chunkFilename: utils.assetsPath('live.[id].[chunkhash].js')
   },
   plugins: [
     new CleanWebpackPlugin(['./dist'], {
