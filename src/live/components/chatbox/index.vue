@@ -7,15 +7,13 @@
     </span>
     <div class="box-msg">
       <textarea v-model="msgVal" placeholder="请输入文字..." @blur="v_blur"></textarea>
-      <v-audio class="reorder"></v-audio>
+      <v-recorder class="reorder"></v-recorder>
     </div>
     <button class="box-send" @click="sendMsg">提交</button>
-    <ul class="more-choice" v-if="moduleShow">
-      <li>
-        <button @click="showImage">上传图片</button>
-        <button @click="showFile">上传文件</button>
-      </li>
-    </ul>
+    <div class="more-choice" v-if="moduleShow">
+      <button @click="showImage">上传图片</button>
+      <button @click="showFile">上传文件</button>
+    </div>
     <!-- 遮罩层 -->
     <div class="modal-dialog" v-if="imgShow">
       <div class="modal-header">发送图片</div>
@@ -24,7 +22,8 @@
           <span>选择</span>
           <input id="upd_pic" type="file" @change="imgOnChange" />
           <img v-if="imgInfo.show" v-bind:src="imgInfo.src" style="width:30%" />
-          <button class="upload" @click="startUploadImg">开始上传</button>
+          <button class="upload" @click="startUploadImg">开始发送</button>
+          <button class="upload" @click="cancleUploadImg">取消发送</button>
         </div>
       </div>
     </div>
@@ -34,8 +33,8 @@
         <div class="">
           <span>选择</span>
           <input id="upd_file" type="file" @change="fileOnChange" />
-          <img v-if="imgInfo.show" v-bind:src="imgInfo.src" style="width:30%" />
-          <button class="upload" @click="startUploadFile">开始上传</button>
+          <button class="upload" @click="startUploadFile">开始发送</button>
+          <button class="upload" @click="cancleUploadFile">取消发送</button>
         </div>
       </div>
     </div>
@@ -46,13 +45,13 @@
   import { mapState } from 'vuex';
   import { vSendMsg, uploadImage, uploadFile } from '@live/assets/js/webim';
   import { checkPic, checkFile } from '@lib/js/mUtils';
-  import vAudio from '@live/components/audio/index.vue';
+  import vRecorder from '@live/components/recorder/index.vue';
 
   export default
   {
     name: 'v-chatbox',
     components: {
-      vAudio
+      vRecorder
     },
     data() {
       return {
@@ -124,6 +123,11 @@
           this.moduleShow = false;
         });
       },
+      cancleUploadImg() {
+        this.imgShow = false;
+        this.moduleShow = false;
+        this.imgInfo.show = false;
+      },
       fileOnChange(event) {
         if (!window.File || !window.FileList || !window.FileReader) {
           alert("您的浏览器不支持File Api");
@@ -148,6 +152,10 @@
           this.fileShow = false;
           this.moduleShow = false;
         });
+      },
+      cancleUploadFile() {
+        this.fileShow = false;
+        this.moduleShow = false;
       },
     },
   };

@@ -1,5 +1,14 @@
 // A cross-browser javascript shim for html5 audio
-(function(audiojs, audiojsInstance, container) {
+(function(root, factory){
+	if (typeof define === 'function' && define.cmd) {
+		define(factory);
+	}
+	else {
+		root.audiojs = factory();
+	}
+}(this, function(require, exports, module) {
+
+  var container = {}, audiojsInstance = "audiojsInstance", audiojs = "audiojs";
   // Use the path to the audio.js file to create relative paths to the swf and player graphics
   // Remember that some systems (e.g. ruby on rails) append strings like '?1301478336' to asset paths
   var path = (function() {
@@ -7,27 +16,20 @@
         scripts = document.getElementsByTagName('script');
     for (var i = 0, ii = scripts.length; i < ii; i++) {
       var path = scripts[i].getAttribute('src');
-      if(re.test(path))
-      {
-        var f = path.split ( '/' );
-        f.pop ();
-        return f.join ( '/' ) + '/';
-      }
+      if(re.test(path)) return path.replace(re, '');
     }
-    // when no script found, an empty string causes the least confusion.
-    return '';
   })();
-
+  
   // ##The audiojs interface
   // This is the global object which provides an interface for creating new `audiojs` instances.
   // It also stores all of the construction helper methods and variables.
   container[audiojs] = {
     instanceCount: 0,
     instances: {},
-    // The markup for the swf. It is injected into the page if there is not support for the `<audio>` element. The `$n`s are placeholders.
-    // `$1` The name of the flash movie
-    // `$2` The path to the swf
-    // `$3` Cache invalidation
+    // The markup for the swf. It is injected into the page if there is not support for the `<audio>` element. The `$n`s are placeholders.  
+    // `$1` The name of the flash movie  
+    // `$2` The path to the swf  
+    // `$3` Cache invalidation  
     flashSource: '\
       <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="$1" width="1" height="1" name="$1" style="position: absolute; left: -1px;"> \
         <param name="movie" value="$2?playerInstance='+audiojs+'.instances[\'$1\']&datetime=$3"> \
@@ -42,7 +44,6 @@
       loop: false,
       preload: true,
       imageLocation: path + 'player-graphics.gif',
-      retinaImageLocation: path + 'player-graphics@2x.gif',
       swfLocation: path + 'audiojs.swf',
       useFlash: (function() {
         var a = document.createElement('audio');
@@ -121,20 +122,6 @@
         .audiojs .error { background: url("$1") -2px -61px no-repeat; } \
         .audiojs .pause { background: url("$1") -2px -91px no-repeat; } \
         \
-        @media only screen and (-webkit-min-device-pixel-ratio: 2), \
-          only screen and (min--moz-device-pixel-ratio: 2), \
-          only screen and (min-moz-device-pixel-ratio: 2), \
-          only screen and (-o-min-device-pixel-ratio: 2/1), \
-          only screen and (min-device-pixel-ratio: 2) { \
-            .audiojs .play, .audiojs .loading, .audiojs .error, .audiojs .pause { \
-              background-image: url("$2"); \
-              -webkit-background-size: 30px 120px; \
-              -moz-background-size: 30px 120px; \
-              -o-background-size: 30px 120px; \
-              background-size: 30px 120px; \
-            } \
-        } \
-        \
         .playing .play, .playing .loading, .playing .error { display: none; } \
         .playing .pause { display: block; } \
         \
@@ -178,7 +165,7 @@
       loadProgress: function(percent) {
         var player = this.settings.createPlayer,
             loaded = getByClass(player.loaderClass, this.wrapper);
-        loaded.style.width = Math.round(100 * percent) + '%';
+        loaded.style.width = (100 * percent) + '%';
       },
       playPause: function() {
         if (this.playing) this.settings.play();
@@ -186,7 +173,6 @@
       },
       play: function() {
         var player = this.settings.createPlayer;
-        container[audiojs].helpers.removeClass(this.wrapper, player.errorClass);
         container[audiojs].helpers.addClass(this.wrapper, player.playingClass);
       },
       pause: function() {
@@ -196,7 +182,7 @@
       updatePlayhead: function(percent) {
         var player = this.settings.createPlayer,
             progress = getByClass(player.progressClass, this.wrapper);
-        progress.style.width = Math.round(100 * percent) + '%';
+        progress.style.width = (100 * percent) + '%';
 
         var played = getByClass(player.playedClass, this.wrapper),
             p = this.duration * percent,
@@ -208,10 +194,10 @@
 
     // ### Contructor functions
 
-    // `create()`
-    // Used to create a single `audiojs` instance.
-    // If an array is passed then it calls back to `createAll()`.
-    // Otherwise, it creates a single instance and returns it.
+    // `create()`  
+    // Used to create a single `audiojs` instance.  
+    // If an array is passed then it calls back to `createAll()`.  
+    // Otherwise, it creates a single instance and returns it.  
     create: function(element, options) {
       var options = options || {}
       if (element.length) {
@@ -221,18 +207,14 @@
       }
     },
 
-    // `createAll()`
-    // Creates multiple `audiojs` instances.
+    // `createAll()`  
+    // Creates multiple `audiojs` instances.  
     // If `elements` is `null`, then automatically find any `<audio>` tags on the page and create `audiojs` instances for them.
     createAll: function(options, elements) {
       var audioElements = elements || document.getElementsByTagName('audio'),
           instances = []
           options = options || {};
       for (var i = 0, ii = audioElements.length; i < ii; i++) {
-
-        if ((" " + audioElements[i].parentNode.className + " ").replace(/[\n\t]/g, " ").indexOf(" audiojs ") > -1)
-          continue;
-
         instances.push(this.newInstance(audioElements[i], options));
       }
       return instances;
@@ -269,7 +251,7 @@
         this.injectFlash(audio, id);
         this.attachFlashEvents(audio.wrapper, audio);
       } else if (s.useFlash && !s.hasFlash) {
-        s.flashError.apply(audio);
+        this.settings.flashError.apply(audio);
       }
 
       // Attach event callbacks to the new audiojs instance.
@@ -309,14 +291,21 @@
       if (!audio.settings.createPlayer) return;
       var player = audio.settings.createPlayer,
           playPause = getByClass(player.playPauseClass, wrapper),
-          scrubber = getByClass(player.scrubberClass, wrapper);
+          scrubber = getByClass(player.scrubberClass, wrapper),
+          leftPos = function(elem) {
+            var curleft = 0;
+            if (elem.offsetParent) {
+              do { curleft += elem.offsetLeft; } while (elem = elem.offsetParent);
+            }
+            return curleft;
+          };
 
       container[audiojs].events.addListener(playPause, 'click', function(e) {
         audio.playPause.apply(audio);
       });
 
       container[audiojs].events.addListener(scrubber, 'click', function(e) {
-        var relativeLeft = e.clientX - this.getBoundingClientRect().left;
+        var relativeLeft = e.clientX - leftPos(this);
         audio.skipTo(relativeLeft / scrubber.offsetWidth);
       });
 
@@ -366,14 +355,14 @@
         audio.settings.updatePlayhead.apply(audio, [percent]);
       }
       audio['play'] = function() {
-        // If the audio hasn't started preloading, then start it now.
+        // If the audio hasn't started preloading, then start it now.  
         // Then set `preload` to `true`, so that any tracks loaded in subsequently are loaded straight away.
         if (!audio.settings.preload) {
           audio.settings.preload = true;
           audio.element.init(audio.mp3);
         }
         audio.playing = true;
-        // IE doesn't allow a method named `play()` to be exposed through `ExternalInterface`, so lets go with `pplay()`.
+        // IE doesn't allow a method named `play()` to be exposed through `ExternalInterface`, so lets go with `pplay()`.  
         // <http://dev.nuclearrooster.com/2008/07/27/externalinterfaceaddcallback-can-cause-ie-js-errors-with-certain-keyworkds/>
         audio.element.pplay();
         audio.settings.play.apply(audio);
@@ -412,7 +401,7 @@
 
     // ## Helper functions
     helpers: {
-      // **Merge two objects, with `obj2` overwriting `obj1`**
+      // **Merge two objects, with `obj2` overwriting `obj1`**  
       // The merge is shallow, but that's all that is required for our purposes.
       merge: function(obj1, obj2) {
         for (attr in obj2) {
@@ -438,7 +427,7 @@
         var re = new RegExp('(\\s|^)'+className+'(\\s|$)');
         element.className = element.className.replace(re,' ');
       },
-      // **Dynamic CSS injection**
+      // **Dynamic CSS injection**  
       // Takes a string of css, inserts it into a `<style>`, then injects it in at the very top of the `<head>`. This ensures any user-defined styles will take precedence.
       injectCss: function(audio, string) {
 
@@ -446,7 +435,6 @@
         var prepend = '',
             styles = document.getElementsByTagName('style'),
             css = string.replace(/\$1/g, audio.settings.imageLocation);
-            css = css.replace(/\$2/g, audio.settings.retinaImageLocation);
 
         for (var i = 0, ii = styles.length; i < ii; i++) {
           var title = styles[i].getAttribute('title');
@@ -471,9 +459,9 @@
         else style.appendChild(document.createTextNode(prepend + css));
 
         if (firstchild) head.insertBefore(style, firstchild);
-        else head.appendChild(style);
+        else head.appendChild(styleElement);
       },
-      // **Handle all the IE6+7 requirements for cloning `<audio>` nodes**
+      // **Handle all the IE6+7 requirements for cloning `<audio>` nodes**  
       // Create a html5-safe document fragment by injecting an `<audio>` element into the document fragment.
       cloneHtml5Node: function(audioTag) {
         var fragment = document.createDocumentFragment(),
@@ -499,7 +487,7 @@
         // For modern browsers use the standard DOM-compliant `addEventListener`.
         if (element.addEventListener) {
           element.addEventListener(eventName, func, false);
-          // For older versions of Internet Explorer, use `attachEvent`.
+          // For older versions of Internet Explorer, use `attachEvent`.  
           // Also provide a fix for scoping `this` to the calling element and register each listener so the containing elements can be purged on page unload.
         } else if (element.attachEvent) {
           this.listeners.push(element);
@@ -548,8 +536,8 @@
         audio.loadTimer = loadTimer;
       },
 
-      // **Douglas Crockford's IE6 memory leak fix**
-      // <http://javascript.crockford.com/memory/leak.html>
+      // **Douglas Crockford's IE6 memory leak fix**  
+      // <http://javascript.crockford.com/memory/leak.html>  
       // This is used to release the memory leak created by the circular references created when fixing `this` scoping for IE. It is called on page unload.
       purge: function(d) {
         var a = d.attributes, i;
@@ -564,7 +552,7 @@
         }
       },
 
-      // **DOMready function**
+      // **DOMready function**  
       // As seen here: <https://github.com/dperini/ContentLoaded/>.
       ready: (function() { return function(fn) {
         var win = window, done = false, top = true,
@@ -670,7 +658,7 @@
       var ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
       // On iOS this interaction will trigger loading the mp3, so run `init()`.
       if (ios && this.element.readyState == 0) this.init.apply(this);
-      // If the audio hasn't started preloading, then start it now.
+      // If the audio hasn't started preloading, then start it now.  
       // Then set `preload` to `true`, so that any tracks loaded in subsequently are loaded straight away.
       if (!this.settings.preload) {
         this.settings.preload = true;
@@ -696,7 +684,7 @@
     }
   }
 
-  // **getElementsByClassName**
+  // **getElementsByClassName**  
   // Having to rely on `getElementsByTagName` is pretty inflexible internally, so a modified version of Dustin Diaz's `getElementsByClassName` has been included.
   // This version cleans things up and prefers the native DOM method if it's available.
   var getByClass = function(searchClass, node) {
@@ -706,7 +694,7 @@
     if (node.getElementsByClassName) {
       matches = node.getElementsByClassName(searchClass);
     } else {
-      var i, l,
+      var i, l, 
           els = node.getElementsByTagName("*"),
           pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
 
@@ -719,4 +707,5 @@
     return matches.length > 1 ? matches : matches[0];
   };
 // The global variable names are passed in here and can be changed if they conflict with anything else.
-})('audiojs', 'audiojsInstance', this);
+  return container[audiojs];
+}));

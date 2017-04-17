@@ -12,19 +12,6 @@
               <img src="~@live/assets/img/user-img.png" width="45px">
             </div>
             <div class="live-sms">
-                <div class="speaker-name">{{ menuShow }}</div>
-                <div class="sms-content">
-                  <div class="content-text">
-                    <audio autoplay="true" src="http://183.192.197.114/asn.com/stddownload_common_file?authkey=3043020101043c303a02010102010102040d08314a02037a1aff020472c5c0b7020472c5c0b702037a1dbb02043880337902044c803379020458f7911b020421ffa7150400&bid=10001&subbid=1400001692&fileid=304d0201000446304402010004013002037a1afd02041f16a3b4020458efa86c042531363136333837383132333131343330393638325fab8e6b4370dffcfcc1b5855bf948f1140201000201000400&filetype=2107&openid=@v_tls&ver=0&filename=4018834830"></audio>
-                  </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="user-img">
-              <img src="~@live/assets/img/user-img.png" width="45px">
-            </div>
-            <div class="live-sms">
                 <div class="speaker-name">主讲人</div>
                 <div class="sms-content">
                   <div class="content-img">
@@ -35,34 +22,34 @@
                 </div>
             </div>
         </li>
-        <li>
-          <div class="user-img">
-            <img src="~@live/assets/img/user-img.png" width="45px">
-          </div>
-          <div class="live-sms">
-            <div class="speaker-name">主讲人</div>
-            <div class="sms-content w65per">
-              <div class="content-audio" data-audio-src="">
-                <span class="voice icon-dot1"></span>
-                <span class="timer">53"</span>
-              </div>
-            </div>
-          </div>
-        </li>
-        <li>
-            <div class="user-img">
-              <img src="~@live/assets/img/user-img.png" width="45px">
-            </div>
-            <div class="live-sms">
-                <div class="speaker-name">主讲人</div>
-                <div class="sms-content w65per">
-                  <div class="content-audio" data-audio-src="">
-                    <span class="voice icon-voice"></span>
-                    <span class="timer">53"</span>
-                  </div>
-                </div>
-            </div>
-        </li>
+        <!--<li>-->
+          <!--<div class="user-img">-->
+            <!--<img src="~@live/assets/img/user-img.png" width="45px">-->
+          <!--</div>-->
+          <!--<div class="live-sms">-->
+            <!--<div class="speaker-name">主讲人</div>-->
+            <!--<div class="sms-content w65per">-->
+              <!--<div class="content-audio" data-audio-src="">-->
+                <!--<span class="voice icon-dot1"></span>-->
+                <!--<span class="timer">53"</span>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<div class="user-img">-->
+              <!--<img src="~@live/assets/img/user-img.png" width="45px">-->
+            <!--</div>-->
+            <!--<div class="live-sms">-->
+                <!--<div class="speaker-name">主讲人</div>-->
+                <!--<div class="sms-content w65per">-->
+                  <!--<div class="content-audio" data-audio-src="">-->
+                    <!--<span class="voice icon-voice"></span>-->
+                    <!--<span class="timer">53"</span>-->
+                  <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</li>-->
         <li v-for="msg in messageInfo">
           <div class="user-img">
             <img src="~@live/assets/img/user-img.png" width="45px">
@@ -78,9 +65,7 @@
               <div class="content-text" v-if="con.type==msg.MSG_ELEMENT_TYPE.CUSTOM">
                 <div class="custom" v-for="cus in con.custom">
                   <div class="content-audio" :data-audio-src="cus.type" v-if="cus.type == 'SOUND'">
-                    <!--<span class="voice icon-voice"></span>-->
-                    <!--<span class="timer">53"</span>-->
-                    <audio :id="cus.id" autoplay="true" v-bind:src="cus.src" controls></audio>
+                    <v-audio :id="cus.id" :src="cus.src"></v-audio>
                   </div>
                 </div>
               </div>
@@ -103,13 +88,13 @@
 
 <script>
   import {mapState} from 'vuex';
-  import lHeader from './header.vue';
-  import vPopular from './popular.vue';
-  //import vAudio from './audio.vue';
   import { vBigGroupMsgNotify, jsonpCallback, onMsgNotify, exportSdkLogin } from '@live/assets/js/webim';
   import { onDestoryGroupNotify, onRevokeGroupNotify, onCustomGroupNotify, onGroupInfoChangeNotify } from '@live/assets/js/webim_group_notice';
+  import lHeader from './header.vue';
+  import vPopular from './popular.vue';
   import vComment from '@live/components/comment/index.vue';
   import vChatbox from '@live/components/chatbox/index.vue';
+  import vAudio from '@live/components/audio/index.vue';
 
 
   export default
@@ -120,7 +105,7 @@
       vPopular,
       lHeader,
       vChatbox,
-      //vAudio,
+      vAudio,
     },
     data() {
       return {

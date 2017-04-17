@@ -175,7 +175,7 @@ function showMsg(msg) {
       //业务自己可以增加逻辑，比如展示点赞动画效果
       contentSpan.innerHTML = "[群点赞消息]" + convertMsgtoHtml(msg);
       //展示点赞动画
-      showLoveMsgAnimation();
+      //showLoveMsgAnimation();
       break;
     case webim.GROUP_MSG_SUB_TYPE.TIP://群提示消息
       contentSpan.innerHTML = "[群提示消息]" + convertMsgtoHtml(msg);

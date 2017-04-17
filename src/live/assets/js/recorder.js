@@ -72,7 +72,7 @@ export const toggleRecording = function( self ) {
   }
 }
 
-export const initAudio = function() {
+export const initRecorder = function() {
   if (!navigator.getUserMedia)
     navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
   if (!navigator.cancelAnimationFrame)
@@ -98,4 +98,4 @@ export const initAudio = function() {
     });
 };
 
-window.addEventListener('load', initAudio );
+window.addEventListener('load', initRecorder );

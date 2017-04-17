@@ -1,0 +1,16 @@
+@import '~@lib/css/index.styl';
+
+.l-recorder
+  position: relative;
+  background: #fff;
+  .iconfont
+    &.active
+      color: red;
+  .send-sound
+    position: absolute;
+    background: #fff;
+    z-index: 10;
+    px2px(left, 0px);
+    px2px(bottom, 48px);
+    >*
+      px2px(font-size, 32px);

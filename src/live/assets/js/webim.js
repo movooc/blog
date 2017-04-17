@@ -437,7 +437,7 @@ function assembleMsg(msg) {
         assemble.content = convertMsg(msg);
         //assemble.content = `[群点赞消息] ${convertMsg(msg)}`;
         //展示点赞动画
-        showLoveMsgAnimation();
+        //showLoveMsgAnimation();
         break;
       //群提示消息
       case webim.GROUP_MSG_SUB_TYPE.TIP:
