@@ -137,7 +137,6 @@
     }
   };
 
-
   function _init() {
     //帐号模式，0-表示独立模式，1-表示托管模式。
     window.accountMode=1;
