@@ -7,6 +7,7 @@
     // 判断是否是PC设备
     //平台、设备和操作系统
     var isPC = false;
+    var isWeiXin = true;
     var p = navigator.platform;
     var mySystem = {
       win  : p.indexOf("Win") == 0,
@@ -53,4 +54,5 @@
     window.dpr  = dpr;
     window.rem  = rem;
     window.isPC = isPC;
+    window.isWeiXin = isWeiXin;
 })();

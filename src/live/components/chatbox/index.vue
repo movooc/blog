@@ -1,27 +1,32 @@
 <template>
   <div class="l-chatbox">
-    <span class="box-more">
-      <button @click="showModule">
-        <span class="iconfont icon-dot-more"></span>
-      </button>
-    </span>
-    <div class="box-msg">
-      <textarea v-model="msgVal" placeholder="请输入文字..." @blur="v_blur"></textarea>
-      <v-recorder class="reorder"></v-recorder>
-    </div>
-    <button class="box-send" @click="sendMsg">提交</button>
-    <div class="more-choice" v-if="moduleShow">
-      <button @click="showImage">上传图片</button>
-      <button @click="showFile">上传文件</button>
+    <div class="box">
+      <span class="box-more">
+        <button @click="showModule">
+          <span class="iconfont icon-dot-more"></span>
+        </button>
+      </span>
+      <div class="box-msg">
+        <textarea v-model="msgVal" placeholder="请输入文字..." @blur="v_blur"></textarea>
+        <v-recorder class="reorder"></v-recorder>
+      </div>
+      <button class="box-send" @click="sendMsg">提交</button>
+      <div class="more-choice" v-if="moduleShow">
+        <button @click="showImage">上传图片</button>
+        <button @click="showFile">上传文件</button>
+      </div>
     </div>
     <!-- 遮罩层 -->
     <div class="modal-dialog" v-if="imgShow">
       <div class="modal-header">发送图片</div>
       <div class="modal-body">
-        <div class="">
+        <div class="modal-img">
           <span>选择</span>
           <input id="upd_pic" type="file" @change="imgOnChange" />
-          <img v-if="imgInfo.show" v-bind:src="imgInfo.src" style="width:30%" />
+          <p>
+            <span>预览:</span>
+            <a :href="imgInfo.src" target="_blank"><img v-if="imgInfo.show" v-bind:src="imgInfo.src" style="width:30%" /></a>
+          </p>
           <button class="upload" @click="startUploadImg">开始发送</button>
           <button class="upload" @click="cancleUploadImg">取消发送</button>
         </div>

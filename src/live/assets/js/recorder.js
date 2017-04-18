@@ -93,7 +93,7 @@ export const initRecorder = function() {
         "optional": []
       },
   }, gotStream, function(e) {
-      alert('Error getting audio');
+      console.log('您的浏览器暂时不支持录音!');
       console.log(e);
     });
 };

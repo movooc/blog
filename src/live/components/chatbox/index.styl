@@ -2,88 +2,90 @@
 
 .l-chatbox
   position: fixed;
-  display: -webkit-flex;
-  display: flex;
   bottom: 0;
   right: 0;
   left: 0;
   padding: 15px 20px 15px 34px;
-  //height: 70px;
   box-shadow: 0 0 5px rgba(0,0,0,.1);
   background: #ECEDF1;
   z-index: 10;
-  >*
-    -webkit-flex: 1;
-    flex: 1;
-    border: 0 none;
-    height: 70px;
-    px2px(border-radius, 8px);
-    px2px(font-size, 30px);
-
-    &.box-more
-      margin-right: 8px;
-      text-align: center;
-      button
-        width: 70px;
-        height: 100%;
-        border: 0 none;
-        background: #fff;
-        px2px(border-radius, 8px);
-      .iconfont
-        color: #12B7F5;
-        px2px(font-size, 30px);
-    &.box-msg
-      position: relative;
-      -webkit-flex: 5;
-      flex: 5;
-      color: #333;
-      overflow: auto;
-      overflow-x: hidden;
-      resize: none;
-
-      textarea
-        position: relative;
-        width: 100%;
-        height: 30px;
-        padding: 20px 10px;
-        border: 0 none;
-        px2px(border-radius, 8px);
-        px2px(line-height, 30px);
-        px2px(font-size, 30px);
-      .reorder
-        position: absolute;
-        padding-right: 10px;
-        color: #ddd;
-        z-index: 6;
-        px2px(top, 5px);
-        px2px(bottom, 0px);
-        px2px(right, 0px);
-
-        >*
-          px2px(font-size, 50px);
-    &.box-send
-      margin-left: 20px;
-      background: #fff;
-
-  .more-choice {
-    position: absolute;
+  .box
+    display: -webkit-flex;
+    display: flex;
     width: 100%;
-    height: 128px;
-    background: #fff;
-    z-index: 7;
-    px2px(left, 0px);
-    px2px(bottom, 0px);
 
-    button {
-      width: 100%;
-      height: 63px;
+    >*
+      -webkit-flex: 1;
+      flex: 1;
       border: 0 none;
-      background: #12b7f5;
-      color: #fff;
-      px2px(border-top, 1px solid #fff)
-      px2px(font-size, 30px)
+      height: 70px;
+      px2px(border-radius, 8px);
+      px2px(font-size, 30px);
+
+      &.box-more
+        margin-right: 8px;
+        text-align: center;
+        button
+          width: 70px;
+          height: 100%;
+          border: 0 none;
+          background: #fff;
+          px2px(border-radius, 8px);
+        .iconfont
+          color: #12B7F5;
+          px2px(font-size, 30px);
+      &.box-msg
+        position: relative;
+        -webkit-flex: 5;
+        flex: 5;
+        color: #333;
+        overflow: auto;
+        overflow-x: hidden;
+        resize: none;
+
+        textarea
+          position: relative;
+          width: 100%;
+          height: 30px;
+          padding: 20px 10px;
+          border: 0 none;
+          px2px(border-radius, 8px);
+          px2px(line-height, 30px);
+          px2px(font-size, 30px);
+        .reorder
+          position: absolute;
+          padding-right: 10px;
+          color: #ddd;
+          z-index: 6;
+          px2px(top, 5px);
+          px2px(bottom, 0px);
+          px2px(right, 0px);
+
+          >*
+            px2px(font-size, 50px);
+      &.box-send
+        margin-left: 20px;
+        background: #fff;
+
+    .more-choice {
+      position: absolute;
+      width: 100%;
+      height: 128px;
+      background: #fff;
+      z-index: 7;
+      px2px(left, 0px);
+      px2px(bottom, 0px);
+
+      button {
+        width: 100%;
+        height: 63px;
+        border: 0 none;
+        background: #12b7f5;
+        color: #fff;
+        px2px(border-top, 1px solid #fff);
+        px2px(font-size, 30px);
+      }
     }
-  }
 
 .modal-dialog
   position: absolute;
@@ -100,28 +102,61 @@
     px2px(font-size, 32px);
 
 .is-pc .l-chatbox {
-  >* {
-    height: 150px;
-    &.box-more {
-      button {
-        width: 140px;
-      }
-    }
-    &.box-msg {
-      textarea {
-        padding-top: 45px;
-        height: 100%;
-      }
-    }
-    &.more-choice {
-      height: 240px;
+  .box {
+    margin: 0 auto;
+    max-width: 1600px;
 
-      button {
-        height: 120px;
+    > * {
+      height: 150px;
+      &.box-more {
+        button {
+          width: 140px;
+        }
+      }
+      &.box-msg {
+        textarea {
+          padding-top: 45px;
+          height: 100%;
+        }
+      }
+      &.more-choice {
+        width: 600px;
+        height: 480px;
+
+        button {
+          border-top: 1px solid #fff;
+          height: 239px;
+        }
       }
     }
-    &.modal-dialog {
-      height: inherit;
+  }
+  .modal-dialog {
+    left: 130px;
+    top: -430px;
+    padding: 80px;
+    width: 1800px;
+    height: 1800px;
+    color: #fff;
+    background: #12b7f5;
+
+    .modal-header {
+      padding-bottom: 16px;
+      font-size: 16px;
+      text-align: center;
+    }
+    .modal-body {
+      font-size: 14px;
+      .modal-img {
+        height: 100px;
+      }
+      input {
+        border: 0 none;
+        font-size: 14px;
+      }
+      button {
+        border: 0 none;
+        background: #fff;
+      }
     }
   }
 }

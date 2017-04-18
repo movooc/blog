@@ -1,6 +1,6 @@
 <template>
   <div class="app" :class="{'is-header':isHeader,'is-pc':isPC}">
-    <v-header v-if="isHeader"></v-header>
+    <v-header v-if="isWeiXin"></v-header>
     <v-loading :show="loadingShow"></v-loading>
     <router-view></router-view>
   </div>
@@ -25,7 +25,8 @@
     },
     data() {
       return {
-        isPC
+        isPC,
+        isWeiXin,
       };
     },
     methods: {
