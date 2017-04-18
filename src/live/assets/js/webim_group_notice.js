@@ -19,6 +19,14 @@ export function onCustomGroupNotify(notify) {
   var content = notify.UserDefinedField;//群自定义消息数据
   showGroupSystemMsg(notify.ReportType, reportTypeCh, notify.GroupId, notify.GroupName, content, notify.MsgTime);
 };
+//监听 被踢出群 群系统消息
+export function onKickedGroupNotify(notify) {
+  webim.Log.warn("执行 用户自定义系统消息 回调：" + JSON.stringify(notify));
+  var reportTypeCh = "[用户自定义系统消息]";
+  var content = "您已被踢出群";//群自定义消息数据
+  console.log(content);
+  //showGroupSystemMsg(notify.ReportType, reportTypeCh, notify.GroupId, notify.GroupName, content, notify.MsgTime);
+};
 //监听 群资料变化 群提示消息
 export function onGroupInfoChangeNotify(groupInfo) {
   webim.Log.warn("执行 群资料变化 回调： " + JSON.stringify(groupInfo));

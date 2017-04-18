@@ -77,7 +77,7 @@
         </li>
       </ul>
       <!-- popular -->
-      <v-popular></v-popular>
+      <!--<v-popular></v-popular>-->
     </div>
     <!-- comment -->
     <v-comment></v-comment>
@@ -89,7 +89,7 @@
 <script>
   import {mapState} from 'vuex';
   import { vBigGroupMsgNotify, jsonpCallback, onMsgNotify, exportSdkLogin } from '@live/assets/js/webim';
-  import { onDestoryGroupNotify, onRevokeGroupNotify, onCustomGroupNotify, onGroupInfoChangeNotify } from '@live/assets/js/webim_group_notice';
+  import { onDestoryGroupNotify, onRevokeGroupNotify, onCustomGroupNotify, onGroupInfoChangeNotify, onKickedGroupNotify } from '@live/assets/js/webim_group_notice';
   import lHeader from './header.vue';
   import vPopular from './popular.vue';
   import vComment from '@live/components/comment/index.vue';
@@ -139,13 +139,13 @@
 
   function _init() {
     //帐号模式，0-表示独立模式，1-表示托管模式。
-    window.accountMode=1;
+    window.accountMode=0;
 
     //官方 demo appid,需要开发者自己修改（托管模式）
-    let sdkAppID = 1400001692;
-    let accountType = 884;
+    let sdkAppID = 1400026682;
+    let accountType = 12098;
 
-    window.avChatRoomId = '@TGS#aJIPTVAEE'; //默认房间群ID，群类型必须是直播聊天室（AVChatRoom），这个为官方测试ID(托管模式)
+    window.avChatRoomId = '58f45e003d331-T'; //默认房间群ID，群类型必须是直播聊天室（AVChatRoom），这个为官方测试ID(托管模式)
 
     if (webim.Tool.getQueryString("groupid")) {
       avChatRoomId = webim.Tool.getQueryString("groupid");//用户自定义房间群id
@@ -163,9 +163,10 @@
       'sdkAppID': sdkAppID, //用户所属应用id,必填
       'appIDAt3rd': sdkAppID, //用户所属应用id，必填
       'accountType': accountType, //用户所属应用帐号类型，必填
-      'identifier': null, //当前用户ID,必须是否字符串类型，选填
-      'identifierNick': "null", //当前用户昵称，选填
-      'userSig': null, //当前用户身份凭证，必须是字符串类型，选填
+      'identifier': 'lilei', //当前用户ID,必须是否字符串类型，选填
+      'identifierNick': 'lilei', //当前用户昵称，选填
+      //'userSig': 'eJxlj1FPgzAUhd-5FYRnI22hZCzZA5sohBEyN4zzhRBa5s0EutKJm-G-O3GJTbyv33dyzv00TNO0Nsv1bVlV3bFVhToJbplT00LWzR8UAlhRqsKR7B-kHwIkL8pacTlCTCklCOkOMN4qqOFqlKyBVsM92xdjx2-evYSJ502IrsBuhGm4WsR3sZ2mjpNHZz-NKQqOrwNvokO2fcD2PtlGcUfDxWYuRE8DCF6iiXzrbf804EcyX-lhsltm5zqh7Ml9zu*9y35RyQNk5TCbaZUKGn4d5BMXe4joL71z2UPXjgJBmGLioJ*zjC-jG5XzXFA_', //当前用户身份凭证，必须是字符串类型，选填
+      'userSig': 'eJxlz19vgjAUBfB3PkXDq8vWln-r3gwjaqYixZjoC0EpeqNgVyqoy777lJmMZM*-c3Pu*TIQQuZ8HD*nm83xVOpEX6Qw0Rsysfn0h1JClqQ6sVT2D8VZghJJmmuhWqQOoxh3I5CJUkMOj8ABDgI6XGX7pK1oldi3Y*q6r7QbgW2Lk2Dpj6L3uA5X3M*XFzmja2-ShF7Ir96p19sP*Ro*oxWbWbrPlR9Ho13-w61tZqXBy*LqLDjbhTBwxvMtbQbFsChZJab5tIEAk*zcqdRQiMdDjNoW9VzW0VqoCo7l72BMHEIIw-fVxrfxA5r9XHs_',
       'headurl': 'img/2016.gif'//当前用户默认头像，选填
     };
 
@@ -209,7 +210,8 @@
       "onBigGroupMsgNotify": vBigGroupMsgNotify.prototype.constructor.bind(this), //监听新消息(大群)事件，必填
       "onMsgNotify": onMsgNotify,//监听新消息(私聊(包括普通消息和全员推送消息)，普通群(非直播聊天室)消息)事件，必填
       "onGroupSystemNotifys": onGroupSystemNotifys, //监听（多终端同步）群系统消息事件，必填
-      "onGroupInfoChangeNotify": onGroupInfoChangeNotify//监听群资料变化事件，选填
+      "onGroupInfoChangeNotify": onGroupInfoChangeNotify,//监听群资料变化事件，选填
+      "onKickedEventCall": onKickedGroupNotify
     };
 
     let isAccessFormalEnv = true;//是否访问正式环境

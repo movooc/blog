@@ -71,8 +71,8 @@
   }
   .scrubber {
     position: relative;
-    margin-top: 26px;
-    height: 14px;
+    margin-top: 30px;
+    height: 10px;
     width: 200px;
     background: #5a5a5a;
     overflow: hidden;
@@ -168,3 +168,22 @@ only screen and (min-device-pixel-ratio: 2) {
 .error .error { display: block; }
 .error .play-pause p { cursor: auto; }
 .error .error-message { display: block; }
+
+.is-pc {
+  .audiojs {
+    height: 140px;
+
+    .play-pause {
+      margin-right: 30px;
+    }
+    .scrubber {
+      margin-top: 60px;
+      width: 520px;
+      height: 14px;
+    }
+    .time {
+      padding-top: 40px;
+      padding-left: 40px;
+    }
+  }
+}

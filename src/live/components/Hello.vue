@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <button @click="startLive('create')">点击创建直播</button>
-    <button @click="startLive('join')">点击参与直播</button>
+    <button @click="startLive('create')">老师界面直播</button>
+    <button @click="startLive('join')">学员界面直播</button>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
   name: 'hello',
   data() {
     return {
-      msg: '欢迎参与直播测试!!!',
+      msg: '课程详情!!!',
     };
   },
   methods: {
@@ -35,11 +35,18 @@ export default {
   }
 
   button {
+    margin-bottom: 10px;
     padding: 20px;
     width: 100%;
     color: #fff;
     background: #12B7F5;
     border: 0 none;
+    cursor: pointer;
     px2px(font-size, 32px);
+  }
+
+  .is-pc h1{
+    text-align: center;
+    font-size: 24px;
   }
 </style>

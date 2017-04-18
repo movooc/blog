@@ -89,7 +89,7 @@ li
         .content-text
           position: relative;
           color: #3C4A55;
-          word-break:break-all;
+
           px2px(line-height, 46px);
           px2px(font-size, 32px);
           .content-audio
@@ -109,18 +109,12 @@ li
               width: 100%;
         .content-audio
           px2px(font-size, 32px);
-          &:after, .voice:before
+          .voice:before
             position: absolute;
             font-family:"iconfont" !important;
             font-style:normal;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-          &:after
-            content: "\e651";
-            color: #FB6666;
-            px2px(top, -24px);
-            px2px(right, -60px);
-            px2px(font-size, 0);
           .voice
             display: inline-block;
             margin-left: -20px;
@@ -150,3 +144,21 @@ li
   overflow-x: hidden;
   background: #f2f2f2;
   -webkit-overflow-scrolling: touch;
+
+.is-pc {
+  .live-sms-list {
+    padding-bottom: 300px;
+  }
+  .live-sms-list li {
+    .live-sms{
+      padding-left: 120px;
+    }
+    .user-img{
+      width: 100px;
+      height: 100px;
+    }
+    .sms-content{
+      padding: 20px 20px;
+    }
+  }
+}

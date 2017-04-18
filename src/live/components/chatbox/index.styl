@@ -98,3 +98,30 @@
 
   input[type="file"], .upload
     px2px(font-size, 32px);
+
+.is-pc .l-chatbox {
+  >* {
+    height: 150px;
+    &.box-more {
+      button {
+        width: 140px;
+      }
+    }
+    &.box-msg {
+      textarea {
+        padding-top: 45px;
+        height: 100%;
+      }
+    }
+    &.more-choice {
+      height: 240px;
+
+      button {
+        height: 120px;
+      }
+    }
+    &.modal-dialog {
+      height: inherit;
+    }
+  }
+}

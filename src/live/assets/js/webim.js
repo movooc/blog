@@ -740,3 +740,20 @@ function applyJoinBigGroup(groupId) {
     }
   );
 };
+
+//退出大群
+function quitBigGroup(groupId) {
+  var options = {
+    'GroupId': groupId//群id
+  };
+  webim.quitBigGroup(
+    options,
+    function (resp) {
+      webim.Log.info('退群成功');
+
+    },
+    function (err) {
+      alert(err.ErrorInfo);
+    }
+  );
+}
