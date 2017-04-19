@@ -10,8 +10,8 @@ export default [{
   name: 'index',
   component(resolve) {
     require.ensure([], () => {
-      resolve(require('../components/Hello.vue'));
-    }, 'live-index');
+      resolve(require('../components/enter/index.vue'));
+    }, 'live-teacher');
   },
   children: [
     {
@@ -28,8 +28,8 @@ export default [{
   name: 'v-teacher',
   component(resolve) {
     require.ensure([], () => {
-      resolve(require('../components/teacher/index.vue'));
-    }, 'live-teacher');
+      resolve(require('../components/enter/index.vue'));
+    }, 'live-teacher01');
   }
 }];
 
