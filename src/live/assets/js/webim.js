@@ -104,7 +104,7 @@ window.sdkLogin = function() {
 };
 
 // 上传图片
-export const uploadImage = (uploadFiles, callback) => {
+export const uploadImage = (uploadFiles, callback, progressCallback) => {
   var file = uploadFiles;
   var businessType;//业务类型，1-发群图片，2-向好友发图片
   if (selType == webim.SESSION_TYPE.C2C) {//向好友发图片
@@ -115,7 +115,7 @@ export const uploadImage = (uploadFiles, callback) => {
   //封装上传图片请求
   var opt = {
     'file': file, //图片对象
-    //'onProgressCallBack': onProgressCallBack, //上传图片进度条回调函数
+    'onProgressCallBack': progressCallback, //上传图片进度条回调函数
     //'abortButton': document.getElementById('upd_abort'), //停止上传图片按钮
     'To_Account': selToID, //接收者
     'businessType': businessType//业务类型
@@ -135,7 +135,7 @@ export const uploadImage = (uploadFiles, callback) => {
 };
 
 // 上传文件
-export const uploadFile = (uploadFiles, callback) => {
+export const uploadFile = (uploadFiles, callback, progressCallback) => {
   var file = uploadFiles;
 
   var businessType;//业务类型，1-发群文件，2-向好友发文件
@@ -148,7 +148,7 @@ export const uploadFile = (uploadFiles, callback) => {
   //封装上传图片请求
   var opt = {
     'file': file, //图片对象
-    //'onProgressCallBack': onProgressCallBack, //上传图片进度条回调函数
+    'onProgressCallBack': progressCallback, //上传图片进度条回调函数
     'To_Account': selToID, //接收者
     'businessType': businessType, //业务类型
     'fileType': webim.UPLOAD_RES_TYPE.FILE//表示上传文件

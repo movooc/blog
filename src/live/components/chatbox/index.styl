@@ -101,13 +101,32 @@
   input[type="file"], .upload
     px2px(font-size, 32px);
 
+  .progress
+    display: inline-block;
+    width: 300px;
+    height: 10px;
+    background: #fff;
+    vertical-align: middle;
+    font-size: 0px;
+
+    em
+     display: inline-block;
+     height: 100%;
+     background: greenyellow;
+
 .is-pc .l-chatbox {
+  position: absolute;
+  top: 631px;
+  bottom: initial;
+  padding: 10px;
+  height: 30px;
+
   .box {
     margin: 0 auto;
     max-width: 1600px;
 
     > * {
-      height: 150px;
+      height: 30px;
       &.box-more {
         button {
           width: 140px;
@@ -115,27 +134,46 @@
       }
       &.box-msg {
         textarea {
-          padding-top: 45px;
-          height: 100%;
+          padding: 8px 0 0 10px;
+          height: 22px;
+          line-height: 1;
+          outline:none;
+        }
+        .reorder {
+          top: 1px;
         }
       }
       &.more-choice {
-        width: 600px;
-        height: 480px;
+        padding: 15px;
+        width: 100px;
+        height: 100px;
+        border: 1px solid #03a9f4;
 
         button {
           border-top: 1px solid #fff;
-          height: 239px;
+          height: 49px;
+        }
+        .close {
+          position: absolute;
+          right: 0;
+          top: 0;
+          font-size: 20px;
+          color: #03a9f4;
+          text-decoration: none;
+
+          &:hover {
+            color: greenyellow;
+          }
         }
       }
     }
   }
   .modal-dialog {
-    left: 130px;
+    left: 140px;
     top: -430px;
-    padding: 80px;
-    width: 1800px;
-    height: 1800px;
+    padding: 20px;
+    width: 420px;
+    height: 420px;
     color: #fff;
     background: #12b7f5;
 
@@ -156,6 +194,9 @@
       button {
         border: 0 none;
         background: #fff;
+      }
+      img {
+        max-height: 225px;
       }
     }
   }

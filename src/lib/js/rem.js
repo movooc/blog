@@ -12,7 +12,7 @@
     var mySystem = {
       win  : p.indexOf("Win") == 0,
       mac  : p.indexOf("Mac") == 0,
-      //xll  : (p == "X11") || (p.indexOf("Linux") == 0),
+      wx   : (navigator.userAgent.toLocaleLowerCase().match(/MicroMessenger/i) == 'micromessenger')?true:false,
       ipad : (navigator.userAgent.match(/iPad/i) != null)?true:false
     };
 
@@ -21,8 +21,11 @@
       isPC = true;
     }
 
+    // weixin
+    isWeiXin = mySystem.wx;
+
     dpr = window.devicePixelRatio || 1;
-    rem = isPC ? '750px' : docEl.clientWidth * dpr / 10;
+    rem = isPC ? 75 : docEl.clientWidth * dpr / 10;
     scale = 1 / dpr;
     //alert(dpr)
 
@@ -33,12 +36,12 @@
 
       // 设置data-dpr属性，留作的css hack之用
       docEl.setAttribute('data-dpr', dpr);
-
-      // 动态写入样式
-      docEl.firstElementChild.appendChild(fontEl);
     }
 
     fontEl.innerHTML = 'html{font-size:' + rem + 'px!important;}';
+
+    // 动态写入样式
+    docEl.firstElementChild.appendChild(fontEl);
 
     // 给js调用的，某一dpr下rem和px之间的转换函数
     window.rem2px = function(v) {

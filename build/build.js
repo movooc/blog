@@ -37,7 +37,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
     // recombination start
     Recombination();
   })
-})
+});
 
 // recombination dist files
 function Recombination() {

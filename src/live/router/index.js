@@ -11,7 +11,7 @@ export default [{
   component(resolve) {
     require.ensure([], () => {
       resolve(require('../components/Hello.vue'));
-    });
+    }, 'live-index');
   },
   children: [
     {
@@ -20,7 +20,7 @@ export default [{
       component(resolve) {
         require.ensure([], () => {
           resolve(require('../components/Hello.vue'));
-        });
+        }, 'live-hello');
       }
     }]
 },{
@@ -29,7 +29,7 @@ export default [{
   component(resolve) {
     require.ensure([], () => {
       resolve(require('../components/teacher/index.vue'));
-    });
+    }, 'live-teacher');
   }
 }];
 

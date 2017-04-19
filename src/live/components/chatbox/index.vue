@@ -12,6 +12,7 @@
       </div>
       <button class="box-send" @click="sendMsg">提交</button>
       <div class="more-choice" v-if="moduleShow">
+        <a class="close" href="javascript:;" @click="moduleShow = !moduleShow">&times</a>
         <button @click="showImage">上传图片</button>
         <button @click="showFile">上传文件</button>
       </div>
@@ -27,6 +28,12 @@
             <span>预览:</span>
             <a :href="imgInfo.src" target="_blank"><img v-if="imgInfo.show" v-bind:src="imgInfo.src" style="width:30%" /></a>
           </p>
+          <p>
+            <span>发送进度:</span>
+            <span class="progress">
+              <em v-bind:style="widthStyle"></em>
+            </span>
+          </p>
           <button class="upload" @click="startUploadImg">开始发送</button>
           <button class="upload" @click="cancleUploadImg">取消发送</button>
         </div>
@@ -38,6 +45,12 @@
         <div class="">
           <span>选择</span>
           <input id="upd_file" type="file" @change="fileOnChange" />
+          <p>
+            <span>发送进度:</span>
+            <span class="progress">
+              <em v-bind:style="widthFileStyle"></em>
+            </span>
+          </p>
           <button class="upload" @click="startUploadFile">开始发送</button>
           <button class="upload" @click="cancleUploadFile">取消发送</button>
         </div>
@@ -65,8 +78,15 @@
         fileShow: false,
         moduleShow: false,
         imgInfo: {
+          src: '',
           show: false,
-        }
+        },
+        widthStyle: {
+          width: 0
+        },
+        widthFileStyle: {
+          width: 0
+        },
       };
     },
     computed: {
@@ -126,12 +146,18 @@
           if(err)alert(err.ErrorInfo);
           this.imgShow = false;
           this.moduleShow = false;
+          this.widthStyle.width = 0;
+          this.imgInfo.src = '';
+        }, (loadedSize, totalSize) => {
+          this.widthStyle.width = `${(loadedSize / totalSize) * 100}%`;
         });
       },
       cancleUploadImg() {
         this.imgShow = false;
         this.moduleShow = false;
         this.imgInfo.show = false;
+        this.widthStyle.width = 0;
+        this.imgInfo.src = '';
       },
       fileOnChange(event) {
         if (!window.File || !window.FileList || !window.FileReader) {
@@ -143,7 +169,7 @@
         var file = uploadFiles.files[0];
         var fileSize = file.size;
 
-        //先检查图片类型和大小
+        //先检查文件类型和大小
         if (!checkFile(file, fileSize)) {
           return;
         }
@@ -151,16 +177,24 @@
       startUploadFile() {
         var uploadFiles = document.getElementById('upd_file');
         var file = uploadFiles.files[0];
+
+        if(!file){
+          return alert('请选择文件!');
+        }
         //上传文件
         uploadFile(file, (err, data) => {
           if(err)alert(err.ErrorInfo);
           this.fileShow = false;
           this.moduleShow = false;
+          this.widthFileStyle.width = 0;
+        }, (loadedSize, totalSize) => {
+          this.widthFileStyle.width = `${(loadedSize / totalSize) * 100}%`;
         });
       },
       cancleUploadFile() {
         this.fileShow = false;
         this.moduleShow = false;
+        this.widthFileStyle.width = 0;
       },
     },
   };

@@ -1,6 +1,6 @@
 <template>
-  <div class="app" :class="{'is-header':isHeader,'is-pc':isPC}">
-    <v-header v-if="isWeiXin"></v-header>
+  <div class="app" :class="{'is-wx':isWeiXin,'is-pc':isPC}">
+    <v-header v-if="!isWeiXin"></v-header>
     <v-loading :show="loadingShow"></v-loading>
     <router-view></router-view>
   </div>
@@ -48,10 +48,11 @@
     height: 100%;
     margin: 0 auto;
     color: #3C4A55;
-    &.is-header
-      padding-top: 100px;
+    &.is-wx
+      padding-top: 0px !important;
     &.is-pc
-      max-width: 1600px;
+      max-width: 1200px;
+      padding-top: 61px;
     .show
       transform: translateX(250px);
     .page-cover
