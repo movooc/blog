@@ -11,11 +11,11 @@
     name: 'home',
     computed: {
       ...mapGetters({
-        homeLists: 'getHomeLists',
+        homeInfo: 'getHomeInfo',
       })
     },
     created() {
-      this.$store.dispatch('fetchHomeLists', {page: 1, count: 5});
+      this.$store.dispatch('changeHomeInfo', '欢迎欢迎!');
     },
   }
 </script>

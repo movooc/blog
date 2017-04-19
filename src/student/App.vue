@@ -7,13 +7,13 @@
 </template>
 
 <script>
-  import Navbar from '@student/components/navbar'
+  import NavBar from '@student/components/navbar.vue'
   import { mapState } from 'vuex';
 
   export default {
     name: 'app',
     components: {
-      Navbar,
+      NavBar,
     },
     computed: {
       ...mapState({

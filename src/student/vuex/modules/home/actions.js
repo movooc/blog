@@ -1,3 +1,3 @@
-export const getHomeInfo = ({commit}, info) => {
-  commit('GET_HOME_INFO', info);
+export const changeHomeInfo = ({commit}, info) => {
+  commit('CHANGE_HOME_INFO', info);
 }

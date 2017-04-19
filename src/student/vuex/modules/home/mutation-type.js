@@ -1,1 +1,1 @@
-export const GET_HOME_INFO = 'GET_HOME_INFO'
+export const CHANGE_HOME_INFO = 'CHANGE_HOME_INFO'
