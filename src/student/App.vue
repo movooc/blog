@@ -1,23 +1,45 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
+  <div class="app">
+    <nav-bar></nav-bar>
+    <div class="loading"></div>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app',
-};
+  import Navbar from '@student/components/navbar'
+  import { mapState } from 'vuex';
+
+  export default {
+    name: 'app',
+    components: {
+      Navbar,
+    },
+    computed: {
+      ...mapState({
+        loading: 'getLoading',
+      })
+    },
+    mounted() {
+      setTimeout(() => {
+        this.$store.dispatch('changeLoadingState', false)
+      }, 2000);
+    },
+  };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  @import '~@lib/css/index.styl';
+
+  html, body
+    margin: 0;
+    height: 100%;
+    overflow-y: hidden;
+  .app
+    font-family: Microsoft YaHei, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+    margin: 0 auto;
+    color: #3C4A55;
 </style>

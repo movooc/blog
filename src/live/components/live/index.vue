@@ -139,7 +139,7 @@
 
   function _init() {
     //帐号模式，0-表示独立模式，1-表示托管模式。
-    window.accountMode=0;
+    let accountMode=0;
 
     //官方 demo appid,需要开发者自己修改（托管模式）
     let sdkAppID = 1400026682;
