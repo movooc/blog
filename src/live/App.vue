@@ -1,7 +1,7 @@
 <template>
   <div class="app" :class="{'is-wx':isWeiXin,'is-pc':isPC}">
     <v-header v-if="!isWeiXin"></v-header>
-    <v-loading :show="loadingShow"></v-loading>
+    <v-loading :show="loadShow"></v-loading>
     <router-view></router-view>
   </div>
 </template>
@@ -19,9 +19,10 @@
     },
     computed: {
       ...mapState([
-        'loadingShow',
-        'isHeader'
+        'loadShow',
       ])
+    },
+    created(){
     },
     data() {
       return {
@@ -32,6 +33,7 @@
     methods: {
     }
   };
+
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -40,6 +42,7 @@
   html, body
     margin: 0;
     height: 100%;
+    background: #ecedf1;
     overflow-y: hidden;
   .app
     font-family: Microsoft YaHei, Helvetica, Arial, sans-serif;

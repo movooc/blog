@@ -1,2 +1,50 @@
 @import '~@lib/css/index.styl';
 
+.l-comment {
+  background: #fff;
+
+  .comment-content {
+    li {
+      position: relative;
+      padding-left: 45px;
+
+      .user-img {
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        img {
+          width: 35px;
+        }
+      }
+      .user-content {
+        .con-time {
+          padding: 6px 0;
+          color: gray;
+          px2px(font-size, 14px);
+        }
+      }
+    }
+  }
+}
+
+.is-pc {
+  .l-comment {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 296px;
+    border-radius: 4px;
+
+    .comment-title {
+      padding: 10px;
+      font-size: 16px;
+      border-bottom: 1px solid #D6DAF2;
+    }
+    .comment-content {
+      padding: 10px;
+      font-size: 16px;
+    }
+  }
+}

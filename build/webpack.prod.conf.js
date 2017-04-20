@@ -24,7 +24,8 @@ let webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('[name].[chunkhash].js'),
+    //filename: utils.assetsPath('[name].[chunkhash].js'),
+    filename: utils.assetsPath('[name].js'),
     chunkFilename: utils.assetsPath('[name].[id].[chunkhash].js')
   },
   plugins: [
@@ -43,7 +44,8 @@ let webpackConfig = merge(baseWebpackConfig, {
     }),
     // extract css into its own file
     new ExtractTextPlugin({
-      filename: utils.assetsPath('[name].[contenthash].css')
+      // filename: utils.assetsPath('[name].[contenthash].css')
+      filename: utils.assetsPath('[name].css')
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
@@ -134,13 +136,14 @@ for (let page in pages) {
     // excludeChunks: Object.keys(pages).filter(item => {
     //   return (item != page)
     // }),
-    minify: {
-      removeComments: true,
-      collapseWhitespace: true,
-      removeAttributeQuotes: true
+    //minify: {
+      //removeComments: true,
+      //collapseWhitespace: true,
+      //removeAttributeQuotes: true
+
       // more options:
       // https://github.com/kangax/html-minifier#options-quick-reference
-    },
+    //},
   // necessary to consistently work with multiple chunks via CommonsChunkPlugin
   chunksSortMode: 'dependency'
 };

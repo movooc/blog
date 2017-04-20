@@ -67,8 +67,23 @@ export const vSendMsg = (str, callback) => {
   }
 };
 
-export const exportSdkLogin = () => {
-  sdkLogin();
+// 导出 sdk 登录
+export const exportSdkLogin = (cb) => {
+  sdkLogin(cb);
+};
+
+// 导出群组成员接口
+export const exportGroupMemberInfo = (opt) => {
+  //
+  let curOpt = { 'GroupId': avChatRoomId, ...opt };
+
+  return new Promise((resolve, reject) => {
+    webim.getGroupMemberInfo(curOpt, (data) => {
+      resolve(data);
+    }, () => {
+      reject();
+    });
+  });
 };
 
 // 上传图片
@@ -732,7 +747,7 @@ function onChangePlayAudio(obj) {
 };
 
 //进入大群
-function applyJoinBigGroup(groupId) {
+function applyJoinBigGroup(groupId, callback) {
   var options = {
     'GroupId': groupId//群id
   };
@@ -743,12 +758,15 @@ function applyJoinBigGroup(groupId) {
       if (resp.JoinedStatus && resp.JoinedStatus == 'JoinedSuccess') {
         webim.Log.info('进群成功');
         selToID = groupId;
+        callback(null);
       } else {
-        alert('进群失败');
+        //alert('进群失败');
+        callback({ErrorInfo:'进群失败'});
       }
     },
     function (err) {
-      alert(err.ErrorInfo);
+      //alert(err.ErrorInfo);
+      callback(err);
     }
   );
 };
@@ -771,16 +789,16 @@ function quitBigGroup(groupId) {
 }
 
 //sdk登录
-function sdkLogin() {
+function sdkLogin(cb) {
   //web sdk 登录
   webim.login(loginInfo, listeners, options,
     function (identifierNick) {
       //identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
-      webim.Log.info('webim登录成功');
-      applyJoinBigGroup(avChatRoomId);//加入大群
+      webim.Log.info('webim登录成功!~开始进群!');
+      applyJoinBigGroup(avChatRoomId, cb);//加入大群
     },
     function (err) {
-      alert(err.ErrorInfo);
+      cb(err);
     }
   );//
 };

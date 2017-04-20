@@ -1,18 +1,19 @@
 <template>
   <div class="l-comment">
-    <!-- discuss-pane -->
-    <div class="live-discuss-pane">
-      <!-- tool -->
-      <div class="live-discuss-tool" id="live-discuss-tool">
-        <a href="javascript:void(0);" class="live-discuss-sms" onclick="smsPicClick()"></a>
-        <a href="javascript:void(0);" class="live-discuss-like" onclick="sendGroupLoveMsg()"></a>
-      </div>
-      <!-- discuss-form -->
-      <div class="live-discuss-form" id="live-discuss-form">
-        <input type="text" class="live-discuss-input" id="send_msg_text">
-        <a href="javascript:void(0);" class="live-discuss-face" onclick="showEmotionDialog()"></a>
-        <button class="live-discuss-button" onclick="onSendMsg()">发送</button>
-      </div>
+    <div class="comment-title">讨论区</div>
+    <div class="comment-content">
+      <ul>
+        <li>
+          <div class="user-img">
+            <img src="static/_static/live/img/user-img.png" alt="">
+          </div>
+          <div class="user-content">
+            <div class="con-title">用户</div>
+            <div class="con-time">2017-03-26 20:33 <a href="javascrip:;">操作</a></div>
+            <div class="con-text">老师说的好！</div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>

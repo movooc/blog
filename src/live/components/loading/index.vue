@@ -14,7 +14,10 @@
       show: {
         type: Boolean
       }
-    }
+    },
+    created(){
+      //console.log(this);
+    },
   };
 </script>
 

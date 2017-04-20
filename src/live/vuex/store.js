@@ -12,8 +12,9 @@ Vue.use(Vuex);
 /* init state */
 const state = {
   headerTitle: '直播',
-  loadShow: false,
+  loadShow: true,
   menuShow: false,
+  isOwner : false,
   isHeader: true,
   userInfo: null,
   teacherInfo: null,
@@ -27,8 +28,8 @@ const mutations = {
     state.headerTitle = title;
   },
   //
-  UPDATE_LOADING(state, data){
-    state.loadShow = data;
+  UPDATE_LOADING(state, show){
+    state.loadShow = show;
   },
   //
   UPDATE_MESSAGE(state, data){
@@ -41,6 +42,13 @@ const mutations = {
   //
   UPDATE_MENUSHOW(state, data){
     state.menuShow = data;
+  },
+  // 是否是管理员
+  UPDATE_ISOWNER(state, isOwner){
+    state.isOwner = isOwner;
+  },
+  UPDATE_USERINFO(state, data){
+    state.userInfo = { ...state.userInfo, ...data };
   },
 };
 

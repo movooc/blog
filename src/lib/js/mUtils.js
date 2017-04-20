@@ -322,3 +322,14 @@ export const checkFile = (file, fileSize) => {
   }
   return true;
 };
+
+//检查是否是对象且是否为空
+export const checkObject = (obj) => {
+  if(Object.prototype.toString.call(obj) == '[object Object]'){
+    for(let o in obj){
+      return true;
+    };
+    return false;
+  }
+  return false;
+};
