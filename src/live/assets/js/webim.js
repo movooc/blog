@@ -1,5 +1,34 @@
 import { trimStr } from '@lib/js/mUtils';
 
+var sdkAppID = null,
+  accountType = null,
+  avChatRoomId = null,//默认房间群ID，群类型必须是直播聊天室（AVChatRoom），这个为官方测试ID(托管模式)
+  selType = null,
+  selSess = null,//当前聊天会话
+  selToID = null,
+  selSessHeadUrl = '',
+  loginInfo = null,
+  listeners = null,
+  options   = null,
+  curPlayAudio = null,
+  openEmotionFlag = false;
+
+//初始化数据
+export const exportInitData = (data) => {
+  sdkAppID       = data.sdkAppID || sdkAppID;
+  accountType    = data.accountType || accountType;
+  avChatRoomId   = data.avChatRoomId || avChatRoomId;
+  selType        = data.selType || selType;
+  selSess        = data.selSess || selSess;
+  selToID        = data.selToID || selToID;
+  selSessHeadUrl = data.selSessHeadUrl || selSessHeadUrl;
+  loginInfo      = data.loginInfo || loginInfo;
+  listeners      = data.listeners || listeners;
+  options        = data.options || options;
+  curPlayAudio   = data.curPlayAudio || curPlayAudio;
+  openEmotionFlag= data.openEmotionFlag || openEmotionFlag;
+};
+
 //IE9(含)以下浏览器用到的jsonp回调函数
 export const jsonpCallback = (rspData) => {
   //设置接口返回的数据
@@ -38,69 +67,8 @@ export const vSendMsg = (str, callback) => {
   }
 };
 
-//处理消息（私聊(包括普通消息和全员推送消息)，普通群(非直播聊天室)消息）
-function handlderMsg(msg) {
-  var fromAccount, fromAccountNick, sessType, subType, contentHtml;
-
-  fromAccount = msg.getFromAccount();
-  if (!fromAccount) {
-    fromAccount = '';
-  }
-  fromAccountNick = msg.getFromAccountNick();
-  if (!fromAccountNick) {
-    fromAccountNick = fromAccount;
-  }
-
-  //解析消息
-  //获取会话类型
-  //webim.SESSION_TYPE.GROUP-群聊，
-  //webim.SESSION_TYPE.C2C-私聊，
-  sessType = msg.getSession().type();
-  //获取消息子类型
-  //会话类型为群聊时，子类型为：webim.GROUP_MSG_SUB_TYPE
-  //会话类型为私聊时，子类型为：webim.C2C_MSG_SUB_TYPE
-  subType = msg.getSubType();
-
-  switch (sessType) {
-    case webim.SESSION_TYPE.C2C://私聊消息
-      switch (subType) {
-        case webim.C2C_MSG_SUB_TYPE.COMMON://c2c普通消息
-          //业务可以根据发送者帐号fromAccount是否为app管理员帐号，来判断c2c消息是否为全员推送消息，还是普通好友消息
-          //或者业务在发送全员推送消息时，发送自定义类型(webim.MSG_ELEMENT_TYPE.CUSTOM,即TIMCustomElem)的消息，在里面增加一个字段来标识消息是否为推送消息
-          contentHtml = convertMsg(msg);
-          webim.Log.warn('receive a new c2c msg: fromAccountNick=' + fromAccountNick + ", content=" + contentHtml);
-          //c2c消息一定要调用已读上报接口
-          var opts = {
-            'To_Account': fromAccount,//好友帐号
-            'LastedMsgTime': msg.getTime()//消息时间戳
-          };
-          webim.c2CMsgReaded(opts);
-          alert('收到一条c2c消息(好友消息或者全员推送消息): 发送人=' + fromAccountNick + ", 内容=" + contentHtml);
-          break;
-      }
-      break;
-    case webim.SESSION_TYPE.GROUP://普通群消息，对于直播聊天室场景，不需要作处理
-      break;
-  }
-};
-
 export const exportSdkLogin = () => {
   sdkLogin();
-};
-
-//sdk登录
-window.sdkLogin = function() {
-  //web sdk 登录
-  webim.login(loginInfo, listeners, options,
-    function (identifierNick) {
-      //identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
-      webim.Log.info('webim登录成功');
-      applyJoinBigGroup(avChatRoomId);//加入大群
-    },
-    function (err) {
-      alert(err.ErrorInfo);
-    }
-  );//
 };
 
 // 上传图片
@@ -198,6 +166,52 @@ export const uploadSound = (uploadFiles, callback) => {
       callback(err);
     }
   );
+};
+
+//处理消息（私聊(包括普通消息和全员推送消息)，普通群(非直播聊天室)消息）
+function handlderMsg(msg) {
+  var fromAccount, fromAccountNick, sessType, subType, contentHtml;
+
+  fromAccount = msg.getFromAccount();
+  if (!fromAccount) {
+    fromAccount = '';
+  }
+  fromAccountNick = msg.getFromAccountNick();
+  if (!fromAccountNick) {
+    fromAccountNick = fromAccount;
+  }
+
+  //解析消息
+  //获取会话类型
+  //webim.SESSION_TYPE.GROUP-群聊，
+  //webim.SESSION_TYPE.C2C-私聊，
+  sessType = msg.getSession().type();
+  //获取消息子类型
+  //会话类型为群聊时，子类型为：webim.GROUP_MSG_SUB_TYPE
+  //会话类型为私聊时，子类型为：webim.C2C_MSG_SUB_TYPE
+  subType = msg.getSubType();
+
+  switch (sessType) {
+    case webim.SESSION_TYPE.C2C://私聊消息
+      switch (subType) {
+        case webim.C2C_MSG_SUB_TYPE.COMMON://c2c普通消息
+          //业务可以根据发送者帐号fromAccount是否为app管理员帐号，来判断c2c消息是否为全员推送消息，还是普通好友消息
+          //或者业务在发送全员推送消息时，发送自定义类型(webim.MSG_ELEMENT_TYPE.CUSTOM,即TIMCustomElem)的消息，在里面增加一个字段来标识消息是否为推送消息
+          contentHtml = convertMsg(msg);
+          webim.Log.warn('receive a new c2c msg: fromAccountNick=' + fromAccountNick + ", content=" + contentHtml);
+          //c2c消息一定要调用已读上报接口
+          var opts = {
+            'To_Account': fromAccount,//好友帐号
+            'LastedMsgTime': msg.getTime()//消息时间戳
+          };
+          webim.c2CMsgReaded(opts);
+          alert('收到一条c2c消息(好友消息或者全员推送消息): 发送人=' + fromAccountNick + ", 内容=" + contentHtml);
+          break;
+      }
+      break;
+    case webim.SESSION_TYPE.GROUP://普通群消息，对于直播聊天室场景，不需要作处理
+      break;
+  }
 };
 
 // 发送图片
@@ -304,7 +318,6 @@ function sendSound(file, fileName) {
 
 // 发送并接收消息
 function sendMsgCallBack (msgtosend, callback) {
-  // return new Promise(() => {
     // 未登录
     if (!loginInfo.identifier) {
       if (accountMode == 1) {//托管模式
@@ -385,7 +398,6 @@ function sendMsgCallBack (msgtosend, callback) {
       webim.Log.error('发消息失败:' + err.ErrorInfo);
       callback(err.ErrorInfo);
     });
-  // });
 };
 
 // 封装消息
@@ -757,3 +769,18 @@ function quitBigGroup(groupId) {
     }
   );
 }
+
+//sdk登录
+function sdkLogin() {
+  //web sdk 登录
+  webim.login(loginInfo, listeners, options,
+    function (identifierNick) {
+      //identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
+      webim.Log.info('webim登录成功');
+      applyJoinBigGroup(avChatRoomId);//加入大群
+    },
+    function (err) {
+      alert(err.ErrorInfo);
+    }
+  );//
+};
