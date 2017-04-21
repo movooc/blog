@@ -1,12 +1,43 @@
 @import '~@lib/css/index.styl';
 
 .l-comment {
-  background: #fff;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 100px 0 0;
+  width: 100%;
+  z-index: 6;
+  background-color:rgba(0,0,0,0.6);
+
+  .back-live {
+    padding: 10px;
+    text-align: center;
+    button {
+      px2px(font-size, 32px);
+    }
+  }
+  .comment-body {
+    height: 100%;
+    background: #fff;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .comment-title {
+    padding: 20px;
+    border-bottom: 1px solid #D6DAF2;
+    px2px(font-size, 32px);
+  }
 
   .comment-content {
+    padding: 20px;
+    px2px(font-size, 32px);
+
     li {
       position: relative;
-      padding-left: 45px;
+      margin-top: 20px;
+      padding: 10px 0 10px 100px;
+      border-bottom: 1px solid #D6DAF2;
 
       .user-img {
         position: absolute;
@@ -14,37 +45,52 @@
         top: 0;
 
         img {
-          width: 35px;
+          width: 80px;
         }
       }
       .user-content {
+        .con-title {
+          px2px(font-size, 28px);
+        }
         .con-time {
           padding: 6px 0;
           color: gray;
-          px2px(font-size, 14px);
+          px2px(font-size, 24px);
         }
       }
     }
+    li:first-child {
+      margin: 0;
+    }
+    li:last-child {
+      border: 0 none;
+    }
   }
+
 }
 
 .is-pc {
   .l-comment {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    padding: 0;
     width: 296px;
     border-radius: 4px;
+    background: #fff;
 
     .comment-title {
-      padding: 10px;
       font-size: 16px;
-      border-bottom: 1px solid #D6DAF2;
     }
     .comment-content {
       padding: 10px;
       font-size: 16px;
+
+      li {
+        padding: 10px 0 10px 45px;
+        .user-img {
+          img {
+            width: 35px;
+          }
+        }
+      }
     }
   }
 }

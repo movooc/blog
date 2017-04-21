@@ -15,6 +15,7 @@ const state = {
   loadShow: true,
   menuShow: false,
   isOwner : false,
+  commentShow: false,
   isHeader: true,
   userInfo: null,
   teacherInfo: null,
@@ -42,6 +43,10 @@ const mutations = {
   //
   UPDATE_MENUSHOW(state, data){
     state.menuShow = data;
+  },
+  // update comment show
+  UPDATE_COMMETN_SHOW(state, show){
+    state.commentShow = show;
   },
   // 是否是管理员
   UPDATE_ISOWNER(state, isOwner){

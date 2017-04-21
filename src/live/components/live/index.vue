@@ -36,20 +36,6 @@
             <!--</div>-->
           <!--</div>-->
         <!--</li>-->
-        <!--<li>-->
-            <!--<div class="user-img">-->
-              <!--<img src="~@live/assets/img/user-img.png" width="45px">-->
-            <!--</div>-->
-            <!--<div class="live-sms">-->
-                <!--<div class="speaker-name">主讲人</div>-->
-                <!--<div class="sms-content w65per">-->
-                  <!--<div class="content-audio" data-audio-src="">-->
-                    <!--<span class="voice icon-voice"></span>-->
-                    <!--<span class="timer">53"</span>-->
-                  <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</li>-->
         <li v-for="msg in messageInfo">
           <div class="user-img">
             <img src="static/_static/live/img/user-img.png" width="45px">
@@ -82,7 +68,8 @@
     <!-- comment -->
     <v-comment></v-comment>
     <!-- chatbox -->
-    <v-chatbox></v-chatbox>
+    <v-chatbox v-if="isOwner"></v-chatbox>
+    <s-chatbox v-if="!isOwner"></s-chatbox>
   </div>
 </template>
 
@@ -92,6 +79,7 @@
   import vPopular from './popular.vue';
   import vComment from '@live/components/comment/index.vue';
   import vChatbox from '@live/components/chatbox/index.vue';
+  import sChatbox from '@live/components/chatbox/sChat.vue';
   import vAudio from '@live/components/audio/index.vue';
 
   export default
@@ -102,6 +90,7 @@
       vPopular,
       lHeader,
       vChatbox,
+      sChatbox,
       vAudio,
     },
     data() {
@@ -112,7 +101,7 @@
     },
     computed: {
       ...mapState([
-        'headerTitle', 'messageInfo', 'teacherInfo', 'menuShow'
+        'headerTitle', 'messageInfo', 'teacherInfo', 'menuShow', 'isOwner',
       ])
     },
     updated() {

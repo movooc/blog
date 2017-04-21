@@ -4,7 +4,6 @@
     <div class="l-teacher" v-if="isOwner">
       <p class="title">课程介绍:</p>
       <v-live></v-live>
-
     </div>
     <div class="l-student" v-if="!isOwner">
       <v-live></v-live>
