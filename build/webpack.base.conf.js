@@ -11,7 +11,7 @@ module.exports = {
   entry: utils.getEntries('./src/**/main.js'),
   output: {
     path: config.build.assetsRoot,
-    filename: 'static/[name].js',
+    filename: 'static/[name].[hash].js',
     chunkFilename: 'static/[name].[id].[chunkhash].js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
