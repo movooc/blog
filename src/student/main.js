@@ -7,7 +7,6 @@ import FastClick from 'fastclick';
 import App from './App';
 import store from './vuex/store';
 import routes from './router';
-import '@lib/js/rem';
 import '@lib/css/font.styl';
 import 'normalize.css';
 

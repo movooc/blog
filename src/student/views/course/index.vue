@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    首页 {{ homeInfo }}
+    <router-view></router-view>
   </section>
 </template>
 
@@ -8,11 +8,8 @@
   import { mapGetters } from 'vuex'
 
   export default{
-    name: 'home',
+    name: 'course',
     computed: {
-      ...mapGetters({
-        homeInfo: 'getHomeInfo',
-      })
     },
     created() {
       //this.$store.dispatch('changeHomeInfo', '欢迎欢迎!');

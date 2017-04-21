@@ -3,9 +3,8 @@ import * as getters from './getters'
 import mutations from './mutations'
 
 const state = {
-  userInfo: {},
-  loading: false,
-}
+  courseList: []
+};
 
 export default{
   state,

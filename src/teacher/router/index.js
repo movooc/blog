@@ -1,20 +1,32 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Hello from '@teacher/components/Hello';
+/**
+ * 1.定义路由，每个路由应该映射一个组件
+ * path : 浏览器的显示的路径
+ * component : 路由的组件路径
+ */
 
-Vue.use(Router);
+import App from '../App'
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'Hello',
-      component: Hello,
-    },
-    {
-      path: '/teacher',
-      name: 'Hello',
-      component: Hello,
-    },
-  ],
-});
+const home = r => require.ensure([], () => r(require('../views/home/index')), 'teacher-home');
+const course = r => require.ensure([], () => r(require('../views/course/index')), 'teacher-course');
+const list = r => require.ensure([], () => r(require('../views/course/list')), 'teacher-courseList');
+
+export default [
+  {
+    path: '/',
+    name: 'index',
+    component: home
+  },
+  {
+    path: '/course',
+    name: 'course',
+    component: course,
+    children: [
+      // 课程列表页
+      {
+        path: '/list',
+        name: 'list',
+        component: list
+      }
+    ]
+  }
+];

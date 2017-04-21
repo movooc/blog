@@ -1,15 +1,39 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
+import VueRouter from 'vue-router';
+import vueResource from 'vue-resource';
+import FastClick from 'fastclick';
 import App from './App';
-import router from './router';
+import store from './vuex/store';
+import routes from './router';
+import '@lib/css/font.styl';
+import 'normalize.css';
 
-Vue.config.productionTip = false;
-console.log('teacher');
-/* eslint-disable no-new */
+/*
+ * fastclick
+ */
+if ('addEventListener' in document) {
+  document.addEventListener('DOMContentLoaded', function() {
+    FastClick.attach(document.body);
+  }, false);
+}
+
+/* register compoent */
+Vue.use(VueRouter);
+Vue.use(vueResource);
+
+/* bind router */
+const router = new VueRouter({
+  'linkActiveClass': 'active',
+  //mode:'history',
+  routes,
+});
+
+/* el app */
 new Vue({
-  el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App },
-});
+}).$mount('#app');

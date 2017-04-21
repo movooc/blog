@@ -4,16 +4,29 @@
  * component : 路由的组件路径
  */
 
-const home = r => require.ensure([], () => r(require('../views/home/index')), 'teacher-home');
+import App from '../App'
 
-export default [{
-  path: '/',
-  name: 'index',
-  component: home,
-  children: [
-    {
-      path: '/hello',
-      name: 'hello',
-      component: home,
-    }]
-}];
+const home = r => require.ensure([], () => r(require('../views/home/index')), 'teacher-home');
+const course = r => require.ensure([], () => r(require('../views/course/index')), 'teacher-course');
+const list = r => require.ensure([], () => r(require('../views/course/list')), 'teacher-courseList');
+
+export default [
+  {
+    path: '/',
+    name: 'index',
+    component: home
+  },
+  {
+    path: '/course',
+    name: 'course',
+    component: course,
+    children: [
+      // 课程列表页
+      {
+        path: '/list',
+        name: 'list',
+        component: list
+      }
+    ]
+  }
+];

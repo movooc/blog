@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    首页 {{ homeInfo }}
+    列表页 {{ homeInfo }}
   </section>
 </template>
 
@@ -8,7 +8,7 @@
   import { mapGetters } from 'vuex'
 
   export default{
-    name: 'home',
+    name: 'list',
     computed: {
       ...mapGetters({
         homeInfo: 'getHomeInfo',
