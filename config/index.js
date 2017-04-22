@@ -1,5 +1,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
+// var publicPath = process.env.public == '' ? 'http://assets.sandbox.yike.fm/' : 'http://assets.sandbox.yike.fm/';
+
 
 module.exports = {
   build: {
@@ -8,7 +10,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: 'http://assets.sandbox.yike.fm/',
-    productionSourceMap: true,
+    productionSourceMap: false,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
@@ -27,7 +29,19 @@ module.exports = {
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api':{
+        target: 'http://teacher.sandbox.yike.fm',
+        secure: false,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api':''
+        },
+        onProxyReq(proxyReq, req, res) {
+          // console.log(proxyReq.getHeader('user-agent'));
+        }
+      }
+    },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)
