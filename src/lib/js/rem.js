@@ -2,6 +2,7 @@
     var dpr, rem, scale;
     var docEl = document.documentElement;
     var fontEl = document.createElement('style');
+    var overEl = document.createElement('style');
     var metaEl = document.querySelector('meta[name="viewport"]');
 
     // 判断是否是PC设备
@@ -36,6 +37,10 @@
 
       // 设置data-dpr属性，留作的css hack之用
       docEl.setAttribute('data-dpr', dpr);
+    }else{
+      // 设置成pc属性
+      overEl.innerHTML = 'body{overflow-y: auto;}';
+      docEl.firstElementChild.appendChild(overEl);
     }
 
     fontEl.innerHTML = 'html{font-size:' + rem + 'px!important;}';

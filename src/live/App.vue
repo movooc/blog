@@ -56,6 +56,7 @@
     &.is-pc
       max-width: 1200px;
       padding-top: 61px;
+      height: auto;
     .show
       transform: translateX(250px);
     .page-cover
