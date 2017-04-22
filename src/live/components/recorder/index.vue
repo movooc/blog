@@ -1,5 +1,5 @@
 <template>
-  <div class="l-recorder">
+  <div class="l-recorder" v-if="!isSending">
     <span class="iconfont icon-hssiconsrecord" @click="toggleRecorder" :class="{'active':active}"></span>
     <a id="save"></a>
   </div>
@@ -20,6 +20,9 @@
       };
     },
     computed: {
+      ...mapState({
+        isSending: 'sending'
+      })
     },
     created() {
       initRecorder();

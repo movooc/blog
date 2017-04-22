@@ -57,6 +57,7 @@
       </div>
     </div>
     <recording :show="isRecording"></recording>
+    <sending :show="isSending"></sending>
   </div>
 </template>
 
@@ -66,13 +67,15 @@
   import { checkPic, checkFile } from '@lib/js/mUtils';
   import vRecorder from '@live/components/recorder/index.vue';
   import Recording from '@live/components/loading/recording.vue';
+  import Sending from '@live/components/loading/sending.vue';
 
   export default
   {
     name: 'v-chatbox',
     components: {
       vRecorder,
-      Recording
+      Recording,
+      Sending
     },
     data() {
       return {
@@ -95,6 +98,7 @@
     computed: {
       ...mapState({
         isRecording: 'recording',
+        isSending: 'sending'
       })
     },
     methods: {

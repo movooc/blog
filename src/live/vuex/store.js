@@ -34,11 +34,11 @@ const mutations = {
   UPDATE_LOADING(state, show){
     state.loadShow = show;
   },
-  UPDATE_RECORDING(state, data){
-    state.userInfo = { ...state.userInfo, ...data };
+  UPDATE_RECORDING(state, show){
+    state.recording = show;
   },
-  UPDATE_SENDING(state, data){
-    state.userInfo = { ...state.userInfo, ...data };
+  UPDATE_SENDING(state, show){
+    state.sending = show;
   },
   //
   UPDATE_MESSAGE(state, data){

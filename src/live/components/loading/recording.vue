@@ -4,8 +4,8 @@
       <div></div>
       <div></div>
       <div></div>
-      <div>录音中</div>
     </div>
+    <div class="is-recording">正在录音</div>
   </div>
 </template>
 <script>
@@ -22,6 +22,14 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus" rel="stylesheet/stylus">
   @import 'index.styl';
+  .loading
+    z-index: 4;
+    px2px(font-size, 32px);
+  .is-recording
+    position: absolute;
+    top: 60%;
+    left: 46%;
+    color: #03a9f4;
 </style>

@@ -4,13 +4,13 @@
       <div></div>
       <div></div>
       <div></div>
-      <div>发送中</div>
     </div>
+    <div class="is-sending">录音正在发送</div>
   </div>
 </template>
 <script>
   export default {
-    name: 'v-loading',
+    name: 'sending',
     props: {
       show: {
         type: Boolean
@@ -22,6 +22,17 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus" rel="stylesheet/stylus">
   @import 'index.styl';
+  .loading
+    top: 50%;
+    height: 150px;
+    .ball-pulse
+      top: 0;
+  .is-sending
+    position: absolute;
+    top: 64%;
+    left: 45%;
+    color: #03a9f4;
+    px2px(font-size, 32px);
 </style>

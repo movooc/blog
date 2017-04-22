@@ -9,7 +9,8 @@ var audioInput = null,
   audioRecorder = null,
   analyserNode = null,
   zeroGain = null,
-  recIndex = 0;
+  recIndex = 0,
+  ctx = null;
 
 /* TODO:
 
@@ -29,7 +30,10 @@ function doneEncoding( blob ) {
   link.download = "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" || 'output.wav';
   recIndex++;
   // 开始上传
+  // 打开上传状态
+  ctx.$store.commit('UPDATE_SENDING', true);
   uploadSound(blob, (err, data) => {
+    ctx.$store.commit('UPDATE_SENDING', false);
     if(err)alert(err.ErrorInfo);
     console.log('上传成功!');
   });
@@ -57,9 +61,13 @@ function gotStream(stream) {
 
 
 export const toggleRecording = function( self ) {
+  //
+  ctx = self;
+  //
   if (self.active) {
     // stop recording
     self.active = false;
+    self.$store.commit('UPDATE_RECORDING', false);
     audioRecorder.stop();
     audioRecorder.getBuffers( gotBuffers );
   } else {
@@ -67,6 +75,7 @@ export const toggleRecording = function( self ) {
     if (!audioRecorder)
       return;
     self.active = true;
+    self.$store.commit('UPDATE_RECORDING', true);
     audioRecorder.clear();
     audioRecorder.record();
   }
