@@ -333,3 +333,20 @@ export const checkObject = (obj) => {
   }
   return false;
 };
+
+//写cookies
+export const setCookie = (name, value) => {
+  var Days = 30;
+  var exp = new Date();
+  exp.setTime(exp.getTime() + Days*24*60*60*1000);
+  document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+};
+
+// 转成数组
+export const convertToArray = (arr, data) => {
+  if(Array.isArray(data)){
+    return [...arr, ...data];
+  }else if(Object.prototype.toString.call(data) == '[object Object]'){
+    return [...arr, data];
+  }
+};
