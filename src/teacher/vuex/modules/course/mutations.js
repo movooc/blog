@@ -1,11 +1,13 @@
 import {
-  GET_COURSE_LIST,
+  FETCH_COURSE_LIST,
 } from './mutation-type'
+
+import { convertToArray } from '@lib/js/mUtils';
 
 const mutations = {
   // 改变loading状态
-  [GET_COURSE_LIST](state, data) {
-    state.courseList = data;
+  [FETCH_COURSE_LIST](state, data) {
+    state.courseList = convertToArray(state.courseList, data);
   },
 };
 export default mutations;

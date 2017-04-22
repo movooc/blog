@@ -20,6 +20,8 @@ const state = {
   userInfo: null,
   teacherInfo: null,
   messageInfo: [],
+  recording: false,
+  sending: false,
 };
 
 /* mutations serials */
@@ -31,6 +33,12 @@ const mutations = {
   //
   UPDATE_LOADING(state, show){
     state.loadShow = show;
+  },
+  UPDATE_RECORDING(state, data){
+    state.userInfo = { ...state.userInfo, ...data };
+  },
+  UPDATE_SENDING(state, data){
+    state.userInfo = { ...state.userInfo, ...data };
   },
   //
   UPDATE_MESSAGE(state, data){

@@ -1,11 +1,9 @@
 <template>
-  <nav id="toolbar">
-    nav
+  <nav class="toolbar">
+    欢迎老师体验测试版0.1
   </nav>
 </template>
-<style lang="stylus" rel="stylesheet/stylus">
 
-</style>
 <script>
     export default{
       name: 'nav-bar',
@@ -13,3 +11,11 @@
       }
     }
 </script>
+
+<style lang="stylus" rel="stylesheet/stylus">
+  .toolbar {
+    height: 36px;
+    background: #fff;
+    text-align: center;
+  }
+</style>

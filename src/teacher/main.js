@@ -7,6 +7,7 @@ import FastClick from 'fastclick';
 import App from './App';
 import store from './vuex/store';
 import routes from './router';
+import { Vueinterceptors } from '@teacher/assets/js/middleware';
 import '@lib/css/font.styl';
 import 'normalize.css';
 
@@ -22,6 +23,8 @@ if ('addEventListener' in document) {
 /* register compoent */
 Vue.use(VueRouter);
 Vue.use(vueResource);
+/* set vue interceptors */
+Vueinterceptors();
 
 /* bind router */
 const router = new VueRouter({

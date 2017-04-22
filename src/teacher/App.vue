@@ -10,6 +10,7 @@
 
 <script>
 import NavBar from './components/navbar'
+import { setCookie } from '@lib/js/mUtils';
 import { mapGetters } from 'vuex'
 
 export default {
@@ -17,11 +18,7 @@ export default {
     NavBar
   },
   created() {
-    this.$store.dispatch('getUserInfo').then(() => {
-      console.log(11)
-    }, () => {
-      console.log(22)
-    });
+
   },
   computed: mapGetters({
     loading: 'getLoading'

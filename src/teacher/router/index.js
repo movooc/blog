@@ -23,7 +23,7 @@ export default [
     children: [
       // 课程列表页
       {
-        path: '/list',
+        path: '/course/list',
         name: 'list',
         component: list
       }

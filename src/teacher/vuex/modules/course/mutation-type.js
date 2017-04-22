@@ -1,1 +1,1 @@
-export const GET_COURSE_LIST = 'GET_COURSE_LIST'
+export const FETCH_COURSE_LIST = 'FETCH_COURSE_LIST';

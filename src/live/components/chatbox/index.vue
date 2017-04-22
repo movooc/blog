@@ -56,6 +56,7 @@
         </div>
       </div>
     </div>
+    <recording :show="isRecording"></recording>
   </div>
 </template>
 
@@ -64,12 +65,14 @@
   import { vSendMsg, uploadImage, uploadFile } from '@live/assets/js/webim';
   import { checkPic, checkFile } from '@lib/js/mUtils';
   import vRecorder from '@live/components/recorder/index.vue';
+  import Recording from '@live/components/loading/recording.vue';
 
   export default
   {
     name: 'v-chatbox',
     components: {
-      vRecorder
+      vRecorder,
+      Recording
     },
     data() {
       return {
@@ -90,6 +93,9 @@
       };
     },
     computed: {
+      ...mapState({
+        isRecording: 'recording',
+      })
     },
     methods: {
       sendMsg() {

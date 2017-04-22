@@ -1,21 +1,30 @@
 <template>
   <section class="content">
-    列表页 {{ homeInfo }}
+    <div class="title">老师课程列表</div>
+    <course-list :lists="courseList"></course-list>
   </section>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
+  import courseList from '@teacher/components/courseList.vue';
 
   export default{
     name: 'list',
+    components: {
+      courseList
+    },
     computed: {
       ...mapGetters({
-        homeInfo: 'getHomeInfo',
+        courseList: 'getCourseListInfo',
       })
     },
     created() {
-      //this.$store.dispatch('changeHomeInfo', '欢迎欢迎!');
+      this.$store.dispatch('fetchCourseList').then(() => {
+        console.log('success');
+      }, () => {
+        console.log('fail');
+      });
     },
   }
 </script>

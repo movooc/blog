@@ -6,9 +6,9 @@
 
 import App from '../App'
 
-const home = r => require.ensure([], () => r(require('../views/home/index')), 'teacher-home');
-const course = r => require.ensure([], () => r(require('../views/course/index')), 'teacher-course');
-const list = r => require.ensure([], () => r(require('../views/course/list')), 'teacher-courseList');
+const home = r => require.ensure([], () => r(require('../views/home/index')), 'student-home');
+const course = r => require.ensure([], () => r(require('../views/course/index')), 'student-course');
+const list = r => require.ensure([], () => r(require('../views/course/list')), 'student-courseList');
 
 export default [
   {

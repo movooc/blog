@@ -1,6 +1,6 @@
 <template>
   <div class="l-audio">
-    <audio :id="id" v-bind:src="src"></audio>
+    <audio :id="id" v-bind:src="src" preload="auto"></audio>
     <span class="iconfont icon-dot" :class="{'hidden': played}"></span>
   </div>
 </template>

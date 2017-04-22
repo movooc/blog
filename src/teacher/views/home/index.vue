@@ -1,6 +1,7 @@
 <template>
   <section class="content">
-    首页 {{ homeInfo }}
+    {{ homeInfo }}
+    <router-link to="/course/list">点击进入课程列表</router-link>
   </section>
 </template>
 
@@ -15,7 +16,9 @@
       })
     },
     created() {
-      //this.$store.dispatch('changeHomeInfo', '欢迎欢迎!');
+
+    },
+    methods: {
     },
   }
 </script>

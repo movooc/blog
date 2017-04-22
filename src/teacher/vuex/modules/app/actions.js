@@ -6,7 +6,7 @@ import vue from 'vue'
  * @param  {String} options.query query参数
  * @return {Promise}               Promise
  */
-const _prefix = 'http://teacher.sandbox.yike.fm';
+const _prefix = process.env.NODE_ENV == 'production' ? 'http://teacher.sandbox.yike.fm/' : '/api/';
 
 const _get = ({ url, query }, commit) => {
   if (commit) commit('START_LOADING');
@@ -25,14 +25,14 @@ const _get = ({ url, query }, commit) => {
       }
       return Promise.reject(new Error(res.status))
     })
-}
+};
 
 export const getUserInfo = ({commit}, query) => {
-  const url = `${_prefix}/lesson-list`;
+  const url = `${_prefix}lesson-list.api`;
 
   return _get({ url, query }, commit)
     .then((json) => {
-      if (json.status === 0) {
+      if (json.error == 0) {
         return commit('GET_USER_INFO', json.data)
       }
       return Promise.reject(new Error('GET_USER_INFO failure'))
@@ -40,4 +40,4 @@ export const getUserInfo = ({commit}, query) => {
     .catch((error) => {
       return Promise.reject(error)
     })
-}
+};
