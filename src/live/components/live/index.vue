@@ -69,8 +69,8 @@
     <!-- comment -->
     <v-comment></v-comment>
     <!-- chatbox -->
-    <v-chatbox v-if="!isOwner"></v-chatbox>
-    <s-chatbox v-if="isOwner"></s-chatbox>
+    <v-chatbox v-if="isOwner"></v-chatbox>
+    <s-chatbox v-if="!isOwner"></s-chatbox>
   </div>
 </template>
 
