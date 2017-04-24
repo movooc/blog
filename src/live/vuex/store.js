@@ -22,6 +22,7 @@ const state = {
   messageInfo: [],
   recording: false,
   sending: false,
+  sendWidth: '0'
 };
 
 /* mutations serials */
@@ -39,6 +40,9 @@ const mutations = {
   },
   UPDATE_SENDING(state, show){
     state.sending = show;
+  },
+  UPDATE_SENDING_WIDTH(state, width){
+    state.sendWidth = width;
   },
   //
   UPDATE_MESSAGE(state, data){

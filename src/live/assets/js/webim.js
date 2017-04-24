@@ -151,7 +151,7 @@ export const uploadFile = (uploadFiles, callback, progressCallback) => {
 };
 
 // 上传语音
-export const uploadSound = (uploadFiles, callback) => {
+export const uploadSound = (uploadFiles, callback, progressCallback) => {
   var file = uploadFiles;
 
   var businessType;//业务类型，1-发群文件，2-向好友发文件
@@ -164,7 +164,7 @@ export const uploadSound = (uploadFiles, callback) => {
   //封装上传图片请求
   var opt = {
     'file': file, //图片对象
-    //'onProgressCallBack': onProgressCallBack, //上传图片进度条回调函数
+    'onProgressCallBack': progressCallback, //上传文件进度条回调函数
     'To_Account': selToID, //接收者
     'businessType': businessType, //业务类型
     'fileType': webim.UPLOAD_RES_TYPE.FILE//表示上传文件

@@ -16,7 +16,7 @@
     },
     data() {
       return {
-        active: false,
+        active: false
       };
     },
     computed: {

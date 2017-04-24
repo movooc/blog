@@ -57,7 +57,7 @@
       </div>
     </div>
     <recording :show="isRecording"></recording>
-    <sending :show="isSending"></sending>
+    <sending :show="isSending" :width="width"></sending>
   </div>
 </template>
 
@@ -98,7 +98,8 @@
     computed: {
       ...mapState({
         isRecording: 'recording',
-        isSending: 'sending'
+        isSending: 'sending',
+        width: 'sendWidth'
       })
     },
     methods: {

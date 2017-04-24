@@ -32,10 +32,14 @@ function doneEncoding( blob ) {
   // 开始上传
   // 打开上传状态
   ctx.$store.commit('UPDATE_SENDING', true);
+  ctx.$store.commit('UPDATE_SENDING_WIDTH', 0);
   uploadSound(blob, (err, data) => {
     ctx.$store.commit('UPDATE_SENDING', false);
     if(err)alert(err.ErrorInfo);
     console.log('上传成功!');
+  }, (loadedSize, totalSize) => {
+    let sendWidth = `${(loadedSize / totalSize) * 100}%`;
+    ctx.$store.commit('UPDATE_SENDING_WIDTH', sendWidth);
   });
 }
 
