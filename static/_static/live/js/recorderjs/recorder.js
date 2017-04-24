@@ -26,9 +26,10 @@ DEALINGS IN THE SOFTWARE.
     var bufferLen = config.bufferLen || 4096;
     this.context = source.context;
     if(!this.context.createScriptProcessor){
-       this.node = this.context.createJavaScriptNode(bufferLen, 2, 2);
+      // 第二个参数输入通道，第三个输出通道
+      this.node = this.context.createJavaScriptNode(bufferLen, 2, 1);
     } else {
-       this.node = this.context.createScriptProcessor(bufferLen, 2, 2);
+      this.node = this.context.createScriptProcessor(bufferLen, 2, 1);
     }
 
     var worker = new Worker(config.workerPath || WORKER_PATH);
