@@ -183,6 +183,22 @@ export const uploadSound = (uploadFiles, callback, progressCallback) => {
   );
 };
 
+// 拉取历史漫游消息
+export const pullHistoryGroupMsgs = () => {
+  // 封装
+  var opt = {
+    GroupId: avChatRoomId,
+    ReqMsgNumber: 20
+  };
+
+  webim.syncGroupMsgs(opt,()=>{
+    debugger
+    console.log(1);
+  },()=>{
+    console.log(2);
+  });
+};
+
 //处理消息（私聊(包括普通消息和全员推送消息)，普通群(非直播聊天室)消息）
 function handlderMsg(msg) {
   var fromAccount, fromAccountNick, sessType, subType, contentHtml;

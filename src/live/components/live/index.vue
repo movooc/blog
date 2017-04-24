@@ -3,6 +3,7 @@
   <div class="live-page" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
     <!-- live entity -->
     <div class="live-body" id="live-body">
+      <p class="pullMsgs"><a href="javascript:;" @click="pullMsgs">点击拉取历史消息</a></p>
       <!-- header -->
       <l-header></l-header>
       <!-- message entity -->
@@ -68,8 +69,8 @@
     <!-- comment -->
     <v-comment></v-comment>
     <!-- chatbox -->
-    <v-chatbox v-if="isOwner"></v-chatbox>
-    <s-chatbox v-if="!isOwner"></s-chatbox>
+    <v-chatbox v-if="!isOwner"></v-chatbox>
+    <s-chatbox v-if="isOwner"></s-chatbox>
   </div>
 </template>
 
@@ -77,6 +78,7 @@
   import {mapState} from 'vuex';
   import lHeader from './header.vue';
   import vPopular from './popular.vue';
+  import { pullHistoryGroupMsgs } from '@live/assets/js/webim';
   import vComment from '@live/components/comment/index.vue';
   import vChatbox from '@live/components/chatbox/index.vue';
   import sChatbox from '@live/components/chatbox/sChat.vue';
@@ -119,6 +121,9 @@
       },
       loadMore() {
         this.busy = true;
+      },
+      pullMsgs() {
+        pullHistoryGroupMsgs();
       }
     }
   };
