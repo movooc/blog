@@ -48,11 +48,12 @@ export const vBigGroupMsgNotify = function(msgList) {
 
 //监听新消息(私聊(包括普通消息、全员推送消息)，普通群(非直播聊天室)消息)事件
 //newMsgList 为新消息数组，结构为[Msg]
-export const onMsgNotify = (newMsgList) => {
-  var newMsg;
-  for (var j in newMsgList) {//遍历新消息
-    newMsg = newMsgList[j];
-    handlderMsg(newMsg);//处理新消息
+export const onMsgNotify = function(newMsgList) {
+  for (var i = newMsgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
+    var msg = newMsgList[i];
+    webim.Log.warn('receive a new chatroom group msg: ' + msg.getFromAccountNick());
+    // 组装消息
+    this.$store.commit('UPDATE_MESSAGE', assembleMsg(msg));
   }
 };
 
@@ -831,6 +832,49 @@ function onChangePlayAudio(obj) {
   }
 };
 
+//进入chatRomm
+function applyJoinGroup(groupId, callback) {
+  var options = {
+    'GroupId': groupId//群id
+  };
+  webim.applyJoinGroup(
+    options,
+    function (resp) {
+      //JoinedSuccess:加入成功; WaitAdminApproval:等待管理员审批
+      if (resp.JoinedStatus && resp.JoinedStatus == 'JoinedSuccess') {
+        webim.Log.info('进群成功');
+        selToID = groupId;
+        callback(null);
+      } else {
+        //alert('进群失败');
+        callback({ErrorInfo:'进群失败'});
+      }
+    },
+    function (err) {
+      //alert(err.ErrorInfo);
+      if(err.ErrorCode == 10013)return quitGroup(groupId);
+      callback(err);
+    }
+  );
+};
+
+//退出chat room
+function quitGroup(groupId) {
+  var options = {
+    'GroupId': groupId//群id
+  };
+  webim.quitGroup(
+    options,
+    function (resp) {
+      webim.Log.info('退群成功');
+
+    },
+    function (err) {
+      alert(err.ErrorInfo);
+    }
+  );
+}
+
 //进入大群
 function applyJoinBigGroup(groupId, callback) {
   var options = {
@@ -880,7 +924,8 @@ function sdkLogin(cb) {
     function (identifierNick) {
       //identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
       webim.Log.info('webim登录成功!~开始进群!');
-      applyJoinBigGroup(avChatRoomId, cb);//加入大群
+      //applyJoinBigGroup(avChatRoomId, cb);//加入大群
+      applyJoinGroup(avChatRoomId, cb);//加入chat room
     },
     function (err) {
       cb(err);
