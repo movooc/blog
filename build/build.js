@@ -57,6 +57,13 @@ function Recombination() {
       let staticPath = filePath+'/static';
       // create dir
       if(!fs.existsSync(filePath))fs.mkdirSync(filePath, 0755);
+      // if teacher or student directory
+      if(fileName != 'live'){
+        // create dir
+        var preStaticPath = filePath+'/'+fileName;
+        if(!fs.existsSync(preStaticPath))fs.mkdirSync(preStaticPath, 0755);
+        staticPath = filePath+'/'+fileName+'/static';
+      }
       // create static dir
       if(!fs.existsSync(staticPath))fs.mkdirSync(staticPath, 0755);
       // move the html files
