@@ -11,7 +11,8 @@ var sdkAppID = null,
   listeners = null,
   options   = null,
   curPlayAudio = null,
-  openEmotionFlag = false;
+  openEmotionFlag = false,
+  reqMsgCount = 10;
 
 //初始化数据
 export const exportInitData = (data) => {
@@ -183,20 +184,88 @@ export const uploadSound = (uploadFiles, callback, progressCallback) => {
   );
 };
 
-// 拉取历史漫游消息
-export const pullHistoryGroupMsgs = () => {
-  // 封装
-  var opt = {
-    GroupId: avChatRoomId,
-    ReqMsgNumber: 20
-  };
-
-  webim.syncGroupMsgs(opt,()=>{
-    debugger
-    console.log(1);
-  },()=>{
-    console.log(2);
+//获取最新的群历史消息,用于切换群组聊天时，重新拉取群组的聊天消息
+export const pullHistoryGroupMsgs = (cbOk, cbErr) => {
+  if (selType == webim.SESSION_TYPE.C2C) {
+    alert('当前的聊天类型为好友聊天，不能进行拉取群历史消息操作');
+    return;
+  }
+  getGroupInfo(selToID, function (resp) {
+    //拉取最新的群历史消息
+    var options = {
+      'GroupId': selToID,
+      'ReqMsgSeq': resp.GroupInfo[0].NextMsgSeq - 1,
+      'ReqMsgNumber': reqMsgCount
+    };
+    if (options.ReqMsgSeq == null || options.ReqMsgSeq == undefined || options.ReqMsgSeq <= 0) {
+      webim.Log.warn("该群还没有历史消息:options=" + JSON.stringify(options));
+      return;
+    }
+    // selSess
+    selSess = null;
+    webim.MsgStore.delSessByTypeId(selType, selToID);
+    //recentSessMap[webim.SESSION_TYPE.GROUP+"_"+selToID].MsgGroupReadedSeq = resp.GroupInfo[0].MsgSeq;
+    webim.syncGroupMsgs(
+      options,
+      function (msgList) {
+        if (msgList.length == 0) {
+          webim.Log.warn("该群没有历史消息了:options=" + JSON.stringify(options));
+          return;
+        }
+        var msgSeq = msgList[0].seq - 1;
+        // getPrePageGroupHistroyMsgInfoMap[selToID] = {
+        //   "ReqMsgSeq":  msgSeq
+        // };
+        if (cbOk)
+          cbOk(msgList);
+      },
+      function (err) {
+        cbErr(err);
+      }
+    );
   });
+};
+
+//读取群组基本资料-高级接口
+function getGroupInfo (group_id, cbOK, cbErr) {
+  var options = {
+    'GroupIdList': [
+      group_id
+    ],
+    'GroupBaseInfoFilter': [
+      'Type',
+      'Name',
+      'Introduction',
+      'Notification',
+      'FaceUrl',
+      'CreateTime',
+      'Owner_Account',
+      'LastInfoTime',
+      'LastMsgTime',
+      'NextMsgSeq',
+      'MemberNum',
+      'MaxMemberNum',
+      'ApplyJoinOption'
+    ],
+    'MemberInfoFilter': [
+      'Account',
+      'Role',
+      'JoinTime',
+      'LastSendMsgTime',
+      'ShutUpUntil'
+    ]
+  };
+  webim.getGroupInfo(
+    options,
+    function (resp) {
+      if (cbOK) {
+        cbOK(resp);
+      }
+    },
+    function (err) {
+      alert(err.ErrorInfo);
+    }
+  );
 };
 
 //处理消息（私聊(包括普通消息和全员推送消息)，普通群(非直播聊天室)消息）
