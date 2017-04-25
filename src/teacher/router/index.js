@@ -9,6 +9,7 @@ import App from '../App'
 const home = r => require.ensure([], () => r(require('../views/home/index')), 'teacher-home');
 const course = r => require.ensure([], () => r(require('../views/course/index')), 'teacher-course');
 const list = r => require.ensure([], () => r(require('../views/course/list')), 'teacher-courseList');
+const detail = r => require.ensure([], () => r(require('../views/course/detail')), 'teacher-courseDetail');
 
 export default [
   {
@@ -26,6 +27,12 @@ export default [
         path: '/course/list',
         name: 'list',
         component: list
+      },
+      // 课程详情页
+      {
+        path: '/course/:lesson_sn',
+        name: 'detail',
+        component: detail
       }
     ]
   }

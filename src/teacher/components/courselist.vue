@@ -2,7 +2,7 @@
   <div class="course-list">
     <ul>
       <li v-for="list in lists">
-        <a :href="list.sn">点击开始{{list.title}}</a>
+        <router-link :to="{ name: 'detail', params: { lesson_sn: list.sn }}">点击开始{{list.title}}</router-link>
       </li>
     </ul>
   </div>

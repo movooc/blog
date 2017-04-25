@@ -1,0 +1,21 @@
+<template>
+  <header class="header">
+    header
+  </header>
+</template>
+
+<script>
+    export default{
+      name: 'v-header',
+      methods: {
+      }
+    }
+</script>
+
+<style lang="stylus" rel="stylesheet/stylus">
+  .header {
+    height: 36px;
+    background: #fff;
+    text-align: center;
+  }
+</style>

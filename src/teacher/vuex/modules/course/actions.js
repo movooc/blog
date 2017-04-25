@@ -13,6 +13,15 @@ const _get = ({ url, query }, commit) => {
   if (commit) commit('START_LOADING');
   let _url;
   if (query) {
+    // 是否是对象
+    if(Object.prototype.toString.call(query) == '[object Object]'){
+      let temp = '';
+      for(let q in query){
+        temp = `${(temp?temp+'&':temp)}${q}=${query[q]}`;
+      }
+      //
+      query = temp;
+    }
     _url = `${url}?${query}`
   } else {
     _url = `${url}`
@@ -30,6 +39,21 @@ const _get = ({ url, query }, commit) => {
 
 export const fetchCourseList = ({commit}, query) => {
   const url = `${_prefix}lesson-list.api`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return commit('FETCH_COURSE_LIST', json.data)
+      }
+      return Promise.reject(new Error('Fetch_Course_List failure'))
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+
+export const fetchCourseDetail = ({commit}, query) => {
+  const url = `${_prefix}lesson-detail.api`;
 
   return _get({ url, query }, commit)
     .then((json) => {
