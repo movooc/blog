@@ -123,7 +123,17 @@
         this.busy = true;
       },
       pullMsgs() {
-        pullHistoryGroupMsgs();
+        var opt = {
+          msgSeq: this.$store.state.messageInfo.length,
+          reqMsgCount: 10
+        };
+        // 回调
+        pullHistoryGroupMsgs(opt, (data) => {
+          // 更新列表
+          this.$store.commit('UPDATE_HISTORY_MESSAGE', data);
+        }, (err) => {
+          console.log(err);
+        });
       }
     }
   };

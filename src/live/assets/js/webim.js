@@ -11,8 +11,7 @@ var sdkAppID = null,
   listeners = null,
   options   = null,
   curPlayAudio = null,
-  openEmotionFlag = false,
-  reqMsgCount = 10;
+  openEmotionFlag = false;
 
 //初始化数据
 export const exportInitData = (data) => {
@@ -76,9 +75,9 @@ export const exportSdkLogin = (cb) => {
 
 // 导出群组成员接口
 export const exportGroupMemberInfo = (opt) => {
-  //
+  // opt
   let curOpt = { 'GroupId': avChatRoomId, ...opt };
-
+  //
   return new Promise((resolve, reject) => {
     webim.getGroupMemberInfo(curOpt, (data) => {
       resolve(data);
@@ -186,7 +185,7 @@ export const uploadSound = (uploadFiles, callback, progressCallback) => {
 };
 
 //获取最新的群历史消息,用于切换群组聊天时，重新拉取群组的聊天消息
-export const pullHistoryGroupMsgs = (cbOk, cbErr) => {
+export const pullHistoryGroupMsgs = (opt, cbOk, cbErr) => {
   if (selType == webim.SESSION_TYPE.C2C) {
     alert('当前的聊天类型为好友聊天，不能进行拉取群历史消息操作');
     return;
@@ -195,8 +194,8 @@ export const pullHistoryGroupMsgs = (cbOk, cbErr) => {
     //拉取最新的群历史消息
     var options = {
       'GroupId': selToID,
-      'ReqMsgSeq': resp.GroupInfo[0].NextMsgSeq - 1,
-      'ReqMsgNumber': reqMsgCount
+      'ReqMsgSeq': resp.GroupInfo[0].NextMsgSeq - opt.msgSeq - 1,
+      'ReqMsgNumber': opt.reqMsgCount
     };
     if (options.ReqMsgSeq == null || options.ReqMsgSeq == undefined || options.ReqMsgSeq <= 0) {
       webim.Log.warn("该群还没有历史消息:options=" + JSON.stringify(options));
@@ -205,7 +204,7 @@ export const pullHistoryGroupMsgs = (cbOk, cbErr) => {
     // selSess
     selSess = null;
     webim.MsgStore.delSessByTypeId(selType, selToID);
-    //recentSessMap[webim.SESSION_TYPE.GROUP+"_"+selToID].MsgGroupReadedSeq = resp.GroupInfo[0].MsgSeq;
+    //
     webim.syncGroupMsgs(
       options,
       function (msgList) {
@@ -213,12 +212,17 @@ export const pullHistoryGroupMsgs = (cbOk, cbErr) => {
           webim.Log.warn("该群没有历史消息了:options=" + JSON.stringify(options));
           return;
         }
-        var msgSeq = msgList[0].seq - 1;
-        // getPrePageGroupHistroyMsgInfoMap[selToID] = {
-        //   "ReqMsgSeq":  msgSeq
-        // };
+        // 重组备份
+        let tempList = [];
+        // 循环
+        for (var i = 0; i <= msgList.length - 1; i++) {//遍历消息，按照时间从后往前
+          var msg = msgList[i];
+          tempList.push(assembleMsg(msg));
+        }
+
+        // 成功回调
         if (cbOk)
-          cbOk(msgList);
+          cbOk(tempList);
       },
       function (err) {
         cbErr(err);
@@ -851,15 +855,20 @@ function applyJoinGroup(groupId, callback) {
       }
     },
     function (err) {
-      //alert(err.ErrorInfo);
-      if(err.ErrorCode == 10013)return quitGroup(groupId);
-      callback(err);
+      if(err.ErrorCode == 10013){
+        quitGroup(groupId, function (_err) {
+          if(_err) return alert(_err.ErrorInfo);
+          applyJoinGroup(groupId, callback);
+        });
+      }else{
+        callback(err);
+      }
     }
   );
 };
 
 //退出chat room
-function quitGroup(groupId) {
+function quitGroup(groupId, callback) {
   var options = {
     'GroupId': groupId//群id
   };
@@ -867,10 +876,10 @@ function quitGroup(groupId) {
     options,
     function (resp) {
       webim.Log.info('退群成功');
-
+      callback(null);
     },
     function (err) {
-      alert(err.ErrorInfo);
+      callback(err);
     }
   );
 }

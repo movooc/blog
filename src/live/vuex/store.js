@@ -53,6 +53,14 @@ const mutations = {
     }
   },
   //
+  UPDATE_HISTORY_MESSAGE(state, data){
+    if(Array.isArray(data)){
+      state.messageInfo = [...data, ...state.messageInfo];
+    }else if(Object.prototype.toString.call(data) == '[object Object]'){
+      state.messageInfo = [data, ...state.messageInfo];
+    }
+  },
+  //
   UPDATE_MENUSHOW(state, data){
     state.menuShow = data;
   },

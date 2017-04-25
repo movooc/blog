@@ -41,27 +41,31 @@
         if(err)return alert(err.ErrorInfo);
         // 调用群成员接口
         let opt = {
+          'Offset': 0,
           'MemberRoleFilter':[  //群成员身份过滤器
             'Owner'
           ],
+          'MemberInfoFilter': [
+              'Role'
+          ]
         };
         this.$store.commit('UPDATE_LOADING', false);
         // 获取群主信息
-//        exportGroupMemberInfo(opt).then((data) => {
-//          // 加载成功
-//          this.$store.commit('UPDATE_LOADING', false);
-//          //
-//          if(data.ActionStatus == 'OK' && data.MemberList.length){
-//            for(let m of data.MemberList){
-//              if(m.Member_Account == 'admin'){
-//                this.$store.commit('UPDATE_ISOWNER', true);
-//                break;
-//              }
-//            }
-//          }
-//        }, () => {
-//            alert('查找失败!');
-//        });
+        exportGroupMemberInfo(opt).then((data) => {
+          // 加载成功
+          this.$store.commit('UPDATE_LOADING', false);
+          //
+          if(data.ActionStatus == 'OK' && data.MemberList.length){
+            for(let m of data.MemberList){
+              if(m.Member_Account == 'admin'){
+                this.$store.commit('UPDATE_ISOWNER', true);
+                break;
+              }
+            }
+          }
+        }, () => {
+            alert('查找失败!');
+        });
       });
     },
     methods: {
