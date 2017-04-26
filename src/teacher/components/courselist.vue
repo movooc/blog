@@ -12,7 +12,7 @@
 <script>
     import { mapGetters } from 'vuex';
     // 获得config
-    let liveHost = process.env.LIVE_HOST ? process.env.LIVE_HOST : '/live.html';
+    let liveHost = process.env.LIVE_HOST ? process.env.LIVE_HOST.replace(/\/$/,'') : '/live.html';
 
     export default{
       name: 'course-list',

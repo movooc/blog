@@ -52,31 +52,16 @@ function Recombination() {
   for(let _html of htmlPath){
     if(/\.html$/.test(_html)){
       let fileName = _html.replace(/\.html$/,'');
-
-      if(fileName != process.env.FILENAME){
-        fsExtra.remove(distPath+'/'+_html, function (err) {
-          if(err)return console.log(err);
-          console.log(chalk.yellow('  delete html success!!!'));
-        });
-        continue;
-      };
-
       let dirPath = distPath+'/'+pckVersion;
       let filePath = dirPath+'/'+fileName;
-      let staticPath = filePath+'/static';
+      //let staticPath = filePath+'/static';
+      let staticPath = filePath;
       // create dir
       if(!fs.existsSync(filePath))fs.mkdirSync(filePath, 0755);
-      // if teacher or student directory
-      if(fileName != 'live'){
-        // create dir
-        var preStaticPath = filePath+'/'+fileName;
-        if(!fs.existsSync(preStaticPath))fs.mkdirSync(preStaticPath, 0755);
-        staticPath = filePath+'/'+fileName+'/static';
-      }
       // create static dir
       if(!fs.existsSync(staticPath))fs.mkdirSync(staticPath, 0755);
       // move the html files
-      fs.renameSync(distPath+'/'+_html, filePath+'/index.html');
+      //fs.renameSync(distPath+'/'+_html, filePath+'/index.html');
       // search static files
       let staticFile = fs.readdirSync(outStaticPath);
       // check if file
@@ -90,15 +75,29 @@ function Recombination() {
           let to = staticPath+'/'+_static;
           // search static files
           let fromFile = fs.readdirSync(from);
-          // create dir
-          if(!fs.existsSync(to))fs.mkdirSync(to, 0755);
-          //
-          for(let file of fromFile){
-            if(/\.\w+$/.test(file) && new RegExp(fileName).test(from)){
-              // move files
-              fs.renameSync(from+'/'+file, to+'/'+file);
-            }else if(new RegExp(fileName).test(file)){
-              Rename(from+'/'+file, to+'/'+file);
+
+          if(new RegExp(fileName).test(_static)){
+            to = staticPath;
+            //
+            for(let file of fromFile){
+              if(/\.\w+$/.test(file) && new RegExp(fileName).test(from)){
+                // move files
+                fs.renameSync(from+'/'+file, to+'/'+file);
+              }else if(new RegExp(fileName).test(file)){
+                Rename(from+'/'+file, to+'/'+file);
+              }
+            }
+          }else if(new RegExp('_static').test(_static)) {
+            // create dir
+            if(!fs.existsSync(to))fs.mkdirSync(to, 0755);
+            //
+            for(let file of fromFile){
+              if(/\.\w+$/.test(file) && new RegExp(fileName).test(from)){
+                // move files
+                fs.renameSync(from+'/'+file, to+'/'+file);
+              }else if(new RegExp(fileName).test(file)){
+                Rename(from+'/'+file, to+'/'+file);
+              }
             }
           }
         }

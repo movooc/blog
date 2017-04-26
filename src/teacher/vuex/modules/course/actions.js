@@ -81,7 +81,7 @@ export const fetchCourseDetail = ({commit}, query) => {
 };
 
 export const fetchOpenInfo = ({commit}, body) => {
-  const url = `${_prefix}lesson-open.api`;
+  const url = `${_prefix}/lesson-open.api`;
 
   return _post({ url, body }, commit)
     .then((json) => {

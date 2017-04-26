@@ -6,8 +6,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon build/dev-server.js",
-    "build": "node build/build.js",
-    "sandbox-teacher": "cross-env FILENAME=teacher ASSETS_HOST=http://assets.sandbox.yike.fm/teacher/ LIVE_HOST=http://www.sandbox.yike.fm/ TEACHER_HOST=http://teacher.sandbox.yike.fm/ STUDENT_HOST=http://student.sandbox.yike.fm/ node build/build.js",
+    "build": "cross-env ASSETS_HOST=https://assets.sandbox.yike.fm/ LIVE_HOST=https://sandbox.yike.fm/live/ TEACHER_HOST=https://teacher.sandbox.yike.fm/ STUDENT_HOST=https://student.sandbox.yike.fm/ node build/build.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
