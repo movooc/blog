@@ -29,13 +29,15 @@
     computed: {
       ...mapState([
         'isOwner',
+        'userInfo',
       ])
     },
     created() {
     },
     mounted() {
       // 初始化webim数据
-      _init.prototype.constructor.call(this, {});
+      let initData = this.userInfo || {};
+      _init.prototype.constructor.call(this, initData);
       // sdk登录
       exportSdkLogin((err, data) => {
         if(err)return alert(err.ErrorInfo);
@@ -49,23 +51,24 @@
               'Role'
           ]
         };
+        this.$store.commit('UPDATE_ISOWNER', initData.isOwner == 'yes');
         this.$store.commit('UPDATE_LOADING', false);
         // 获取群主信息
-        exportGroupMemberInfo(opt).then((data) => {
-          // 加载成功
-          this.$store.commit('UPDATE_LOADING', false);
-          //
-          if(data.ActionStatus == 'OK' && data.MemberList.length){
-            for(let m of data.MemberList){
-              if(m.Member_Account == 'admin'){
-                this.$store.commit('UPDATE_ISOWNER', true);
-                break;
-              }
-            }
-          }
-        }, () => {
-            alert('查找失败!');
-        });
+//        exportGroupMemberInfo(opt).then((data) => {
+//          // 加载成功
+//          this.$store.commit('UPDATE_LOADING', false);
+//          //
+//          if(data.ActionStatus == 'OK' && data.MemberList.length){
+//            for(let m of data.MemberList){
+//              if(m.Member_Account == 'admin'){
+//                this.$store.commit('UPDATE_ISOWNER', true);
+//                break;
+//              }
+//            }
+//          }
+//        }, () => {
+//            alert('查找失败!');
+//        });
       });
     },
     methods: {
@@ -99,11 +102,10 @@
       'sdkAppID': initData.sdkAppID, //用户所属应用id,必填
       'appIDAt3rd': initData.sdkAppID, //用户所属应用id，必填
       'accountType': initData.accountType, //用户所属应用帐号类型，必填
-      'identifier': 'lilei', //当前用户ID,必须是否字符串类型，选填
-      'identifierNick': '老师', //当前用户昵称，选填
-      //'userSig': data.userSig || 'eJxlj1FPgzAUhd-5FYRnI22hZCzZA5sohBEyN4zzhRBa5s0EutKJm-G-O3GJTbyv33dyzv00TNO0Nsv1bVlV3bFVhToJbplT00LWzR8UAlhRqsKR7B-kHwIkL8pacTlCTCklCOkOMN4qqOFqlKyBVsM92xdjx2-evYSJ502IrsBuhGm4WsR3sZ2mjpNHZz-NKQqOrwNvokO2fcD2PtlGcUfDxWYuRE8DCF6iiXzrbf804EcyX-lhsltm5zqh7Ml9zu*9y35RyQNk5TCbaZUKGn4d5BMXe4joL71z2UPXjgJBmGLioJ*zjC-jG5XzXFA_', //当前用户身份凭证，必须是字符串类型，选填
-      'userSig': 'eJxlz19vgjAUBfB3PkXDq8vWln-r3gwjaqYixZjoC0EpeqNgVyqoy777lJmMZM*-c3Pu*TIQQuZ8HD*nm83xVOpEX6Qw0Rsysfn0h1JClqQ6sVT2D8VZghJJmmuhWqQOoxh3I5CJUkMOj8ABDgI6XGX7pK1oldi3Y*q6r7QbgW2Lk2Dpj6L3uA5X3M*XFzmja2-ShF7Ir96p19sP*Ro*oxWbWbrPlR9Ho13-w61tZqXBy*LqLDjbhTBwxvMtbQbFsChZJab5tIEAk*zcqdRQiMdDjNoW9VzW0VqoCo7l72BMHEIIw-fVxrfxA5r9XHs_',
-      'headurl': 'img/2016.gif'//当前用户默认头像，选填
+      'identifier': data.sn, //当前用户ID,必须是否字符串类型，选填
+      'identifierNick': data.name, //当前用户昵称，选填
+      'userSig': data.userSig, //当前用户身份凭证，必须是字符串类型，选填
+      'headurl': data.avatar || 'img/2017.jpg'//当前用户默认头像，选填
     };
 
     //监听（多终端同步）群系统消息方法，方法都定义在demo_group_notice.js文件中

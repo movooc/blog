@@ -10,19 +10,9 @@ export default [{
   name: 'index',
   component(resolve) {
     require.ensure([], () => {
-      resolve(require('../components/enter/index.vue'));
-    }, 'live-teacher');
-  },
-  children: [
-    {
-      path: '/hello',
-      name: 'hello',
-      component(resolve) {
-        require.ensure([], () => {
-          resolve(require('../components/Hello.vue'));
-        }, 'live-hello');
-      }
-    }]
+      resolve(require('../components/Hello.vue'));
+    }, 'live-hello');
+  }
 },{
   path: '/teacher',
   name: 'v-teacher',

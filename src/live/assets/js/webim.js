@@ -210,7 +210,7 @@ export const pullHistoryGroupMsgs = (opt, cbOk, cbErr) => {
       function (msgList) {
         if (msgList.length == 0) {
           webim.Log.warn("该群没有历史消息了:options=" + JSON.stringify(options));
-          return;
+          //return;
         }
         // 重组备份
         let tempList = [];
@@ -461,7 +461,7 @@ function sendMsgCallBack (msgtosend, callback) {
     }
 
     if (!selSess) {
-      selSess = new webim.Session(selType, selToID, selToID, selSessHeadUrl, Math.round(new Date().getTime() / 1000));
+      selSess = new webim.Session(selType, selToID, selToID, loginInfo.headurl, Math.round(new Date().getTime() / 1000));
     }
     var isSend = true;//是否为自己发送
     var seq = -1;//消息序列，-1表示sdk自动生成，用于去重

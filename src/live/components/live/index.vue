@@ -3,26 +3,12 @@
   <div class="live-page" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
     <!-- live entity -->
     <div class="live-body" id="live-body">
-      <p class="pullMsgs"><a href="javascript:;" @click="pullMsgs">点击拉取历史消息</a></p>
+      <p class="pullMsgs" v-if="canPullMsgs"><a href="javascript:;" @click="pullMsgs">点击拉取历史消息</a></p>
+      <p class="pullMsgs" v-if="!canPullMsgs"><span>已经无历史消息</span></p>
       <!-- header -->
       <l-header></l-header>
       <!-- message entity -->
       <ul class="live-sms-list" id="live_sms_list">
-        <li>
-            <div class="user-img">
-              <img src="static/_static/live/img/user-img.png" width="45px">
-            </div>
-            <div class="live-sms">
-                <div class="speaker-name">主讲人</div>
-                <div class="sms-content">
-                  <div class="content-img">
-                    <a href=""><img src="static/_static/live/img/back-img2.png"></a>
-                    <a href=""><img src="static/_static/live/img/back-img2.png"></a>
-                    <a href=""><img src="static/_static/live/img/back-img2.png"></a>
-                  </div>
-                </div>
-            </div>
-        </li>
         <!--<li>-->
           <!--<div class="user-img">-->
             <!--<img src="~@live/assets/img/user-img.png" width="45px">-->
@@ -99,6 +85,7 @@
       return {
         show: false,
         busy: false,
+        canPullMsgs: true,
       };
     },
     computed: {
@@ -129,6 +116,9 @@
         };
         // 回调
         pullHistoryGroupMsgs(opt, (data) => {
+          if(data.length < opt.reqMsgCount){
+            return (this.canPullMsgs = false);
+          }
           // 更新列表
           this.$store.commit('UPDATE_HISTORY_MESSAGE', data);
         }, (err) => {

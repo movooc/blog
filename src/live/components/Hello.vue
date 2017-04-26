@@ -1,52 +1,67 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <button @click="startLive('create')">老师界面直播</button>
-    <button @click="startLive('join')">学员界面直播</button>
+    <v-enter v-if="userInfo"></v-enter>
   </div>
 </template>
-
+userInfo
 <script>
-export default {
-  name: 'hello',
-  data() {
-    return {
-      msg: '课程详情!!!',
-    };
-  },
-  methods: {
-    startLive(str) {
-      str == 'create' ? this.$router.push({path:'teacher', query: {createRoom:true}}) :
-                        this.$router.push('teacher');
+  import vEnter from '@live/components/enter/index.vue';
+  import {mapState} from 'vuex';
 
-    }
-  },
-};
+  export default {
+    name: 'hello',
+    components: {
+      vEnter,
+    },
+    computed: {
+      ...mapState([
+        'userInfo',
+      ])
+    },
+    data() {
+      return {
+        open: {
+          isOwner: webim.Tool.getQueryString('isOwner'),
+          teach: webim.Tool.getQueryString('teach'),
+          discuss: webim.Tool.getQueryString('discuss'),
+          userSig: '',
+        }
+      };
+    },
+    mounted() {
+      const _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST : '/api/';
+
+      let userUrl = `${_prefix.replace(/\/$/,'')}/user-profile.api`;
+      let userSigUrl = `${_prefix.replace(/\/$/,'')}/live-tim-user_sig.api`;
+
+      // 获得userSig
+      this.$http.get(userSigUrl).then((json)=>{
+        if(json.ok){
+          this.open.userSig = json.body.data;
+          // 获得user info
+          this.$http.get(userUrl).then((json)=>{
+            if(json.ok){
+              let data = json.body.data;
+              this.open.sn = data.sn;
+              this.open.name = data.name;
+              this.open.avatar = data.avatar;
+              this.open.groupId = data.teach;
+              this.$store.commit('UPDATE_USERINFO', this.open);
+            }
+          },(err)=>{
+            console.log(err);
+          });
+        }
+      },(err)=>{
+        console.log(err);
+      });
+    },
+    methods: {
+    },
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  @import '~@lib/css/index.styl';
 
-  h1 {
-    padding: 0 30px;
-    font-weight: normal;
-    font-size: 72px;
-  }
-
-  button {
-    margin-bottom: 10px;
-    padding: 20px;
-    width: 100%;
-    color: #fff;
-    background: #12B7F5;
-    border: 0 none;
-    cursor: pointer;
-    px2px(font-size, 32px);
-  }
-
-  .is-pc h1{
-    text-align: center;
-    font-size: 24px;
-  }
 </style>
