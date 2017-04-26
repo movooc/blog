@@ -52,6 +52,15 @@ function Recombination() {
   for(let _html of htmlPath){
     if(/\.html$/.test(_html)){
       let fileName = _html.replace(/\.html$/,'');
+
+      if(fileName != process.env.FILENAME){
+        fsExtra.remove(distPath+'/'+_html, function (err) {
+          if(err)return console.log(err);
+          console.log(chalk.yellow('  delete html success!!!'));
+        });
+        continue;
+      };
+
       let dirPath = distPath+'/'+pckVersion;
       let filePath = dirPath+'/'+fileName;
       let staticPath = filePath+'/static';
