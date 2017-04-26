@@ -4,6 +4,7 @@ import mutations from './mutations'
 
 const state = {
   courseList: [],
+  openInfo: null,
   courseDetail: null,
 };
 

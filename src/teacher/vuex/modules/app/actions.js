@@ -6,7 +6,7 @@ import vue from 'vue'
  * @param  {String} options.query query参数
  * @return {Promise}               Promise
  */
-const _prefix = process.env.NODE_ENV == 'production' ? 'http://teacher.sandbox.yike.fm/' : '/api/';
+const _prefix = process.env.NODE_ENV == 'production' ? process.env.TEACHER_HOST.replace(/\/$/,'') : '/api';
 
 const _get = ({ url, query }, commit) => {
   if (commit) commit('START_LOADING');
@@ -28,7 +28,7 @@ const _get = ({ url, query }, commit) => {
 };
 
 export const getUserInfo = ({commit}, query) => {
-  const url = `${_prefix}lesson-list.api`;
+  const url = `${_prefix}/lesson-list.api`;
 
   return _get({ url, query }, commit)
     .then((json) => {
