@@ -1,7 +1,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
-var path = require('path')
-// var publicPath = process.env.public == '' ? 'http://assets.sandbox.yike.fm/' : 'http://assets.sandbox.yike.fm/';
-
+var path = require('path');
+var publicPath = process.env.ASSETS_HOST ? process.env.ASSETS_HOST : '/';
 
 module.exports = {
   build: {
@@ -9,7 +8,7 @@ module.exports = {
     index: '',
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: 'http://assets.sandbox.yike.fm/',
+    assetsPublicPath: publicPath,
     productionSourceMap: false,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -31,13 +30,15 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-        target: 'http://teacher.sandbox.yike.fm',
+        //target: 'http://teacher.sandbox.yike.fm',
+        target: 'http://sandbox.yike.fm',
         secure: false,
         changeOrigin: true,
         pathRewrite: {
           '^/api':''
         },
         onProxyReq(proxyReq, req, res) {
+          proxyReq.setHeader('X-SESS', '58f5e18810316-558fb1392c18318.26237119');
           // console.log(proxyReq.getHeader('user-agent'));
         }
       }
