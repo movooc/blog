@@ -32,13 +32,16 @@ module.exports = {
       '/api':{
         //target: 'http://teacher.sandbox.yike.fm',
         target: 'http://sandbox.yike.fm',
+        //target: 'http://student.sandbox.yike.fm',
         secure: false,
         changeOrigin: true,
         pathRewrite: {
           '^/api':''
         },
         onProxyReq(proxyReq, req, res) {
-          proxyReq.setHeader('X-SESS', '58f5e18810316-558fb1392c18318.26237119');
+          proxyReq.setHeader('X-SESS', '58f9ebeea1419-10590155e917d9b9.12021099');
+          let ua = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1 wechatdevtools/0.7.0 MicroMessenger/6.3.9 Language/zh_CN webview/0'
+          proxyReq.setHeader('User-Agent', ua);
           // console.log(proxyReq.getHeader('user-agent'));
         }
       }
