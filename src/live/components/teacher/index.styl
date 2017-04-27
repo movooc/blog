@@ -1,5 +1,39 @@
 @import '~@lib/css/index.styl';
 
-.teacher-bar{
+.teacher-bar {
+  margin-top: 14px;
 
+  .bar-title {
+    padding: 10px;
+    overflow: hidden;
+    px2px(font-size, 32px);
+
+    >* {
+      float: left;
+    }
+    .img {
+      padding: 24px;
+      width: 53px;
+    }
+  }
+  .bar-list {
+    px2px(font-size, 32px);
+    li {
+      padding: 10px;
+    }
+  }
+}
+
+.is-pc {
+  .teacher-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 271px;
+    background: #fff;
+    border-radius: 4px;
+    .bar-title{
+
+    }
+  }
 }

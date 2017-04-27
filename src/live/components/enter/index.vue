@@ -2,6 +2,7 @@
   <!-- 直播入口 -->
   <div class="l-enter">
     <div class="l-teacher" v-if="isOwner">
+      <v-teacher></v-teacher>
       <p class="title">课程介绍:</p>
       <v-live></v-live>
     </div>
@@ -15,6 +16,7 @@
   import { vBigGroupMsgNotify, jsonpCallback, onMsgNotify, exportSdkLogin, exportInitData, exportGroupMemberInfo } from '@live/assets/js/webim';
   import { onDestoryGroupNotify, onRevokeGroupNotify, onCustomGroupNotify, onGroupInfoChangeNotify, onKickedGroupNotify } from '@live/assets/js/webim_group_notice';
   import vLive from '@live/components/live/index.vue';
+  import vTeacher from '@live/components/teacher/index.vue';
   import {mapState} from 'vuex';
 
   export default
@@ -25,6 +27,7 @@
     },
     components: {
       vLive,
+      vTeacher,
     },
     computed: {
       ...mapState([

@@ -55,7 +55,9 @@ function gotStream(stream) {
   analyserNode.fftSize = 2048;
   inputPoint.connect( analyserNode );
 
-  audioRecorder = new Recorder( inputPoint );
+  let cfg=process.env.NODE_ENV=='production'?{workerPath:'assets/static/live/_static/live/js/recorderjs/recorderWorker.min.js'}:{};
+
+  audioRecorder = new Recorder( inputPoint, cfg );
 
   zeroGain = audioContext.createGain();
   zeroGain.gain.value = 0.0;
