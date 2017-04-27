@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <v-header></v-header>
     <nav-bar></nav-bar>
     <div class="loading" v-show="loading"></div>
     <div>
@@ -10,18 +11,17 @@
 
 <script>
 import NavBar from './components/navbar'
+import VHeader from './components/header'
+import { setCookie } from '@lib/js/mUtils';
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    NavBar
+    NavBar,
+    VHeader
   },
   created() {
-    this.$store.dispatch('getUserInfo').then(() => {
-      console.log(11)
-    }, () => {
-      console.log(22)
-    });
+
   },
   computed: mapGetters({
     loading: 'getLoading'

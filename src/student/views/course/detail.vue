@@ -1,18 +1,16 @@
 <template>
   <section class="content">
-    <div class="title">课程列表</div>
-    <course-list :lists="courseList"></course-list>
+    <div class="title">课程详情</div>
   </section>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
-  import courseList from '@student/components/courseList.vue';
 
   export default{
-    name: 'list',
+    name: 'detail',
     components: {
-      courseList
+
     },
     computed: {
       ...mapGetters({
@@ -20,7 +18,10 @@
       })
     },
     created() {
-      this.$store.dispatch('fetchCourseList').then(() => {
+      //获取路由参数
+      let query = this.$route.params;
+      //
+      this.$store.dispatch('fetchCourseDetail', query).then(() => {
         console.log('success');
       }, () => {
         console.log('fail');

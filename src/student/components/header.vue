@@ -1,12 +1,12 @@
 <template>
-  <nav class="toolbar">
-    欢迎学员体验测试版0.1
-  </nav>
+  <header class="header">
+    header
+  </header>
 </template>
 
 <script>
     export default{
-      name: 'nav-bar',
+      name: 'v-header',
       methods: {
       }
     }
@@ -15,7 +15,8 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import '~@lib/css/index.styl';
 
-  .toolbar {
+  .header {
+    padding: 20px;
     height: 36px;
     background: #fff;
     text-align: center;

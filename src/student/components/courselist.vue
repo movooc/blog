@@ -34,8 +34,8 @@
       methods: {
         startLesson(lesson_sn) {
           // 获得开课信息
-          this.$store.dispatch('fetchOpenInfo', {lesson_sn}).then((data) => {
-            let params = '?isOwner=yes';
+          this.$store.dispatch('fetchLessonAccess', {lesson_sn}).then((data) => {
+            let params = '?isOwner=no';
             for(let d in data){
               params = `${params}&${d}=${data[d]}`;
             }

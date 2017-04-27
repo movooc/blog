@@ -6,9 +6,10 @@
 
 import App from '../App'
 
-const home = r => require.ensure([], () => r(require('../views/home/index')), 'student-home');
-const course = r => require.ensure([], () => r(require('../views/course/index')), 'student-course');
-const list = r => require.ensure([], () => r(require('../views/course/list')), 'student-courseList');
+const home = r => require.ensure([], () => r(require('../views/home/index')), 'student/student-home');
+const course = r => require.ensure([], () => r(require('../views/course/index')), 'student/student-course');
+const list = r => require.ensure([], () => r(require('../views/course/list')), 'student/student-courseList');
+const detail = r => require.ensure([], () => r(require('../views/course/detail')), 'student/student-courseDetail');
 
 export default [
   {
@@ -23,9 +24,15 @@ export default [
     children: [
       // 课程列表页
       {
-        path: '/list',
+        path: '/course/list',
         name: 'list',
         component: list
+      },
+      // 课程详情页
+      {
+        path: '/course/:lesson_sn',
+        name: 'detail',
+        component: detail
       }
     ]
   }

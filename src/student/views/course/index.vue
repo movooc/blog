@@ -18,5 +18,5 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-
+  @import "index.styl";
 </style>

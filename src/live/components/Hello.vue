@@ -3,7 +3,7 @@
     <v-enter v-if="userInfo"></v-enter>
   </div>
 </template>
-userInfo
+
 <script>
   import vEnter from '@live/components/enter/index.vue';
   import {mapState} from 'vuex';

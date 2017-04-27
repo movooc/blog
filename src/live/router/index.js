@@ -11,7 +11,7 @@ export default [{
   component(resolve) {
     require.ensure([], () => {
       resolve(require('../components/Hello.vue'));
-    }, 'live-hello');
+    }, 'live/live-hello');
   }
 },{
   path: '/teacher',
@@ -19,7 +19,7 @@ export default [{
   component(resolve) {
     require.ensure([], () => {
       resolve(require('../components/enter/index.vue'));
-    }, 'live-teacher01');
+    }, 'live/live-teacher01');
   }
 }];
 
