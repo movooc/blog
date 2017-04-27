@@ -52,16 +52,20 @@ function Recombination() {
   for(let _html of htmlPath){
     if(/\.html$/.test(_html)){
       let fileName = _html.replace(/\.html$/,'');
-      let dirPath = distPath+'/'+pckVersion;
+      let preDirPath = distPath+'/'+pckVersion;
+      let preStaticPath = preDirPath+'/static';
+      // create dir
+      if(!fs.existsSync(preStaticPath))fs.mkdirSync(preStaticPath, 0755);
+      let dirPath = preStaticPath;
+
       let filePath = dirPath+'/'+fileName;
-      //let staticPath = filePath+'/static';
       let staticPath = filePath;
       // create dir
       if(!fs.existsSync(filePath))fs.mkdirSync(filePath, 0755);
       // create static dir
       if(!fs.existsSync(staticPath))fs.mkdirSync(staticPath, 0755);
       // move the html files
-      //fs.renameSync(distPath+'/'+_html, filePath+'/index.html');
+      fs.renameSync(distPath+'/'+_html, preDirPath+'/'+_html);
       // search static files
       let staticFile = fs.readdirSync(outStaticPath);
       // check if file
