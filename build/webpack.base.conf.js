@@ -12,8 +12,8 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     // filename: 'static/[name].[hash].js',
-    filename: '[name].js',
-    chunkFilename: '[name].[id].[chunkhash].js',
+    filename: '[name]/[name].js',
+    chunkFilename: '[name]/[name].[id].[chunkhash].js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
