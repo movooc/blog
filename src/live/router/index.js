@@ -5,21 +5,17 @@
  * name ： 路由的名字
  * component : 路由的组件路径
  */
+if(process.env.NODE_ENV == 'production'){
+  //
+  var hello = r => require.ensure([], () => r(require('../components/Hello.vue')), 'live/live-hello');
+}else{
+  //
+  var hello = require('../components/Hello.vue');
+}
+
 export default [{
   path: '/',
   name: 'index',
-  component(resolve) {
-    require.ensure([], () => {
-      resolve(require('../components/Hello.vue'));
-    }, 'live/live-hello');
-  }
-},{
-  path: '/teacher',
-  name: 'v-teacher',
-  component(resolve) {
-    require.ensure([], () => {
-      resolve(require('../components/enter/index.vue'));
-    }, 'live/live-teacher01');
-  }
+  component: hello
 }];
 

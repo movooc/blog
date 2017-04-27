@@ -6,10 +6,20 @@
 
 import App from '../App'
 
-const home = r => require.ensure([], () => r(require('../views/home/index')), 'teacher/teacher-home');
-const course = r => require.ensure([], () => r(require('../views/course/index')), 'teacher/teacher-course');
-const list = r => require.ensure([], () => r(require('../views/course/list')), 'teacher/teacher-courseList');
-const detail = r => require.ensure([], () => r(require('../views/course/detail')), 'teacher/teacher-courseDetail');
+if(process.env.NODE_ENV == 'production'){
+  //
+  var home = r => require.ensure([], () => r(require('../views/home/index')), 'teacher/teacher-home');
+  var course = r => require.ensure([], () => r(require('../views/course/index')), 'teacher/teacher-course');
+  var list = r => require.ensure([], () => r(require('../views/course/list')), 'teacher/teacher-courseList');
+  var detail = r => require.ensure([], () => r(require('../views/course/detail')), 'teacher/teacher-courseDetail');
+
+}else{
+  //
+  var home = require('../views/home/index');
+  var course = require('../views/course/index');
+  var list = require('../views/course/list');
+  var detail = require('../views/course/detail');
+}
 
 export default [
   {

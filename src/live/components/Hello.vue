@@ -45,7 +45,7 @@
               this.open.sn = data.sn;
               this.open.name = data.name;
               this.open.avatar = data.avatar;
-              this.open.groupId = data.teach;
+              this.open.groupId = this.open.teach;
               this.$store.commit('UPDATE_USERINFO', this.open);
             }
           },(err)=>{
@@ -63,5 +63,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus" rel="stylesheet/stylus">
-
+  .hello {
+    height: 100%;
+  }
 </style>
