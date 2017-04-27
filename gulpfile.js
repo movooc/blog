@@ -22,12 +22,12 @@ gulp.task('default', ['dev']);
 =============================================================================================================*/
 
 gulp.task('uglify-js', function () {
-    return gulp.src('test_sdk/_static/live/sdk/**.js')
+    return gulp.src('static/_static/live/js/recorderjs/**.js')
         .pipe(uglify())
         .pipe(rename({
           suffix: '.min'
         }))
-        .pipe(gulp.dest('test_sdk/_static/live/sdk/'));
+        .pipe(gulp.dest('static/_static/live/js/recorderjs/'));
 });
 
 

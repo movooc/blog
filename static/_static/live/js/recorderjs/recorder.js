@@ -19,7 +19,8 @@ DEALINGS IN THE SOFTWARE.
 
 (function(window){
 
-  var WORKER_PATH = 'static/_static/live/js/recorderjs/recorderWorker.js';
+  // var WORKER_PATH = 'http://assets.sandbox.yike.fm/static/_static/live/js/recorderjs/recorderWorker.min.js';
+  var WORKER_PATH = 'http://assets.sandbox.yike.fm/static/_static/live/js/recorderjs/recorderWorker.js';
 
   var Recorder = function(source, cfg){
     var config = cfg || {};
