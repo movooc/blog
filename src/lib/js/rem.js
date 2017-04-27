@@ -18,7 +18,11 @@
     };
 
     //跳转语句，如果是手机访问就自动跳转到wap.baidu.com页面
-    if (mySystem.win || mySystem.mac || mySystem.xll || mySystem.ipad) {
+    // if (mySystem.win || mySystem.mac || mySystem.xll || mySystem.ipad) {
+    //   isPC = true;
+    // }
+    // 宽松判断设备类型
+    if(navigator.userAgent.match(/(iPhone|iPad|Android|ios)/i) == null){
       isPC = true;
     }
 
