@@ -25,8 +25,4 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   @import "index.styl";
-
-  .content-detail {
-    text-align: center;
-  }
 </style>

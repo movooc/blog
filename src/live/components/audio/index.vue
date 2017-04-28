@@ -24,20 +24,33 @@
     },
     components: {
     },
+    computed: {
+    },
     data() {
       return {
         active: false,
         played: false,
       };
     },
-    computed: {
+    create() {
+
     },
     mounted() {
       let self = this;
       let audio = document.getElementById(this.id);
-      let objAudio = audiojs.create(audio, {css: ''});
-      objAudio.element.children[0].setAttribute('src', self.src);
+//      let source = audio.getElementsByTagName('source')[0];
+      //objAudio.element.setAttribute('src', self.src);
+//      (function observerAudio() {
+//        if(audio.readyState > -1 && audio.readyState < 1){
+//          setTimeout(function(){observerAudio();}, 1500);
+//        }else {
+//          //
+//          let objAudio = audiojs.create(audio, {css: ''});
+//        }
+//      })();
 
+      let objAudio = audiojs.create(audio, {css: ''});
+      objAudio.element.setAttribute('src', self.src);
       // observer
       (function observerAudio() {
         if(!objAudio.playing){

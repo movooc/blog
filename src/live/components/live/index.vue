@@ -25,7 +25,7 @@
         <!--</li>-->
         <li v-for="msg in messageInfo">
           <div class="user-img">
-            <img src="static/_static/live/img/user-img.png" width="45px">
+            <img src="https://storage.sandbox.yike.fm/user/58f5e18810316/avatar?1cg61v9" width="45px">
           </div>
           <div class="live-sms">
             <div class="speaker-name" v-text="msg.nickname"></div>
