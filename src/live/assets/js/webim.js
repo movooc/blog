@@ -162,16 +162,21 @@ export const uploadSound = (uploadFiles, callback, progressCallback) => {
     businessType = webim.UPLOAD_PIC_BUSSINESS_TYPE.GROUP_MSG;
   }
 
-  //封装上传图片请求
+  if(!file.name){
+    var random=Math.round(Math.random() * 4294967296);
+    file.name=random.toString()+'.wav';
+  }
+
+  //封装上传请求
   var opt = {
-    'file': file, //图片对象
+    'file': file, //对象
     'onProgressCallBack': progressCallback, //上传文件进度条回调函数
     'To_Account': selToID, //接收者
     'businessType': businessType, //业务类型
     'fileType': webim.UPLOAD_RES_TYPE.FILE//表示上传文件
   };
 
-  //上传图片
+  //上传
   webim.uploadFile(opt,
     function (resp) {
       //上传成功发送文件

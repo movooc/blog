@@ -34,7 +34,7 @@ let webpackConfig = merge(baseWebpackConfig, {
 });
 
 // https://github.com/ampedandwired/html-webpack-plugin
-let pages = utils.getEntries('./view/**/*.html');
+let pages = utils.getEntries('./view/**/*.dev.html');
 
 for (let page in pages) {
   // 配置html文件

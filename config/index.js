@@ -39,7 +39,7 @@ module.exports = {
           '^/api':''
         },
         onProxyReq(proxyReq, req, res) {
-          proxyReq.setHeader('X-SESS', '58f9ebeea1419-105901c90b36d569.58788114');
+          proxyReq.setHeader('X-SESS', '58f9ebeea1419-1059029ce0e2d6c2.39380994');
           let ua = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1 wechatdevtools/0.7.0 MicroMessenger/6.3.9 Language/zh_CN webview/0'
           proxyReq.setHeader('User-Agent', ua);
           // console.log(proxyReq.getHeader('user-agent'));
