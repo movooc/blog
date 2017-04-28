@@ -861,10 +861,13 @@ function applyJoinGroup(groupId, callback) {
     },
     function (err) {
       if(err.ErrorCode == 10013){
-        quitGroup(groupId, function (_err) {
-          if(_err) return alert(_err.ErrorInfo);
-          applyJoinGroup(groupId, callback);
-        });
+        webim.Log.info('已在群里!');
+        selToID = groupId;
+        callback(null);
+        // quitGroup(groupId, function (_err) {
+        //   if(_err) return alert(_err.ErrorInfo);
+        //   applyJoinGroup(groupId, callback);
+        // });
       }else{
         callback(err);
       }

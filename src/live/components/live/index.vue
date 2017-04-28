@@ -116,7 +116,7 @@
         };
         // 回调
         pullHistoryGroupMsgs(opt, (data) => {
-          if(data.length < opt.reqMsgCount){
+          if(!data.length){
             return (this.canPullMsgs = false);
           }
           // 更新列表
