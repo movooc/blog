@@ -1,5 +1,5 @@
 <template>
-  <section class="content">
+  <section class="content-detail">
     {{ homeInfo }}
     <router-link to="/course/list">点击进入课程列表</router-link>
   </section>
@@ -25,4 +25,8 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   @import "index.styl";
+
+  .content-detail {
+    text-align: center;
+  }
 </style>

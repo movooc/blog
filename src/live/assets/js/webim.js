@@ -199,7 +199,7 @@ export const pullHistoryGroupMsgs = (opt, cbOk, cbErr) => {
     //拉取最新的群历史消息
     var options = {
       'GroupId': selToID,
-      'ReqMsgSeq': resp.GroupInfo[0].NextMsgSeq - opt.msgSeq - 1,
+      'ReqMsgSeq': opt.single?opt.msgSeq:(resp.GroupInfo[0].NextMsgSeq - opt.msgSeq - 1),
       'ReqMsgNumber': opt.reqMsgCount
     };
     if (options.ReqMsgSeq == null || options.ReqMsgSeq == undefined || options.ReqMsgSeq <= 0) {

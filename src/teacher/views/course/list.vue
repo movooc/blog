@@ -1,6 +1,5 @@
 <template>
   <section class="content">
-    <div class="title">老师课程列表</div>
     <course-list :lists="courseList"></course-list>
   </section>
 </template>
