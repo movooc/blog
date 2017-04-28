@@ -1,195 +1,193 @@
 @import '~@lib/css/index.styl';
 
-.l-audio {
-  position: relative;
-
-  .icon-dot {
-    position: absolute;
-    content: "\e651";
-    color: #fb6666;
-    font-family:"iconfont" !important;
-    font-size:16px;
-    font-style:normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    px2px(top, -24px);
-    px2px(right, -60px);
-    px2px(font-size, 50px);
-
-    &.hidden {
-      display: none;
+.rd-container {
+        width: 100%;
+        height: 100%;
+        px2px(font-size, 32px);
     }
-  }
-}
-
-.audiojs {
-  position: relative;
-  display: -webkit-box;
-  display: box;
-  width: 100%;
-  height: 72px;
-  background: #12b7f5;
-  overflow: hidden;
-  px2px(font-size, 32px);
-
-  .play-pause,.scrubber,.time {
-    display: -webkit-box;
-    display: box;
-    padding: 0 2px;
-  }
-  p {
-    display: none;
-    margin: 0;
-    cursor: pointer;
-  }
-  audio {
-    position: absolute;
-    left: -1px;
-  }
-  .play-pause {
-    margin: 12px 10px 0 15px;
-  }
-  .play, .pause {
-    display: block;
-
-    &:before {
-      display: block;
-      font-family: "iconfont" !important;
-      font-style: normal;
-      color: #fff;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      content: "\e720";
-      px2px(font-size, 50px);
+    .rd-audio-player {
+        //position: absolute;
+        height: 40px;
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        box-shadow: 0 0 .5px rgba(0, 0, 0, 0.29);
+        margin: -5px 0 0 -5px;
     }
-  }
-  .pause {
-    display: none;
-    &:before {
-      content: "\e601";
+    .rd-audio-cover {
+        position: relative;
+        height: 100%;
+        width: 50px;
+        background-size: cover;
+        //background-image: url(../assets/ka.jpg);
+        flex-shrink: 0;
     }
-  }
-  .scrubber {
-    position: relative;
-    margin-top: 30px;
-    height: 10px;
-    width: 200px;
-    background: #5a5a5a;
-    overflow: hidden;
-  }
-
-  .time {
-    padding: 20px 0 0 22px;
-    line-height: 1;
-    color: #ddd;
-    px2px(font-size, 24px);
-
-    em {
-      padding: 0px 2px 0px 0px;
-      color: #f9f9f9;
-      font-style: normal;
+    .rd-audio-player-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 4px;
+        height: 4px;
+        background: rgba(0, 0, 0, 0.45);
+        border: none;
+        border-radius: 50%;
+        padding: 1px;
+        margin: -2px 0 0 -2px;
+        outline: none;
     }
-    strong {
-      padding: 0px 0px 0px 2px;
-      font-weight: normal;
+    .rd-audio-player-icon {
+        width: 2px;
+        height: 2px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -1px 0 0 -.7px;
     }
-  }
-
-
-  .loading {
-    // background: #3f3f3f;
-  }
-
-  .error-message {
-    display: none;
-    margin: 0px 10px;
-    height: 36px;
-    width: 400px;
-    overflow: hidden;
-    line-height: 36px;
-    white-space: nowrap;
-    color: #fff;
-    text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    -icab-text-overflow: ellipsis;
-    -khtml-text-overflow: ellipsis;
-    -moz-text-overflow: ellipsis;
-    -webkit-text-overflow: ellipsis;
-
-    a {
-      color: #eee;
-      text-decoration: none;
-      padding-bottom: 1px;
-      border-bottom: 1px solid #999;
-      white-space: wrap;
+    .rd-audio-contrl {
+        position: relative;
+        width: 100px;
+        display: flex;
+        color: #666;
+        height: 30px;
+        left: 0;
+        bottom: 0;
+        background: #fff;
+        padding: .5px;
+        box-sizing: border-box;
+        align-items: flex-end;
     }
-  }
-}
-
-.audiojs .progress {
-  position: absolute; top: 0px;
-  left: 0px;
-  height: 14px;
-  width: 0px;
-  background: #fff;
-  z-index: 1;
-}
-.audiojs .loaded {
-  display: none;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  height: 14px;
-  width: 0px;
-  background: #37383b;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (min--moz-device-pixel-ratio: 2),
-only screen and (min-moz-device-pixel-ratio: 2),
-only screen and (-o-min-device-pixel-ratio: 2/1),
-only screen and (min-device-pixel-ratio: 2) {
-  .audiojs .play, .audiojs .loading, .audiojs .error, .audiojs .pause {
-    //background-image: url("$2");
-    //-webkit-background-size: 30px 120px;
-    //-moz-background-size: 30px 120px;
-    //-o-background-size: 30px 120px;
-    //background-size: 30px 120px;
-  }
-}
-
-.playing .play, .playing .loading, .playing .error { display: none; }
-.playing .pause { display: block; }
-
-.loading .play, .loading .pause, .loading .error { display: none; }
-.loading .loading { display: none; }
-
-.error .time, .error .play, .error .pause, .error .scrubber, .error .loading { display: none; }
-.error .error { display: block; }
-.error .play-pause p { cursor: auto; }
-.error .error-message { display: block; }
-
-.is-pc {
-  .audiojs {
-    height: 45px;
-
-    .play-pause {
-      margin-right: 10px;
-      margin-left: 10px;
+    .rd-audio-slider-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        width: 100px;
     }
-    .scrubber {
-      margin-top: 22px;
-      width: 110px;
-      height: 4px;
+    .rd-audio-slider {
+        position: relative;
+        width: 100%;
     }
-    .time {
-      padding-top: 17px;
-      padding-left: 10px;
+    .rd-audio-slider-rail {
+        width: 100%;
+        height: 5px;
+        background: #fff;
     }
-  }
-  .l-audio {
-    .icon-dot {
-      right: -40px;
+    .rd-audio-slider-rail-inner {
+        height: 100%;
+        width: 0%;
+        background: #03A9F4;
+        transition: width 16ms;
     }
-  }
-}
+    .rd-audio-time.current,
+    .rd-audio-time.duration {
+        display: block;
+    }
+    .bounce-transition {
+        animation-duration: .75s;
+        animation-fill-mode: both;
+    }
+    .bounce-enter {
+        animation-name: bounceIn;
+    }
+    .bounce-leave {
+        animation-name: bounceOut;
+    }
+    @-webkit-keyframes bounceIn {
+      from, 20%, 40%, 60%, 80%, to {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      }
+      0% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+      }
+      20% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1);
+        transform: scale3d(1.1, 1.1, 1.1);
+      }
+      40% {
+        -webkit-transform: scale3d(.9, .9, .9);
+        transform: scale3d(.9, .9, .9);
+      }
+      60% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.03, 1.03, 1.03);
+        transform: scale3d(1.03, 1.03, 1.03);
+      }
+      80% {
+        -webkit-transform: scale3d(.97, .97, .97);
+        transform: scale3d(.97, .97, .97);
+      }
+      to {
+        opacity: 1;
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+      }
+    }
+    @keyframes bounceIn {
+      from, 20%, 40%, 60%, 80%, to {
+        -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      }
+      0% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+      }
+      20% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1);
+        transform: scale3d(1.1, 1.1, 1.1);
+      }
+      40% {
+        -webkit-transform: scale3d(.9, .9, .9);
+        transform: scale3d(.9, .9, .9);
+      }
+      60% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.03, 1.03, 1.03);
+        transform: scale3d(1.03, 1.03, 1.03);
+      }
+      80% {
+        -webkit-transform: scale3d(.97, .97, .97);
+        transform: scale3d(.97, .97, .97);
+      }
+      to {
+        opacity: 1;
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+      }
+    }
+    @-webkit-keyframes bounceOut {
+      20% {
+        -webkit-transform: scale3d(.9, .9, .9);
+        transform: scale3d(.9, .9, .9);
+      }
+      50%, 55% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.1, 1.1, 1.1);
+        transform: scale3d(1.1, 1.1, 1.1);
+      }
+      to {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+      }
+    }
+    @keyframes bounceOut {
+      20% {
+        -webkit-transform: scale3d(.9, .9, .9);
+        transform: scale3d(.9, .9, .9);
+      }
+      50%, 55% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.1, 1.1, 1.1);
+        transform: scale3d(1.1, 1.1, 1.1);
+      }
+      to {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3);
+      }
+    }
