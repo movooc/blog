@@ -2,12 +2,9 @@
   <div class="rd-audio-player">
       <audio :id="id" preload="auto"></audio>
       <div class="rd-audio-cover" @click="touchCover">
-          <button class="rd-audio-player-btn" transition="bounce" v-show="!state.playing">
-              <img class="rd-audio-player-icon" src="">
-          </button>
+          <button class="rd-audio-player-btn" transition="bounce" :class="{'pause':state.playing}"></button>
       </div>
       <div class="rd-audio-contrl">
-          <!-- <div class="rd-audio-time current">{{current}}</div> -->
           <div class="rd-audio-slider-container" @click="touchSlider">
               <div class="rd-audio-slider">
                   <div class="rd-audio-slider-rail">
@@ -17,6 +14,7 @@
           </div>
           <div class="rd-audio-time duration">{{mu.state.lastTimeFormat}}</div>
       </div>
+      <div class="buffer"></div>
   </div>
 </template>
 
@@ -77,14 +75,15 @@
         state: {
           liked: false,
           playing: false
-        }
+        },
+        firstLoad: true,
+        buffering: false
       };
     },
     create() {
 
     },
     mounted() {
-      console.log(document.getElementById(this.id));
       this.init();
     },
     methods: {
@@ -95,7 +94,10 @@
           rate: 1,
           loop: false,
           volume: 0.5,
-          audio: document.getElementById(this.id)
+          audio: document.getElementById(this.id),
+          ended: ()=>{
+              this.ended()
+          }
         })
       },
       touchCover () {
@@ -111,12 +113,35 @@
           this.mu.setTime(time)
       },
       play () {
-          this.state.playing = true
-          this.mu.play()
+          var self = this;
+          self.state.playing = true;
+          if(self.firstLoad){
+            let isIos = (navigator.userAgent.match(/(iPhone|iPad|ios)/i) == null)?false:true;
+            if(!isIos){
+              return self.mu.play();
+            }
+            // ios开始加载
+            self.mu.$Audio.load();
+            // observer
+            (function observerAudio() {
+              if(self.mu.$Audio.readyState < 2){
+                self.mu.$Audio.load();
+                setTimeout(function(){observerAudio();}, 1000);
+              }else{
+                self.mu.play();
+                self.firstLoad = false;
+              }
+            })();
+          }else{
+            self.mu.play();
+          }
       },
       pause () {
           this.state.playing = false
           this.mu.pause()
+      },
+      ended () {
+        this.pause()
       },
       volplus () {
           this.mu.setVolume(this.mu.state.volume + 0.1)

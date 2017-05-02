@@ -62,9 +62,12 @@ class VueAudio {
         this.$Audio = options.audio;
         this.$Audio.setAttribute('src', src);
         Cov.on(this.$Audio, 'error', () => {
-            this.state.tried++
-            this.init(src, options)
-        })
+            this.state.tried++;
+            this.init(src, options);
+        });
+        Cov.on(this.$Audio, 'ended', () => {
+          options.ended();
+        });
         if (options.autoplay) {
             this.play()
         }
