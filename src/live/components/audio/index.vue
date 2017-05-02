@@ -12,7 +12,7 @@
                   </div>
               </div>
           </div>
-          <div class="rd-audio-time duration">{{mu.state.lastTimeFormat}}</div>
+          <div class="rd-audio-time duration">{{mu.state.lastTimeFormat}}/{{mu.state.durationTimerFormat}}</div>
       </div>
       <div class="buffer" v-if="buffering">
         <div class="double-bounce1"></div>
