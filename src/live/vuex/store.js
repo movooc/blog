@@ -21,6 +21,7 @@ const state = {
   teacherInfo: null,
   messageInfo: [],
   recording: false,
+  audioPause: false,
   sending: false,
   sendWidth: '0'
 };
@@ -74,6 +75,9 @@ const mutations = {
   },
   UPDATE_USERINFO(state, data){
     state.userInfo = { ...state.userInfo, ...data };
+  },
+  UPDATE_AUDIO_PAUSE(state, pause){
+    state.audioPause = pause;
   },
 };
 

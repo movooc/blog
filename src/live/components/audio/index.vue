@@ -14,7 +14,10 @@
           </div>
           <div class="rd-audio-time duration">{{mu.state.lastTimeFormat}}</div>
       </div>
-      <div class="buffer"></div>
+      <div class="buffer" v-if="buffering">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+      </div>
   </div>
 </template>
 
@@ -50,6 +53,9 @@
     components: {
     },
     computed: {
+      ...mapState([
+        'audioPause'
+      ])
     },
     data() {
       return {
@@ -77,7 +83,7 @@
           playing: false
         },
         firstLoad: true,
-        buffering: false
+        buffering: false,
       };
     },
     create() {
@@ -85,6 +91,8 @@
     },
     mounted() {
       this.init();
+    },
+    updated() {
     },
     methods: {
       init () {
@@ -104,13 +112,18 @@
           if (this.state.playing) {
               this.pause()
           } else {
-              this.play()
+              this.prePlay()
           }
       },
       touchSlider (e) {
           let time
           time = e.layerX / e.target.offsetWidth * this.mu.state.duration
           this.mu.setTime(time)
+      },
+      prePlay () {
+        // 所有audio暂停播放
+        //this.$store.commit('UPDATE_AUDIO_PAUSE', true);
+        this.play();
       },
       play () {
           var self = this;
@@ -120,6 +133,7 @@
             if(!isIos){
               return self.mu.play();
             }
+            self.buffering = true;
             // ios开始加载
             self.mu.$Audio.load();
             // observer
@@ -128,6 +142,9 @@
                 self.mu.$Audio.load();
                 setTimeout(function(){observerAudio();}, 1000);
               }else{
+                self.buffering = false;
+                // 是否正在播放
+                if(!self.state.playing)return;
                 self.mu.play();
                 self.firstLoad = false;
               }
