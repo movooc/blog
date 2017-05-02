@@ -46,6 +46,7 @@
               this.open.name = data.name;
               this.open.avatar = data.avatar;
               this.open.groupId = this.open.teach;
+              this.open.discuss = this.open.discuss;
               this.$store.commit('UPDATE_USERINFO', this.open);
             }
           },(err)=>{
