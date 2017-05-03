@@ -32,31 +32,46 @@
       const _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST : '/api/';
 
       let userUrl = `${_prefix.replace(/\/$/,'')}/user-profile.api`;
+      let lessonUrl = `${_prefix.replace(/\/$/,'')}/live-tim-user_sig.api`;
       let userSigUrl = `${_prefix.replace(/\/$/,'')}/live-tim-user_sig.api`;
 
       // 获得userSig
       this.$http.get(userSigUrl).then((json)=>{
         if(json.ok){
           this.open.userSig = json.body.data;
-          // 获得user info
-          this.$http.get(userUrl).then((json)=>{
+          // 获得lesson info
+          this.$http.get(lessonUrl).then((json)=>{
             if(json.ok){
               let data = json.body.data;
-              this.open.sn = data.sn;
-              this.open.name = data.name;
-              this.open.avatar = data.avatar;
-              this.open.groupId = this.open.teach;
-              this.open.discuss = this.open.discuss;
-              this.$store.commit('UPDATE_AVATAR', this.open.avatar);
-              this.$store.commit('UPDATE_USERINFO', this.open);
+              this.$store.commit('UPDATE_LESSONINFO', data);
+              // 获得user info
+              this.$http.get(userUrl).then((json)=>{
+                if(json.ok){
+                  let data = json.body.data;
+                  this.open.sn = data.sn;
+                  this.open.name = data.name;
+                  this.open.avatar = data.avatar;
+                  this.open.groupId = this.open.teach;
+                  this.open.discuss = this.open.discuss;
+                  this.$store.commit('UPDATE_AVATAR', this.open.avatar);
+                  this.$store.commit('UPDATE_USERINFO', this.open);
+                }
+              },(err)=>{
+                console.log(err);
+              });
+              /*---end---*/
             }
+
           },(err)=>{
             console.log(err);
           });
+          /*---end---*/
         }
+
       },(err)=>{
         console.log(err);
       });
+      /*---end---*/
     },
     methods: {
     },

@@ -16,7 +16,7 @@
 
 <script type="text/javascript">
   import { mapState } from 'vuex';
-  import { vSendMsg } from '@live/assets/js/webim';
+  import { vSendMsg } from '@live/assets/js/webim_comment';
 
   export default
   {
@@ -34,7 +34,12 @@
     },
     methods: {
       sendMsg() {
-          alert('开发中...');
+        vSendMsg(this.msgVal, (err, data) => {
+          if(!err){
+            this.msgVal = '';
+            this.showComment();
+          }
+        });
       },
       showComment() {
         this.$store.commit('UPDATE_COMMETN_SHOW', true);

@@ -9,23 +9,9 @@
       <l-header></l-header>
       <!-- message entity -->
       <ul class="live-sms-list" id="live_sms_list">
-        <!--<li>-->
-          <!--<div class="user-img">-->
-            <!--<img src="~@live/assets/img/user-img.png" width="45px">-->
-          <!--</div>-->
-          <!--<div class="live-sms">-->
-            <!--<div class="speaker-name">主讲人</div>-->
-            <!--<div class="sms-content w65per">-->
-              <!--<div class="content-audio" data-audio-src="">-->
-                <!--<span class="voice icon-dot1"></span>-->
-                <!--<span class="timer">53"</span>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</li>-->
         <li v-for="msg in messageInfo">
           <div class="user-img">
-            <img src="https://storage.sandbox.yike.fm/user/58f5e18810316/avatar?1cg61v9" width="45px">
+            <img :src="loadingImg" width="45px">
           </div>
           <div class="live-sms">
             <div class="speaker-name" v-text="msg.nickname"></div>
@@ -39,6 +25,9 @@
                 <div class="custom" v-for="cus in con.custom">
                   <div class="content-audio" :data-audio-src="cus.type" v-if="cus.type == 'SOUND'">
                     <v-audio :id="cus.id" :src="cus.src"></v-audio>
+                  </div>
+                  <div class="content-audio" :data-audio-src="cus.type" v-if="cus.type == 'FILE'">
+                    <a :href="cus.src" target="__blank">点击下载{{cus.name}}</a>
                   </div>
                 </div>
               </div>
@@ -64,7 +53,7 @@
   import {mapState} from 'vuex';
   import lHeader from './header.vue';
   import vPopular from './popular.vue';
-  import { pullHistoryGroupMsgs } from '@live/assets/js/webim';
+  import { exportAssembleMsg } from '@live/assets/js/webim_comment';
   import vComment from '@live/components/comment/index.vue';
   import vChatbox from '@live/components/chatbox/index.vue';
   import sChatbox from '@live/components/chatbox/sChat.vue';
@@ -73,6 +62,11 @@
   export default
   {
     name: 'v-live',
+    props: {
+      lesson: {
+        type: String
+      }
+    },
     components: {
       vComment,
       vPopular,
@@ -90,7 +84,7 @@
     },
     computed: {
       ...mapState([
-        'headerTitle', 'messageInfo', 'teacherInfo', 'menuShow', 'isOwner',
+        'headerTitle', 'messageInfo', 'lessonInfo', 'menuShow', 'isOwner', 'loadingImg',
       ])
     },
     updated() {
@@ -99,8 +93,8 @@
         vScroll.scrollTop = vScroll.scrollHeight;
       });
     },
-    created(){
-
+    mounted(){
+      //this.pullMsgs();
     },
     methods: {
       isShow() {
@@ -110,20 +104,27 @@
         this.busy = true;
       },
       pullMsgs() {
-        var opt = {
-          msgSeq: this.$store.state.messageInfo.length,
-          reqMsgCount: 10
-        };
-        // 回调
-        pullHistoryGroupMsgs(opt, (data) => {
-          if(!data.length){
-            return (this.canPullMsgs = false);
-          }
-          // 更新列表
-          this.$store.commit('UPDATE_HISTORY_MESSAGE', data);
-        }, (err) => {
-          console.log(err);
-        });
+        if(this.lesson){
+          //
+          this.$store.dispatch('fetchHistory', {lesson_sn:this.lesson.split('-')[0]}).then((msgList) => {
+            //
+            if (msgList.length == 0) {
+              return;
+            }
+            // 重组备份
+            let tempList = [];
+            // 循环
+            for (var i = 0; i <= msgList.length - 1; i++) {//遍历消息，按照时间从后往前
+              var msg = msgList[i];
+
+              tempList.push(exportAssembleMsg(msg));
+            }
+            // 实施
+            this.$store.commit('UPDATE_HISTORY_MESSAGE', tempList);
+          }, () => {
+            console.log('fail');
+          });
+        }
       }
     }
   };

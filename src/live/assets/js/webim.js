@@ -191,17 +191,25 @@ export const uploadSound = (uploadFiles, callback, progressCallback) => {
 
 //获取最新的群历史消息,用于切换群组聊天时，重新拉取群组的聊天消息
 export const pullHistoryGroupMsgs = (opt, cbOk, cbErr) => {
-  if (selType == webim.SESSION_TYPE.C2C) {
-    alert('当前的聊天类型为好友聊天，不能进行拉取群历史消息操作');
-    return;
-  }
+  //
   getGroupInfo(selToID, function (resp) {
+    // 消息条数
+    var nextMsgSeq = resp.GroupInfo[0].NextMsgSeq;
+    if(opt.allMsgs){
+      var reqMsgSeq = nextMsgSeq-1;
+      var reqMsgNumber = nextMsgSeq;
+    }else{
+      var reqMsgSeq = opt.single?opt.msgSeq:(nextMsgSeq-opt.msgSeq-1);
+      var reqMsgNumber = opt.reqMsgCount;
+    }
+
     //拉取最新的群历史消息
     var options = {
       'GroupId': selToID,
-      'ReqMsgSeq': opt.single?opt.msgSeq:(resp.GroupInfo[0].NextMsgSeq - opt.msgSeq - 1),
-      'ReqMsgNumber': opt.reqMsgCount
+      'ReqMsgSeq': reqMsgSeq,
+      'ReqMsgNumber': reqMsgNumber
     };
+    //
     if (options.ReqMsgSeq == null || options.ReqMsgSeq == undefined || options.ReqMsgSeq <= 0) {
       webim.Log.warn("该群还没有历史消息:options=" + JSON.stringify(options));
       return;
@@ -382,7 +390,9 @@ function sendFile(file, fileName) {
     fileName=random.toString();
   }
   var fileObj=new webim.Msg.Elem.File(uuid, fileName, fileSize, senderId, selToID, downloadFlag, selType);
-  msg.addFile(fileObj);
+  // msg.addFile(fileObj);
+  // add customer file
+  msg.addCustom({data: fileObj.downUrl, desc: 'FILE', ext: fileName});
   //调用发送文件消息接口
   webim.sendMsg(msg, function (resp) {
     if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
@@ -820,6 +830,13 @@ function convertCustomMsg(content) {
       return [{
         id: Math.round(Math.random() * 4294967296),
         type: 'SOUND',
+        src : content.data.replace(/#((?!&).)*/g, ''),
+      }]
+      break;
+    case 'FILE':
+      return [{
+        id: Math.round(Math.random() * 4294967296),
+        type: 'FILE',
         src : content.data.replace(/#((?!&).)*/g, ''),
       }]
       break;

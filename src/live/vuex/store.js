@@ -18,12 +18,14 @@ const state = {
   commentShow: false,
   isHeader: true,
   userInfo: null,
-  teacherInfo: null,
+  lessonInfo: null,
   messageInfo: [],
+  commentMessageInfo: [],
   recording: false,
   audioPause: false,
   sending: false,
-  sendWidth: '0'
+  sendWidth: '0',
+  loadingImg: 'static/_static/live/img/loading.gif'
 };
 
 /* mutations serials */
@@ -62,6 +64,22 @@ const mutations = {
     }
   },
   //
+  UPDATE_COMMENT_MESSAGE(state, data){
+    if(Array.isArray(data)){
+      state.commentMessageInfo = [...state.commentMessageInfo, ...data];
+    }else if(Object.prototype.toString.call(data) == '[object Object]'){
+      state.commentMessageInfo = [...state.commentMessageInfo, data];
+    }
+  },
+  //
+  UPDATE_HISTORY_COMMENT_MESSAGE(state, data){
+    if(Array.isArray(data)){
+      state.commentMessageInfo = [...data, ...state.commentMessageInfo];
+    }else if(Object.prototype.toString.call(data) == '[object Object]'){
+      state.commentMessageInfo = [data, ...state.commentMessageInfo];
+    }
+  },
+  //
   UPDATE_MENUSHOW(state, data){
     state.menuShow = data;
   },
@@ -76,8 +94,11 @@ const mutations = {
   UPDATE_USERINFO(state, data){
     state.userInfo = { ...state.userInfo, ...data };
   },
-  UPDATE_AUDIO_PAUSE(state, pause){
-    state.audioPause = pause;
+  UPDATE_LESSONINFO(state, data){
+    state.lessonInfo = { ...state.lessonInfo, ...data };
+  },
+  UPDATE_AVATAR(state, avatar){
+    state.loadingImg = avatar;
   },
 };
 

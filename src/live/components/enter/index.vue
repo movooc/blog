@@ -4,16 +4,17 @@
     <div class="l-teacher" v-if="isOwner">
       <v-teacher></v-teacher>
       <p class="title">课程介绍:</p>
-      <v-live></v-live>
+      <v-live :lesson="userInfo.teach"></v-live>
     </div>
     <div class="l-student" v-if="!isOwner">
-      <v-live></v-live>
+      <v-live :lesson="userInfo.teach"></v-live>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import { vBigGroupMsgNotify, jsonpCallback, onMsgNotify, exportSdkLogin, exportInitData, exportGroupMemberInfo } from '@live/assets/js/webim';
+  import { exportCommentInit } from '@live/assets/js/webim_comment';
   import { onDestoryGroupNotify, onRevokeGroupNotify, onCustomGroupNotify, onGroupInfoChangeNotify, onKickedGroupNotify } from '@live/assets/js/webim_group_notice';
   import vLive from '@live/components/live/index.vue';
   import vTeacher from '@live/components/teacher/index.vue';
@@ -44,18 +45,21 @@
       // sdk登录
       exportSdkLogin((err, data) => {
         if(err)return alert(err.ErrorInfo);
-        // 调用群成员接口
-        let opt = {
-          'Offset': 0,
-          'MemberRoleFilter':[  //群成员身份过滤器
-            'Owner'
-          ],
-          'MemberInfoFilter': [
-              'Role'
-          ]
-        };
         this.$store.commit('UPDATE_ISOWNER', initData.isOwner == 'yes');
         this.$store.commit('UPDATE_LOADING', false);
+        exportCommentInit((err, data)=>{
+          if(err)return alert(err.ErrorInfo);
+        });
+        // 调用群成员接口
+//        let opt = {
+//          'Offset': 0,
+//          'MemberRoleFilter':[  //群成员身份过滤器
+//            'Owner'
+//          ],
+//          'MemberInfoFilter': [
+//            'Role'
+//          ]
+//        };
         // 获取群主信息
 //        exportGroupMemberInfo(opt).then((data) => {
 //          // 加载成功
