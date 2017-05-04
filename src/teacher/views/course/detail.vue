@@ -39,6 +39,8 @@
         let iframe = document.createElement('iframe');
         let src = `${liveHost}?${lesson}`;
         iframe.src = src;
+        iframe.style.height = 0;
+        iframe.style.display = 'none';
         document.body.appendChild(iframe);
       }, () => {
         console.log('fail');
