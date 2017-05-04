@@ -5,7 +5,7 @@ import vue from 'vue';
 const _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'') : '/api';
 
 const _get = ({ url, query }, commit) => {
-  if (commit) commit('UPDATE_LOADING', true);
+  //if (commit) commit('UPDATE_LOADING', true);
   let _url;
   if (query) {
     // 是否是对象
@@ -24,7 +24,7 @@ const _get = ({ url, query }, commit) => {
 
   return vue.http.get(_url)
     .then((res) => {
-      if (commit) commit('UPDATE_LOADING', false);
+      //if (commit) commit('UPDATE_LOADING', false);
       if (res.status >= 200 && res.status < 300) {
         return res.data
       }

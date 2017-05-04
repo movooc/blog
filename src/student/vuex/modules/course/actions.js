@@ -71,7 +71,8 @@ export const fetchCourseDetail = ({commit}, query) => {
   return _get({ url, query }, commit)
     .then((json) => {
       if (json.error == 0) {
-        return commit('FETCH_COURSE_DETAIL', json.data)
+        commit('FETCH_COURSE_DETAIL', json.data)
+        return Promise.resolve(json.data)
       }
       return Promise.reject(new Error('Fetch_Course_List failure'))
     })
