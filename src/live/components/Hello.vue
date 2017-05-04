@@ -49,7 +49,7 @@
           lesson_info: JSON.parse(this.open.lesson_info),
         };
         // 添加
-        setStore(this.open.lesson_sn, opt);
+        return setStore(this.open.lesson_sn, opt);
       }
 
       // 获得userSig
