@@ -30,7 +30,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-        target: 'https://teacher.sandbox.yike.fm',
+        //target: 'https://teacher.sandbox.yike.fm',
         target: 'https://sandbox.yike.fm',
         //target: 'https://student.sandbox.yike.fm',
         secure: false,
@@ -40,10 +40,10 @@ module.exports = {
         },
         onProxyReq(proxyReq, req, res) {
           // req.headers['X-SESS'] = '58f5e18810316-55902dbf0a814f0.47989593';
-          //proxyReq.setHeader('X-SESS', '58f9ebeea1419-105902dd103b83c5.47169671');
-          proxyReq.setHeader('X-SESS', '58f5e18810316-559032020d410c1.49244530');
+          proxyReq.setHeader('X-SESS', '58f5e18810316-5590b01781508f3.34883375'); //teacher
+          //proxyReq.setHeader('X-SESS', '58f5e18810316-559032020d410c1.49244530'); // student
           //let ua = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1 wechatdevtools/0.7.0 MicroMessenger/6.3.9 Language/zh_CN webview/0'
-          let ua = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36';
+          let ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36';
           proxyReq.setHeader('User-Agent', ua);
 
         },

@@ -21,7 +21,12 @@ export default {
     VHeader
   },
   created() {
-
+    // 获取用户信息
+    this.$store.dispatch('fetchUserInfo').then((data) => {
+      console.log('success');
+    }, (err) => {
+      alert(err.message);
+    });
   },
   computed: mapGetters({
     loading: 'getLoading'

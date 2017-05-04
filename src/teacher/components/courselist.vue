@@ -10,7 +10,7 @@
         <span>{{list.tms_update}}</span>
         <span>{{list.title}}</span>
         <div class="handle">
-          <a href="javascript:;" @click="startLesson(list.sn)">进入课程</a>
+          <a href="javascript:;" @click="enterLesson(list.sn)">进入课程</a>
         </div>
       </li>
     </ul>
@@ -19,8 +19,6 @@
 
 <script>
     import { mapGetters } from 'vuex';
-    // 获得config
-    let liveHost = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'/live') : '/live.html';
 
     export default{
       name: 'course-list',
@@ -30,28 +28,14 @@
         }
       },
       computed: {
-        ...mapGetters({
-          courseList: 'getCourseListInfo',
-        })
       },
       data() {
-        return {
-          link: liveHost
-        }
+        return {}
       },
       methods: {
-        startLesson(lesson_sn) {
-          // 获得开课信息
-          this.$store.dispatch('fetchOpenInfo', {lesson_sn}).then((data) => {
-            let params = '?isOwner=yes';
-            for(let d in data){
-              params = `${params}&${d}=${data[d]}`;
-            }
-            //
-            window.location.href = `${this.link}${params}`;
-          }, (err) => {
-            alert(err.message);
-          });
+        enterLesson(lesson_sn) {
+          // 进入课程
+          this.$router.push({ name: 'detail', params: { lesson_sn: lesson_sn }})
         }
       }
     }
