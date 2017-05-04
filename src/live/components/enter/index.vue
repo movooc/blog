@@ -1,6 +1,6 @@
 <template>
   <!-- 直播入口 -->
-  <div class="l-enter">
+  <div class="l-enter" :class="{entering}">
     <div class="l-teacher" v-if="isOwner">
       <v-teacher></v-teacher>
       <p class="title">课程:{{lessonInfo.title}}</p>
@@ -24,7 +24,9 @@
   {
     name: 'v-enter',
     data() {
-      return {}
+      return {
+        entering: true,
+      }
     },
     components: {
       vLive,
@@ -48,6 +50,7 @@
         if(err)return alert(err.ErrorInfo);
         this.$store.commit('UPDATE_ISOWNER', initData.isOwner == 'yes');
         this.$store.commit('UPDATE_LOADING', false);
+        this.entering = false;
         exportCommentInit((err, data)=>{
           if(err)return alert(err.ErrorInfo);
         });

@@ -7,7 +7,7 @@
         </button>
       </span>
       <div class="box-msg">
-        <textarea v-model="msgVal" placeholder="请输入文字..."></textarea>
+        <input v-model="msgVal" placeholder="请输入文字..." />
       </div>
       <button class="box-send" @click="sendMsg">提交</button>
     </div>
