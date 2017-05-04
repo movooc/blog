@@ -1,13 +1,13 @@
 import {
-  GET_USER_INFO,
+  FETCH_USER_INFO,
   START_LOADING,
   FINISH_LOADING
 } from './mutation-type'
 
 const mutations = {
   // 切换左侧导航的显示状态
-  [GET_USER_INFO](state, isShow) {
-    state.leftNavState = isShow
+  [FETCH_USER_INFO](state, data) {
+    state.userInfo = { ...data }
   },
   [START_LOADING](state) {
     state.loading = true
