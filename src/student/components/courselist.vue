@@ -2,7 +2,7 @@
   <div class="course-list">
     <ul class="lesson">
       <li v-for="list in lists">
-        <a href="javascript:;" @click="startLesson(list.sn)">
+        <a href="javascript:;" @click="enterLesson(list.sn)">
           <div class="list-img">
             <img :src="list.cover" alt="">
           </div>
@@ -23,8 +23,6 @@
 
 <script>
     import { mapGetters } from 'vuex';
-    // 获得config
-    let liveHost = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'/live') : '/live.html';
 
     export default{
       name: 'course-list',
@@ -39,23 +37,11 @@
         })
       },
       data() {
-        return {
-          link: liveHost
-        }
+        return {}
       },
       methods: {
-        startLesson(lesson_sn) {
-          // 获得开课信息
-          this.$store.dispatch('fetchLessonAccess', {lesson_sn}).then((data) => {
-            let params = '?isOwner=no';
-            for(let d in data){
-              params = `${params}&${d}=${data[d]}`;
-            }
-            //
-            window.location.href = `${this.link}${params}`;
-          }, (err) => {
-            alert(err.message);
-          });
+        enterLesson(lesson_sn) {
+          this.$router.push({ name: 'detail', params: { lesson_sn: lesson_sn }})
         }
       }
     }
