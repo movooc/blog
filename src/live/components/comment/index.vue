@@ -9,7 +9,7 @@
             <div class="user-content">
               <div class="con-text">
                 <a href="javascript:;" @click="pullHistory" v-if="canPullMsgs">点击拉取历史记录</a>
-                <span v-if="!canPullMsgs">已经无历史消息</span>
+                <span v-if="!canPullMsgs">暂无历史消息</span>
               </div>
             </div>
           </li>
@@ -78,6 +78,9 @@
           if(!data.length){
             return (this.canPullMsgs = false);
           }
+          if(data.length < opt.reqMsgCount){
+            this.canPullMsgs = false
+          }
           // 更新列表
           this.$store.commit('UPDATE_HISTORY_COMMENT_MESSAGE', data);
         }, (err) => {
@@ -90,8 +93,8 @@
         //官方 demo appid,需要开发者自己修改（托管模式）
         initData.sdkAppID = data.sdkAppID || 1400026682;
         initData.accountType = data.accountType || 12098;
-        //initData.avChatRoomId = data.discuss || '58f45e003d331'; //默认房间群ID//
-        initData.avChatRoomId = '58f45e003d331'; //默认房间群ID//
+        initData.avChatRoomId = data.discuss || '58f45e003d331'; //默认房间群ID//
+        //initData.avChatRoomId = '58f45e003d331'; //默认房间群ID//
         initData.selType = webim.SESSION_TYPE.GROUP;
         initData.selSess = null;//当前聊天会话
         initData.selToID = initData.avChatRoomId;//当前选中聊天id（当聊天类型为私聊时，该值为好友帐号，否则为群号）

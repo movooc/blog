@@ -2,10 +2,10 @@
   <div class="teacher-bar">
     <div class="bar-title">
       <div class="img">
-        <span><img :src="userInfo.avatar"></span>
+        <span><img :src="teacherInfo.avatar"></span>
       </div>
       <div class="info">
-        <p v-text="userInfo.name"></p>
+        <p v-text="teacherInfo.name"></p>
         <p class="grey">简介</p>
       </div>
     </div>
@@ -23,14 +23,14 @@
     name: 'v-teacher',
     computed: {
       ...mapState([
-        'userInfo',
+        'teacherInfo',
       ])
     },
     props: {
 
     },
     created(){
-      //console.log(this);
+
     },
   };
 </script>

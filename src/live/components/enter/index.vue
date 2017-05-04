@@ -3,11 +3,11 @@
   <div class="l-enter">
     <div class="l-teacher" v-if="isOwner">
       <v-teacher></v-teacher>
-      <p class="title">课程介绍:</p>
-      <v-live :lesson="userInfo.teach"></v-live>
+      <p class="title">课程:{{lessonInfo.title}}</p>
+      <v-live :lesson="lessonInfo.teach"></v-live>
     </div>
     <div class="l-student" v-if="!isOwner">
-      <v-live :lesson="userInfo.teach"></v-live>
+      <v-live :lesson="lessonInfo.teach"></v-live>
     </div>
   </div>
 </template>
@@ -34,6 +34,7 @@
       ...mapState([
         'isOwner',
         'userInfo',
+        'lessonInfo',
       ])
     },
     created() {
@@ -92,10 +93,6 @@
     initData.accountType = data.accountType || 12098;
 
     initData.avChatRoomId = data.groupId || '58f45e003d331'; //默认房间群ID，群类型必须是直播聊天室（AVChatRoom），这个为官方测试ID(托管模式)
-
-    //    if (webim.Tool.getQueryString("groupid")) {
-    //      avChatRoomId = webim.Tool.getQueryString("groupid");//用户自定义房间群id
-    //    }
 
     initData.selType = webim.SESSION_TYPE.GROUP;
     initData.selSess = null;//当前聊天会话

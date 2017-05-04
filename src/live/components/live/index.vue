@@ -1,10 +1,13 @@
 <template>
   <!-- live start -->
   <div class="live-page" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
+    <div class="live-sms-header" v-if="isPC">直播区</div>
+    <div class="live-sms-left" v-if="isPC"></div>
+    <div class="live-sms-right" v-if="isPC"></div>
     <!-- live entity -->
     <div class="live-body" id="live-body">
-      <p class="pullMsgs" v-if="canPullMsgs"><a href="javascript:;" @click="pullMsgs">点击拉取历史消息</a></p>
-      <p class="pullMsgs" v-if="!canPullMsgs"><span>已经无历史消息</span></p>
+      <!--<p class="pullMsgs" v-if="canPullMsgs"><a href="javascript:;" @click="pullMsgs">点击拉取历史消息</a></p>-->
+      <!--<p class="pullMsgs" v-if="!canPullMsgs"><span>已经无历史消息</span></p>-->
       <!-- header -->
       <l-header></l-header>
       <!-- message entity -->
@@ -77,6 +80,7 @@
     },
     data() {
       return {
+        isPC,
         show: false,
         busy: false,
         canPullMsgs: true,
@@ -94,7 +98,7 @@
       });
     },
     mounted(){
-      //this.pullMsgs();
+      this.pullMsgs();
     },
     methods: {
       isShow() {
