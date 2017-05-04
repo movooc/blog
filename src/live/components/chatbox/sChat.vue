@@ -30,14 +30,16 @@
       };
     },
     computed: {
-
+      ...mapState([
+        'commentShow',
+      ])
     },
     methods: {
       sendMsg() {
         vSendMsg(this.msgVal, (err, data) => {
           if(!err){
             this.msgVal = '';
-            this.showComment();
+            this.commentShow || this.showComment();
           }
         });
       },
