@@ -50,7 +50,7 @@ export const onBigGroupMsgNotify = function(msgList) {
 //监听新消息(私聊(包括普通消息、全员推送消息)，普通群(非直播聊天室)消息)事件
 //newMsgList 为新消息数组，结构为[Msg]
 export const onMsgNotify = function(newMsgList) {
-  console.log(newMsgList);
+  //
   for (var i = newMsgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
     var msg = newMsgList[i];
     var accountNick = msg.getFromAccountNick();
@@ -118,10 +118,7 @@ export const exportAssembleMsg = (msg) => {
 
 // 获取最新的群历史消息,用于切换群组聊天时，重新拉取群组的聊天消息
 export const pullHistoryGroupMsgs = (opt, cbOk, cbErr) => {
-  if (selType == _webim.SESSION_TYPE.C2C) {
-    alert('当前的聊天类型为好友聊天，不能进行拉取群历史消息操作');
-    return;
-  }
+  //
   getGroupInfo(selToID, function (resp) {
     //拉取最新的群历史消息
     var options = {
@@ -130,8 +127,7 @@ export const pullHistoryGroupMsgs = (opt, cbOk, cbErr) => {
       'ReqMsgNumber': opt.reqMsgCount
     };
     if (options.ReqMsgSeq == null || options.ReqMsgSeq == undefined || options.ReqMsgSeq <= 0) {
-      _webim.Log.warn("该群还没有历史消息:options=" + JSON.stringify(options));
-      return;
+      return cbOk([]);
     }
     // selSess
     selSess = null;
