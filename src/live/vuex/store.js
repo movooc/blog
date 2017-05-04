@@ -19,6 +19,7 @@ const state = {
   isHeader: true,
   userInfo: null,
   lessonInfo: null,
+  teacherInfo: null,
   messageInfo: [],
   commentMessageInfo: [],
   recording: false,
@@ -96,6 +97,9 @@ const mutations = {
   },
   UPDATE_LESSONINFO(state, data){
     state.lessonInfo = { ...state.lessonInfo, ...data };
+  },
+  UPDATE_TEACHERINFO(state, data){
+    state.teacherInfo = { ...state.teacherInfo, ...data };
   },
   UPDATE_AVATAR(state, avatar){
     state.loadingImg = avatar;
