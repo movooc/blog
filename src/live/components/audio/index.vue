@@ -131,6 +131,7 @@
           if(self.firstLoad){
             let isIos = (navigator.userAgent.match(/(iPhone|iPad|ios)/i) == null)?false:true;
             if(!isIos){
+              self.firstLoad = false;
               return self.mu.play();
             }
             self.buffering = true;
