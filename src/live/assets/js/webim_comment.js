@@ -54,19 +54,49 @@ export const onMsgNotify = function(newMsgList) {
   for (var i = newMsgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
     var msg = newMsgList[i];
     var accountNick = msg.getFromAccountNick();
+    var _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'') : '/api';
+    var userUrl = `${_prefix}/user-profile.api?usn=`;
     // 组装消息
     msg = assembleMsg(msg);
     // start
     try{
       // 合成消息
       if(msg.content[0].isComment){
+        // 讨论区
         _webim.Log.warn('receive a new comment chatroom group msg: ' + accountNick);
-        this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
+        try{
+          let avatar = this.$store.state.userAvatar[msg.account];
+          if(avatar){
+            msg.avatar = avatar;
+            let opt = {};
+            opt[msg.account] = avatar;
+            this.$store.commit('UPDATE_USER_AVATAR', opt);
+            this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
+          }else{
+            throw new Error('there is no avatar');
+          }
+        }catch(e){
+          userUrl = `${userUrl}${msg.account}`;
+          // 获取用户信息
+          this.$http.get(userUrl).then((json)=>{
+            if(json.ok){
+              let data = json.body.data;
+              msg.avatar = data.avatar;
+              let opt = {};
+              opt[msg.account] = data.avatar;
+              this.$store.commit('UPDATE_USER_AVATAR', opt);
+              this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
+            }
+          },(err)=>{});
+        }
+
       }else{
+        // 老师区
         _webim.Log.warn('receive a new chatroom group msg: ' + accountNick);
         this.$store.commit('UPDATE_MESSAGE', msg);
       }
     }catch(e){
+      // 老师区
       _webim.Log.warn('receive a new chatroom group msg: ' + accountNick);
       this.$store.commit('UPDATE_MESSAGE', msg);
     }
@@ -143,7 +173,7 @@ export const pullHistoryGroupMsgs = (opt, cbOk, cbErr) => {
         // 重组备份
         let tempList = [];
         // 循环
-        for (var i = 0; i <= msgList.length - 1; i++) {//遍历消息，按照时间从后往前
+        for (var i = msgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
           var msg = msgList[i];
           tempList.push(assembleMsg(msg));
         }

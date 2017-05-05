@@ -26,7 +26,8 @@ const state = {
   audioPause: false,
   sending: false,
   sendWidth: '0',
-  loadingImg: 'static/_static/live/img/loading.gif'
+  loadingImg: 'static/_static/live/img/loading.gif',
+  userAvatar: null,
 };
 
 /* mutations serials */
@@ -103,6 +104,9 @@ const mutations = {
   },
   UPDATE_AVATAR(state, avatar){
     state.loadingImg = avatar;
+  },
+  UPDATE_USER_AVATAR(state, avatars){
+    state.userAvatar = { ...avatars };
   },
 };
 

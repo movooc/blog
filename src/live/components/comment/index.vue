@@ -15,7 +15,7 @@
           </li>
           <li v-for="comment in commentMessageInfo">
             <div class="user-img">
-              <img src="static/_static/live/img/user-img.png" alt="">
+              <img :src="comment.avatar" alt="">
             </div>
             <div class="user-content">
               <div class="con-title" v-text="comment.nickname"></div>
@@ -35,6 +35,9 @@
   import { onBigGroupMsgNotify, jsonpCallback, onMsgNotify, pullHistoryGroupMsgs, exportInitData } from '@live/assets/js/webim_comment';
   import { onDestoryGroupNotify, onRevokeGroupNotify, onCustomGroupNotify, onGroupInfoChangeNotify, onKickedGroupNotify } from '@live/assets/js/webim_group_notice';
   import {mapState} from 'vuex';
+  // spec
+  var _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'') : '/api';
+  var userUrl = `${_prefix}/user-profile.api?usn=`;
 
   export default
   {
@@ -57,6 +60,7 @@
         'isOwner',
         'userInfo',
         'commentMessageInfo',
+        'userAvatar',
       ])
     },
     mounted () {
@@ -81,8 +85,10 @@
           if(data.length < opt.reqMsgCount){
             this.canPullMsgs = false
           }
-          // 更新列表
-          this.$store.commit('UPDATE_HISTORY_COMMENT_MESSAGE', data);
+          let i=0;
+          let length = data.length - 1;
+          // 递归
+          this.recursion(i, length, data);
         }, (err) => {
           console.log(err);
         });
@@ -163,7 +169,51 @@
 
         // 初始化webim数据
         exportInitData(initData);
-      }
+      },
+      updateAvatar(account, avatar){
+        //
+        let opt = {};
+        opt[account] = avatar;
+        this.$store.commit('UPDATE_USER_AVATAR', opt);
+      },
+      recursion(i, length, msgList) {
+        if(i > length){
+          return
+        }
+        //
+        let msg = msgList[i];
+        //
+        try{
+          let avatar = this.userAvatar[msg.account];
+          // 是否有头像
+          if(avatar){
+            msg.avatar = avatar;
+            // 更新头像存储
+            this.updateAvatar(msg.account, avatar);
+            // 更新列表
+            this.$store.commit('UPDATE_HISTORY_COMMENT_MESSAGE', msg);
+            // 继续递归
+            this.recursion(++i, length, msgList);
+          }else{
+            throw new Error('there is no avatar');
+          }
+        }catch(e){
+          // 获取用户信息
+          userUrl = `${userUrl}${msg.account}`;
+          this.$http.get(userUrl).then((json)=>{
+            if(json.ok){
+              //
+              let data = json.body.data;
+              msg.avatar = data.avatar;
+              // 更新头像存储
+              this.updateAvatar(msg.account, data.avatar);
+              this.$store.commit('UPDATE_HISTORY_COMMENT_MESSAGE', msg);
+              // 继续递归
+              this.recursion(++i, length, msgList);
+            }
+          },(err)=>{});
+        }
+      },
     }
   };
 
