@@ -15,6 +15,19 @@
         box-shadow: 0 0 .5px rgba(0, 0, 0, 0.29);
         margin: -5px 0 0 -5px;
         background: #12b7f5;
+
+        .icon-dot1 {
+          position: absolute;
+          top: 0;
+          right: 50px;
+          width: 10px;
+          height: 10px;
+
+          &:before {
+            color: red;
+            px2px(font-size, 64px);
+          }
+        }
     }
     .rd-audio-cover {
         position: relative;
@@ -101,6 +114,7 @@
         display: box;
         padding-top: 5px;
         color: #fff;
+        px2px(font-size, 28px)
     }
     .bounce-transition {
         animation-duration: .75s;
@@ -256,6 +270,10 @@
   .rd-audio-player {
     padding: 0;
     height: 40px;
+
+    .icon-dot1 {
+      right: 12px;
+    }
   }
   .rd-audio-cover {
     width: 45px;

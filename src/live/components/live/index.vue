@@ -27,7 +27,7 @@
               <div class="content-text" v-if="con.type==msg.MSG_ELEMENT_TYPE.CUSTOM">
                 <div class="custom" v-for="cus in con.custom">
                   <div class="content-audio" :data-audio-src="cus.type" v-if="cus.type == 'SOUND'">
-                    <v-audio :id="cus.id" :src="cus.src"></v-audio>
+                    <v-audio ref="audios" :id="cus.id" :src="cus.src"></v-audio>
                   </div>
                   <div class="content-audio" :data-audio-src="cus.type" v-if="cus.type == 'FILE'">
                     <a :href="cus.src" target="__blank">点击下载{{cus.name}}</a>

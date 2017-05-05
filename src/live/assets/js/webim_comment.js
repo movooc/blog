@@ -811,7 +811,7 @@ function convertCustomMsg(content) {
   switch (content.desc) {
     case 'SOUND':
       return [{
-        id: Math.round(Math.random() * 4294967296),
+        id: content.ext || content.data.split('filename=')[1],
         type: 'SOUND',
         src : content.data.replace(/#((?!&).)*/g, ''),
       }];

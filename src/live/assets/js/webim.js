@@ -424,7 +424,7 @@ function sendSound(file, fileName) {
   var soundObj=new webim.Msg.Elem.File(uuid, fileName, fileSize, senderId, selToID, downloadFlag, selType);
 
   // add file
-  msg.addCustom({data: soundObj.downUrl, desc: 'SOUND'});
+  msg.addCustom({data: soundObj.downUrl, desc: 'SOUND', ext: fileName});
   //调用发送文件消息接口
   webim.sendMsg(msg, function (resp) {
     if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
@@ -828,7 +828,7 @@ function convertCustomMsg(content) {
   switch (content.desc) {
     case 'SOUND':
       return [{
-        id: Math.round(Math.random() * 4294967296),
+        id: content.ext || content.data.split('filename=')[1],
         type: 'SOUND',
         src : content.data.replace(/#((?!&).)*/g, ''),
       }]

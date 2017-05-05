@@ -18,11 +18,13 @@
         <div class="double-bounce1"></div>
         <div class="double-bounce2"></div>
       </div>
+      <div class="iconfont icon-dot1" v-if="!played"></div>
   </div>
 </template>
 
 <script type="text/javascript">
   import { mapState } from 'vuex';
+  import { setStore, getStore } from '@lib/js/mUtils';
   import VueAudio from './VueAudio.js';
 
   const pad = (val) => {
@@ -44,7 +46,7 @@
     name: 'v-audio',
     props: {
       id: {
-        type: Number
+        type: String
       },
       src: {
         type: String
@@ -82,17 +84,24 @@
           liked: false,
           playing: false
         },
+        initAudio: [],
         firstLoad: true,
         buffering: false,
+        played: false,
+        isEnd: false,
       };
     },
-    create() {
-
+    created() {
+      // 初始化audio
+      let refs = this.$parent.$refs;
+      let audios = refs.audios;
+      this.initAudio = Array.isArray(audios)?[...audios]:audios;
     },
     mounted() {
       this.init();
     },
     updated() {
+
     },
     methods: {
       init () {
@@ -106,7 +115,23 @@
           ended: ()=>{
               this.ended()
           }
-        })
+        });
+        // 获取audio对象
+        let _audio = getStore(`audio-${this.id}`);
+        let audios = this.initAudio;
+        // 开始
+        if(_audio){
+          _audio = JSON.parse(_audio);
+          this.played = _audio.played || false;
+        }else{
+          if(Array.isArray(audios)){
+            let audio = audios[audios.length-1];
+            if(audio.played && audio.isEnd){
+              // 播放
+              this.play();
+            }
+          }
+        };
       },
       touchCover () {
           if (this.state.playing) {
@@ -116,57 +141,107 @@
           }
       },
       touchSlider (e) {
-          let time
-          time = e.layerX / e.target.offsetWidth * this.mu.state.duration
+          let time = e.layerX / e.target.offsetWidth * this.mu.state.duration
           this.mu.setTime(time)
       },
       prePlay () {
-        // 所有audio暂停播放
-        //this.$store.commit('UPDATE_AUDIO_PAUSE', true);
         this.play();
       },
       play () {
-          var self = this;
-          self.state.playing = true;
-          if(self.firstLoad){
-            let isIos = (navigator.userAgent.match(/(iPhone|iPad|ios)/i) == null)?false:true;
-            if(!isIos){
-              self.firstLoad = false;
-              return self.mu.play();
+        var self = this;
+        // 所有组件暂停
+        self.pausePlaying();
+        // 正在播放
+        self.state.playing = true;
+        // 结束标志设置
+        self.isEnd = false;
+        // 是否是首次加载
+        if(self.firstLoad){
+          let isIos = (navigator.userAgent.match(/(iPhone|iPad|ios)/i) == null)?false:true;
+          // 是否是ios设备
+          if(!isIos){
+              // 是否已经
+            if(!self.played){
+              setStore(`audio-${self.id}`, {played: true});
+              self.played = true;
             }
-            self.buffering = true;
-            // ios开始加载
-            self.mu.$Audio.load();
-            // observer
-            (function observerAudio() {
-              if(self.mu.$Audio.readyState < 2){
-                self.mu.$Audio.load();
-                setTimeout(function(){observerAudio();}, 1000);
-              }else{
-                self.buffering = false;
-                // 是否正在播放
-                if(!self.state.playing)return;
-                self.mu.play();
-                self.firstLoad = false;
-              }
-            })();
-          }else{
-            self.mu.play();
+            //
+            self.firstLoad = false;
+            return self.mu.play();
           }
+          self.buffering = true;
+          // ios开始加载
+          self.mu.$Audio.load();
+          // observer 是否可以播放
+          (function observerAudio() {
+            // 是否已经加载好
+            if(self.mu.$Audio.readyState < 2){
+              self.mu.$Audio.load();
+              setTimeout(function(){observerAudio();}, 1000);
+            }else{
+              self.buffering = false;
+              // 是否正在播放
+              if(!self.state.playing)return;
+              // 是否已经播放过
+              if(!self.played){
+                setStore(`audio-${this.id}`, {played: true});
+                self.played = true;
+              }
+              // 开始播放
+              self.mu.play();
+              self.firstLoad = false;
+            }
+          })();
+        }else{
+          self.mu.play();
+        }
       },
       pause () {
-          this.state.playing = false
-          this.mu.pause()
+        this.state.playing = false;
+        this.mu.pause();
       },
       ended () {
-        this.pause()
+        this.isEnd = true;
+        this.pause();
+        this.nextPlay();
       },
-      volplus () {
-          this.mu.setVolume(this.mu.state.volume + 0.1)
+      nextPlay() {
+        // 获取所有audio
+        let refs = this.$parent.$refs;
+        let audios = refs.audios;
+        let canPlay = false;
+        // 遍历所有audio
+        if(Array.isArray(audios)){
+          for(let au of audios){
+            if(canPlay){
+              au.play();
+              break;
+            }
+            if(au.id == this.id){
+              canPlay = true;
+            }
+          }
+        }
       },
-      volminus () {
-          this.mu.setVolume(this.mu.state.volume - 0.1)
-      }
+      pausePlaying() {
+        // 获取所有audio
+        let refs = this.$parent.$refs;
+        let audios = refs.audios;
+        // 遍历所有audio
+        if(Array.isArray(audios)){
+          for(let au of audios){
+            if(au.state.playing){
+              au.pause();
+            }
+          }
+        }
+      },
+//      volplus () {
+//          this.mu.setVolume(this.mu.state.volume + 0.1)
+//      },
+//      volminus () {
+//          this.mu.setVolume(this.mu.state.volume - 0.1)
+//      }
     },
   };
 </script>
