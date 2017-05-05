@@ -88,7 +88,13 @@
     },
     computed: {
       ...mapState([
-        'headerTitle', 'messageInfo', 'lessonInfo', 'menuShow', 'isOwner', 'loadingImg',
+        'headerTitle',
+        'messageInfo',
+        'lessonInfo',
+        'menuShow',
+        'isOwner',
+        'teacherInfo',
+        'loadingImg',
       ])
     },
     updated() {
@@ -120,7 +126,8 @@
             // 循环
             for (var i = 0; i <= msgList.length - 1; i++) {//遍历消息，按照时间从后往前
               var msg = msgList[i];
-
+              // 是否有昵称
+              msg.accountNick = this.teacherInfo.name || msg.accountNick;
               tempList.push(exportAssembleMsg(msg));
             }
             // 实施
