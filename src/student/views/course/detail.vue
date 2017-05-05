@@ -1,6 +1,6 @@
 <template>
-  <section class="content">
-    <div class="title">课程详情</div>
+  <section class="content detail">
+    <div class="title">课程详情:{{ courseDetail && courseDetail.title }}</div>
     <button @click="startLesson" v-if="lessons">点击进入直播</button>
   </section>
 </template>
@@ -17,8 +17,8 @@
     },
     computed: {
       ...mapGetters({
-        courseList: 'getCourseListInfo',
         userInfo: 'getUserInfo',
+        courseDetail: 'getCourseDetailInfo',
       })
     },
     data() {

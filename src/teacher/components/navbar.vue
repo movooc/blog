@@ -1,6 +1,6 @@
 <template>
   <nav class="toolbar">
-    欢迎老师体验测试版0.1
+    欢迎老师体验测试版0.2
   </nav>
 </template>
 

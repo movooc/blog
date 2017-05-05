@@ -13,7 +13,7 @@ const mutations = {
   },
   // 改变详情
   [FETCH_COURSE_DETAIL](state, data) {
-    state.courseDetail = { ...state.courseDetail, data };
+    state.courseDetail = { ...state.courseDetail, ...data };
   },
   // 获得开课信息
   [FETCH_OPEN_INFO](state, data) {
