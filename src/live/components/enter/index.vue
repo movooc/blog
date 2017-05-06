@@ -51,6 +51,10 @@
       // sdk登录
       exportSdkLogin((err, data) => {
         if(err){
+          // 清理掉(暂时操作)
+          removeStore(initData.sn);
+          window.location.reload();
+          return;
           // usersig过期
           if(err.ErrorCode == 70001 || err.ErrorCode == 70052){
             // 获得userSig
