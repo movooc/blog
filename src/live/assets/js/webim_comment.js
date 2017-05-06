@@ -432,6 +432,7 @@ function convertHistoryMsg(msg) {
       fileArr: [],
       custom: [],
       isComment: false,
+      history: msg.history || false,
     };
     //
     content = elem.MsgContent;//获取元素对象

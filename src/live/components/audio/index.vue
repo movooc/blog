@@ -50,7 +50,10 @@
       },
       src: {
         type: String
-      }
+      },
+      history: {
+        type: Boolean
+      },
     },
     components: {
     },
@@ -124,6 +127,8 @@
           _audio = JSON.parse(_audio);
           this.played = _audio.played || false;
         }else{
+          // 是否是历史记录
+          if(this.history)return;
           if(Array.isArray(audios)){
             let audio = audios[audios.length-1];
             if(audio.played && audio.isEnd){
@@ -160,7 +165,7 @@
           let isIos = (navigator.userAgent.match(/(iPhone|iPad|ios)/i) == null)?false:true;
           // 是否是ios设备
           if(!isIos){
-              // 是否已经
+              // 是否已经播放过
             if(!self.played){
               setStore(`audio-${self.id}`, {played: true});
               self.played = true;
@@ -184,7 +189,7 @@
               if(!self.state.playing)return;
               // 是否已经播放过
               if(!self.played){
-                setStore(`audio-${this.id}`, {played: true});
+                setStore(`audio-${self.id}`, {played: true});
                 self.played = true;
               }
               // 开始播放

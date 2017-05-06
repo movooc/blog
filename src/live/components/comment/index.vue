@@ -188,8 +188,6 @@
           // 是否有头像
           if(avatar){
             msg.avatar = avatar;
-            // 更新头像存储
-            this.updateAvatar(msg.account, avatar);
             // 更新列表
             this.$store.commit('UPDATE_HISTORY_COMMENT_MESSAGE', msg);
             // 继续递归
@@ -199,8 +197,8 @@
           }
         }catch(e){
           // 获取用户信息
-          userUrl = `${userUrl}${msg.account}`;
-          this.$http.get(userUrl).then((json)=>{
+          let url = `${userUrl}${msg.account}`;
+          this.$http.get(url).then((json)=>{
             if(json.ok){
               //
               let data = json.body.data;
