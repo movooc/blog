@@ -1,7 +1,7 @@
 <template>
   <div class="l-comment" v-if='isOwner || commentShow'>
     <div class="back-live" v-if="!isPC"><button @click="hideComment">回到直播</button></div>
-    <div class="comment-body">
+    <div id="comment-body" class="comment-body">
       <div class="comment-title">讨论区</div>
       <div class="comment-content">
         <ul>
@@ -52,7 +52,10 @@
       };
     },
     updated(){
-
+      setTimeout(()=>{
+        var vScroll = document.getElementById('comment-body');
+        vScroll.scrollTop = vScroll.scrollHeight;
+      });
     },
     computed: {
       ...mapState([

@@ -7,7 +7,7 @@ import FastClick from 'fastclick';
 import App from './App';
 import store from './vuex/store';
 import routes from './router';
-import infiniteScroll from 'vue-infinite-scroll';  // 引入滑动模块
+// import infiniteScroll from 'vue-infinite-scroll';  // 引入滑动模块
 import '@lib/js/rem';
 import '@lib/css/font.styl';
 import 'normalize.css';
@@ -22,7 +22,7 @@ if ('addEventListener' in document) {
 }
 
 /* register compoent */
-Vue.use(infiniteScroll);
+// Vue.use(infiniteScroll);
 Vue.use(VueRouter);
 Vue.use(vueResource);
 
