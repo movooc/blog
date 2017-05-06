@@ -18,6 +18,7 @@
   import { onDestoryGroupNotify, onRevokeGroupNotify, onCustomGroupNotify, onGroupInfoChangeNotify, onKickedGroupNotify } from '@live/assets/js/webim_group_notice';
   import vLive from '@live/components/live/index.vue';
   import vTeacher from '@live/components/teacher/index.vue';
+  import { removeStore } from '@lib/js/mUtils';
   import {mapState} from 'vuex';
 
   export default
@@ -35,6 +36,7 @@
     computed: {
       ...mapState([
         'isOwner',
+        'liveHost',
         'userInfo',
         'lessonInfo',
       ])
@@ -44,45 +46,40 @@
     mounted() {
       // 初始化webim数据
       let initData = this.userInfo || {};
+      let userSigUrl = `${this.liveHost}/live-tim-user_sig.api`;
       _init.prototype.constructor.call(this, initData);
       // sdk登录
       exportSdkLogin((err, data) => {
-        if(err)return alert(err.ErrorInfo);
-        this.$store.commit('UPDATE_ISOWNER', initData.isOwner == 'yes');
+        if(err){
+          // usersig过期
+          if(err.ErrorCode == 70001 || err.ErrorCode == 70052){
+            // 获得userSig
+            this.$http.get(userSigUrl).then((json)=>{
+              if(json.ok){
+                removeStore(initData.sn);
+                window.location.reload();
+              }
+            },(err)=>{
+              alert(err);
+            });
+          }else{
+            alert(err.ErrorInfo);
+          }
+        }else{
+          // 进群成功
+          this.joinGroup();
+        }
+      });
+    },
+    methods: {
+      joinGroup() {
+        this.$store.commit('UPDATE_ISOWNER', this.userInfo.isOwner == 'yes');
         this.$store.commit('UPDATE_LOADING', false);
         this.entering = false;
         exportCommentInit((err, data)=>{
           if(err)return alert(err.ErrorInfo);
         });
-        // 调用群成员接口
-//        let opt = {
-//          'Offset': 0,
-//          'MemberRoleFilter':[  //群成员身份过滤器
-//            'Owner'
-//          ],
-//          'MemberInfoFilter': [
-//            'Role'
-//          ]
-//        };
-        // 获取群主信息
-//        exportGroupMemberInfo(opt).then((data) => {
-//          // 加载成功
-//          this.$store.commit('UPDATE_LOADING', false);
-//          //
-//          if(data.ActionStatus == 'OK' && data.MemberList.length){
-//            for(let m of data.MemberList){
-//              if(m.Member_Account == 'admin'){
-//                this.$store.commit('UPDATE_ISOWNER', true);
-//                break;
-//              }
-//            }
-//          }
-//        }, () => {
-//            alert('查找失败!');
-//        });
-      });
-    },
-    methods: {
+      }
     },
   };
 

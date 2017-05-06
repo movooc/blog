@@ -28,6 +28,7 @@ const state = {
   sendWidth: '0',
   loadingImg: 'static/_static/live/img/loading.gif',
   userAvatar: null,
+  liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,''):'/api'),
 };
 
 /* mutations serials */

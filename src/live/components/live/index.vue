@@ -111,9 +111,6 @@
       isShow() {
         //this.$store.commit('UPDATE_MENUSHOW');
       },
-//      loadMore() {
-//        this.busy = true;
-//      },
       pullMsgs() {
         if(this.lesson){
           //
@@ -138,7 +135,10 @@
             console.log('fail');
           });
         }
-      }
+      },
+      //      loadMore() {
+//        this.busy = true;
+//      },
     }
   };
 

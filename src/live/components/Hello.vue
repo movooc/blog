@@ -17,6 +17,7 @@
     computed: {
       ...mapState([
         'userInfo',
+        'liveHost',
       ])
     },
     data() {
@@ -33,13 +34,10 @@
       };
     },
     mounted() {
-      var _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'') : '/api';
+      // usersig接口
+      let userSigUrl = `${this.liveHost}/live-tim-user_sig.api`;
 
-      let userUrl = `${_prefix}/user-profile.api`;
-      let lessonUrl = `${_prefix}/lesson-detail.api?lesson_sn=${this.open.lesson_sn}`;
-      let userSigUrl = `${_prefix}/live-tim-user_sig.api`;
-
-      // 是否有lessonInfo 存入localstory
+      // 是否有lessonInfo 存入localstorage
       if(this.open.lesson_info && this.open.lesson_sn && this.open.user_info){
         // 清除
         removeStore(this.open.lesson_sn);
@@ -52,76 +50,98 @@
         return setStore(this.open.lesson_sn, opt);
       }
 
-      // 获得userSig
-      this.$http.get(userSigUrl).then((json)=>{
-        if(json.ok){
-          this.open.userSig = json.body.data;
-          //
-          try{
-            var jsonData = getStore(this.open.lesson_sn);
-            if(jsonData){
-              jsonData = JSON.parse(jsonData);
-              // 直播间id
-              jsonData.lesson_info.teach = this.open.teach;
-              jsonData.lesson_info.discuss = this.open.discuss;
-              // 用户信息
-              this.open.sn = jsonData.user_info.sn;
-              this.open.name = jsonData.user_info.name;
-              this.open.avatar = jsonData.user_info.avatar;
-              this.open.groupId = this.open.teach;
-              this.open.discuss = this.open.discuss;
-              // 用户详情
-              this.$store.commit('UPDATE_USERINFO', this.open);
-              // 课程详情
-              this.$store.commit('UPDATE_LESSONINFO', jsonData.lesson_info);
-              // 老师详情
-              this.$store.commit('UPDATE_TEACHERINFO', jsonData.lesson_info.teacher);
-              // 老师头像
-              this.$store.commit('UPDATE_AVATAR', jsonData.lesson_info.teacher.avatar);
-              return;
-            }
-          }catch(e){};
-          // 获得lesson info
-          this.$http.get(lessonUrl).then((json)=>{
-            if(json.ok){
-              let data = json.body.data;
-              // 增加id
-              data.teach = this.open.teach;
-              data.discuss = this.open.discuss;
-              // 课程详情
-              this.$store.commit('UPDATE_LESSONINFO', data);
-              this.$store.commit('UPDATE_TEACHERINFO', data.teacher);
-              this.$store.commit('UPDATE_AVATAR', data.teacher.avatar);
-              // 获得user info
-              this.$http.get(userUrl).then((json)=>{
-                if(json.ok){
-                  let data = json.body.data;
-                  // 重组用户信息
-                  this.open.sn = data.sn;
-                  this.open.name = data.name;
-                  this.open.avatar = data.avatar;
-                  this.open.groupId = this.open.teach;
-                  this.open.discuss = this.open.discuss;
-                  this.$store.commit('UPDATE_USERINFO', this.open);
-                }
-              },(err)=>{
-                console.log(err);
-              });
-              /*---end---*/
-            }
+      // 数据处理
+      var jsonData = getStore(this.open.lesson_sn);
+      if(jsonData){
+        // 解析json
+        jsonData = JSON.parse(jsonData);
+        // 用户sn
+        this.open.sn = jsonData.user_info.sn;
+        // 从storage获取
+        let _userSig = getStore(this.open.sn);
+        //
+        if(_userSig)return this.handleStoreData(jsonData);
+        // 获得userSig
+        this.$http.get(userSigUrl).then((json)=>{
+          if(json.ok){
+            this.open.userSig = json.body.data;
+            // 存储usersig
+            setStore(this.open.sn, this.open.userSig);
+            // 开始处理数据
+            this.handleStoreData(jsonData);
+            /*---end---*/
+          }
+        },(err)=>{
+          console.log(err);
+        });
 
-          },(err)=>{
-            console.log(err);
-          });
-          /*---end---*/
-        }
-
-      },(err)=>{
-        console.log(err);
-      });
-      /*---end---*/
+      }else{
+        //暂时不开放此功能
+        //this.handleAsynData();
+      }
     },
     methods: {
+      handleStoreData(jsonData) {
+        try{
+          // 直播间id
+          jsonData.lesson_info.teach = this.open.teach;
+          jsonData.lesson_info.discuss = this.open.discuss;
+          // 用户信息
+          //this.open.sn = jsonData.user_info.sn;
+          this.open.name = jsonData.user_info.name;
+          this.open.avatar = jsonData.user_info.avatar;
+          this.open.userSig = getStore(this.open.sn);
+          this.open.groupId = this.open.teach;
+          this.open.discuss = this.open.discuss;
+          // 用户详情
+          this.$store.commit('UPDATE_USERINFO', this.open);
+          // 课程详情
+          this.$store.commit('UPDATE_LESSONINFO', jsonData.lesson_info);
+          // 老师详情
+          this.$store.commit('UPDATE_TEACHERINFO', jsonData.lesson_info.teacher);
+          // 老师头像
+          this.$store.commit('UPDATE_AVATAR', jsonData.lesson_info.teacher.avatar);
+        }catch(e){};
+      },
+      handleAsynData() {
+        // 获得lesson info
+        let userUrl = `${this.liveHost}/user-profile.api`;
+        let lessonUrl = `${this.liveHost}/lesson-detail.api?lesson_sn=${this.open.lesson_sn}`;
+        //
+        this.$http.get(lessonUrl).then((json)=>{
+          if(json.ok){
+            let data = json.body.data;
+            // 增加id
+            data.teach = this.open.teach;
+            data.discuss = this.open.discuss;
+            // 课程详情
+            this.$store.commit('UPDATE_LESSONINFO', data);
+            this.$store.commit('UPDATE_TEACHERINFO', data.teacher);
+            this.$store.commit('UPDATE_AVATAR', data.teacher.avatar);
+            // 获得user info
+            this.$http.get(userUrl).then((json)=>{
+              if(json.ok){
+                let data = json.body.data;
+                // 存储usersig
+                setStore(data.sn, this.open.userSig);
+                // 重组用户信息
+                this.open.sn = data.sn;
+                this.open.name = data.name;
+                this.open.avatar = data.avatar;
+                this.open.groupId = this.open.teach;
+                this.open.discuss = this.open.discuss;
+                this.$store.commit('UPDATE_USERINFO', this.open);
+              }
+            },(err)=>{
+              console.log(err);
+            });
+            /*---end---*/
+          }
+
+        },(err)=>{
+          console.log(err);
+        });
+      }
     },
   };
 </script>
