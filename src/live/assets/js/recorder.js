@@ -88,6 +88,8 @@ export const toggleRecording = function( self ) {
 }
 
 export const initRecorder = function() {
+  if(webim.Tool.getQueryString('lesson_info'))return;
+
   if (!navigator.getUserMedia)
     navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
   if (!navigator.cancelAnimationFrame)
