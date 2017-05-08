@@ -179,15 +179,24 @@
           self.mu.$Audio.load();
           // 计时开始
           let timeStart = new Date().getTime();
+          let count = 0;
           // observer 是否可以播放
           (function observerAudio() {
             let time = new Date().getTime();
             // 是否已经加载好
             if(self.mu.$Audio.readyState < 2){
-              if((time-timeStart) > 5000){
-                self.buffering = false;
-                self.pause();
-                return;
+              if((time-timeStart) > 3000 && count<1){
+                if(isWeiXin){
+                  timeStart = new Date().getTime();
+                  WeixinJSBridge.invoke('getNetworkType', {}, (e) => {
+                    self.mu.$Audio.play();
+                    count++;
+                  });
+                }else{
+                  self.buffering = false;
+                  self.pause();
+                  return;
+                }
               }
               setTimeout(function(){observerAudio();}, 1000);
             }else{
@@ -210,6 +219,7 @@
       },
       pause () {
         this.state.playing = false;
+        this.buffering = false;
         this.mu.pause();
       },
       ended () {
