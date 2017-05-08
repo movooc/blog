@@ -14,7 +14,16 @@ export const setStore = (name, content) => {
  */
 export const getStore = name => {
 	if (!name) return;
-	return window.localStorage.getItem(name);
+	try{
+	  let value = window.localStorage.getItem(name);
+	  if(value){
+	    return value;
+    }else{
+	    return '';
+    }
+  }catch(e){
+    return '';
+  }
 };
 
 /**

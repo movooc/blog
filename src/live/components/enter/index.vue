@@ -51,24 +51,13 @@
       // sdk登录
       exportSdkLogin((err, data) => {
         if(err){
-          // 清理掉(暂时操作)
+          // 清理掉
           removeStore(initData.sn);
-          window.location.reload();
-          return;
           // usersig过期
           if(err.ErrorCode == 70001 || err.ErrorCode == 70052){
-            // 获得userSig
-            this.$http.get(userSigUrl).then((json)=>{
-              if(json.ok){
-                removeStore(initData.sn);
-                window.location.reload();
-              }
-            },(err)=>{
-              alert(err);
-            });
-          }else{
-            alert(err.ErrorInfo);
-          }
+            window.location.reload();
+          };
+          alert(err.ErrorInfo);
         }else{
           // 进群成功
           this.joinGroup();

@@ -76,8 +76,20 @@
         });
 
       }else{
-        //暂时不开放此功能
-        //this.handleAsynData();
+        // 不能获得localstorage的浏览器
+        // 获得userSig
+        this.$http.get(userSigUrl).then((json)=>{
+          if(json.ok){
+            this.open.userSig = json.body.data;
+            // 存储usersig
+            setStore(this.open.sn, this.open.userSig);
+            // 开始处理数据
+            this.handleAsynData();
+            /*---end---*/
+          }
+        },(err)=>{
+          console.log(err);
+        });
       }
     },
     methods: {
