@@ -1,6 +1,6 @@
 <template>
   <div class="rd-audio-player">
-      <audio :id="id" preload="auto"></audio>
+      <audio :id="id"></audio>
       <div class="rd-audio-cover" @click="touchCover">
           <button class="rd-audio-player-btn" transition="bounce" :class="{'pause':state.playing}"></button>
       </div>
@@ -177,11 +177,18 @@
           self.buffering = true;
           // ios开始加载
           self.mu.$Audio.load();
+          // 计时开始
+          let timeStart = new Date().getTime();
           // observer 是否可以播放
           (function observerAudio() {
+            let time = new Date().getTime();
             // 是否已经加载好
             if(self.mu.$Audio.readyState < 2){
-              self.mu.$Audio.load();
+              if((time-timeStart) > 5000){
+                self.buffering = false;
+                self.pause();
+                return;
+              }
               setTimeout(function(){observerAudio();}, 1000);
             }else{
               self.buffering = false;
