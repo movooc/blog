@@ -45,11 +45,11 @@ li
   li
     position: relative;
     display: block;
-    padding: 40px 34px 0 113px;
+    padding: 40px 34px 0 120px;
     .user-img
       position: absolute;
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
       overflow: hidden;
       cursor: pointer;
       px2px(top, 40px);
@@ -66,28 +66,44 @@ li
         color: #aaa;
         padding-bottom: 11px;
         px2px(line-height, 28px);
-        px2px(font-size, 28px);
+        px2px(font-size, 26px);
       .sms-content
         position: relative;
-        padding: 20px 13px;
+        display: table;
+        padding: 10px 12px;
         max-width: 80%;
         background: #fff;
-        px2px(border-radius, 12px);
+        border: 1px solid #ccc;
+        px2px(font-size, 32px);
+        px2px(border-radius, 8px);
         &:before
           position: absolute;
-          font-family:"iconfont" !important;
-          font-style:normal;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          content: "\e821";
-          color: #fff;
-          px2px(top, -5px);
-          px2px(left, -14px);
-          px2px(font-size, 28px);
+          width: 16px;
+          height: 16px;
+          content: '';
+          background-color: #fff;
+          border: 1px solid #ccc;
+          transform:rotate(45deg);
+          -webkit-transform:rotate(45deg);
+          z-index: 4;
+          px2px(top, 26px);
+          px2px(left, -9px);
+        &:after
+          position: absolute;
+          width: 18px;
+          height: 18px;
+          background: #fff;
+          content: '';
+          z-index: 5;
+          transform:rotate(45deg);
+          -webkit-transform:rotate(45deg);
+          px2px(top, 26px);
+          px2px(left, -8px);
         &.w65per
           width: 65%;
         .content-text
           position: relative;
+          padding: 3px 28px 3px 14px;
           color: #3C4A55;
 
           px2px(line-height, 46px);
@@ -207,8 +223,20 @@ li
       height: 50px;
     }
     .sms-content{
-      padding: 10px;
-      width: 252px;
+      padding: 8px;
+      &:before{
+        width: 10px;
+        height: 10px;
+        px2px(left, -13px);
+      }
+      &:after{
+        width: 12px;
+        height: 12px;
+        px2px(left, -11px);
+      }
+      .content-text{
+        padding: 0px 10px 0px 6px;
+      }
     }
   }
 }
