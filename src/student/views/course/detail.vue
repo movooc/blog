@@ -1,6 +1,14 @@
 <template>
   <section class="content detail">
-    <div class="title">课程详情:{{ courseDetail && courseDetail.title }}</div>
+    <div class="detail-img">
+      <img :src="courseDetail && courseDetail.cover" />
+    </div>
+    <div class="tab" v-if="courseDetail">
+      <router-link :to="{name:'brief'}">介绍</router-link>
+      <router-link to="/course/111/know" replace>须知</router-link>
+      <router-link to="/course/111/comment" replace>评价</router-link>
+    </div>
+    <router-view v-if="courseDetail"></router-view>
     <button @click="startLesson" v-if="lessons">点击进入直播</button>
   </section>
 </template>
@@ -18,12 +26,12 @@
     computed: {
       ...mapGetters({
         userInfo: 'getUserInfo',
-        courseDetail: 'getCourseDetailInfo',
       })
     },
     data() {
       return {
         lessons: '',
+        courseDetail: null,
       }
     },
     created() {
@@ -31,6 +39,12 @@
       let query = this.$route.params;
       //
       this.$store.dispatch('fetchCourseDetail', query).then((data) => {
+        // 赋值
+        this.courseDetail = data;
+        //清空现有的iframe
+        try{
+          document.getElementsByTagName('iframe')[0].remove();
+        }catch(e){}
         // 把数据写入iframe
         let userInfo = { ...this.userInfo };
         let lesson_info = encodeURIComponent(`${JSON.stringify(data)}`);

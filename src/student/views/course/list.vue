@@ -1,5 +1,5 @@
 <template>
-  <section class="content">
+  <section class="content-list">
     <course-list :lists="courseList"></course-list>
   </section>
 </template>
@@ -19,6 +19,8 @@
       })
     },
     created() {
+      // 已经请求过就返回
+      if(this.courseList.length)return;
       this.$store.dispatch('fetchCourseList').then(() => {
         console.log('success');
       }, () => {

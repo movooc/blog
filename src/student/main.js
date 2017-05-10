@@ -7,7 +7,8 @@ import FastClick from 'fastclick';
 import App from './App';
 import store from './vuex/store';
 import routes from './router';
-import { Vueinterceptors } from '@teacher/assets/js/middleware';
+import { Vueinterceptors } from '@student/assets/js/middleware';
+import SetWechatTitle from '@lib/js/setWechatTitle';
 import '@lib/js/rem';
 import '@lib/css/font.styl';
 import 'normalize.css';
@@ -32,6 +33,12 @@ const router = new VueRouter({
   'linkActiveClass': 'active',
   //mode:'history',
   routes,
+});
+
+/* change title */
+router.afterEach((transition) => {
+  let title = transition.meta.pageTitle;
+  SetWechatTitle(title);
 });
 
 /* el app */

@@ -1,0 +1,1 @@
+export const FETCH_SOME_INFO = 'FETCH_SOME_INFO'

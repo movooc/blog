@@ -1,24 +1,27 @@
 <template>
   <div class="app">
-    <v-header></v-header>
-    <nav-bar></nav-bar>
+    <!--<v-header></v-header>-->
+    <!--<nav-bar></nav-bar>-->
     <div class="loading" v-show="loading"></div>
     <div>
       <router-view></router-view>
     </div>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
 import NavBar from './components/navbar'
 import VHeader from './components/header'
+import VFooter from './components/footer'
 import { setCookie } from '@lib/js/mUtils';
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     NavBar,
-    VHeader
+    VHeader,
+    VFooter
   },
   created() {
     // 获取用户信息
@@ -35,5 +38,7 @@ export default {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-
+  body
+    margin: 0;
+    background: #f2f4f7;
 </style>

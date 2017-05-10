@@ -1,0 +1,75 @@
+@import '~@lib/css/index.styl';
+
+.user-center
+  padding: 0;
+  background: #EFEFF4;
+  .user-img
+    height: 360px;
+    background: url('~@student/assets/img/center.png') no-repeat;
+    background-size:100% auto;
+
+    >*
+      text-align: center
+
+    .name
+      px2px(font-size, 40px);
+      px2px(line-height, 40px);
+    .listen
+      padding-top: 10px;
+      color: #666;
+      px2px(font-size, 28px);
+      px2px(line-height, 28px);
+    img
+      padding: 50px 0 15px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      -webkit-border-radius: 50%;
+
+  ul
+    margin: 0;
+    margin-bottom: 20px;
+    background: #fff;
+
+    li
+      position: relative;
+      padding: 40px 20px;
+      line-height: 1;
+      list-style-type: none;
+      px2px(font-size, 32px);
+
+      a
+        text-decoration: none;
+      .iconfont
+        margin-right: 20px;
+        vertical-align: middle;
+        px2px(font-size, 40px);
+        &.icon-follow
+          color: #359DFE;
+        &.icon-buy
+          color: #FB8000;
+        &.icon-info
+          color: #2DC17B;
+        &.icon-comment
+          color: #AAAAAA;
+      span
+        color: #3c4a55;
+        vertical-align: middle;
+        &.arrow
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          px2px(top, 54px);
+          px2px(right, 20px);
+          &:after
+            content: '';
+            display: block;
+            width: 14px;
+            height: 14px;
+            border-right: 4px solid #9ca7c1;
+            border-top: 4px solid #9ca7c1;
+            -webkit-transform: rotate(45deg); /*箭头方向可以自由切换角度*/
+            transform: rotate(45deg);
+
+    li+li
+      border-top: 1px solid #EFEFF4;

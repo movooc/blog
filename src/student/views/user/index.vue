@@ -1,6 +1,6 @@
 <template>
-  <section class="content">
-    首页
+  <section class="user">
+    <router-view></router-view>
   </section>
 </template>
 
@@ -8,7 +8,9 @@
   import { mapGetters } from 'vuex';
 
   export default{
-    name: 'home',
+    name: 'user',
+    components: {
+    },
     computed: {
       ...mapGetters({
         courseList: 'getCourseListInfo',

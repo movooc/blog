@@ -1,6 +1,6 @@
 <template>
-  <section class="content">
-    首页
+  <section class="user-info">
+    简介
   </section>
 </template>
 
@@ -8,7 +8,9 @@
   import { mapGetters } from 'vuex';
 
   export default{
-    name: 'home',
+    name: 'detail-info',
+    components: {
+    },
     computed: {
       ...mapGetters({
         courseList: 'getCourseListInfo',
