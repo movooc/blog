@@ -3,7 +3,7 @@
     <div class="box">
       <span class="box-more">
         <button @click="showModule">
-          <span class="iconfont icon-dot-more"></span>
+          <span class="iconfont icon-list"></span>
         </button>
       </span>
       <div class="box-msg">

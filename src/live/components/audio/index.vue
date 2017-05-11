@@ -18,7 +18,7 @@
         <div class="double-bounce1"></div>
         <div class="double-bounce2"></div>
       </div>
-      <div class="iconfont icon-dot1" v-if="!played"></div>
+      <div class="iconfont icon-dot" v-if="!played"></div>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="l-recorder" v-if="!isSending">
-    <span class="iconfont icon-hssiconsrecord" @click="toggleRecorder" :class="{'active':active}"></span>
+    <span class="iconfont icon-mic" @click="toggleRecorder" :class="{'active':active}"></span>
     <a id="save"></a>
   </div>
 </template>
