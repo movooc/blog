@@ -73,7 +73,7 @@ export const fetchCourseDetail = ({commit}, query) => {
       if (json.error == 0) {
         let opt = {};
         opt[json.data.sn] = json.data;
-        commit('FETCH_COURSE_DETAIL', opt)
+        commit('FETCH_COURSE_DETAIL', opt);
         return Promise.resolve(json.data)
       }
       return Promise.reject(new Error('Fetch_Course_List failure'))
@@ -97,4 +97,41 @@ export const fetchLessonAccess = ({commit}, query) => {
       return Promise.reject(error)
     })
 };
+
+export const fetchLessonEnroll = ({commit}, body) => {
+  const url = `${_prefix}/lesson-enroll.api`;
+
+  return _post({ url, body }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        let opt = {};
+        opt[body.lesson_sn] = json.data;
+        commit('FETCH_LESSON_ENROLL', opt);
+        return Promise.resolve(json.data);
+      }
+      return Promise.reject(new Error('Fetch_Lesson_Enroll failure'))
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+
+export const fetchOrderConfirm = ({commit}, body) => {
+  const url = `${_prefix}/pay/order-confirm.api`;
+
+  return _post({ url, body }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        let opt = {};
+        opt[body.lesson_sn] = json.data;
+        commit('FETCH_ORDER_CONFIRM', opt);
+        return Promise.resolve(json.data);
+      }
+      return Promise.reject(new Error('Fetch_Order_Confirm failure'))
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+
 

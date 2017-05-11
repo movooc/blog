@@ -13,7 +13,7 @@
       获得更多课程&nbsp;
     </div>
     <div>
-      <img src="~@student/assets/img/qrcode.png" />
+      <img src="static/_static/student/img/qrcode.png" />
     </div>
   </div>
 </template>

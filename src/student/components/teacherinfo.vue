@@ -58,6 +58,7 @@
         -webkit-border-radius: 50px;
         color: #12B7F5;
         px2px(top, 28px);
+        px2px(font-size, 32px);
       }
     }
 

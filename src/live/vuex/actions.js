@@ -34,7 +34,7 @@ const _get = ({ url, query }, commit) => {
 
 /*获取历史记录*/
 export const fetchHistory = ({commit}, query) => {
-  const url = `${_prefix}/live-history-tim`;
+  const url = `${_prefix}/live-record-tim`;
 
   return _get({ url, query }, commit)
     .then((json) => {

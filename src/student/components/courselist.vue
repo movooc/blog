@@ -7,7 +7,11 @@
           <div class="list-img">
             <img :src="list.cover" alt="">
             <span class="list-status">
-              <span>直播中</span>
+              <span v-if="list.step == 'submit'">未开放</span>
+              <span v-if="list.step == 'opened'">开放中</span>
+              <span v-if="list.step == 'onlive'">直播中</span>
+              <span v-if="list.step == 'repose'">交流中</span>
+              <span v-if="list.step == 'finish'">已结束</span>
             </span>
           </div>
           <div class="list-content">
@@ -45,7 +49,7 @@
       },
       methods: {
         enterLesson(lesson_sn) {
-          this.$router.push({ name: 'detail', params: { lesson_sn: lesson_sn }})
+          this.$router.push({ name: 'detail', query: { lesson_sn: lesson_sn }})
         }
       }
     }

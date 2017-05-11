@@ -46,7 +46,7 @@
     },
     created() {
       //获取路由参数
-      let query = this.$route.params;
+      let query = this.$route.query;
       this.course = this.courseDetail[query.lesson_sn];
     },
   }

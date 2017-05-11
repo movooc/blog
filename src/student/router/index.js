@@ -14,6 +14,7 @@ if(process.env.NODE_ENV == 'production'){
   var list = r => require.ensure([], () => r(require('../views/course/list')), 'student/student-courseList');
   var detail = r => require.ensure([], () => r(require('../views/course/detail')), 'student/student-courseDetail');
   var brief = r => require.ensure([], () => r(require('../views/course/brief')), 'student/student-courseBrief');
+  var notice = r => require.ensure([], () => r(require('../views/course/notice')), 'student/student-courseNotice');
   /*user*/
   var user = r => require.ensure([], () => r(require('../views/user/index')), 'student/student-user');
   var userCenter = r => require.ensure([], () => r(require('../views/user/center')), 'student/student-userCenter');
@@ -26,6 +27,7 @@ if(process.env.NODE_ENV == 'production'){
   var list = require('../views/course/list');
   var detail = require('../views/course/detail');
   var brief = require('../views/course/brief');
+  var notice = require('../views/course/notice');
   /*user*/
   var user = require('../views/user/index');
   var userCenter = require('../views/user/center');
@@ -66,7 +68,7 @@ export default [
       },
       // 课程详情页
       {
-        path: '/course/:lesson_sn',
+        path: '/course/detail',
         name: 'detail',
         component: detail,
         meta: {
@@ -75,14 +77,22 @@ export default [
         children: [
           {
             path: '',
-            redirect: '/course/:lesson_sn/brief'
+            redirect: '/course/detail/brief'
           },
           {
-            path: '/course/:lesson_sn/brief',
+            path: '/course/detail/brief',
             name: 'brief',
             component: brief,
             meta: {
               pageTitle: '课程简介'
+            }
+          },
+          {
+            path: '/course/detail/notice',
+            name: 'notice',
+            component: notice,
+            meta: {
+              pageTitle: '须知'
             }
           }
         ]
