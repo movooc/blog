@@ -1,8 +1,12 @@
 <template>
   <div class="course-list">
+    <div class="my-lesson clearfix">
+      <router-link to="/">创建课程</router-link>
+      我的课程
+    </div>
     <ul>
       <li class="head">
-        <span>创建时间</span>
+        <span>开课时间</span>
         <span>标题</span>
         <span class="handle">操作</span>
       </li>
@@ -29,6 +33,9 @@
       },
       computed: {
       },
+      created() {
+          this.$store.commit('CHANGE_IS_NOTICE', false);
+      },
       data() {
         return {}
       },
@@ -43,11 +50,22 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   .course-list{
+    .my-lesson {
+      padding-bottom: 20px;
+      a {
+        float: right;
+        padding: 5px 10px;
+        color: #fff;
+        background: #fb617f;
+        border-radius: 15px;
+        text-decoration: none;
+      }
+    }
+
     ul {
       margin: 0;
       padding: 0;
     }
-
     li {
       padding: 0 5px;
       display: -webkit-box;

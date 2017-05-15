@@ -4,7 +4,7 @@
     <div class="container mt20 clearfix">
       <sider-bar></sider-bar>
       <div class="box">
-        <v-notice></v-notice>
+        <v-notice v-if="isNotice"></v-notice>
         <router-view></router-view>
       </div>
       <div class="loading" v-show="loading"></div>
@@ -34,7 +34,8 @@ export default {
     });
   },
   computed: mapGetters({
-    loading: 'getLoading'
+    loading: 'getLoading',
+    isNotice: 'getIsNotice',
   })
 }
 </script>
@@ -57,4 +58,10 @@ export default {
     width: 900px;
   .mt20
     margin-top: 20px;
+  .pull-left {
+    float: left;
+  }
+  .pull-right {
+    float: right;
+  }
 </style>

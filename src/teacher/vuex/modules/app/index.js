@@ -4,6 +4,7 @@ import mutations from './mutations'
 
 const state = {
   userInfo: {},
+  isNotice: true,
   loading: false,
 }
 

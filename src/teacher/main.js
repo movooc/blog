@@ -8,6 +8,7 @@ import App from './App';
 import store from './vuex/store';
 import routes from './router';
 import { Vueinterceptors } from '@teacher/assets/js/middleware';
+// import VeeValidate, { Validator } from 'vee-validate';
 import '@lib/css/font.styl';
 import 'normalize.css';
 
@@ -20,9 +21,21 @@ if ('addEventListener' in document) {
   }, false);
 }
 
+/*
+ * vue config
+ */
+const vueConfig = {
+  errorBagName: 'errors', // change if property conflicts.
+  delay: 0,
+  locale: 'zh_CN',
+  messages: null,
+  strict: true
+};
+
 /* register compoent */
 Vue.use(VueRouter);
 Vue.use(vueResource);
+// Vue.use(VeeValidate, vueConfig);
 /* set vue interceptors */
 Vueinterceptors();
 

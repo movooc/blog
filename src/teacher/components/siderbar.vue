@@ -6,7 +6,10 @@
       </div>
       <div class="bar-text pull-left">
         <h4 v-text="userInfo.name"></h4>
-        <p>恩咕啦</p>
+        <div class="total">
+          <span>课程总数<br />0</span>&nbsp;&nbsp;&nbsp;
+          <span>收听总数<br />0</span>
+        </div>
       </div>
     </div>
     <ul class="bar-list">
@@ -51,9 +54,6 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  .pull-left {
-    float: left;
-  }
   .siderbar {
     float: left;
     width: 270px;
@@ -99,6 +99,29 @@
             }
           }
         }
+      }
+    }
+    .bar-text {
+      h4 {
+        margin-bottom: 10px;
+      }
+    }
+    .total {
+      display: -webkit-box;
+      display: box;
+      color: #7f8389;
+      >* {
+        display: -webkit-box;
+        display: box;
+        font-size: 14px;
+        line-height: 26px;
+        -webkit-box-flex: 1;
+        box-flex: 1;
+        text-align: center;
+        box-align: center;
+        -webkit-box-align: center;
+        box-pack: center;
+        -webkit-box-pack: center;
       }
     }
   }

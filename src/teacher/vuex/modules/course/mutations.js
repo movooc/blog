@@ -9,7 +9,7 @@ import { convertToArray } from '@lib/js/mUtils';
 const mutations = {
   // 改变列表
   [FETCH_COURSE_LIST](state, data) {
-    state.courseList = convertToArray(state.courseList, data);
+    state.courseList = convertToArray([], data);
   },
   // 改变详情
   [FETCH_COURSE_DETAIL](state, data) {
