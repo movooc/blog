@@ -25,13 +25,23 @@ export default [
   {
     path: '/',
     name: 'index',
-    component: home
+    component: home,
+    children: [
+      {
+        path: '',
+        redirect: '/course'
+      }
+    ]
   },
   {
     path: '/course',
     name: 'course',
     component: course,
     children: [
+      {
+        path: '',
+        redirect: '/course/list'
+      },
       // 课程列表页
       {
         path: '/course/list',

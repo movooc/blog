@@ -43,8 +43,10 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   .course-list{
-    margin: 0 auto;
-    width: 980px;
+    ul {
+      margin: 0;
+      padding: 0;
+    }
 
     li {
       padding: 0 5px;
@@ -55,6 +57,9 @@
 
       &.head {
         background: #E3E3E3;
+      }
+      &:nth-child(2n+3) {
+        background: #F7F7F7;
       }
       >*{
         display: -webkit-box;

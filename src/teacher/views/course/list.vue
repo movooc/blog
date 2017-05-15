@@ -1,5 +1,5 @@
 <template>
-  <section class="content">
+  <section class="content-list">
     <course-list :lists="courseList"></course-list>
   </section>
 </template>
@@ -29,5 +29,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-
+  .content-list
+    padding: 20px;
+    background: #fff;
 </style>

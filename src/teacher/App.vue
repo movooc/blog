@@ -1,24 +1,29 @@
 <template>
   <div class="app">
     <v-header></v-header>
-    <nav-bar></nav-bar>
-    <div class="loading" v-show="loading"></div>
-    <div>
-      <router-view></router-view>
+    <div class="container mt20 clearfix">
+      <sider-bar></sider-bar>
+      <div class="box">
+        <v-notice></v-notice>
+        <router-view></router-view>
+      </div>
+      <div class="loading" v-show="loading"></div>
     </div>
   </div>
 </template>
 
 <script>
-import NavBar from './components/navbar'
+import SiderBar from './components/siderbar'
 import VHeader from './components/header'
+import VNotice from './components/notice'
 import { setCookie } from '@lib/js/mUtils';
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    NavBar,
-    VHeader
+    SiderBar,
+    VHeader,
+    VNotice
   },
   created() {
     // 获取用户信息
@@ -35,5 +40,21 @@ export default {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-
+  body
+    margin: 0;
+    background: #EFEFF4;
+  .container
+    margin: 0 auto;
+    width: 1200px;
+  .clearfix:after
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  .box
+    float:right;
+    width: 900px;
+  .mt20
+    margin-top: 20px;
 </style>
