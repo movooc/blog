@@ -2,7 +2,8 @@ import {
   CHANGE_IS_NOTICE,
   FETCH_USER_INFO,
   START_LOADING,
-  FINISH_LOADING
+  FINISH_LOADING,
+  CHANGE_CALENDAR
 } from './mutation-type'
 
 const mutations = {
@@ -18,6 +19,9 @@ const mutations = {
   },
   [FINISH_LOADING](state) {
     state.loading = false
+  },
+  [CHANGE_CALENDAR](state, data) {
+    state.calendar = { ...state.calendar, ...data }
   }
 };
 

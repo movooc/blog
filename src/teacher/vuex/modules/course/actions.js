@@ -96,3 +96,19 @@ export const fetchOpenInfo = ({commit}, body) => {
       return Promise.reject(error)
     })
 };
+
+export const fetchCourseCreate = ({commit}, body) => {
+  const url = `${_prefix}/lesson-create.api`;
+
+  return _post({ url, body }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        //return commit('FETCH_COURSE_CREATE', json.data)
+        return Promise.resolve(json.data);
+      }
+      return Promise.reject(new Error('Fetch_Open_Info failure'))
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};

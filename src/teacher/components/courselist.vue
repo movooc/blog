@@ -1,7 +1,7 @@
 <template>
   <div class="course-list">
     <div class="my-lesson clearfix">
-      <router-link to="/">创建课程</router-link>
+      <router-link to="/course/create">创建课程</router-link>
       我的课程
     </div>
     <ul>

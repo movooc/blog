@@ -6,6 +6,10 @@ const state = {
   userInfo: {},
   isNotice: true,
   loading: false,
+  calendar: {
+    value: '',
+    show: false
+  },
 }
 
 export default{

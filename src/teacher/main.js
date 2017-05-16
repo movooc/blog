@@ -8,7 +8,7 @@ import App from './App';
 import store from './vuex/store';
 import routes from './router';
 import { Vueinterceptors } from '@teacher/assets/js/middleware';
-// import VeeValidate, { Validator } from 'vee-validate';
+import VeeValidate, { Validator } from 'vee-validate';
 import '@lib/css/font.styl';
 import 'normalize.css';
 
@@ -35,7 +35,7 @@ const vueConfig = {
 /* register compoent */
 Vue.use(VueRouter);
 Vue.use(vueResource);
-// Vue.use(VeeValidate, vueConfig);
+Vue.use(VeeValidate, vueConfig);
 /* set vue interceptors */
 Vueinterceptors();
 

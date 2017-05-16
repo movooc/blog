@@ -12,6 +12,7 @@ if(process.env.NODE_ENV == 'production'){
   var course = r => require.ensure([], () => r(require('../views/course/index')), 'teacher/teacher-course');
   var list = r => require.ensure([], () => r(require('../views/course/list')), 'teacher/teacher-courseList');
   var detail = r => require.ensure([], () => r(require('../views/course/detail')), 'teacher/teacher-courseDetail');
+  var create = r => require.ensure([], () => r(require('../views/course/create')), 'teacher/teacher-courseCreate');
 
 }else{
   //
@@ -19,6 +20,7 @@ if(process.env.NODE_ENV == 'production'){
   var course = require('../views/course/index');
   var list = require('../views/course/list');
   var detail = require('../views/course/detail');
+  var create = require('../views/course/create');
 }
 
 export default [
@@ -50,9 +52,15 @@ export default [
       },
       // 课程详情页
       {
-        path: '/course/:lesson_sn',
+        path: '/course/:lesson_sn/detail',
         name: 'detail',
         component: detail
+      },
+      // 创建课程
+      {
+        path: '/course/create',
+        name: 'create',
+        component: create
       }
     ]
   }
