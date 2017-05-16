@@ -9,13 +9,13 @@
       <router-link to="/course/L5900888378d29/comment" replace>评价</router-link>
     </div>
     <router-view v-if="courseDetail"></router-view>
-    <v-button @click="startLesson" :enrollData="myEnroll" :isEnroll="isEnroll" :courseDetail="courseDetail"></v-button>
+    <v-button :isEnroll="isEnroll" :courseDetail="courseDetail" :liveHost="liveHost"></v-button>
   </section>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
-  import vButton from '@student/components/button.vue';
+  import vButton from '@student/views/course/button.vue';
 
   export default{
     name: 'detail',
@@ -33,7 +33,6 @@
         liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,'/live'):'/live.html'),
         lessons: '',
         courseDetail: null,
-        myEnroll: null,
         isEnroll: null,
       }
     },
@@ -46,8 +45,6 @@
         this.courseDetail = data;
         // 是否报名
         this.isEnroll = data.event ? data.event : 'no';
-        // 课程报名
-        this.lessonEnroll(query);
         //清空现有的iframe
         try{
           document.getElementsByTagName('iframe')[0].remove();
@@ -61,10 +58,6 @@
       //this.lessonAccess(query);
     },
     methods: {
-      startLesson() {
-        // 开始课程
-        window.location.href = `${this.liveHost}${this.lessons}`;
-      },
       writeIframe(query, data){
         // 把数据写入iframe
         let userInfo = { ...this.userInfo };
@@ -77,26 +70,6 @@
         iframe.style.height = 0;
         iframe.style.display = 'none';
         document.body.appendChild(iframe);
-      },
-      lessonAccess(query) {
-        // 进入课堂权限
-        this.$store.dispatch('fetchLessonAccess', query).then((data) => {
-          let params = `?isOwner=no&lesson_sn=${query.lesson_sn}`;
-          for(let d in data){
-            params = `${params}&${d}=${data[d]}`;
-          };
-          this.lessons = params;
-        }, (err) => {
-          alert(err.message);
-        });
-      },
-      lessonEnroll(query) {
-        // 课程报名
-        this.$store.dispatch('fetchLessonEnroll', query).then((data) => {
-          this.myEnroll = data;
-        }, (err) => {
-          alert(err.message);
-        });
       },
     },
   }

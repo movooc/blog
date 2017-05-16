@@ -29,7 +29,7 @@ class VueAudio {
             preload: preload,
             startLoad: false,
             failed: false,
-            try: 3,
+            try: 2,
             tried: 0,
             playing: false,
             paused: false,
@@ -55,16 +55,18 @@ class VueAudio {
     init (src, options = {}) {
         if (!src) throw 'src must be required'
         this.state.startLoad = true
-        if (this.state.tried === this.state.try) {
+        if (this.state.tried >= this.state.try) {
             this.state.failed = true
             return
         }
         this.$Audio = options.audio;
         this.$Audio.setAttribute('src', src);
+        Cov.off(this.$Audio, 'error', ()=>{});
         Cov.on(this.$Audio, 'error', () => {
             this.state.tried++;
             this.init(src, options);
         });
+        Cov.off(this.$Audio, 'ended', ()=>{});
         Cov.on(this.$Audio, 'ended', () => {
           options.ended();
         });

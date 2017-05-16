@@ -185,7 +185,7 @@
             let time = new Date().getTime();
             // 是否已经加载好
             if(self.mu.$Audio.readyState < 2){
-              if((time-timeStart) > 3000 && count<1){
+              if((time-timeStart) > 2000 && count<1){
                 if(isWeiXin){
                   timeStart = new Date().getTime();
                   WeixinJSBridge.invoke('getNetworkType', {}, (e) => {

@@ -1,14 +1,15 @@
 <template>
   <div class="button">
-    <div class="enroll" v-if="!paying && typeof(isEnroll) == Object">
-      <button class="enter" v-if="enrollData">进入课堂</button>
+    <div class="enroll" v-if="!paying && isEnroll == 'enroll'">
+      <button class="enter" @click="startLesson">进入课堂</button>
     </div>
     <div class="enroll" v-if="!paying && isEnroll == 'no'">
-      <button class="free" v-if="enrollData && enrollData.price == 0">免费报名</button>
-      <button class="pay" v-if="enrollData && enrollData.price > 0" @click="callWeiXinPay">付费报名</button>
+      <button class="free" v-if="courseDetail && courseDetail.price == 0 && !canEnter" @click="callWeiXinPay">免费报名</button>
+      <button class="pay" v-if="courseDetail && courseDetail.price > 0 && !canEnter" @click="callWeiXinPay">付费报名</button>
+      <button class="enter" v-if="canEnter" @click="startLesson">进入课堂</button>
     </div>
     <div class="enroll" v-if="paying">
-      <button class="enter">付款中...</button>
+      <button class="enter">报名中...</button>
     </div>
   </div>
 </template>
@@ -17,36 +18,55 @@
     export default{
       name: 'v-button',
       props: {
-        enrollData: {
-          type: Object
-        },
         isEnroll: {
           type: null
         },
         courseDetail: {
           type: null
         },
+        liveHost: {
+          type: String
+        }
       },
       data() {
         return {
           paying: false,
+          enrollData: null,
+          canEnter: false,
+          query: {},
         }
+      },
+      created(){
+        //获取路由参数
+        this.query = this.$route.query;
       },
       methods: {
         callWeiXinPay() {
-          // 获取订单信息
           // 开启付款状态
           this.paying = true;
-          let _body = {
-            order_sn: this.enrollData.order,
-            body: {
-                title: this.courseDetail.title
-            }
-          };
-          //
-          this.$store.dispatch('fetchOrderConfirm', _body).then((data) => {
+          // 课程报名
+          this.lessonEnroll(this.query);
+        },
+        lessonEnroll(query) {
+          // 课程报名
+          // 已请求过
+          if(this.enrollData && this.enrollData.order && this.enrollData.price>0){
             // 发起支付请求
-            this.callpay(data);
+            return this.callpay(this.enrollData.pay_data);
+          }
+          // 报名开始
+          this.$store.dispatch('fetchLessonEnroll', query).then((data) => {
+            // 数据
+            this.enrollData = { ...data };
+            // 是否需要付费
+            if(data.price > 0){
+              // 发起支付请求
+              this.callpay(data.pay_data);
+            }else{
+              this.canEnter = true;
+              this.paying = false;
+              alert('报名成功！');
+            }
           }, (err) => {
             this.paying = false;
             alert(err.message);
@@ -54,15 +74,20 @@
         },
         lessonAccess() {
           // 是否有权限进入课堂
+          let query = this.query;
           this.$store.dispatch('fetchLessonAccess', query).then((data) => {
             let params = `?isOwner=no&lesson_sn=${query.lesson_sn}`;
             for(let d in data){
               params = `${params}&${d}=${data[d]}`;
             };
-            this.lessons = params;
+            window.location.href = `${this.liveHost}${params}`;
           }, (err) => {
             alert(err.message);
           });
+        },
+        startLesson() {
+          // 开始课程
+          this.lessonAccess();
         },
         callpay(params) {
           if (typeof WeixinJSBridge == "undefined") {
@@ -84,11 +109,17 @@
             'getBrandWCPayRequest',
             params,
             function (res) {
-              // 关闭付款状态
-              self.paying = false;
               WeixinJSBridge.log(res.err_msg);
-              if (res.err_msg == "get_brand_wcpay_request:ok" || res.err_msg == "get_brand_wcpay_request:cancel") {
-                alert(res.err_msg);
+              //alert(JSON.stringify(res.err_msg));
+              if (res.err_msg == 'get_brand_wcpay_request:ok') {
+                // 关闭付款状态
+                self.paying = false;
+                // 开通直播通道
+                self.canEnter = true;
+                alert('报名成功！');
+              }else {
+                // 关闭付款状态
+                self.paying = false;
               }
             }
           );

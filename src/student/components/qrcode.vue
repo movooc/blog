@@ -13,7 +13,7 @@
       获得更多课程&nbsp;
     </div>
     <div>
-      <img src="static/_static/student/img/qrcode.png" />
+      <img src="https://assets.sandbox.yike.fm/static/student/_static/student/img/qrcode.png" />
     </div>
   </div>
 </template>

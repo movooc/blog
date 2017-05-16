@@ -9,7 +9,7 @@
           <span>1000人已预约</span>
         </div>
         <p class="info-price">
-          <span class="price">&#65509;{{course.price}}&nbsp;<em>8.00</em></span>
+          <span class="price">&#65509;{{course.price}}&nbsp;<em>&nbsp;</em></span>
           <span class="guarantee">课程保障</span>
         </p>
       </div>
