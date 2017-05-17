@@ -25,7 +25,7 @@
     </ul>
     <ul>
       <li>
-        <router-link to="/course">
+        <router-link to="/user/guarantee">
           <i class="iconfont icon-info"></i>
           <span>课程保障</span>
           <span class="arrow"></span>

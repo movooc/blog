@@ -55,6 +55,8 @@
           -webkit-box-flex: 1;
           box-flex: 1;
           justify-content: center;
+        .iconfont
+          px2px(font-size, 30px);
       .info-price
         position: relative;
         margin: 0;
@@ -88,6 +90,29 @@
             border-top: 4px solid #12B7F5;
             -webkit-transform: rotate(135deg); /*箭头方向可以自由切换角度*/
             transform: rotate(135deg);
+          &.unfold
+            &:after
+              margin-top: 0px;
+              -webkit-transform: rotate(-45deg);
+              transform: rotate(-45deg);
+      .guarantee-text
+        padding: 20px;
+        px2px(font-size, 28px);
+        dl
+          display: flex;
+          display: -webkit-flex;
+          margin: 0;
+          padding: 5px 0;
+          dt,dd
+            display: flex;
+            display: -webkit-flex;
+          dt
+            color: #12b7f5;
+            -webkit-flex: 1;
+            flex: 1;
+          dd
+            -webkit-flex: 3;
+            flex: 3;
     .lesson-brief
       margin-top: 20px;
       padding: 30px 30px 0;

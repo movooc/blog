@@ -18,6 +18,7 @@ if(process.env.NODE_ENV == 'production'){
   /*user*/
   var user = r => require.ensure([], () => r(require('../views/user/index')), 'student/student-user');
   var userCenter = r => require.ensure([], () => r(require('../views/user/center')), 'student/student-userCenter');
+  var guarantee = r => require.ensure([], () => r(require('../views/user/guarantee')), 'student/student-guarantee');
 
 }else{
   /*home*/
@@ -31,6 +32,7 @@ if(process.env.NODE_ENV == 'production'){
   /*user*/
   var user = require('../views/user/index');
   var userCenter = require('../views/user/center');
+  var guarantee = require('../views/user/guarantee');
 }
 
 export default [
@@ -111,6 +113,15 @@ export default [
         component: userCenter,
         meta: {
           pageTitle: '个人中心'
+        }
+      },
+      // 课程保障页
+      {
+        path: '/user/guarantee',
+        name: 'guarantee',
+        component: guarantee,
+        meta: {
+          pageTitle: '课程保障'
         }
       }
     ]

@@ -41,4 +41,16 @@ export default {
   body
     margin: 0;
     background: #f2f4f7;
+  .clearfix:after
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  .pull-left {
+    float: left;
+  }
+  .pull-right {
+    float: right;
+  }
 </style>
