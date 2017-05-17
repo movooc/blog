@@ -19,6 +19,7 @@ if(process.env.NODE_ENV == 'production'){
   var user = r => require.ensure([], () => r(require('../views/user/index')), 'student/student-user');
   var userCenter = r => require.ensure([], () => r(require('../views/user/center')), 'student/student-userCenter');
   var guarantee = r => require.ensure([], () => r(require('../views/user/guarantee')), 'student/student-guarantee');
+  var enrolled = r => require.ensure([], () => r(require('../views/user/enroll')), 'student/student-userEnroll');
 
 }else{
   /*home*/
@@ -33,6 +34,7 @@ if(process.env.NODE_ENV == 'production'){
   var user = require('../views/user/index');
   var userCenter = require('../views/user/center');
   var guarantee = require('../views/user/guarantee');
+  var enrolled = require('../views/user/enroll');
 }
 
 export default [
@@ -113,6 +115,15 @@ export default [
         component: userCenter,
         meta: {
           pageTitle: '个人中心'
+        }
+      },
+      // 已报名的课程
+      {
+        path: '/user/enrolled',
+        name: 'enrolled',
+        component: enrolled,
+        meta: {
+          pageTitle: '已报名的课程'
         }
       },
       // 课程保障页

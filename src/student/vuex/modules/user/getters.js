@@ -1,1 +1,1 @@
-export const getSomeInfo = state => state.someInfo;
+export const getUserEnroll = state => state.enrollList;

@@ -36,15 +36,15 @@ const _get = ({ url, query }, commit) => {
     })
 };
 
-export const fetchSomeInfo = ({commit}, query) => {
-  const url = `${_prefix}/user.api`;
+export const fetchEnrollList = ({commit}, query) => {
+  const url = `${_prefix}/lesson-history.api`;
 
   return _get({ url, query }, commit)
     .then((json) => {
       if (json.error == 0) {
-        //return commit('CHANGE_HOME_INFO', json.data)
+        return commit('FETCH_ENROLL_LIST', json.data)
       }
-      return Promise.reject(new Error('Fetch_User_Info failure'))
+      return Promise.reject(new Error('Fetch_Enroll_List failure'))
     })
     .catch((error) => {
       return Promise.reject(error)

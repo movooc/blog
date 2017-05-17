@@ -8,17 +8,17 @@
       <div class="listen">已经听过2个教程</div>
     </div>
     <ul>
+      <!--<li>-->
+        <!--<router-link to="/course">-->
+          <!--<i class="iconfont icon-follow"></i>-->
+          <!--<span>已经关注的讲师</span>-->
+          <!--<span class="arrow"></span>-->
+        <!--</router-link>-->
+      <!--</li>-->
       <li>
-        <router-link to="/course">
-          <i class="iconfont icon-follow"></i>
-          <span>已经关注的讲师</span>
-          <span class="arrow"></span>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/course">
+        <router-link to="/user/enrolled">
           <i class="iconfont icon-buy"></i>
-          <span>已购买的课程</span>
+          <span>已报名的课程</span>
           <span class="arrow"></span>
         </router-link>
       </li>
@@ -55,7 +55,7 @@
       })
     },
     mounted() {
-      console.log(this.userInfo);
+
     },
     methods: {
     },

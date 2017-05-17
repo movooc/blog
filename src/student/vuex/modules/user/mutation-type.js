@@ -1,1 +1,1 @@
-export const FETCH_SOME_INFO = 'FETCH_SOME_INFO'
+export const FETCH_ENROLL_LIST = 'FETCH_ENROLL_LIST'

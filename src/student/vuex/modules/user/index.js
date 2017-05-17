@@ -3,7 +3,7 @@ import * as getters from './getters'
 import mutations from './mutations'
 
 const state = {
-  someInfo: '欢迎您'
+  enrollList: [],
 };
 
 export default{

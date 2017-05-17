@@ -5,6 +5,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import home from './modules/home'
 import course from './modules/course'
+import user from './modules/user'
 import app from './modules/app'
 
 Vue.use(Vuex);
@@ -12,6 +13,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   modules: {
     home,
+    user,
     course,
     app,
   },
