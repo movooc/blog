@@ -104,6 +104,21 @@ function Recombination() {
               }
             }
           }
+          else if(new RegExp('fonts|img').test(_static)) {
+            to = dirPath+'/'+_static;
+            if(fs.existsSync(to))continue;
+            // create dir
+            fs.mkdirSync(to, 0755);
+            //
+            for(let file of fromFile){
+              if(/\.\w+$/.test(file)){
+                // copy files
+                fs.createReadStream(from+'/'+file).pipe(fs.createWriteStream(to+'/'+file));
+              }else if(new RegExp(fileName).test(file)){
+                //Rename(from+'/'+file, to+'/'+file);
+              }
+            }
+          }
         }
       }
       // end modules
