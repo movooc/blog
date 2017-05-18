@@ -2,39 +2,48 @@
   <div class="enroll-list">
     <ul class="lesson">
       <li v-for="list in lists">
-        <a href="javascript:;" class="item" @click="enterDetail(list.sn)">
+        <a href="javascript:;" class="item" @click="enterDetail(list.lesson.sn)">
           <div class="list-img">
             <img :src="list.lesson.cover" />
           </div>
           <div class="list-content">
             <div class="list-title" v-text="list.lesson.title"></div>
             <div class="appointment">
-              xxx人预约
+              {{list.lesson.participants}}人预约
             </div>
             <div class="list-status clearfix">
-              <span class="pull-right opened" v-if="list.event == 'enroll'">未报名</span>
+              <span class="pull-right" v-if="list.event == 'enroll'">已报名</span>
+              <span class="pull-right" v-if="list.event == 'browse'">未报名</span>
+              <span class="pull-right" v-if="list.event == 'access'">听课中</span>
+              <span class="pull-right" v-if="list.event == 'cancel'">已退出</span>
+              <span class="pull-right" v-if="list.event == 'refund'">已退款</span>
               <span v-if="list.lesson.step == 'submit'">未开放</span>
-              <span v-if="list.lesson.step == 'opened'" class="opened">开放中</span>
+              <span v-if="list.lesson.step == 'opened'" class="opened">{{`${list.lesson.plan.dtm_now}#${list.lesson.plan.dtm_start}` | moment}}</span>
               <span v-if="list.lesson.step == 'onlive'">直播中</span>
               <span v-if="list.lesson.step == 'repose'">交流中</span>
               <span v-if="list.lesson.step == 'finish'">已结束</span>
             </div>
           </div>
         </a>
-        <div class="clearfix">
-          <button class="pull-right">评价</button>
-          <button class="pull-right">退款</button>
+        <div class="list-handler clearfix" v-if="list.i_refund == 1">
+          <!--<button class="pull-right blue">评价</button>-->
+          <button class="pull-right" @click="refund(list.lesson.sn)">退款</button>
         </div>
       </li>
     </ul>
+    <loading :show="refunding"></loading>
   </div>
 </template>
 
 <script>
     import { mapGetters } from 'vuex';
+    import Loading from '@student/components/loading';
 
     export default{
       name: 'enroll-list',
+      components: {
+        Loading
+      },
       props: {
         lists: {
           type: Array
@@ -46,11 +55,34 @@
         })
       },
       data() {
-        return {}
+        return {
+          refunding: false,
+        }
       },
       methods: {
         enterDetail(lesson_sn) {
           this.$router.push({ name: 'detail', query: { lesson_sn: lesson_sn }})
+        },
+        refund(lesson_sn) {
+          let body = {
+            lesson_sn,
+          };
+          // 开启退款状态
+          this.refunding = true;
+          this.$store.dispatch('fetchRefundCourse', body).then(() => {
+            // 关闭退款状态
+            this.refunding = false;
+            // 重新获取列表
+            this.$store.dispatch('fetchEnrollList').then(() => {
+              console.log('success');
+            }, () => {
+              console.log('fail');
+            });
+          }, (err) => {
+            // 关闭退款状态
+            this.refunding = false;
+            alert('退款失败!');
+          });
         }
       }
     }
@@ -75,8 +107,7 @@
       }
       li{
         position: relative;
-        padding: 38px 24px;
-        //height: 182px;
+        padding: 38px 24px 0;
         background: #fff;
         overflow: hidden;
 
@@ -86,6 +117,7 @@
         .item {
           display: -webkit-box;
           display: box;
+          padding-bottom: 29px;
 
           >* {
             display: -webkit-box;
@@ -93,6 +125,9 @@
             -webkit-box-orient: vertical;
             box-orient: vertical;
           }
+        }
+        .item+div {
+          border-top: 1px solid #E6EAF2;
         }
         .list-title{
           padding: 0 0 15px;
@@ -124,10 +159,27 @@
         }
         .list-status{
           padding-top: 65px;
-          width: 380px;
+          width: 400px;
           >span{
+            color: #3C4A55;
             &.opened {
               color: #fb6666;
+            }
+          }
+        }
+        .list-handler{
+          padding: 19px 0;
+          button{
+            margin-left: 19px;
+            padding: 10px 45px;
+            background: transparent;
+            border: 1px solid #aaa;
+            border-radius: 60px;
+            -webkit-border-radius: 60px;
+            px2px(font-size, 30px);
+            &.blue {
+              color: #12B7F5;
+              border-color: #12B7F5;
             }
           }
         }

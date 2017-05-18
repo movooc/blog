@@ -44,7 +44,7 @@
         // 赋值
         this.courseDetail = data;
         // 是否报名
-        this.isEnroll = data.event ? data.event : 'no';
+        this.isEnroll = data.event;
         //清空现有的iframe
         try{
           document.getElementsByTagName('iframe')[0].remove();

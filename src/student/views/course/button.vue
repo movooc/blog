@@ -1,9 +1,9 @@
 <template>
   <div class="button">
-    <div class="enroll" v-if="!paying && isEnroll == 'enroll'">
+    <div class="enroll" v-if="!paying && (isEnroll == 'enroll' || isEnroll == 'access')">
       <button class="enter" @click="startLesson">进入课堂</button>
     </div>
-    <div class="enroll" v-if="!paying && isEnroll == 'no'">
+    <div class="enroll" v-if="!paying && isEnroll == 'browse'">
       <button class="free" v-if="courseDetail && courseDetail.price == 0 && !canEnter" @click="callWeiXinPay">免费报名</button>
       <button class="pay" v-if="courseDetail && courseDetail.price > 0 && !canEnter" @click="callWeiXinPay">付费报名</button>
       <button class="enter" v-if="canEnter" @click="startLesson">进入课堂</button>

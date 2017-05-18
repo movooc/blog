@@ -4,7 +4,7 @@
       <div class="brief-info">
         <h4 v-text="course.title"></h4>
         <div class="info-detail">
-          <span><em v-text="course.plan.dtm_start"></em>&nbsp;开课</span>
+          <span><em>{{`${course.plan.dtm_now}#${course.plan.dtm_start}` | moment}}</em>&nbsp;开课</span>
           <span><i class="iconfont icon-time"></i>&nbsp;{{course.plan.duration}}小时</span>
           <span><i class="iconfont icon-people"></i>&nbsp;1000</span>
         </div>

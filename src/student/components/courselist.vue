@@ -8,7 +8,7 @@
             <img :src="list.cover" alt="">
             <span class="list-status">
               <span v-if="list.step == 'submit'">未开放</span>
-              <span v-if="list.step == 'opened'">开放中</span>
+              <span v-if="list.step == 'opened'">{{`${list.plan.dtm_now}#${list.plan.dtm_start}` | moment}}</span>
               <span v-if="list.step == 'onlive'">直播中</span>
               <span v-if="list.step == 'repose'">交流中</span>
               <span v-if="list.step == 'finish'">已结束</span>
@@ -117,7 +117,7 @@
         }
         .list-status{
           position: absolute;
-          width: 108px;
+          width: 126px;
           height: 50px;
           color: #fb6666;
           background: #fff;
