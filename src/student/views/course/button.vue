@@ -8,6 +8,9 @@
       <button class="pay" v-if="courseDetail && courseDetail.price > 0 && !canEnter" @click="callWeiXinPay">付费报名</button>
       <button class="enter" v-if="canEnter" @click="startLesson">进入课堂</button>
     </div>
+    <div class="enroll refund" v-if="!paying && isEnroll == 'refund'">
+      <button disabled>已退款</button>
+    </div>
     <div class="enroll" v-if="paying">
       <button class="enter">报名中...</button>
     </div>
@@ -153,4 +156,7 @@
         border-radius: 12px;
         -webkit-border-radius: 12px;
         px2px(font-size, 36px);
+      &.refund
+        button
+          background: #aaa;
 </style>
