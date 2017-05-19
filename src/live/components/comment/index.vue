@@ -19,7 +19,7 @@
             </div>
             <div class="user-content">
               <div class="con-title" v-text="comment.nickname"></div>
-              <div class="con-time">2017-03-26 20:33 <a href="javascrip:;" v-if="isOwner">操作</a></div>
+              <div class="con-time">{{comment.time}} <a href="javascrip:;" v-if="isOwner">操作</a></div>
               <div class="con-text" v-for="com in comment.content">
                 <span v-for="co in com.custom" v-text="co.text"></span>
               </div>

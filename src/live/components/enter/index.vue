@@ -39,6 +39,7 @@
         'liveHost',
         'userInfo',
         'lessonInfo',
+        'studentHost',
       ])
     },
     created() {
@@ -57,7 +58,10 @@
           if(err.ErrorCode == 70001 || err.ErrorCode == 70052){
             window.location.reload();
           };
-          alert(err.ErrorInfo);
+          if(err.ErrorCode == 10016){
+            alert(err.SrcErrorInfo);
+            window.location.href = this.studentHost;
+          }
         }else{
           // 进群成功
           this.joinGroup();

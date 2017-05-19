@@ -32,6 +32,18 @@ const _get = ({ url, query }, commit) => {
     })
 };
 
+const _post = ({ url, body }, commit) => {
+  let _url = url;
+
+  return vue.http.post(_url, body, {emulateJSON:true})
+    .then((res) => {
+      if (res.status >= 200 && res.status < 300) {
+        return res.data
+      }
+      return Promise.reject(new Error(res.status))
+    })
+};
+
 /*获取历史记录*/
 export const fetchHistory = ({commit}, query) => {
   const url = `${_prefix}/live-record-tim`;
@@ -42,6 +54,22 @@ export const fetchHistory = ({commit}, query) => {
         return Promise.resolve(json.data);
       }
       return Promise.reject(new Error('Fetch_History failure'))
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+
+/*退款*/
+export const fetchRefundCourse = ({commit}, body) => {
+  const url = `${_prefix}/lesson-refund-freely`;
+
+  return _post({ url, body }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return Promise.resolve();
+      }
+      return Promise.reject(new Error('Fetch_Refund_Course failure'))
     })
     .catch((error) => {
       return Promise.reject(error)

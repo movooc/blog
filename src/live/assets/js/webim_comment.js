@@ -297,7 +297,7 @@ function sendMsgCallBack (msgtosend, callback) {
       callback(null, assembleMsg(msg));
     }, function (err) {
       _webim.Log.error('发消息失败:' + err.ErrorInfo);
-      callback(err.ErrorInfo);
+      callback(err);
     });
 };
 
@@ -316,12 +316,16 @@ function assembleMsg(msg) {
     },
     nickname: '',
     account: '',
+    time: '',
     content: []
   };
-
   // assign
   assemble.account = msg.getFromAccount() || '';
   assemble.nickname = msg.getFromAccountNick() || '未知用户';
+
+  try{
+    assemble.time = new Date(msg.time * 1000).toLocaleString()
+  }catch(e){}
 
   //解析消息
   //获取会话类型，目前只支持群聊

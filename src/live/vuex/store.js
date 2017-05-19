@@ -16,6 +16,7 @@ const state = {
   menuShow: false,
   isOwner : false,
   commentShow: false,
+  refundShow: false,
   isHeader: true,
   userInfo: null,
   lessonInfo: null,
@@ -29,6 +30,7 @@ const state = {
   loadingImg: 'static/_static/live/img/loading.gif',
   userAvatar: null,
   liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,''):'/api'),
+  studentHost:(process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'?'):'/student.html?'),
 };
 
 /* mutations serials */
@@ -89,6 +91,9 @@ const mutations = {
   // update comment show
   UPDATE_COMMETN_SHOW(state, show){
     state.commentShow = show;
+  },
+  UPDATE_REFUND_SHOW(state, show){
+    state.refundShow = show;
   },
   // 是否是管理员
   UPDATE_ISOWNER(state, isOwner){

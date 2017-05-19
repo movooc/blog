@@ -516,7 +516,7 @@ function sendMsgCallBack (msgtosend, callback) {
       callback(null, assembleMsg(msg));
     }, function (err) {
       webim.Log.error('发消息失败:' + err.ErrorInfo);
-      callback(err.ErrorInfo);
+      callback(err);
     });
 };
 
