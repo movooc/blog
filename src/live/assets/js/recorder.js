@@ -12,6 +12,11 @@ var audioInput = null,
   recIndex = 0,
   ctx = null;
 
+// 定义录制时间
+var startTimer = 0;
+// 开始监测状态
+var starting = false;
+
 /* TODO:
 
  - offer mono option
@@ -65,6 +70,23 @@ function gotStream(stream) {
   zeroGain.connect( audioContext.destination );
 }
 
+function inspectRecording(self) {
+  if(!starting)return;
+  let endTimer = new Date().getTime();
+  let diff = (endTimer - startTimer)/60000;
+  if(diff >= 3){
+    // stop recording
+    self.active = false;
+    self.$store.commit('UPDATE_RECORDING', false);
+    starting = false;
+    audioRecorder.stop();
+    return audioRecorder.getBuffers( gotBuffers );
+  }
+  // 重新监测
+  setTimeout(()=>{
+    inspectRecording(self);
+  }, 1000);
+}
 
 export const toggleRecording = function( self ) {
   //
@@ -75,17 +97,28 @@ export const toggleRecording = function( self ) {
     self.active = false;
     self.$store.commit('UPDATE_RECORDING', false);
     audioRecorder.stop();
-    audioRecorder.getBuffers( gotBuffers );
+    // 结束监测
+    starting = false;
+    // 录制时间是否过短
+    if(new Date().getTime() - startTimer < 1000){
+      alert('录制时间过短!');
+    }else{
+      audioRecorder.getBuffers( gotBuffers );
+    }
   } else {
     // start recording
     if (!audioRecorder)
       return;
+    startTimer = new Date().getTime();
     self.active = true;
     self.$store.commit('UPDATE_RECORDING', true);
     audioRecorder.clear();
     audioRecorder.record();
+    // 开始监测
+    starting = true;
+    inspectRecording(self);
   }
-}
+};
 
 export const initRecorder = function() {
   if(webim.Tool.getQueryString('lesson_info'))return;

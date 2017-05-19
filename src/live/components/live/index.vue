@@ -50,6 +50,14 @@
     <!-- chatbox -->
     <v-chatbox v-if="isOwner"></v-chatbox>
     <s-chatbox v-if="!isOwner"></s-chatbox>
+    <!-- live loading -->
+    <!--<div class="live-loading">-->
+    <!--<p class="text">历史记录加载中...</p>-->
+    <!--<div class="spinner">-->
+    <!--<div class="double-bounce1"></div>-->
+    <!--<div class="double-bounce2"></div>-->
+    <!--</div>-->
+    <!--</div>-->
   </div>
 </template>
 
