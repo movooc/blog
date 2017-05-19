@@ -110,6 +110,13 @@
         padding: 38px 24px 0;
         background: #fff;
         overflow: hidden;
+        border-width: 1px 0 1px 0;
+        border-color: #E6EAF2;
+        border-style: solid;
+
+        &:first-child {
+          border-top-width: 0;
+        }
 
         a{
           display: block;
@@ -131,7 +138,11 @@
         }
         .list-title{
           padding: 0 0 15px;
+          width: 400px;
           color: #3C4A55;
+          text-overflow:ellipsis;
+          white-space:nowrap;
+          overflow: hidden;
           px2px(font-size, 34px);
         }
         .list-img{

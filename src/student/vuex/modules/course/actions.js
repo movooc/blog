@@ -91,7 +91,7 @@ export const fetchLessonAccess = ({commit}, query) => {
       if (json.error == 0) {
         return Promise.resolve(json.data);
       }
-      return Promise.reject(new Error('Fetch_Course_List failure'))
+      return Promise.reject(new Error('Fetch_Lesson_Access failure'))
     })
     .catch((error) => {
       return Promise.reject(error)

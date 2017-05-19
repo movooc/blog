@@ -19,7 +19,9 @@
               &#65509;{{list.price}}
             </div>
             <div class="date">
-              {{list.tms_update}}
+              <i class="iconfont icon-people"></i>
+              {{list.participants}}
+              &nbsp;
             </div>
           </div>
         </a>
@@ -78,6 +80,13 @@
         //height: 182px;
         background: #fff;
         overflow: hidden;
+        border-width: 1px 0 1px 0;
+        border-color: #E6EAF2;
+        border-style: solid;
+
+        &:first-child {
+          border-top-width: 0;
+        }
 
         a{
           display: block;
@@ -113,12 +122,15 @@
           .date{
             float: right;
             color: #AAA;
+            .iconfont{
+              px2px(font-size, 32px);
+            }
           }
         }
         .list-status{
           position: absolute;
-          width: 126px;
-          height: 50px;
+          padding: 10px;
+          padding-left: 20px;
           color: #fb6666;
           background: #fff;
           z-index: 2;
@@ -131,12 +143,8 @@
           px2px(top, 12px);
           px2px(right, 0);
           >span{
-            position: absolute;
-            width: 100%;
-            height: 100%;
+            position: relative;
             px2px(font-size, 28px);
-            px2px(top, 12px);
-            px2px(left, 18px);
           }
         }
       }
