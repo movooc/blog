@@ -351,6 +351,17 @@ export const setCookie = (name, value) => {
   document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
 };
 
+//读取cookies
+export const getCookie = (name) => {
+  var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+
+  if(arr=document.cookie.match(reg))
+
+    return unescape(arr[2]);
+  else
+    return null;
+};
+
 // 转成数组
 export const convertToArray = (arr, data) => {
   if(Array.isArray(data)){

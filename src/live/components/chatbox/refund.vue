@@ -41,7 +41,7 @@
         };
         // 开始退款
         this.refunding = true;
-        this.$store.dispatch('fetchRefundCourse', body).then(() => {
+        this.$store.dispatch('fetchRefund', body).then(() => {
           // 关闭退款状态
           this.refunding = false;
           this.$store.commit('UPDATE_REFUND_SHOW', false);
