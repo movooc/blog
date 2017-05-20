@@ -3,7 +3,6 @@ import vue from 'vue';
  * acitons
  */
 const _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'') : '/api';
-const _prefixStudent = process.env.NODE_ENV == 'production' ? process.env.STUDENT_HOST.replace(/\/$/,'') : '/api';
 
 const _get = ({ url, query }, commit) => {
   //if (commit) commit('UPDATE_LOADING', true);
@@ -36,7 +35,7 @@ const _get = ({ url, query }, commit) => {
 const _post = ({ url, body }, commit) => {
   let _url = url;
 
-  return vue.http.post(_url, body, {emulateJSON:true})
+  return vue.http.post(_url, body, {emulateJSON:true,withCredentials:true})
     .then((res) => {
       if (res.status >= 200 && res.status < 300) {
         return res.data
@@ -62,8 +61,8 @@ export const fetchHistory = ({commit}, query) => {
 };
 
 /*退款*/
-export const fetchRefundCourse = ({commit}, body) => {
-  const url = `${_prefixStudent}/lesson-refund-freely`;
+export const fetchRefund = ({commit}, body) => {
+  const url = `${_prefix}/lesson-refund-freely.api`;
 
   return _post({ url, body }, commit)
     .then((json) => {

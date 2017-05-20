@@ -41,7 +41,7 @@ export default {
   body
     margin: 0;
     background: #f2f4f7;
-    font-family: "Microsoft YaHei","微软雅黑";
+    font-family: "Microsoft YaHei","WenQuanYi Micro Hei","微软雅黑";
   .clearfix:after
     content: ".";
     display: block;
