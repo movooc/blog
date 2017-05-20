@@ -14,7 +14,8 @@
         <span>{{list.tms_update}}</span>
         <span>{{list.title}}</span>
         <div class="handle">
-          <a href="javascript:;" @click="enterLesson(list.sn)">进入课程</a>
+          <a href="javascript:;" @click="enterLesson(list.sn)" v-if="list.step != 'submit'">进入课程</a>
+          <span v-if="list.step == 'submit'">正在审核中</span>
         </div>
       </li>
     </ul>

@@ -3,6 +3,7 @@ import vue from 'vue';
  * acitons
  */
 const _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'') : '/api';
+const _prefixStudent = process.env.NODE_ENV == 'production' ? process.env.STUDENT_HOST.replace(/\/$/,'') : '/api';
 
 const _get = ({ url, query }, commit) => {
   //if (commit) commit('UPDATE_LOADING', true);
@@ -62,7 +63,7 @@ export const fetchHistory = ({commit}, query) => {
 
 /*退款*/
 export const fetchRefundCourse = ({commit}, body) => {
-  const url = `${_prefix}/lesson-refund-freely`;
+  const url = `${_prefixStudent}/lesson-refund-freely`;
 
   return _post({ url, body }, commit)
     .then((json) => {

@@ -4,13 +4,13 @@
       <span>讲师</span>
       <span class="focus">+关注</span>
     </div>
-    <div class="t-con">
+    <div class="t-con clearfix">
       <div class="t-img">
         <img :src="teacher.avatar" />
       </div>
       <div class="t-text">
         <div v-text="teacher.name"></div>
-        <p>亚信，阿里，百度，盛大</p>
+        <p v-text="teacher.about"></p>
       </div>
     </div>
   </div>
@@ -80,6 +80,7 @@
         }
       }
       .t-text {
+        width: 550px;
         :first-child {
           color: #12b7f5;
           px2px(font-size, 40px);

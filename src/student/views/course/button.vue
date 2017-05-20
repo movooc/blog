@@ -1,12 +1,14 @@
 <template>
   <div class="button">
-    <div class="enroll" v-if="!paying && (isEnroll == 'enroll' || isEnroll == 'access')">
-      <button class="enter" @click="startLesson">进入课堂</button>
+    <div class="enroll" v-if="!paying && courseDetail && (isEnroll == 'enroll' || isEnroll == 'access')">
+      <button class="enter" @click="startLesson" v-if="courseDetail.step == 'onlive' || courseDetail.step == 'repose'">进入课堂</button>
+      <button disabled v-if="courseDetail.step == 'opened'">未开课</button>
     </div>
     <div class="enroll" v-if="!paying && isEnroll == 'browse'">
       <button class="free" v-if="courseDetail && courseDetail.price == 0 && !canEnter" @click="callWeiXinPay">免费报名</button>
       <button class="pay" v-if="courseDetail && courseDetail.price > 0 && !canEnter" @click="callWeiXinPay">付费报名</button>
-      <button class="enter" v-if="canEnter" @click="startLesson">进入课堂</button>
+      <button class="enter" v-if="canEnter && courseDetail && (courseDetail.step == 'onlive' || courseDetail.step == 'repose')" @click="startLesson">进入课堂</button>
+      <button disabled v-if="canEnter && courseDetail && courseDetail.step == 'opened'">未开课</button>
     </div>
     <div class="enroll refund" v-if="!paying && isEnroll == 'refund'">
       <button disabled>已退款</button>
@@ -156,7 +158,6 @@
         border-radius: 12px;
         -webkit-border-radius: 12px;
         px2px(font-size, 36px);
-      &.refund
-        button
+        &[disabled]
           background: #aaa;
 </style>

@@ -5,7 +5,8 @@
         我的课程>课程详情
         <span class="title-handle pull-right" @click="backToCourse">返回</span>
         <span class="title-handle pull-right">编辑</span>
-        <span class="title-handle pull-right" @click="startLesson" v-if="lessons">进入直播</span>
+        <span class="title-handle pull-right" @click="startLesson" v-if="courseDetail.step=='opened'">点击开课</span>
+        <span class="title-handle pull-right" @click="startLesson" v-if="courseDetail.step=='onlive' || courseDetail.step=='repose'">进入直播</span>
       </div>
       <div class="lesson-content clearfix">
         <div class="lesson-img">
@@ -64,7 +65,7 @@
     },
     data() {
       return {
-        lessons: '',
+        //lessons: '',
       }
     },
     created() {
@@ -90,21 +91,22 @@
       }, () => {
         console.log('fail');
       });
-      // 获得开课信息
-      this.$store.dispatch('fetchOpenInfo', query).then((data) => {
-        let params = `?isOwner=yes&lesson_sn=${query.lesson_sn}`;
-        for(let d in data){
-          params = `${params}&${d}=${data[d]}`;
-        };
-        this.lessons = params;
-      }, (err) => {
-        alert(err.message);
-      });
     },
     methods: {
       startLesson() {
         // 开始课程
-        window.location.href = `${liveHost}${this.lessons}`;
+        // 获得开课信息
+        this.$store.dispatch('fetchOpenInfo', query).then((data) => {
+          let params = `?isOwner=yes&lesson_sn=${query.lesson_sn}`;
+          for(let d in data){
+            params = `${params}&${d}=${data[d]}`;
+          };
+          //this.lessons = params;
+          // 开始进入课堂
+          window.location.href = `${liveHost}${params}`;
+        }, (err) => {
+          alert(err.message);
+        });
       },
       backToCourse() {
         this.$router.push({ name: 'course' })
