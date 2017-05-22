@@ -29,6 +29,7 @@ const state = {
   sendWidth: '0',
   loadingImg: 'static/_static/live/img/loading.gif',
   userAvatar: null,
+  playingAudio: null,
   liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,''):'/api'),
   studentHost:(process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'?'):'/student.html?'),
 };
@@ -113,6 +114,10 @@ const mutations = {
   },
   UPDATE_USER_AVATAR(state, avatars){
     state.userAvatar = { ...avatars };
+  },
+  // 正在播放的audio
+  UPDATE_PLAYER(state, player){
+    state.playingAudio = player;
   },
 };
 
