@@ -12,7 +12,7 @@
       </div>
       <button class="box-send" @click="sendMsg">提交</button>
       <div class="more-choice" v-if="moduleShow">
-        <a class="close" href="javascript:;" @click="moduleShow = !moduleShow">&times</a>
+        <!--<a class="close" href="javascript:;" @click="moduleShow = !moduleShow">&times</a>-->
         <button @click="showImage">上传图片</button>
         <button @click="showFile">上传文件</button>
       </div>

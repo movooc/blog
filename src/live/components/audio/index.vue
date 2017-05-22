@@ -1,6 +1,6 @@
 <template>
   <div class="rd-audio-player">
-      <audio :id="id"></audio>
+      <audio :id="id" :data-index="index"></audio>
       <div class="rd-audio-cover" @click="touchCover">
           <button class="rd-audio-player-btn" transition="bounce" :class="{'pause':state.playing}"></button>
       </div>
@@ -50,6 +50,9 @@
       },
       src: {
         type: String
+      },
+      index: {
+        type: null
       },
       history: {
         type: Boolean
@@ -172,6 +175,8 @@
             }
             //
             self.firstLoad = false;
+            // 记住正在播放的audio
+            self.$store.commit('UPDATE_PLAYER', self.mu.$Audio);
             return self.mu.play();
           }
           self.buffering = true;
@@ -208,12 +213,16 @@
                 setStore(`audio-${self.id}`, {played: true});
                 self.played = true;
               }
+              // 记住正在播放的audio
+              self.$store.commit('UPDATE_PLAYER', self.mu.$Audio);
               // 开始播放
               self.mu.play();
               self.firstLoad = false;
             }
           })();
         }else{
+          // 记住正在播放的audio
+          self.$store.commit('UPDATE_PLAYER', self.mu.$Audio);
           self.mu.play();
         }
       },
@@ -223,6 +232,8 @@
         this.mu.pause();
       },
       ended () {
+        // 清楚正在播放的audio记录
+        this.$store.commit('UPDATE_PLAYER', null);
         this.isEnd = true;
         this.pause();
         this.nextPlay();
