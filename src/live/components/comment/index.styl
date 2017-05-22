@@ -3,17 +3,21 @@
 .l-comment {
   position: absolute;
   right: 0;
-  top: 0;
   bottom: 0;
-  padding: 100px 0 0;
   width: 100%;
+  height: 500px;
   z-index: 6;
-  background-color:rgba(0,0,0,0.6);
+  //background-color:rgba(0,0,0,0.6);
+  -moz-box-shadow:-1px -4px 5px #D0F1FD;
+  -webkit-box-shadow:-1px -4px 5px #D0F1FD;
+  box-shadow:-1px -4px 5px #D0F1FD;
 
   .back-live {
-    padding: 10px;
     text-align: center;
     button {
+      background: transparent;
+      border: 0 none;
+      color: #12B7F5;
       px2px(font-size, 32px);
     }
   }
@@ -75,10 +79,15 @@
 
 .is-pc {
   .l-comment {
+    right: 0;
+    top: 0;
+    bottom: 0;
     padding: 0;
     width: 296px;
+    height: auto;
     border-radius: 4px;
     background: #fff;
+    box-shadow: 0 none;
 
     .comment-title {
       font-size: 16px;

@@ -44,6 +44,18 @@
     height: 100%;
     background: #ecedf1;
     overflow-y: hidden;
+  .clearfix:after
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  .pull-left {
+    float: left;
+  }
+  .pull-right {
+    float: right;
+  }
   .app
     font-family: Microsoft YaHei, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
