@@ -5,6 +5,8 @@
     <div class="live-sms-header" v-if="isPC">直播区</div>
     <div class="live-sms-left" v-if="isPC"></div>
     <div class="live-sms-right" v-if="isPC"></div>
+    <!-- player -->
+    <v-player v-if="playingAudio"></v-player>
     <!-- live entity -->
     <div class="live-body" id="live-body">
       <!--<p class="pullMsgs" v-if="canPullMsgs"><a href="javascript:;" @click="pullMsgs">点击拉取历史消息</a></p>-->
@@ -12,8 +14,8 @@
       <!-- header -->
       <l-header></l-header>
       <!-- message entity -->
-      <ul class="live-sms-list" id="live_sms_list">
-        <li v-for="msg in messageInfo">
+      <ul class="live-sms-list" id="live_sms_list" v-bind:class="{'commentShow':commentShow}">
+        <li v-for="(msg, index) in messageInfo">
           <div class="user-img">
             <img :src="loadingImg" width="45px">
           </div>
@@ -28,7 +30,7 @@
               <div class="content-text custom" v-if="con.type==msg.MSG_ELEMENT_TYPE.CUSTOM">
                 <div class="custom" v-for="cus in con.custom">
                   <div class="content-audio" :data-audio-src="cus.type" v-if="cus.type == 'SOUND'">
-                    <v-audio ref="audios" :history="con.history" :id="cus.id" :src="cus.src"></v-audio>
+                    <v-audio ref="audios" :history="con.history" :id="cus.id" :src="cus.src" :index="index"></v-audio>
                   </div>
                   <div class="content-audio" :data-audio-src="cus.type" v-if="cus.type == 'FILE'">
                     <a :href="cus.src" target="__blank">点击下载{{cus.name}}</a>
@@ -42,8 +44,6 @@
           </div>
         </li>
       </ul>
-      <!-- popular -->
-      <!--<v-popular></v-popular>-->
     </div>
     <!-- comment -->
     <v-comment></v-comment>
@@ -64,6 +64,7 @@
 <script>
   import {mapState} from 'vuex';
   import lHeader from './header.vue';
+  import vPlayer from './player.vue';
   import vPopular from './popular.vue';
   import { exportAssembleMsg } from '@live/assets/js/webim_comment';
   import vComment from '@live/components/comment/index.vue';
@@ -86,6 +87,7 @@
       vChatbox,
       sChatbox,
       vAudio,
+      vPlayer,
     },
     data() {
       return {
@@ -104,13 +106,9 @@
         'isOwner',
         'teacherInfo',
         'loadingImg',
+        'playingAudio',
+        'commentShow',
       ])
-    },
-    updated() {
-      setTimeout(()=>{
-        var vScroll = document.getElementById('live-body');
-        vScroll.scrollTop = vScroll.scrollHeight;
-      });
     },
     mounted(){
       this.pullMsgs();
@@ -139,6 +137,20 @@
             }
             // 实施
             this.$store.commit('UPDATE_HISTORY_MESSAGE', tempList);
+            this.$nextTick(()=>{
+              var vScroll = document.getElementById('live-body');
+              var count = 0;
+              // 开始迭代
+              (function nextAction(){
+                if(vScroll.scrollHeight && count<2500){
+                  return vScroll.scrollTop = vScroll.scrollHeight;
+                };
+                count = count + 500;
+                setTimeout(()=>{
+                  nextAction();
+                },500);
+              })();
+            });
           }, () => {
             console.log('fail');
           });

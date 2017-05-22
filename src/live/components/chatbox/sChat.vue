@@ -2,7 +2,7 @@
   <div class="l-chatbox">
     <div class="box">
       <span class="box-more" v-if="lessonInfo.price">
-        <button @click="showRefund">
+        <button @click="showModule">
           <span class="iconfont icon-list"></span>
         </button>
       </span>
@@ -12,6 +12,10 @@
       </div>
       <v-refund></v-refund>
       <button class="box-send" @click="sendMsg" v-if="commentShow">提交</button>
+      <div class="more-choice" v-if="moduleShow">
+        <button @click="backHome">回到首页</button>
+        <button @click="showRefund">申请退款</button>
+      </div>
     </div>
   </div>
 </template>
@@ -30,6 +34,7 @@
     data() {
       return {
         msgVal: '',
+        moduleShow: false,
       };
     },
     computed: {
@@ -56,9 +61,15 @@
       showComment() {
         this.$store.commit('UPDATE_COMMETN_SHOW', true);
       },
+      showModule() {
+        this.moduleShow = !this.moduleShow;
+      },
       showRefund() {
         this.$store.commit('UPDATE_REFUND_SHOW', true);
-      }
+      },
+      backHome() {
+        window.location.href = this.studentHost;
+      },
     },
   };
 </script>
