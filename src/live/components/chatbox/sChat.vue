@@ -1,7 +1,7 @@
 <template>
   <div class="l-chatbox">
     <div class="box">
-      <span class="box-more" v-if="lessonInfo.price">
+      <span class="box-more">
         <button @click="showModule">
           <span class="iconfont icon-list"></span>
         </button>
@@ -12,9 +12,9 @@
       </div>
       <v-refund></v-refund>
       <button class="box-send" @click="sendMsg" v-if="commentShow">提交</button>
-      <div class="more-choice" v-if="moduleShow">
+      <div class="more-choice" v-if="moduleShow" :class="{'is-free':!lessonInfo.price}">
         <button @click="backHome">回到首页</button>
-        <button @click="showRefund">申请退款</button>
+        <button @click="showRefund" v-if="lessonInfo.price">申请退款</button>
       </div>
     </div>
   </div>
@@ -24,6 +24,8 @@
   import { mapState } from 'vuex';
   import { vSendMsg } from '@live/assets/js/webim_comment';
   import vRefund from '@live/components/chatbox/refund';
+  // scroll
+  var vScroll = null;
 
   export default
   {
@@ -60,6 +62,12 @@
       },
       showComment() {
         this.$store.commit('UPDATE_COMMETN_SHOW', true);
+        if(!vScroll){
+          vScroll = document.getElementById('live-body');
+        };
+        setTimeout(()=>{
+          vScroll.scrollTop = vScroll.scrollHeight;
+        }, 400);
       },
       showModule() {
         this.moduleShow = !this.moduleShow;

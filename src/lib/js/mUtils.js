@@ -168,6 +168,16 @@ export const getQueryString = (name) => {
 };
 
 /**
+ * 根据名字获取hash参数值
+ */
+export const decodeQueryString = (name) => {
+  var reg = new RegExp('(^|&|\\?)' + name + '=([^&]*)(&|$)', 'i');
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) return decodeURIComponent(r[2]);
+  return null;
+};
+
+/**
  * 运动效果
  * @param {HTMLElement} element   运动对象，必选
  * @param {JSON}        target    属性：目标值，必选

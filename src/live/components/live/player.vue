@@ -33,6 +33,9 @@
         };
         let index = this.playingAudio.dataset.index;
         let liHeight = vSms.children[index].offsetTop;
+        if(!isPC){
+          liHeight -= 100;
+        }
         vScroll.scrollTop = liHeight;
       }
     }
@@ -44,9 +47,9 @@
 
   .playing-audio {
     position: absolute;
-    padding: 4px 18px 2px 10px;
-    width: 44px;
-    height: 52px;
+    padding: 4px 20px 2px 10px;
+    width: 50px;
+    height: 58px;
     background: #fff;
     cursor: pointer;
     z-index: 6;
@@ -62,7 +65,7 @@
       background: #12B7F5;
       border-radius: 50%;
       -webkit-border-radius: 50%;
-      px2px(font-size, 36px);
+      px2px(font-size, 38px);
     }
   }
   .is-pc {

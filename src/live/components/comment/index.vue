@@ -1,9 +1,12 @@
 <template>
   <div class="l-comment" v-if='isOwner || commentShow'>
     <div id="comment-body" class="comment-body">
-      <div class="comment-title clearfix">
+      <div class="comment-title cursor" @click="hideComment" v-if="!isPC">
         讨论区
-        <div class="back-live pull-right" v-if="!isPC"><button @click="hideComment">回到直播</button></div>
+        <i class="iconfont icon-info"></i>
+      </div>
+      <div class="comment-title" v-if="isPC">
+        讨论区
       </div>
       <div class="comment-content">
         <ul>
@@ -21,7 +24,7 @@
             </div>
             <div class="user-content">
               <div class="con-title" v-text="comment.nickname"></div>
-              <div class="con-time">{{comment.time}} <a href="javascrip:;" v-if="isOwner">操作</a></div>
+              <!--<div class="con-time">{{comment.time}} <a href="javascrip:;" v-if="isOwner">操作</a></div>-->
               <div class="con-text" v-for="com in comment.content">
                 <span v-for="co in com.custom" v-text="co.text"></span>
               </div>
