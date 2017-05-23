@@ -65,12 +65,13 @@
     },
     data() {
       return {
-        //lessons: '',
+        query: '',
       }
     },
     created() {
       //获取路由参数
       let query = this.$route.params;
+      this.query = query;
       //
       this.$store.dispatch('fetchCourseDetail', query).then((data) => {
         //清空现有的iframe
@@ -96,6 +97,7 @@
       startLesson() {
         // 开始课程
         // 获得开课信息
+        let query = this.query;
         this.$store.dispatch('fetchOpenInfo', query).then((data) => {
           let params = `?isOwner=yes&lesson_sn=${query.lesson_sn}`;
           for(let d in data){

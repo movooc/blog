@@ -6,7 +6,7 @@
 
 <script>
   import vEnter from '@live/components/enter/index.vue';
-  import { setStore, getStore, removeStore, getQueryString } from '@lib/js/mUtils';
+  import { setStore, getStore, removeStore, decodeQueryString } from '@lib/js/mUtils';
   import {mapState} from 'vuex';
 
   export default {
@@ -23,12 +23,12 @@
     data() {
       return {
         open: {
-          isOwner: webim.Tool.getQueryString('isOwner'),
-          teach: webim.Tool.getQueryString('teach'),
-          discuss: webim.Tool.getQueryString('discuss'),
-          lesson_sn: webim.Tool.getQueryString('lesson_sn'),
-          lesson_info: webim.Tool.getQueryString('lesson_info'),
-          user_info: webim.Tool.getQueryString('user_info'),
+          isOwner: decodeQueryString('isOwner'),
+          teach: decodeQueryString('teach'),
+          discuss: decodeQueryString('discuss'),
+          lesson_sn: decodeQueryString('lesson_sn'),
+          lesson_info: decodeQueryString('lesson_info'),
+          user_info: decodeQueryString('user_info'),
           userSig: '',
         }
       };
@@ -162,5 +162,8 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   .hello {
     height: 100%;
+  }
+  .cursor {
+    cursor: pointer;
   }
 </style>
