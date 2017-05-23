@@ -3,7 +3,7 @@
     <div id="comment-body" class="comment-body">
       <div class="comment-title cursor" @click="hideComment" v-if="!isPC">
         讨论区
-        <i class="iconfont icon-info"></i>
+        <i class="iconfont icon-xiala"></i>
       </div>
       <div class="comment-title" v-if="isPC">
         讨论区
@@ -13,8 +13,8 @@
           <li>
             <div class="user-content">
               <div class="con-text">
-                <a href="javascript:;" @click="pullHistory" v-if="canPullMsgs">点击拉取历史记录</a>
-                <span v-if="!canPullMsgs">暂无历史消息</span>
+                <a class="button" href="javascript:;" @click="pullHistory" v-if="canPullMsgs">点击拉取历史消息</a>
+                <span v-if="!canPullMsgs">--暂无历史消息--</span>
               </div>
             </div>
           </li>
@@ -23,7 +23,7 @@
               <img :src="comment.avatar" alt="">
             </div>
             <div class="user-content">
-              <div class="con-title" v-text="comment.nickname"></div>
+              <div class="con-title" v-text="comment.nickname" :class="{'is-self':comment.isSelfSend}"></div>
               <!--<div class="con-time">{{comment.time}} <a href="javascrip:;" v-if="isOwner">操作</a></div>-->
               <div class="con-text" v-for="com in comment.content">
                 <span v-for="co in com.custom" v-text="co.text"></span>
