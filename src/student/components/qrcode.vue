@@ -1,6 +1,6 @@
 <template>
   <div class="qrcode">
-    <div>
+    <div @click="backToHome">
       <i class="iconfont icon-home"></i>
       <br />
       返回首页
@@ -22,6 +22,9 @@
     export default{
       name: 'qr-code',
       methods: {
+        backToHome() {
+          this.$router.push({ name: 'course' });
+        }
       }
     }
 </script>

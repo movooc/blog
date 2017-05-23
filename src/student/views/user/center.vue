@@ -32,7 +32,7 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/course">
+        <router-link to="/user/advise">
           <i class="iconfont icon-comment"></i>
           <span>建议与反馈</span>
           <span class="arrow"></span>

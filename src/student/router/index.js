@@ -20,6 +20,7 @@ if(process.env.NODE_ENV == 'production'){
   var userCenter = r => require.ensure([], () => r(require('../views/user/center')), 'student/student-userCenter');
   var guarantee = r => require.ensure([], () => r(require('../views/user/guarantee')), 'student/student-guarantee');
   var enrolled = r => require.ensure([], () => r(require('../views/user/enroll')), 'student/student-userEnroll');
+  var advise = r => require.ensure([], () => r(require('../views/user/advise')), 'student/student-userAdvise');
 
 }else{
   /*home*/
@@ -35,6 +36,7 @@ if(process.env.NODE_ENV == 'production'){
   var userCenter = require('../views/user/center');
   var guarantee = require('../views/user/guarantee');
   var enrolled = require('../views/user/enroll');
+  var advise = require('../views/user/advise');
 }
 
 export default [
@@ -133,6 +135,15 @@ export default [
         component: guarantee,
         meta: {
           pageTitle: '课程保障'
+        }
+      },
+      // 建议与反馈
+      {
+        path: '/user/advise',
+        name: 'advise',
+        component: advise,
+        meta: {
+          pageTitle: '建议与反馈'
         }
       }
     ]
