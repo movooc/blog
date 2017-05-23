@@ -5,7 +5,7 @@
   bottom: 0;
   right: 0;
   left: 0;
-  padding: 15px 20px 15px 5px;
+  padding: 15px 20px 15px 20px;
   box-shadow: 0 0 5px rgba(0,0,0,.1);
   background: #fff;
   z-index: 10;
@@ -23,6 +23,7 @@
       px2px(font-size, 30px);
 
       &.box-more
+        margin-left: -15px;
         text-align: center;
         button
           width: 70px;
@@ -90,6 +91,9 @@
       px2px(left, 10px);
       px2px(bottom, 130px);
 
+      &.is-free {
+        height: 64px;
+      }
       button {
         width: 100%;
         height: 63px;
@@ -160,6 +164,7 @@
     > * {
       height: 30px;
       &.box-more {
+        margin-left: 0;
         button {
           width: 60px;
           border-radius: 6px;
@@ -183,6 +188,9 @@
         width: 100px;
         height: 100px;
 
+        &.is-free {
+          height: 50px;
+        }
         button {
           border-top: 1px solid #fff;
           height: 49px;
