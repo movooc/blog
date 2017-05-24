@@ -1,7 +1,7 @@
 <template>
   <section class="advise">
     <div class="text">
-      <textarea cols="30" rows="10" placeholder="请描述你的问题，我们会尽快和您联系" v-model="data.text"></textarea>
+      <textarea cols="30" rows="10" placeholder="请描述你的问题，我们会尽快和您联系" v-model="data.text" @blur="blurEvent"></textarea>
     </div>
     <div class="img clearfix">
       <div class="add-img cursor">
@@ -10,16 +10,21 @@
         <input type="file" @change="imgOnChange" />
         <img :src="data.image" />
       </div>
-      <span class="pull-right words" v-text="words"></span>
+      <span class="pull-right words" v-text="words" :class="{'overflow':overflow}"></span>
     </div>
+    <s-button :callBack="submitAdvise"></s-button>
   </section>
 </template>
 
 <script>
   import { mapGetters } from 'vuex';
-  import { checkPic } from '@lib/js/mUtils';
+  import { checkPic, trimStr } from '@lib/js/mUtils';
+  import sButton from '@student/components/button';
 
   export default{
+    components: {
+      sButton,
+    },
     name: 'advise',
     data() {
       return {
@@ -28,6 +33,7 @@
           text: '',
         },
         words: 500,
+        overflow: false,
       }
     },
     methods: {
@@ -57,6 +63,33 @@
         })(file);
         //预览图片
         reader.readAsDataURL(file);
+      },
+      submitAdvise() {
+        // 判断是否有填写建议
+        let length = trimStr(this.data.text).length;
+        if(!length){
+          return alert('请描述你的问题!');
+        }
+        if(length > 500){
+          return alert('字数超过限制!');
+        }
+        // 开始请求
+        this.$store.dispatch('fetchAdvise', this.data).then(() => {
+          alert('反馈成功!感谢你对易课的关注与支持，我们将认真对待你的建议与反馈。');
+          this.$router.push({ name: 'user'});
+        }, () => {
+          alert('提交失败!');
+        });
+      },
+      blurEvent() {
+        let length = trimStr(this.data.text).length;
+        if(length > 500){
+          length = 500;
+          this.overflow = true;
+        }else{
+          this.overflow = false;
+        }
+        this.words = 500 - length;
       },
     },
   }
@@ -110,5 +143,7 @@
 
       .words
         margin-top: 120px;
+        &.overflow
+          color: #f60;
 
 </style>

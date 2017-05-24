@@ -51,7 +51,21 @@
           // 关闭退款状态
           this.refunding = false;
           this.$store.commit('UPDATE_REFUND_SHOW', false);
-          alert('退款失败!');
+          // 错误类型
+          switch(err){
+            case '1':
+              alert('退款失败!');
+              break;
+            case '2':
+              alert('退款失败!');
+              break;
+            case '3':
+              alert('超过退款时间范围内，不允许退款!');
+              break;
+            default:
+              console.log('default');
+              break;
+          }
         });
       },
       close() {

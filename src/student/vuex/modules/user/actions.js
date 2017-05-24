@@ -80,3 +80,17 @@ export const fetchRefundCourse = ({commit}, body) => {
     })
 };
 
+export const fetchAdvise = ({commit}, body) => {
+  const url = `${_prefix}/feedback-submit.api`;
+
+  return _post({ url, body }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return Promise.resolve()
+      }
+      return Promise.reject(new Error('Fetch_Advise failure'))
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};

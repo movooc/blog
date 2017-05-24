@@ -69,7 +69,7 @@ export const fetchRefund = ({commit}, body) => {
       if (json.error == 0) {
         return Promise.resolve();
       }
-      return Promise.reject(new Error('Fetch_Refund_Course failure'))
+      return Promise.reject(json.error);
     })
     .catch((error) => {
       return Promise.reject(error)
