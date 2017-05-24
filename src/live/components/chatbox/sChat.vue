@@ -1,6 +1,6 @@
 <template>
   <div class="l-chatbox">
-    <div class="box">
+    <div class="box" v-if="lessonInfo.step!='finish'">
       <span class="box-more">
         <button @click="showModule">
           <span class="iconfont icon-list"></span>
