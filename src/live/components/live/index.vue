@@ -2,7 +2,7 @@
   <!-- live start -->
   <!--<div class="live-page" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">-->
   <div class="live-page">
-    <div class="live-sms-header" v-if="isPC">直播区</div>
+    <div class="live-sms-header" v-if="isPC">直播区<i class="iconfont icon-over" @click="showHandle(true)" v-if="isOwner"></i></div>
     <div class="live-sms-left" v-if="isPC"></div>
     <div class="live-sms-right" v-if="isPC"></div>
     <!-- player -->
@@ -50,6 +50,8 @@
     <!-- chatbox -->
     <v-chatbox v-if="isOwner"></v-chatbox>
     <s-chatbox v-if="!isOwner"></s-chatbox>
+    <!-- handle -->
+    <v-handle :callBack="showHandle" :show="handleShow"></v-handle>
     <!-- live loading -->
     <!--<div class="live-loading">-->
     <!--<p class="text">历史记录加载中...</p>-->
@@ -65,7 +67,7 @@
   import {mapState} from 'vuex';
   import lHeader from './header.vue';
   import vPlayer from './player.vue';
-  import vPopular from './popular.vue';
+  import vHandle from './handle.vue';
   import { exportAssembleMsg } from '@live/assets/js/webim_comment';
   import vComment from '@live/components/comment/index.vue';
   import vChatbox from '@live/components/chatbox/index.vue';
@@ -82,18 +84,19 @@
     },
     components: {
       vComment,
-      vPopular,
       lHeader,
       vChatbox,
       sChatbox,
       vAudio,
       vPlayer,
+      vHandle,
     },
     data() {
       return {
         isPC,
         show: false,
         busy: false,
+        handleShow: false,
         canPullMsgs: true,
       };
     },
@@ -156,9 +159,9 @@
           });
         }
       },
-      //      loadMore() {
-//        this.busy = true;
-//      },
+      showHandle(show) {
+        this.handleShow = show;
+      }
     }
   };
 

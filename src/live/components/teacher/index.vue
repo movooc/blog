@@ -1,18 +1,39 @@
 <template>
   <div class="teacher-bar">
     <div class="bar-title">
-      <div class="img">
-        <span><img :src="teacherInfo.avatar"></span>
+      <div class="bar-img pull-left">
+        <img :src="teacherInfo.avatar">
       </div>
-      <div class="info">
-        <p v-text="teacherInfo.name"></p>
-        <p class="grey">简介</p>
+      <div class="bar-text pull-left">
+        <h4 v-text="teacherInfo.name"></h4>
+        <div class="total">
+          <span>课程总数<br />0</span>&nbsp;&nbsp;&nbsp;
+          <span>收听总数<br />0</span>
+        </div>
       </div>
     </div>
     <ul class="bar-list">
-      <li><router-link to="/">我的总揽</router-link></li>
-      <li><router-link to="/">我的课程</router-link></li>
-      <li><router-link to="/">查看收益</router-link></li>
+      <li>
+        <a href="https://teacher.sandbox.yike.fm">
+          <i class="iconfont icon-all"></i>
+          &nbsp;&nbsp;
+          我的总览
+        </a>
+      </li>
+      <li>
+        <router-link to="/">
+          <i class="iconfont icon-menu"></i>
+          &nbsp;&nbsp;
+          我的课程
+        </router-link>
+      </li>
+      <li>
+        <a href="https://teacher.sandbox.yike.fm">
+          <i class="iconfont icon-earning"></i>
+          &nbsp;&nbsp;
+          查看收益
+        </a>
+      </li>
     </ul>
   </div>
 </template>
