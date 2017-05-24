@@ -61,6 +61,12 @@ export default [
         path: '/course/create',
         name: 'create',
         component: create
+      },
+      // 编辑课程
+      {
+        path: '/course/edit/:lesson_sn',
+        name: 'edit',
+        component: create
       }
     ]
   }

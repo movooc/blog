@@ -14,7 +14,7 @@
     <div class="control">
       <span class="word"><em>*&nbsp;</em>开播时间</span>
       <div class="text">
-        <c-calendar></c-calendar>
+        <c-calendar :defaultValue="dtm_start"></c-calendar>
       </div>
     </div>
     <div class="control">
@@ -71,6 +71,7 @@
         cover: '',
         brief: '',
         price: '',
+        lesson_sn: '',
       }
     },
     computed: {
@@ -79,6 +80,24 @@
       })
     },
     created() {
+      //获取路由参数
+      let params = this.$route.params;
+      this.lesson_sn = params.lesson_sn;
+      if(this.lesson_sn){
+        // 开始请求
+        this.$store.dispatch('fetchCourseDetail', params).then((data)=>{
+          this.agree = true;
+          this.title = data.title || '';
+          this.dtm_start = data.plan.dtm_start || '';
+          this.duration = data.plan.duration || '';
+          this.cover = data.cover || '';
+          this.brief = data.brief || '';
+          this.price = data.price;
+          this.$store.commit('CHANGE_CALENDAR', {value: this.dtm_start});
+        },()=>{
+          console.log('fail');
+        });
+      }
     },
     methods: {
       imgOnChange(event) {
@@ -117,18 +136,35 @@
         this.dtm_start = this.calendarInfo.value;
         if(!this.dtm_start)return alert('请填写开播时间！');
         if(!this.duration)return alert('请填写持续时长！');
-        if(!this.price)return alert('请填写价格！');
+        if(this.price === '')return alert('请填写价格！');
         if(!this.cover)return alert('请选择封面！');
         if(!this.brief)return alert('请填写课程介绍！');
         if(!this.agree)return alert('请同意协议内容！');
-        this.$store.dispatch('fetchCourseCreate', { ...this._data }).then((json) => {
-          // 发起创建请求
-          alert('创建成功!');
-          this.$router.push({ name: 'list' });
-        }, (err) => {
-          this.paying = false;
-          alert(err.message);
-        });
+        delete this._data['agree'];
+        if(this.lesson_sn){
+          if(!/^data:image/g.test(this.cover)){
+            delete this._data['cover'];
+          }
+          this.$store.dispatch('fetchCourseModify', { ...this._data }).then((json) => {
+            // 发起创建请求
+            alert('修改成功!');
+            this.$router.push({ name: 'list' });
+          }, (err) => {
+            this.paying = false;
+            alert(err.message);
+          });
+
+        }else{
+          delete this._data['lesson_sn'];
+          this.$store.dispatch('fetchCourseCreate', { ...this._data }).then((json) => {
+            // 发起创建请求
+            alert('创建成功!');
+            this.$router.push({ name: 'list' });
+          }, (err) => {
+            this.paying = false;
+            alert(err.message);
+          });
+        }
       },
       back() {
         this.$router.push({ name: 'list' });

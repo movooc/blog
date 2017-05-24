@@ -3,7 +3,7 @@
     <div class="handle-box">
       <div class="handle-title">请选择您要的操作！</div>
       <div class="handle-btn">
-        <span @click="startComment">进入课后交流</span>
+        <span @click="startComment" v-if="lessonInfo.step!='repose'">进入课后交流</span>
         <span @click="endLesson">结束授课</span>
         <span @click="close">关闭操作</span>
       </div>
@@ -13,6 +13,7 @@
 
 <script type="text/javascript">
   import { mapState } from 'vuex';
+  import { removeStore } from '@lib/js/mUtils';
 
   export default
   {
@@ -39,10 +40,35 @@
     },
     methods: {
       startComment() {
-        this.callBack('start');
+        let opt = {
+          lesson_sn:this.lessonInfo.sn,
+        };
+        this.$store.dispatch('fetchStartComment', opt).then(() => {
+          removeStore(opt.lesson_sn);
+          alert('可以开始学员交流!');
+          window.location.reload();
+        }, () => {
+          console.log('fail');
+        });
+        // 关闭
+        this.callBack(false);
       },
       endLesson() {
-        this.callBack('end');
+        if(!window.confirm('课程结束，您和学员都无法继续发布内容，但仍可回看所有授课区内容')){
+          return;
+        }
+        let opt = {
+          lesson_sn:this.lessonInfo.sn,
+        };
+        this.$store.dispatch('fetchEndLesson', opt).then(() => {
+          removeStore(opt.lesson_sn);
+          alert('课程已结束!');
+          window.location.reload();
+        }, () => {
+          console.log('fail');
+        });
+        // 关闭
+        this.callBack(false);
       },
       close() {
         this.callBack(false);
