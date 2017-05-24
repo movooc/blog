@@ -121,8 +121,10 @@
         let lessonUrl = `${this.liveHost}/lesson-detail.api?lesson_sn=${this.open.lesson_sn}`;
         //
         this.$http.get(lessonUrl).then((json)=>{
+          let jsonOpt = {};
           if(json.ok){
             let data = json.body.data;
+            jsonOpt.lesson_info = data;
             // 增加id
             data.teach = this.open.teach;
             data.discuss = this.open.discuss;
@@ -134,6 +136,9 @@
             this.$http.get(userUrl).then((json)=>{
               if(json.ok){
                 let data = json.body.data;
+                jsonOpt.user_info = data;
+                // 存储课程数据
+                setStore(this.open.lesson_sn, jsonOpt);
                 // 存储usersig
                 setStore(data.sn, this.open.userSig);
                 // 重组用户信息
