@@ -75,3 +75,39 @@ export const fetchRefund = ({commit}, body) => {
       return Promise.reject(error)
     })
 };
+
+/*进入课后交流*/
+export const fetchStartComment = ({commit}, body) => {
+  const url = `${_prefix}/lesson-repose.api`;
+  // 开始请求
+  commit('UPDATE_LOADING', true);
+  return _post({ url, body }, commit)
+    .then((json) => {
+      commit('UPDATE_LOADING', false);
+      if (json.error == 0) {
+        return Promise.resolve();
+      }
+      return Promise.reject(json.error);
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+
+/*结束授课*/
+export const fetchEndLesson = ({commit}, body) => {
+  const url = `${_prefix}/lesson-finish.api`;
+  // 开始请求
+  commit('UPDATE_LOADING', true);
+  return _post({ url, body }, commit)
+    .then((json) => {
+      commit('UPDATE_LOADING', false);
+      if (json.error == 0) {
+        return Promise.resolve();
+      }
+      return Promise.reject(json.error);
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
