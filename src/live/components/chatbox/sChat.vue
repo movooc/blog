@@ -82,7 +82,7 @@
         let ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
         if(ios){
           setTimeout(()=>{
-            vScroll.scrollTop = vScroll.scrollHeight;
+            document.body.scrollTop = document.body.scrollHeight;
           },300);
         }
       }
