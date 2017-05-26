@@ -8,6 +8,7 @@ const state = {
   order: null,
   openInfo: null,
   courseDetail: null,
+  courseScrollTop: 0,
 };
 
 export default{

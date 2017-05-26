@@ -16,6 +16,7 @@
     computed: {
       ...mapGetters({
         courseList: 'getCourseListInfo',
+        courseScrollTop: 'getCourseScrollTop',
       })
     },
     created() {
@@ -27,6 +28,15 @@
         console.log('fail');
       });
     },
+    mounted() {
+        document.body.scrollTop = this.courseScrollTop;
+    },
+    beforeRouteLeave(to, from, next) {
+      // 记录滚动条位置
+
+      this.$store.commit('UPDATE_COURSE_SCROLL', document.body.scrollTop);
+      next(true);
+    }
   }
 </script>
 
