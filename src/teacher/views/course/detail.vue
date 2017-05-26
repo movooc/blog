@@ -5,7 +5,7 @@
         我的课程>课程详情
         <span class="title-handle pull-right" @click="backToCourse">返回</span>
         <span class="title-handle pull-right" @click="startLesson" v-if="courseDetail.step=='opened'">点击开课</span>
-        <span class="title-handle pull-right" @click="startLesson" v-if="courseDetail.step=='onlive' || courseDetail.step=='repose'">进入直播</span>
+        <span class="title-handle pull-right" @click="startLesson" v-if="courseDetail.step=='onlive' || courseDetail.step=='repose' || courseDetail.step=='finish'">进入直播</span>
       </div>
       <div class="lesson-content clearfix">
         <div class="lesson-img">
