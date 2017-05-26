@@ -45,8 +45,13 @@
       </div>
     </div>
     <div class="protocol">
-      <input name="agree" type="checkbox" v-model="agree" />
-      我已阅读并同意《讲师须知》的内容
+      <!--<input name="agree" type="checkbox" v-model="agree" />-->
+      <!--我已阅读并同意《讲师须知》的内容-->
+      <p>
+        责任：本课程所发布内容与易课无关，仅代表个人观点。<br />
+        禁止：禁止发布涉及政治、反动、色情等法律法规禁止的内容，禁止发布会引起版权纠纷的内容。<br />
+        规则：课程开始前10分钟可以进入，点击课程结束后可选择开放讨论时间（讨论时间内学员与讲者均可以继续发布内容，但讲者不需要实时在线，讨论设置时间到，课程关闭，讲师也可选择主动关闭），也可直接结束课程。课程可以选择下架，下架后未购买的用户将无法付费，不能产生新的订单。
+      </p>
     </div>
     <p class="button"><button @click="completeCreate">完成</button></p>
   </section>
@@ -64,7 +69,7 @@
     },
     data() {
       return {
-        agree: false,
+        //agree: false,
         title: '',
         dtm_start: '',
         duration: '',
@@ -86,7 +91,7 @@
       if(this.lesson_sn){
         // 开始请求
         this.$store.dispatch('fetchCourseDetail', params).then((data)=>{
-          this.agree = true;
+          //this.agree = true;
           this.title = data.title || '';
           this.dtm_start = data.plan.dtm_start || '';
           this.duration = data.plan.duration || '';
@@ -139,8 +144,8 @@
         if(this.price === '')return alert('请填写价格！');
         if(!this.cover)return alert('请选择封面！');
         if(!this.brief)return alert('请填写课程介绍！');
-        if(!this.agree)return alert('请同意协议内容！');
-        delete this._data['agree'];
+        //if(!this.agree)return alert('请同意协议内容！');
+        //delete this._data['agree'];
         if(this.lesson_sn){
           if(!/^data:image/g.test(this.cover)){
             delete this._data['cover'];
@@ -233,4 +238,12 @@
         font-size: 12px;
         color: #aaa;
 
+
+    .protocol
+      padding: 0 167px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #aaa;
+      p
+        margin: 0;
 </style>

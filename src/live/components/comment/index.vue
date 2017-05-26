@@ -12,9 +12,12 @@
         <ul>
           <li>
             <div class="user-content">
-              <div class="con-text">
+              <div class="con-text" v-if="lessonInfo.step!='finish'">
                 <a class="button" href="javascript:;" @click="pullHistory" v-if="canPullMsgs">点击拉取历史消息</a>
                 <span v-if="!canPullMsgs">--暂无历史消息--</span>
+              </div>
+              <div class="con-text" v-if="lessonInfo.step=='finish'">
+                <span>--课程已结束--</span>
               </div>
             </div>
           </li>
@@ -70,6 +73,7 @@
         'userInfo',
         'commentMessageInfo',
         'userAvatar',
+        'lessonInfo',
       ])
     },
     mounted () {

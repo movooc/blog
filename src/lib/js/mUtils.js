@@ -318,8 +318,8 @@ export const checkPic = (obj, fileSize) => {
     return false;
   }
   var fileSize = Math.round(fileSize / 1024 * 100) / 100; //单位为KB
-  if (fileSize > 30 * 1024) {
-    alert("您选择的图片大小超过限制(最大为30M)，请重新选择");
+  if (fileSize > 5 * 1024) {
+    alert("您选择的图片大小超过限制(最大为5M)，请重新选择");
     return false;
   }
   return true;

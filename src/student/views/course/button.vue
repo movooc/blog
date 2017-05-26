@@ -122,7 +122,8 @@
                 self.paying = false;
                 // 开通直播通道
                 self.canEnter = true;
-                alert('报名成功！');
+                //alert('报名成功！');
+                window.location.reload();
               }else {
                 // 关闭付款状态
                 self.paying = false;
