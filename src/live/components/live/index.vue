@@ -140,6 +140,8 @@
             }
             // 实施
             this.$store.commit('UPDATE_HISTORY_MESSAGE', tempList);
+            // 课程是否已结束
+            if(this.lessonInfo.step=='finish')return;
             this.$nextTick(()=>{
               var vScroll = document.getElementById('live-body');
               var count = 0;

@@ -8,7 +8,7 @@
       </span>
       <div class="box-msg">
         <button class="comment" @click="showComment" v-if="!commentShow">讨论区</button>
-        <input v-model="msgVal" placeholder="请输入文字..." />
+        <input v-model="msgVal" placeholder="请输入文字..." @focus="focusEvent" />
       </div>
       <v-refund></v-refund>
       <button class="box-send" @click="sendMsg" v-if="commentShow">提交</button>
@@ -65,9 +65,9 @@
         if(!vScroll){
           vScroll = document.getElementById('live-body');
         };
-        setTimeout(()=>{
-          vScroll.scrollTop = vScroll.scrollHeight;
-        }, 400);
+        //setTimeout(()=>{
+        //  vScroll.scrollTop = vScroll.scrollHeight;
+        //}, 400);
       },
       showModule() {
         this.moduleShow = !this.moduleShow;
@@ -78,6 +78,14 @@
       backHome() {
         window.location.href = this.studentHost;
       },
+      focusEvent() {
+        let ios = (/(ipod|iphone|ipad)/i).test(navigator.userAgent);
+        if(ios){
+          setTimeout(()=>{
+            vScroll.scrollTop = vScroll.scrollHeight;
+          },300);
+        }
+      }
     },
   };
 </script>
