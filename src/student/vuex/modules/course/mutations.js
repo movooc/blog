@@ -4,6 +4,7 @@ import {
   FETCH_OPEN_INFO,
   FETCH_LESSON_ENROLL,
   FETCH_ORDER_CONFIRM,
+  UPDATE_COURSE_SCROLL,
 } from './mutation-type'
 
 import { convertToArray } from '@lib/js/mUtils';
@@ -28,6 +29,10 @@ const mutations = {
   // 获得订单信息
   [FETCH_ORDER_CONFIRM](state, data) {
     state.order = { ...state.order, ...data };
+  },
+  // 改变滚度条位置
+  [UPDATE_COURSE_SCROLL](state, top) {
+    state.courseScrollTop = top;
   },
 };
 export default mutations;
