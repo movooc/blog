@@ -1,9 +1,9 @@
 <template>
   <div class="button">
     <div class="enroll" v-if="!paying && courseDetail && (isEnroll == 'enroll' || isEnroll == 'access')">
-      <button class="enter" @click="startLesson" v-if="courseDetail.step == 'onlive' || courseDetail.step == 'repose'">进入课堂</button>
+      <button class="enter" @click="startLesson" v-if="courseDetail.step == 'onlive' || courseDetail.step == 'repose' || courseDetail.step == 'finish'">进入课堂</button>
       <button disabled v-if="courseDetail.step == 'opened'">未开课</button>
-      <button disabled v-if="courseDetail.step == 'finish'">已结束</button>
+      <button disabled v-if="courseDetail.step == 'closed'">已下架</button>
     </div>
     <div class="enroll" v-if="!paying && isEnroll == 'browse'">
       <button class="free" v-if="courseDetail && courseDetail.price == 0 && !canEnter" @click="callWeiXinPay">免费报名</button>
