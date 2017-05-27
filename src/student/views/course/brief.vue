@@ -6,7 +6,7 @@
         <div class="info-detail">
           <span><em>{{`${course.plan.dtm_now}#${course.plan.dtm_start}` | moment}}</em>&nbsp;开课</span>
           <span><i class="iconfont icon-time"></i>&nbsp;{{course.plan.duration}}小时</span>
-          <span><i class="iconfont icon-people"></i>&nbsp;1000</span>
+          <span><i class="iconfont icon-people"></i>&nbsp;{{course.participants}}</span>
         </div>
         <p class="info-price">
           <span class="price">&#65509;{{course.price}}&nbsp;<em></em></span>
@@ -15,23 +15,19 @@
         <div class="guarantee-text" v-show="showGuar">
           <dl>
             <dt>支付保障：</dt>
-            <dd>全程使用微信支付，无额外第三方参与，保证支付安全</dd>
+            <dd>微信付款，方便快捷</dd>
           </dl>
           <dl>
-            <dt>有效回看：</dt>
-            <dd>课程结束后可以进行回放观看</dd>
+            <dt>消息通知：</dt>
+            <dd>关注公众号后可及时接收课程通知</dd>
           </dl>
           <dl>
-            <dt>自动退款：</dt>
-            <dd>未进入听课界面，在课程结束24小时后自动退款到微信钱包内</dd>
+            <dt>限时退款：</dt>
+            <dd>听课一小时内，不满意无条件退款</dd>
           </dl>
           <dl>
-            <dt>申述退款：</dt>
-            <dd>由讲师及工作人员进行处理</dd>
-          </dl>
-          <dl>
-            <dt>无条件退款：</dt>
-            <dd>听课时长一小时以内可无条件退款</dd>
+            <dt>过期退款：</dt>
+            <dd>课程结束15天后未听课自动退款</dd>
           </dl>
         </div>
       </div>

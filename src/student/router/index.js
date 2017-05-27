@@ -69,7 +69,7 @@ export default [
         name: 'list',
         component: list,
         meta: {
-          pageTitle: '易课'
+          pageTitle: '易课-课程列表'
         }
       },
       // 课程详情页
@@ -78,7 +78,7 @@ export default [
         name: 'detail',
         component: detail,
         meta: {
-          pageTitle: '课程详情'
+          pageTitle: '易课-课程详情'
         },
         children: [
           {
@@ -90,7 +90,7 @@ export default [
             name: 'brief',
             component: brief,
             meta: {
-              pageTitle: '课程简介'
+              pageTitle: '易课-课程简介'
             }
           },
           {
@@ -98,7 +98,7 @@ export default [
             name: 'notice',
             component: notice,
             meta: {
-              pageTitle: '须知'
+              pageTitle: '易课-课程须知'
             }
           }
         ]
@@ -116,7 +116,7 @@ export default [
         name: 'userCenter',
         component: userCenter,
         meta: {
-          pageTitle: '个人中心'
+          pageTitle: '易课-个人中心'
         }
       },
       // 已报名的课程
@@ -125,7 +125,7 @@ export default [
         name: 'enrolled',
         component: enrolled,
         meta: {
-          pageTitle: '已报名的课程'
+          pageTitle: '易课-已报名的课程'
         }
       },
       // 课程保障页
@@ -134,7 +134,7 @@ export default [
         name: 'guarantee',
         component: guarantee,
         meta: {
-          pageTitle: '课程保障'
+          pageTitle: '易课-课程保障'
         }
       },
       // 建议与反馈
@@ -143,7 +143,7 @@ export default [
         name: 'advise',
         component: advise,
         meta: {
-          pageTitle: '建议与反馈'
+          pageTitle: '易课-建议与反馈'
         }
       }
     ]

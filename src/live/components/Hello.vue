@@ -6,6 +6,7 @@
 
 <script>
   import vEnter from '@live/components/enter/index.vue';
+  import SetWechatTitle from '@lib/js/setWechatTitle';
   import { setStore, getStore, removeStore, decodeQueryString } from '@lib/js/mUtils';
   import {mapState} from 'vuex';
 
@@ -98,6 +99,8 @@
           // 直播间id
           jsonData.lesson_info.teach = this.open.teach;
           jsonData.lesson_info.discuss = this.open.discuss;
+          // 改变title
+          SetWechatTitle(`易课-${jsonData.lesson_info.title}`);
           // 用户信息
           //this.open.sn = jsonData.user_info.sn;
           this.open.name = jsonData.user_info.name;
@@ -141,6 +144,8 @@
                 setStore(this.open.lesson_sn, jsonOpt);
                 // 存储usersig
                 setStore(data.sn, this.open.userSig);
+                // 改变title
+                SetWechatTitle(`易课-${jsonOpt.lesson_info.title}`);
                 // 重组用户信息
                 this.open.sn = data.sn;
                 this.open.name = data.name;
