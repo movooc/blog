@@ -71,7 +71,7 @@
   .is-pc {
     .playing-audio {
       top: 50px;
-      left: 530px;
+      left: 540px;
       padding: 2px 18px 2px 10px;
       width: 22px;
       height: 30px;
