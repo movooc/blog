@@ -9,7 +9,8 @@
           <div class="list-content">
             <div class="list-title" v-text="list.lesson.title"></div>
             <div class="appointment">
-              {{list.lesson.participants}}人预约
+              <i class="iconfont icon-people"></i>
+              {{list.lesson.participants}}
             </div>
             <div class="list-status clearfix">
               <span class="pull-right" v-if="list.event == 'enroll'">已报名</span>
@@ -166,6 +167,9 @@
           .appointment{
             px2px(font-size, 26px);
             color: #AAA;
+            .iconfont {
+              px2px(font-size, 26px);
+            }
           }
         }
         .list-status{

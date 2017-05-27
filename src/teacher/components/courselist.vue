@@ -108,6 +108,7 @@
         width: 200px;
         justify-content: center;
         border-right: 1px solid #E3E3E3;
+        word-break: break-all;
 
         &:last-child{
           border: 0 none;

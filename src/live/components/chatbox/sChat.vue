@@ -83,7 +83,7 @@
         if(ios){
           setTimeout(()=>{
             document.body.scrollTop = document.body.scrollHeight;
-          },300);
+          },400);
         }
       }
     },

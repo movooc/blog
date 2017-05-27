@@ -18,7 +18,7 @@
             开课时间：{{ courseDetail.plan.dtm_start }}
           </p>
           <div class="price clearfix">
-            <span class="pull-right">已报名人数:人</span>
+            <span class="pull-right gray"><i class="iconfont icon-people">&nbsp;{{ courseDetail.participants }}</i></span>
             <em>&#65509;{{ courseDetail.price }}</em>
           </div>
         </div>
@@ -59,12 +59,13 @@
     computed: {
       ...mapGetters({
         userInfo: 'getUserInfo',
-        courseDetail: 'getCourseDetailInfo',
+        originCourseDetail: 'getCourseDetailInfo',
       })
     },
     data() {
       return {
         query: '',
+        courseDetail: null,
       }
     },
     created() {
@@ -73,6 +74,8 @@
       this.query = query;
       //
       this.$store.dispatch('fetchCourseDetail', query).then((data) => {
+        // 赋值
+        this.courseDetail = { ...data };
         //清空现有的iframe
         try{
           document.getElementsByTagName('iframe')[0].remove();
@@ -156,6 +159,8 @@
               color: #fb617f;
             span
               font-size: 12px;
+            .iconfont
+              font-size: 14px;
     .teacher
       margin-top: 10px;
       background: #fff;
@@ -181,4 +186,6 @@
           margin: 0;
           padding-bottom: 15px;
           color: #12b7f5;
+    .gray
+      color: #aaa;
 </style>
