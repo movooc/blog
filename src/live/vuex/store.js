@@ -30,6 +30,7 @@ const state = {
   loadingImg: 'static/_static/live/img/loading.gif',
   userAvatar: null,
   playingAudio: null,
+  cancleRecord: false,
   liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,''):'/api'),
   studentHost:(process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'?'):'/student.html?'),
 };
@@ -118,6 +119,10 @@ const mutations = {
   // 正在播放的audio
   UPDATE_PLAYER(state, player){
     state.playingAudio = player;
+  },
+  // 正在播放的audio
+  UPDATE_CANCLE_RECORD(state, record){
+    state.cancleRecord = record;
   },
 };
 

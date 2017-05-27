@@ -21,7 +21,8 @@
     },
     computed: {
       ...mapState({
-        isSending: 'sending'
+        isSending: 'sending',
+        cancleRecord: 'cancleRecord'
       })
     },
     created() {

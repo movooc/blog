@@ -72,6 +72,15 @@ function gotStream(stream) {
 
 function inspectRecording(self) {
   if(!starting)return;
+  // 取消发送
+  if(self.cancleRecord){
+    // stop recording
+    self.active = false;
+    self.$store.commit('UPDATE_RECORDING', false);
+    self.$store.commit('UPDATE_CANCLE_RECORD', false);
+    starting = false;
+    return audioRecorder.stop();
+  }
   let endTimer = new Date().getTime();
   let diff = (endTimer - startTimer)/60000;
   if(diff >= 3){

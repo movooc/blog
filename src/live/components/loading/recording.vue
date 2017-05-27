@@ -6,6 +6,7 @@
       <div></div>
     </div>
     <div class="is-recording">正在录音</div>
+    <div class="is-recording cancle"><button @click="cancleRecording">取消录音</button></div>
   </div>
 </template>
 <script>
@@ -16,9 +17,14 @@
         type: Boolean
       }
     },
-    created(){
+    created() {
       //console.log(this);
     },
+    methods: {
+      cancleRecording(){
+        this.$store.commit('UPDATE_CANCLE_RECORD', true);
+      }
+    }
   };
 </script>
 
@@ -32,4 +38,6 @@
     top: 60%;
     left: 46%;
     color: #03a9f4;
+    &.cancle
+      top: 65%;
 </style>
