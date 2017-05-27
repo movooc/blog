@@ -4,7 +4,7 @@
   <div class="live-page">
     <div class="live-sms-header" v-if="isPC">直播区<i class="iconfont icon-over" @click="showHandle(true)" v-if="isOwner && lessonInfo.step != 'finish'"></i></div>
     <div class="live-sms-left" v-if="isPC"></div>
-    <div class="live-sms-right" v-if="isPC"></div>
+    <!--<div class="live-sms-right" v-if="isPC"></div>-->
     <!-- player -->
     <v-player v-if="playingAudio"></v-player>
     <!-- live entity -->

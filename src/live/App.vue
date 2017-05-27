@@ -56,6 +56,9 @@
   .pull-right {
     float: right;
   }
+  button{
+    outline:none;
+  }
   .app
     font-family: Microsoft YaHei, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

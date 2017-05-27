@@ -1,13 +1,13 @@
 <template>
   <div class="l-comment" v-if='isOwner || commentShow'>
+    <div class="comment-title cursor" @click="hideComment" v-if="!isPC">
+      讨论区
+      <i class="iconfont icon-xiala"></i>
+    </div>
+    <div class="comment-title" v-if="isPC">
+      讨论区
+    </div>
     <div id="comment-body" class="comment-body">
-      <div class="comment-title cursor" @click="hideComment" v-if="!isPC">
-        讨论区
-        <i class="iconfont icon-xiala"></i>
-      </div>
-      <div class="comment-title" v-if="isPC">
-        讨论区
-      </div>
       <div class="comment-content">
         <ul>
           <li>

@@ -126,4 +126,7 @@ export default {
         -webkit-transform: scale(1);
         transform: scale(1);
         opacity: 1; } }
+  button{
+    outline:none;
+  }
 </style>
