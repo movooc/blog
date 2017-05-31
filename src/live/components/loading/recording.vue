@@ -40,4 +40,12 @@
     color: #03a9f4;
     &.cancle
       top: 65%;
+      button
+        padding: 2px 8px;
+        color: #fff;
+        background: #12b7f5;
+        border: 0 none;
+        border-radius: 20px;
+        -webkit-border-radius: 20px;
+        cursor: pointer;
 </style>
