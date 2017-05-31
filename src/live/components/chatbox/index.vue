@@ -7,7 +7,7 @@
         </button>
       </span>
       <div class="box-msg">
-        <textarea v-model="msgVal" placeholder="请输入文字..." @blur="v_blur"></textarea>
+        <textarea v-model="msgVal" placeholder="请输入文字..." @blur="v_blur" @paste="v_paste"></textarea>
         <v-recorder class="reorder"></v-recorder>
       </div>
       <button class="box-send" @click="sendMsg">提交</button>
@@ -39,6 +39,26 @@
         </div>
       </div>
     </div>
+    <!-- 截图遮罩层 -->
+    <div class="modal-dialog" v-if="pasteInfo.show">
+      <div class="modal-header">截图的图片</div>
+      <div class="modal-body">
+        <div class="modal-img">
+          <p>
+            <span>预览:</span>
+            <a :href="pasteInfo.src" target="_blank"><img v-bind:src="pasteInfo.src" style="width:30%" /></a>
+          </p>
+          <p>
+            <span>发送进度:</span>
+            <span class="progress">
+              <em v-bind:style="widthStyle"></em>
+            </span>
+          </p>
+          <button class="upload" @click="startUploadPaste">开始发送</button>
+          <button class="upload" @click="canclePasteImg">取消发送</button>
+        </div>
+      </div>
+    </div>
     <div class="modal-dialog" v-if="fileShow">
       <div class="modal-header">发送文件</div>
       <div class="modal-body">
@@ -64,7 +84,7 @@
 <script type="text/javascript">
   import { mapState } from 'vuex';
   import { vSendMsg, uploadImage, uploadFile } from '@live/assets/js/webim';
-  import { checkPic, checkFile } from '@lib/js/mUtils';
+  import { checkPic, checkFile, checkPastePic } from '@lib/js/mUtils';
   import vRecorder from '@live/components/recorder/index.vue';
   import Recording from '@live/components/loading/recording.vue';
   import Sending from '@live/components/loading/sending.vue';
@@ -86,6 +106,12 @@
         imgInfo: {
           src: '',
           show: false,
+        },
+        pasteInfo: {
+          blob: null,
+          show: false,
+          src: '',
+          filename: '',
         },
         widthStyle: {
           width: 0
@@ -112,6 +138,56 @@
         });
       },
       v_blur() {
+      },
+      v_paste(event) {
+        // 添加到事件对象中的访问系统剪贴板的接口
+        let clipboardData = event.clipboardData,
+            i = 0,
+            items, item, types;
+        // 是否有数据
+        if( clipboardData ){
+          items = clipboardData.items;
+          if( !items ){
+            return;
+          }
+          item = items[0];
+          // 保存在剪贴板中的数据类型
+          types = clipboardData.types || [];
+          for( ; i < types.length; i++ ){
+            if( types[i] === 'Files' ){
+              item = items[i];
+              break;
+            }
+          }
+          // 判断是否为图片数据
+          if( item && item.kind === 'file' && item.type.match(/^image\//i) ){
+            this.showPasteImage( item );
+          }
+        }
+      },
+      showPasteImage(item) {
+        if (!window.File || !window.FileList || !window.FileReader) {
+          alert("您的浏览器不支持File Api");
+          return;
+        }
+        let el = this;
+        let blob = item.getAsFile();
+        //先检查图片类型和大小
+        if (!checkPastePic(blob, blob.size)) {
+          return;
+        }
+        //预览图片
+        let reader = new FileReader();
+        reader.onload = (function () {
+          return function (e) {
+            el.pasteInfo.show = true;
+            el.pasteInfo.src = this.result;
+            el.pasteInfo.blob = blob;
+            el.pasteInfo.filename = blob.name;
+          };
+        })();
+        //预览图片
+        reader.readAsDataURL(blob);
       },
       showImage() {
         this.imgShow = true;
@@ -170,6 +246,27 @@
         this.imgInfo.show = false;
         this.widthStyle.width = 0;
         this.imgInfo.src = '';
+      },
+      startUploadPaste() {
+        if(!this.pasteInfo.blob){
+          return;
+        }
+        //上传图片
+        uploadImage(this.pasteInfo.blob, (err, data) => {
+          if(err)alert(err.ErrorInfo);
+          this.pasteInfo.blob = null;
+          this.pasteInfo.show = false;
+          this.pasteInfo.src = '';
+          this.pasteInfo.filename = '';
+        }, (loadedSize, totalSize) => {
+          this.widthStyle.width = `${(loadedSize / totalSize) * 100}%`;
+        });
+      },
+      canclePasteImg() {
+        this.pasteInfo.blob = null;
+        this.pasteInfo.show = false;
+        this.pasteInfo.src = '';
+        this.pasteInfo.filename = '';
       },
       fileOnChange(event) {
         if (!window.File || !window.FileList || !window.FileReader) {

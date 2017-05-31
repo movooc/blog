@@ -57,6 +57,18 @@ export const onMsgNotify = function(newMsgList) {
     var _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'') : '/api';
     var userUrl = `${_prefix}/user-profile.api?usn=`;
     // 组装消息
+    // 是不是当前群的消息
+    try{
+      //
+      if(avChatRoomId){
+        let curId = avChatRoomId.split('-')[0];
+        let roomId = msg.sess._impl.id.split('-')[0];
+        if(curId != roomId)return;
+      }
+    }catch(e){
+      return;
+    }
+    // 是当前群消息 开始操作
     msg = assembleMsg(msg);
     // start
     try{
