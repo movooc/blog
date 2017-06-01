@@ -7,41 +7,42 @@
     <div class="control">
       <span class="word"><em>*&nbsp;</em>标题</span>
       <div class="text">
-        <input name="title" type="text" v-model="title" />
+        <input name="title" type="text" v-model="data.title" />
         <p class="limit">限20个字</p>
       </div>
     </div>
     <div class="control">
       <span class="word"><em>*&nbsp;</em>开播时间</span>
       <div class="text">
-        <c-calendar :defaultValue="dtm_start"></c-calendar>
+        <c-calendar :defaultValue="data.dtm_start"></c-calendar>
       </div>
     </div>
     <div class="control">
       <span class="word"><em>*&nbsp;</em>预计持续时长</span>
       <div class="text">
-        <input name="duration" type="number" v-model="duration" />
+        <input name="duration" type="number" v-model="data.duration" />
       </div>
     </div>
     <div class="control">
       <span class="word"><em>*&nbsp;</em>价格</span>
       <div class="text">
-        <input name="price" type="number" step="0.01" v-model="price" @blur="priceBlur" />&nbsp;&nbsp;元
+        <input name="price" type="number" step="0.01" v-model="data.price" @blur="priceBlur" />&nbsp;&nbsp;元
         <p class="limit">请输入0-200之间的数，0表示免费</p>
       </div>
     </div>
     <div class="control">
       <span class="word"><em>*&nbsp;</em>封面</span>
       <div class="text">
-        <input name="cover" type="file" @change="imgOnChange" />
-        <p class="img" v-if="cover"><img :src="cover"></p>
-        <p class="limit">请上传尺寸为640*300，大小在100k以内的图片</p>
+        <!--<input name="cover" type="file" @change="imgOnChange" />-->
+        <!--<p class="img"><img :src="data.cover"></p>-->
+        <!--<p class="limit">请上传尺寸为640*300，大小在100k以内的图片</p>-->
+        <v-cropper v-if="canUseCrop" :callback="callbackCropper" :cover="data.cover"></v-cropper>
       </div>
     </div>
     <div class="control">
       <span class="word"><em>*&nbsp;</em>课程介绍</span>
       <div class="text">
-        <textarea name="intro" id="" cols="30" rows="10" v-model="brief"></textarea>
+        <textarea name="intro" id="" cols="30" rows="10" v-model="data.brief"></textarea>
       </div>
     </div>
     <div class="protocol">
@@ -60,23 +61,34 @@
 <script>
   import { mapGetters } from 'vuex';
   import { checkPic } from '@lib/js/mUtils';
+  import vCropper from '@teacher/components/cropper.vue';
   import cCalendar from '@teacher/views/course/calendar.vue';
 
   export default{
     name: 'create',
     components: {
       cCalendar,
+      vCropper,
     },
     data() {
       return {
         //agree: false,
-        title: '',
-        dtm_start: '',
-        duration: '',
-        cover: '',
-        brief: '',
-        price: '',
-        lesson_sn: '',
+        cropper: null,
+        croppable: false,
+        panel: false,
+        canUseCrop: false,
+        data: {
+          title: '',
+          dtm_start: '',
+          duration: '',
+          cover: '',
+          brief: '',
+          price: '',
+          lesson_sn: '',
+        },
+        callbackCropper: (url)=>{
+          this.data.cover = url;
+        }
       }
     },
     computed: {
@@ -87,21 +99,24 @@
     created() {
       //获取路由参数
       let params = this.$route.params;
-      this.lesson_sn = params.lesson_sn;
-      if(this.lesson_sn){
+      this.data.lesson_sn = params.lesson_sn;
+      if(this.data.lesson_sn){
         // 开始请求
         this.$store.dispatch('fetchCourseDetail', params).then((data)=>{
           //this.agree = true;
-          this.title = data.title || '';
-          this.dtm_start = data.plan.dtm_start || '';
-          this.duration = data.plan.duration || '';
-          this.cover = data.cover || '';
-          this.brief = data.brief || '';
-          this.price = data.price;
-          this.$store.commit('CHANGE_CALENDAR', {value: this.dtm_start});
+          this.canUseCrop = true;
+          this.data.title = data.title || '';
+          this.data.dtm_start = data.plan.dtm_start || '';
+          this.data.duration = data.plan.duration || '';
+          this.data.cover = data.cover || '';
+          this.data.brief = data.brief || '';
+          this.data.price = data.price;
+          this.$store.commit('CHANGE_CALENDAR', {value: this.data.dtm_start});
         },()=>{
           console.log('fail');
         });
+      }else{
+          this.canUseCrop = true;
       }
     },
     methods: {
@@ -133,40 +148,37 @@
         reader.readAsDataURL(file);
       },
       priceBlur() {
-        this.price = this.price.match(/\d*(\.\d{0,2})?/)[0];
+        this.data.price = this.data.price.match(/\d*(\.\d{0,2})?/)[0];
       },
       completeCreate() {
-        if(!this.title)return alert('请填写标题！');
+        if(!this.data.title)return alert('请填写标题！');
         //开播时间赋值
-        this.dtm_start = this.calendarInfo.value;
-        if(!this.dtm_start)return alert('请填写开播时间！');
-        if(!this.duration)return alert('请填写持续时长！');
-        if(this.price === '')return alert('请填写价格！');
-        if(!this.cover)return alert('请选择封面！');
-        if(!this.brief)return alert('请填写课程介绍！');
-        //if(!this.agree)return alert('请同意协议内容！');
-        //delete this._data['agree'];
-        if(this.lesson_sn){
-          if(!/^data:image/g.test(this.cover)){
-            delete this._data['cover'];
+        this.data.dtm_start = this.calendarInfo.value;
+        if(!this.data.dtm_start)return alert('请填写开播时间！');
+        if(!this.data.duration)return alert('请填写持续时长！');
+        if(this.data.price === '')return alert('请填写价格！');
+        if(!this.data.cover)return alert('请选择封面！');
+        if(!this.data.brief)return alert('请填写课程介绍！');
+        //
+        if(this.data.lesson_sn){
+          if(!/^data:image/g.test(this.data.cover)){
+            delete this.data['cover'];
           }
-          this.$store.dispatch('fetchCourseModify', { ...this._data }).then((json) => {
+          this.$store.dispatch('fetchCourseModify', { ...this.data }).then((json) => {
             // 发起创建请求
             alert('修改成功!');
             this.$router.push({ name: 'list' });
           }, (err) => {
-            this.paying = false;
             alert(err.message);
           });
 
         }else{
-          delete this._data['lesson_sn'];
-          this.$store.dispatch('fetchCourseCreate', { ...this._data }).then((json) => {
+          delete this.data['lesson_sn'];
+          this.$store.dispatch('fetchCourseCreate', { ...this.data }).then((json) => {
             // 发起创建请求
             alert('创建成功!');
             this.$router.push({ name: 'list' });
           }, (err) => {
-            this.paying = false;
             alert(err.message);
           });
         }

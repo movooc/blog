@@ -47,6 +47,9 @@ const _post = ({ url, body }, commit) => {
         return res.data
       }
       return Promise.reject(new Error(res.status))
+    },(err)=>{
+      if (commit) commit('FINISH_LOADING');
+      return Promise.reject(new Error(err))
     })
 };
 

@@ -13,6 +13,7 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "cropperjs": "^1.0.0-rc.2",
     "fastclick": "^1.0.6",
     "moment": "^2.18.1",
     "recorderjs": "^1.0.1",
