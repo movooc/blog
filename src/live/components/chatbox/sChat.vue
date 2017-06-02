@@ -11,7 +11,7 @@
         <input v-model="msgVal" placeholder="请输入文字..." @focus="focusEvent" />
       </div>
       <v-refund></v-refund>
-      <button class="box-send" @click="sendMsg" v-if="commentShow">提交</button>
+      <button class="box-send" @click="sendMsg" v-if="commentShow">发送</button>
       <div class="more-choice" v-if="moduleShow" :class="{'is-free':!lessonInfo.price}">
         <button @click="backHome">回到首页</button>
         <button @click="showRefund" v-if="lessonInfo.price">申请退款</button>

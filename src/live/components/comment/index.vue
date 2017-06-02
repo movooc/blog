@@ -13,8 +13,8 @@
           <li>
             <div class="user-content">
               <div class="con-text" v-if="lessonInfo.step!='finish'">
-                <a class="button" href="javascript:;" @click="pullHistory" v-if="canPullMsgs">点击拉取历史消息</a>
-                <span v-if="!canPullMsgs">--暂无历史消息--</span>
+                <a href="javascript:;" @click="pullHistory" v-if="canPullMsgs"><i class="iconfont icon-click"></i>&nbsp;查看历史</a>
+                <span class="no-msg" v-if="!canPullMsgs">-暂无历史消息-</span>
               </div>
               <div class="con-text" v-if="lessonInfo.step=='finish'">
                 <span>--课程已结束--</span>
@@ -143,7 +143,7 @@
           //"9": onSetedGroupAdminNotify, //设置管理员(被设置者接收,暂不支持)
           //"10": onCanceledGroupAdminNotify, //取消管理员(被取消者接收,暂不支持)
           "11": onRevokeGroupNotify, //群已被回收(全员接收)
-          "255": onCustomGroupNotify//用户自定义通知(默认全员接收)
+          "255": onCustomGroupNotify.prototype.constructor.bind(this)//用户自定义通知(默认全员接收)
         };
 
         //监听连接状态回调变化事件

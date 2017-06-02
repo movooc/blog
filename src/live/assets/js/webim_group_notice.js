@@ -17,7 +17,8 @@ export function onCustomGroupNotify(notify) {
   webim.Log.warn("执行 用户自定义系统消息 回调：" + JSON.stringify(notify));
   var reportTypeCh = "[用户自定义系统消息]";
   var content = notify.UserDefinedField;//群自定义消息数据
-  showGroupSystemMsg(notify.ReportType, reportTypeCh, notify.GroupId, notify.GroupName, content, notify.MsgTime);
+  //
+  showGroupSystemMsg.call(this,notify.ReportType, reportTypeCh, notify.GroupId, notify.GroupName, content, notify.MsgTime);
 };
 //监听 被踢出群 群系统消息
 export function onKickedGroupNotify(notify) {
@@ -49,4 +50,21 @@ function showGroupSystemMsg(type, typeCh, group_id, group_name, msg_content, msg
   var sysMsgStr = "收到一条群系统消息: type=" + type + ", typeCh=" + typeCh + ",群ID=" + group_id + ", 群名称=" + group_name + ", 内容=" + msg_content + ", 时间=" + webim.Tool.formatTimeStamp(msg_time);
   webim.Log.warn(sysMsgStr);
   console.log(sysMsgStr);
+  //
+  try{
+    let content = JSON.parse(msg_content);
+    // 组装消息
+    let msg = {
+      isSystem: true
+    };
+    // 分类型
+    switch(content.type){
+      case 'hint':
+        msg.message = content.data;
+        this.$store.commit('UPDATE_MESSAGE', msg);
+        break;
+      default:
+        break;
+    }
+  }catch(e){}
 };

@@ -2,7 +2,7 @@
   <!-- live start -->
   <!--<div class="live-page" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">-->
   <div class="live-page">
-    <div class="live-sms-header" v-if="isPC">直播区<i class="iconfont icon-over" @click="showHandle(true)" v-if="isOwner && lessonInfo.step != 'finish'"></i></div>
+    <div class="live-sms-header" v-if="isPC">授课区<i class="iconfont icon-over" @click="showHandle(true)" v-if="isOwner && lessonInfo.step != 'finish'"></i></div>
     <div class="live-sms-left" v-if="isPC"></div>
     <!--<div class="live-sms-right" v-if="isPC"></div>-->
     <!-- player -->
@@ -16,10 +16,10 @@
       <!-- message entity -->
       <ul class="live-sms-list" id="live_sms_list" v-bind:class="{'commentShow':commentShow}">
         <li v-for="(msg, index) in messageInfo">
-          <div class="user-img">
+          <div class="user-img" v-if="!msg.isSystem">
             <img :src="loadingImg" width="45px">
           </div>
-          <div class="live-sms">
+          <div class="live-sms" v-if="!msg.isSystem">
             <div class="speaker-name" v-text="msg.nickname"></div>
             <div class="sms-content" v-for="con in msg.content">
               <div class="content-text" v-text="con.text" v-if="con.type==msg.MSG_ELEMENT_TYPE.GROUP_TIP"></div>
@@ -41,6 +41,9 @@
                 <a href="javascript:;" v-for="img in con.imgArr"><img v-bind:src="img"></a>
               </div>
             </div>
+          </div>
+          <div class="live-system" v-if="msg.isSystem">
+            <p v-text="msg.message"></p>
           </div>
         </li>
       </ul>

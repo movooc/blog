@@ -21,14 +21,14 @@
       <span class="word"><em>*&nbsp;</em>预计持续时长</span>
       <div class="text">
         <!--<input name="duration" type="number" min="0" step="0.5" v-model="data.duration" @blur="durationBlur" />-->
-        <input name="duration" type="tel" v-model="data.duration" @blur="durationBlur" />
+        <input name="duration" type="tel" v-model="data.duration" @blur="durationBlur" />&nbsp;&nbsp;<span>小时</span>
       </div>
     </div>
     <div class="control">
       <span class="word"><em>*&nbsp;</em>价格</span>
       <div class="text">
-        <input name="price" type="tel" v-model="data.price" @blur="priceBlur" />&nbsp;&nbsp;元
-        <p class="limit">请输入0-3000之间的数，0表示免费</p>
+        <input name="price" type="tel" v-model="data.price" @blur="priceBlur" />&nbsp;&nbsp;<span>元</span>
+        <p class="limit">请输入0-5000之间的数，0表示免费</p>
       </div>
     </div>
     <div class="control">
@@ -151,8 +151,8 @@
       },
       priceBlur() {
         this.data.price = this.data.price.match(/\d*(\.\d{0,2})?/)[0];
-        if(this.data.price && this.data.price > 3000){
-          alert('价格金额不可以大于3000,请重新填写!');
+        if(this.data.price && this.data.price > 5000){
+          alert('价格金额不可以大于5000,请重新填写!');
           this.data.price = '';
         }
       },
@@ -258,6 +258,8 @@
         textarea
           width: 500px;
           border-color: #E6EAF2;
+        span
+          font-size: 12px;
       .limit
         font-size: 12px;
         color: #aaa;
