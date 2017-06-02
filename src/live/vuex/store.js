@@ -11,7 +11,7 @@ Vue.use(Vuex);
 
 /* init state */
 const state = {
-  headerTitle: '直播',
+  headerTitle: '授课区',
   loadShow: true,
   menuShow: false,
   isOwner : false,

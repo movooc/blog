@@ -38,7 +38,7 @@
                 </div>
               </div>
               <div class="content-img" v-if="con.type==msg.MSG_ELEMENT_TYPE.IMAGE">
-                <a href="javascript:;" v-for="img in con.imgArr"><img v-bind:src="img"></a>
+                <a href="javascript:;" v-for="img in con.imgArr"><img v-bind:src="img" @click="showLiveImage(img)"></a>
               </div>
             </div>
           </div>
@@ -55,14 +55,7 @@
     <s-chatbox v-if="!isOwner"></s-chatbox>
     <!-- handle -->
     <v-handle :callBack="showHandle" :show="handleShow"></v-handle>
-    <!-- live loading -->
-    <!--<div class="live-loading">-->
-    <!--<p class="text">历史记录加载中...</p>-->
-    <!--<div class="spinner">-->
-    <!--<div class="double-bounce1"></div>-->
-    <!--<div class="double-bounce2"></div>-->
-    <!--</div>-->
-    <!--</div>-->
+    <show-image :show="showImg" :img="liveImg"></show-image>
   </div>
 </template>
 
@@ -71,6 +64,7 @@
   import lHeader from './header.vue';
   import vPlayer from './player.vue';
   import vHandle from './handle.vue';
+  import showImage from './image.vue';
   import { exportAssembleMsg } from '@live/assets/js/webim_comment';
   import vComment from '@live/components/comment/index.vue';
   import vChatbox from '@live/components/chatbox/index.vue';
@@ -93,6 +87,7 @@
       vAudio,
       vPlayer,
       vHandle,
+      showImage,
     },
     data() {
       return {
@@ -101,6 +96,8 @@
         busy: false,
         handleShow: false,
         canPullMsgs: true,
+        showImg: false,
+        liveImg: '',
       };
     },
     computed: {
@@ -122,6 +119,10 @@
     methods: {
       isShow() {
         //this.$store.commit('UPDATE_MENUSHOW');
+      },
+      showLiveImage(img){
+        this.showImg = true;
+        this.liveImg = img;
       },
       pullMsgs() {
         if(this.lesson){

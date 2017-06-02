@@ -13,7 +13,9 @@ var sdkAppID = null,
   listeners = null,
   options   = null,
   curPlayAudio = null,
-  openEmotionFlag = false;
+  openEmotionFlag = false,
+  vScroll = null,
+  vSms = null;
 
 //初始化数据
 export const exportInitData = (data) => {
@@ -50,6 +52,13 @@ export const onBigGroupMsgNotify = function(msgList) {
 //监听新消息(私聊(包括普通消息、全员推送消息)，普通群(非直播聊天室)消息)事件
 //newMsgList 为新消息数组，结构为[Msg]
 export const onMsgNotify = function(newMsgList) {
+  //
+  if(!vScroll){
+    vScroll = document.getElementById('live-body');
+  }
+  // if(!vSms){
+  //   vSms = document.getElementById('live_sms_list');
+  // }
   //
   for (var i = newMsgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
     var msg = newMsgList[i];
@@ -106,11 +115,17 @@ export const onMsgNotify = function(newMsgList) {
         // 老师区
         _webim.Log.warn('receive a new chatroom group msg: ' + accountNick);
         this.$store.commit('UPDATE_MESSAGE', msg);
+        this.$nextTick(()=>{
+          inspectScroll();
+        });
       }
     }catch(e){
       // 老师区
       _webim.Log.warn('receive a new chatroom group msg: ' + accountNick);
       this.$store.commit('UPDATE_MESSAGE', msg);
+      this.$nextTick(()=>{
+        inspectScroll();
+      });
     }
   }
 };
@@ -949,3 +964,22 @@ function sdkInit(cb) {
     }
   );//
 };
+
+//监测滚动条区域
+function inspectScroll() {
+  try{
+    // 探测范围
+    // let children = vSms.children;
+    // let len = children.length;
+    let scrollHeight = vScroll.scrollHeight;
+    let offsetHeight = vScroll.offsetHeight;
+    let scrollTop    = vScroll.scrollTop;
+    //
+    if(scrollHeight > offsetHeight){
+      // 一屏
+       if(scrollHeight - offsetHeight - scrollTop < (offsetHeight*2)/3){
+        vScroll.scrollTop = scrollHeight;
+      }
+    }
+  }catch(e){}
+}
