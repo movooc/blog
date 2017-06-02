@@ -42,8 +42,8 @@
               </div>
             </div>
           </div>
-          <div class="live-system" v-if="msg.isSystem">
-            <p v-text="msg.message"></p>
+          <div class="live-system" v-if="msg.isSystem && !isOwner">
+            <p>---{{msg.message}}---</p>
           </div>
         </li>
       </ul>
