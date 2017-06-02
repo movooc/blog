@@ -13,13 +13,13 @@
       </div>
     </div>
     <ul class="bar-list">
-      <li>
-        <router-link to="/all">
-          <i class="iconfont icon-all"></i>
-          &nbsp;&nbsp;
-          我的总览
-        </router-link>
-      </li>
+      <!--<li>-->
+        <!--<router-link to="/all">-->
+          <!--<i class="iconfont icon-all"></i>-->
+          <!--&nbsp;&nbsp;-->
+          <!--我的总览-->
+        <!--</router-link>-->
+      <!--</li>-->
       <li>
         <router-link to="/course">
           <i class="iconfont icon-menu"></i>
@@ -27,13 +27,13 @@
           我的课程
         </router-link>
       </li>
-      <li>
-        <router-link to="/profit">
-          <i class="iconfont icon-earning"></i>
-          &nbsp;&nbsp;
-          查看收益
-        </router-link>
-      </li>
+      <!--<li>-->
+        <!--<router-link to="/profit">-->
+          <!--<i class="iconfont icon-earning"></i>-->
+          <!--&nbsp;&nbsp;-->
+          <!--查看收益-->
+        <!--</router-link>-->
+      <!--</li>-->
     </ul>
   </div>
 </template>

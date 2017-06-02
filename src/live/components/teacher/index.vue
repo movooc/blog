@@ -13,13 +13,13 @@
       </div>
     </div>
     <ul class="bar-list">
-      <li>
-        <a href="https://teacher.sandbox.yike.fm">
-          <i class="iconfont icon-all"></i>
-          &nbsp;&nbsp;
-          我的总览
-        </a>
-      </li>
+      <!--<li>-->
+        <!--<a href="https://teacher.sandbox.yike.fm">-->
+          <!--<i class="iconfont icon-all"></i>-->
+          <!--&nbsp;&nbsp;-->
+          <!--我的总览-->
+        <!--</a>-->
+      <!--</li>-->
       <li>
         <router-link to="/">
           <i class="iconfont icon-menu"></i>
@@ -27,13 +27,13 @@
           我的课程
         </router-link>
       </li>
-      <li>
-        <a href="https://teacher.sandbox.yike.fm">
-          <i class="iconfont icon-earning"></i>
-          &nbsp;&nbsp;
-          查看收益
-        </a>
-      </li>
+      <!--<li>-->
+        <!--<a href="https://teacher.sandbox.yike.fm">-->
+          <!--<i class="iconfont icon-earning"></i>-->
+          <!--&nbsp;&nbsp;-->
+          <!--查看收益-->
+        <!--</a>-->
+      <!--</li>-->
     </ul>
   </div>
 </template>

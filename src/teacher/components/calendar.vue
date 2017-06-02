@@ -37,8 +37,8 @@
         时
         <input type="text" v-model="minute" min="0" max="59" maxlength="2">
         分
-        <input type="text" v-model="second" min="0" max="59" maxlength="2">
-        秒
+        <!--<input type="text" v-model="second" min="0" max="59" maxlength="2">-->
+        <!--秒-->
       </div>
     </div>
     <div class="calendar-button" v-show="type=='datetime'||type=='time'||range">
@@ -168,7 +168,7 @@
               var splitTime = split[1].split(":")
               this.hour = splitTime[0]
               this.minute = splitTime[1]
-              this.second = splitTime[2]
+              //this.second = splitTime[2]
             }
           }
           if (this.range) {
@@ -187,7 +187,7 @@
           this.day = now.getDate()
           this.hour = this.zero(now.getHours())
           this.minute = this.zero(now.getMinutes())
-          this.second = this.zero(now.getSeconds())
+          //this.second = this.zero(now.getSeconds())
           if (this.range) {
             this.rangeBegin = Array
             this.rangeEnd = Array

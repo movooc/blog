@@ -1,7 +1,7 @@
 <template>
   <section class="content-create">
     <div class="title clearfix">
-      我的课程>课程编辑
+      我的课程>{{data.lesson_sn?"课程编辑":"课程创建"}}
       <span class="title-handle pull-right" @click="back">返回</span>
     </div>
     <div class="control">
@@ -20,14 +20,15 @@
     <div class="control">
       <span class="word"><em>*&nbsp;</em>预计持续时长</span>
       <div class="text">
-        <input name="duration" type="number" v-model="data.duration" />
+        <!--<input name="duration" type="number" min="0" step="0.5" v-model="data.duration" @blur="durationBlur" />-->
+        <input name="duration" type="tel" v-model="data.duration" @blur="durationBlur" />
       </div>
     </div>
     <div class="control">
       <span class="word"><em>*&nbsp;</em>价格</span>
       <div class="text">
-        <input name="price" type="number" step="0.01" v-model="data.price" @blur="priceBlur" />&nbsp;&nbsp;元
-        <p class="limit">请输入0-200之间的数，0表示免费</p>
+        <input name="price" type="tel" v-model="data.price" @blur="priceBlur" />&nbsp;&nbsp;元
+        <p class="limit">请输入0-3000之间的数，0表示免费</p>
       </div>
     </div>
     <div class="control">
@@ -49,12 +50,13 @@
       <!--<input name="agree" type="checkbox" v-model="agree" />-->
       <!--我已阅读并同意《讲师须知》的内容-->
       <p>
-        责任：本课程所发布内容与易课无关，仅代表个人观点。<br />
-        禁止：禁止发布涉及政治、反动、色情等法律法规禁止的内容，禁止发布会引起版权纠纷的内容。<br />
-        规则：课程开始前10分钟可以进入，点击课程结束后可选择开放讨论时间（讨论时间内学员与讲者均可以继续发布内容，但讲者不需要实时在线，讨论设置时间到，课程关闭，讲师也可选择主动关闭），也可直接结束课程。课程可以选择下架，下架后未购买的用户将无法付费，不能产生新的订单。
+        <i class="iconfont icon-dot"></i>&nbsp;&nbsp;授课内容不得违反国家法律法规<br />
+        <i class="iconfont icon-dot"></i>&nbsp;&nbsp;课程审核通过后即开放报名，修改课程名称、介绍需要再次审核<br />
+        <i class="iconfont icon-dot"></i>&nbsp;&nbsp;课堂分为授课区和讨论区，学员可在讨论区交流<br />
+        <i class="iconfont icon-dot"></i>&nbsp;&nbsp;课程结束后，可选择是否开放课后交流时间，与学员进一步探讨
       </p>
     </div>
-    <p class="button"><button @click="completeCreate">完成</button></p>
+    <p class="button"><button @click="completeCreate">提交审核</button></p>
   </section>
 </template>
 
@@ -73,9 +75,9 @@
     data() {
       return {
         //agree: false,
-        cropper: null,
-        croppable: false,
-        panel: false,
+        //cropper: null,
+        //croppable: false,
+        //panel: false,
         canUseCrop: false,
         data: {
           title: '',
@@ -149,6 +151,13 @@
       },
       priceBlur() {
         this.data.price = this.data.price.match(/\d*(\.\d{0,2})?/)[0];
+        if(this.data.price && this.data.price > 3000){
+          alert('价格金额不可以大于3000,请重新填写!');
+          this.data.price = '';
+        }
+      },
+      durationBlur() {
+        this.data.duration = this.data.duration.match(/\d*(\.\d{0,1})?/)[0];
       },
       completeCreate() {
         if(!this.data.title)return alert('请填写标题！');
@@ -166,7 +175,7 @@
           }
           this.$store.dispatch('fetchCourseModify', { ...this.data }).then((json) => {
             // 发起创建请求
-            alert('修改成功!');
+            alert('编辑成功!');
             this.$router.push({ name: 'list' });
           }, (err) => {
             alert(err.message);
@@ -176,7 +185,7 @@
           delete this.data['lesson_sn'];
           this.$store.dispatch('fetchCourseCreate', { ...this.data }).then((json) => {
             // 发起创建请求
-            alert('创建成功!');
+            alert('已提交审核，通过后将开放报名!');
             this.$router.push({ name: 'list' });
           }, (err) => {
             alert(err.message);
@@ -194,6 +203,9 @@
   .content-create
     padding: 20px;
     background: #fff;
+
+    .icon-dot
+      font-size: 12px;
 
     .button
       text-align: right;
