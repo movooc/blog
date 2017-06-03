@@ -1,32 +1,66 @@
 <template>
   <!-- show-image -->
-  <div class="show-image" v-if="show">
+  <div class="show-image">
     <div class="img-box" @click="hide">
-      <img :src="img" />
+      <img id="pinchImg" :src="img" />
     </div>
   </div>
 </template>
 
 <script>
+  import AlloyFinger from 'AlloyFinger';
+  var pinchImg = null;
+
   export default
   {
     name: 'show-image',
     props: {
-      show: {
-        type: Boolean
-      },
+//      show: {
+//        type: Boolean
+//      },
       img: {
         type: String
       }
     },
     data() {
       return {
-
+        initScale:1,
       };
+    },
+    mounted() {
+      if(!pinchImg){
+        pinchImg = document.getElementById("pinchImg");
+      }
+      // 初始化
+      try{
+        if(isPC) {
+          console.log('isPC');
+        }else {
+          new AlloyFinger(pinchImg, {
+            multipointStart: () => {
+              //initScale = pinchImg.scaleX;
+            },
+            pinch: (evt) => {
+              let scale = this.initScale * evt.zoom;
+              pinchImg.style.transform = `scale(${scale}, ${scale})`;
+              //pinchImg.scaleX = pinchImg.scaleY = initScale * evt.scale;
+            }
+          });
+        }
+      }catch(e){}
     },
     methods: {
       hide() {
+        this.initScale = 1;
         this.$parent.showImg = false;
+        pinchImg.style.transform = `scale(${this.initScale}, ${this.initScale})`;
+      },
+      mouseWheel(i) {
+        let zoom = parseInt(i.style.zoom,10)||100;
+        zoom += event.wheelDelta / 12;
+        if(zoom > 0)
+          i.style.zoom=zoom+'%';
+        return false;
       }
     }
   };
@@ -49,10 +83,11 @@
       align-items:center;
       -webkit-align-items:center;
       img
-        width: 80%;
+        width: 50%;
   .is-pc
     .show-image
       .img-box
         img
           width: auto;
+          min-width: 300px;
 </style>

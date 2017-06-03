@@ -6,13 +6,19 @@
           <div class="list-title" v-text="list.title"></div>
           <div class="list-img">
             <img :src="list.cover" alt="">
-            <span class="list-status">
-              <span v-if="list.step == 'submit'">未开放</span>
-              <span v-if="list.step == 'opened'">{{`${list.plan.dtm_now}#${list.plan.dtm_start}` | moment}}</span>
-              <span v-if="list.step == 'onlive'">直播中</span>
-              <span v-if="list.step == 'repose'">交流中</span>
-              <span v-if="list.step == 'finish'">已结束</span>
+            <span class="list-status" v-if="list.step == 'opened'">
+              {{`${list.plan.dtm_now}#${list.plan.dtm_start}` | moment}}
             </span>
+            <span class="list-status" v-if="list.step == 'onlive'">
+              直播中
+            </span>
+            <!--<span class="list-status">-->
+              <!--<span v-if="list.step == 'submit'">未开放</span>-->
+              <!--<span v-if="list.step == 'opened'">{{`${list.plan.dtm_now}#${list.plan.dtm_start}` | moment}}</span>-->
+              <!--<span v-if="list.step == 'onlive'">直播中</span>-->
+              <!--<span v-if="list.step == 'repose'">交流中</span>-->
+              <!--<span v-if="list.step == 'finish'">已结束</span>-->
+            <!--</span>-->
           </div>
           <div class="list-content">
             <div class="price">

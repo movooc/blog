@@ -328,8 +328,8 @@ export const checkPic = (obj, fileSize) => {
 //检查文件类型和大小
 export const checkPastePic = (obj, fileSize) => {
   var fileSize = Math.round(fileSize / 1024 * 100) / 100; //单位为KB
-  if (fileSize > 1 * 1024) {
-    alert("您截取的图片大小超过限制(最大为1M)，请重新选择");
+  if (fileSize > 5 * 1024) {
+    alert("您截取的图片大小超过限制(最大为5M)，请重新选择");
     return false;
   }
   return true;

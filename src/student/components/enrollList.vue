@@ -31,6 +31,10 @@
           <button class="pull-right" @click="refund(list.lesson.sn)">退款</button>
         </div>
       </li>
+      <li class="no-enroll" v-if="!lists.length">
+        <p>快去课程列表选择优质课程报名吧</p>
+        <router-link to="/course">现在就去</router-link>
+      </li>
     </ul>
     <loading :show="refunding"></loading>
   </div>
@@ -117,6 +121,22 @@
 
         &:first-child {
           border-top-width: 0;
+        }
+
+        &.no-enroll {
+          text-align: center;
+          p, a {
+            px2px(font-size, 32px);
+          }
+          a {
+            display: inline-block;
+            margin-bottom: 50px;
+            padding: 10px;
+            color: #00a551;
+            border: 1px solid #00a551;
+            border-radius: 10px;
+            -webkit-border-radius: 10px;
+          }
         }
 
         a{

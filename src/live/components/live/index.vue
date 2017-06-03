@@ -55,7 +55,7 @@
     <s-chatbox v-if="!isOwner"></s-chatbox>
     <!-- handle -->
     <v-handle :callBack="showHandle" :show="handleShow"></v-handle>
-    <show-image :show="showImg" :img="liveImg"></show-image>
+    <show-image v-show="showImg" :img="liveImg"></show-image>
   </div>
 </template>
 

@@ -2,7 +2,7 @@
   <div class="teacher-info" v-if="teacher">
     <div class="t-tit">
       <span>讲师</span>
-      <span class="focus">+关注</span>
+      <!--<span class="focus">+关注</span>-->
     </div>
     <div class="t-con clearfix">
       <div class="t-img">

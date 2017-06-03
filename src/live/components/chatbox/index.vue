@@ -34,8 +34,9 @@
               <em v-bind:style="widthStyle"></em>
             </span>
           </p>
-          <button class="upload" @click="startUploadImg">开始发送</button>
-          <button class="upload" @click="cancleUploadImg">取消发送</button>
+          <button class="upload" @click="startUploadImg" v-if="!startSend">开始发送</button>
+          <button class="upload" @click="cancleUploadImg" v-if="!startSend">取消发送</button>
+          <button class="upload" v-if="startSend">正在发送...</button>
         </div>
       </div>
     </div>
@@ -54,8 +55,9 @@
               <em v-bind:style="widthStyle"></em>
             </span>
           </p>
-          <button class="upload" @click="startUploadPaste">开始发送</button>
-          <button class="upload" @click="canclePasteImg">取消发送</button>
+          <button class="upload" @click="startUploadPaste" v-if="!startSend">开始发送</button>
+          <button class="upload" @click="canclePasteImg" v-if="!startSend">取消发送</button>
+          <button class="upload" v-if="startSend">正在发送...</button>
         </div>
       </div>
     </div>
@@ -71,8 +73,9 @@
               <em v-bind:style="widthFileStyle"></em>
             </span>
           </p>
-          <button class="upload" @click="startUploadFile">开始发送</button>
-          <button class="upload" @click="cancleUploadFile">取消发送</button>
+          <button class="upload" @click="startUploadFile" v-if="!startSend">开始发送</button>
+          <button class="upload" @click="cancleUploadFile" v-if="!startSend">取消发送</button>
+          <button class="upload" v-if="startSend">正在发送...</button>
         </div>
       </div>
     </div>
@@ -103,6 +106,7 @@
         imgShow: false,
         fileShow: false,
         moduleShow: false,
+        startSend: false,
         imgInfo: {
           src: '',
           show: false,
@@ -229,6 +233,8 @@
       startUploadImg() {
         var uploadFiles = document.getElementById('upd_pic');
         var file = uploadFiles.files[0];
+        // 开始上传
+        this.startSend = true;
         //上传图片
         uploadImage(file, (err, data) => {
           if(err)alert(err.ErrorInfo);
@@ -236,6 +242,7 @@
           this.moduleShow = false;
           this.widthStyle.width = 0;
           this.imgInfo.src = '';
+          this.startSend = false;
         }, (loadedSize, totalSize) => {
           this.widthStyle.width = `${(loadedSize / totalSize) * 100}%`;
         });
@@ -251,6 +258,8 @@
         if(!this.pasteInfo.blob){
           return;
         }
+        // 开始上传
+        this.startSend = true;
         //上传图片
         uploadImage(this.pasteInfo.blob, (err, data) => {
           if(err)alert(err.ErrorInfo);
@@ -258,6 +267,7 @@
           this.pasteInfo.show = false;
           this.pasteInfo.src = '';
           this.pasteInfo.filename = '';
+          this.startSend = false;
         }, (loadedSize, totalSize) => {
           this.widthStyle.width = `${(loadedSize / totalSize) * 100}%`;
         });
@@ -290,12 +300,15 @@
         if(!file){
           return alert('请选择文件!');
         }
+        // 开始上传
+        this.startSend = true;
         //上传文件
         uploadFile(file, (err, data) => {
           if(err)alert(err.ErrorInfo);
           this.fileShow = false;
           this.moduleShow = false;
           this.widthFileStyle.width = 0;
+          this.startSend = false;
         }, (loadedSize, totalSize) => {
           this.widthFileStyle.width = `${(loadedSize / totalSize) * 100}%`;
         });
