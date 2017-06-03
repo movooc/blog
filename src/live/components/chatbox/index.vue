@@ -267,6 +267,7 @@
           this.pasteInfo.show = false;
           this.pasteInfo.src = '';
           this.pasteInfo.filename = '';
+          this.widthStyle.width = 0;
           this.startSend = false;
         }, (loadedSize, totalSize) => {
           this.widthStyle.width = `${(loadedSize / totalSize) * 100}%`;
@@ -277,6 +278,7 @@
         this.pasteInfo.show = false;
         this.pasteInfo.src = '';
         this.pasteInfo.filename = '';
+        this.widthStyle.width = 0;
       },
       fileOnChange(event) {
         if (!window.File || !window.FileList || !window.FileReader) {

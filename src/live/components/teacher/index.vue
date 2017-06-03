@@ -21,11 +21,11 @@
         <!--</a>-->
       <!--</li>-->
       <li>
-        <router-link to="/">
+        <a :href="teacherHost" class="active">
           <i class="iconfont icon-menu"></i>
           &nbsp;&nbsp;
           我的课程
-        </router-link>
+        </a>
       </li>
       <!--<li>-->
         <!--<a href="https://teacher.sandbox.yike.fm">-->
@@ -45,12 +45,10 @@
     computed: {
       ...mapState([
         'teacherInfo',
+        'teacherHost'
       ])
     },
     props: {
-
-    },
-    created(){
 
     },
   };

@@ -1,7 +1,7 @@
 <template>
   <!-- show-image -->
   <div class="show-image">
-    <div class="img-box" @click="hide">
+    <div id="imgBox" class="img-box" @click="hide">
       <img id="pinchImg" :src="img" />
     </div>
   </div>
@@ -10,6 +10,7 @@
 <script>
   import AlloyFinger from 'AlloyFinger';
   var pinchImg = null;
+  var imgBox = null;
 
   export default
   {
@@ -28,15 +29,16 @@
       };
     },
     mounted() {
-      if(!pinchImg){
+      if(!imgBox || !pinchImg){
         pinchImg = document.getElementById("pinchImg");
+        imgBox = document.getElementById("imgBox");
       }
       // 初始化
       try{
         if(isPC) {
           console.log('isPC');
         }else {
-          new AlloyFinger(pinchImg, {
+          new AlloyFinger(imgBox, {
             multipointStart: () => {
               //initScale = pinchImg.scaleX;
             },
@@ -44,6 +46,11 @@
               let scale = this.initScale * evt.zoom;
               pinchImg.style.transform = `scale(${scale}, ${scale})`;
               //pinchImg.scaleX = pinchImg.scaleY = initScale * evt.scale;
+            },
+            pressMove:function(evt){
+              //
+              pinchImg.style.transform = `${pinchImg.style.transform} translate(${evt.deltaX}px, ${evt.deltaY}px)`;
+              evt.preventDefault();
             }
           });
         }

@@ -969,17 +969,17 @@ function sdkInit(cb) {
 function inspectScroll() {
   try{
     // 探测范围
-    // let children = vSms.children;
-    // let len = children.length;
-    let scrollHeight = vScroll.scrollHeight;
-    let offsetHeight = vScroll.offsetHeight;
-    let scrollTop    = vScroll.scrollTop;
-    //
-    if(scrollHeight > offsetHeight){
-      // 一屏
-       if(scrollHeight - offsetHeight - scrollTop < (offsetHeight*2)/3){
-        vScroll.scrollTop = scrollHeight;
+    setTimeout(()=>{
+      let scrollHeight = vScroll.scrollHeight;
+      let offsetHeight = vScroll.offsetHeight;
+      let scrollTop    = vScroll.scrollTop;
+      //
+      if(scrollHeight > offsetHeight){
+        // 一屏
+        if(scrollHeight - offsetHeight - scrollTop < (offsetHeight*2)/3){
+          vScroll.scrollTop = scrollHeight;
+        }
       }
-    }
+    },200);
   }catch(e){}
 }
