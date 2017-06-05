@@ -8,7 +8,7 @@
     <!-- player -->
     <v-player v-if="playingAudio"></v-player>
     <!-- live entity -->
-    <div class="live-body" id="live-body">
+    <div class="live-body" id="live-body" :class="{'owner':isOwner}">
       <!--<p class="pullMsgs" v-if="canPullMsgs"><a href="javascript:;" @click="pullMsgs">点击拉取历史消息</a></p>-->
       <!--<p class="pullMsgs" v-if="!canPullMsgs"><span>已经无历史消息</span></p>-->
       <!-- header -->

@@ -1,5 +1,5 @@
 <template>
-  <div class="l-chatbox">
+  <div class="l-chatbox owner">
     <div class="box" v-if="lessonInfo.step!='finish'">
       <span class="box-more">
         <button @click="showModule">
@@ -8,9 +8,10 @@
       </span>
       <div class="box-msg">
         <textarea v-model="msgVal" placeholder="请输入文字或粘贴图片..." @blur="v_blur" @paste="v_paste"></textarea>
-        <v-recorder class="reorder"></v-recorder>
+        <v-recorder class="reorder" v-if="!isPC"></v-recorder>
       </div>
       <button class="box-send" @click="sendMsg">发送</button>
+      <v-recorder class="reorder" v-if="isPC"></v-recorder>
       <div class="more-choice" v-if="moduleShow">
         <!--<a class="close" href="javascript:;" @click="moduleShow = !moduleShow">&times</a>-->
         <button @click="showImage">上传图片</button>
@@ -107,6 +108,7 @@
         fileShow: false,
         moduleShow: false,
         startSend: false,
+        isPC: isPC,
         imgInfo: {
           src: '',
           show: false,

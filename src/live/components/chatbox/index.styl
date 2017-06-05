@@ -242,4 +242,42 @@
       }
     }
   }
+
+  &.owner {
+    top: 550px;
+    padding: 10px 14px;
+    width: 564px;
+    height: 115px;
+
+    .box {
+      position: relative;
+      display: block;
+      .box-msg {
+        height: auto;
+        overflow: hidden;
+
+        textarea {
+          height: 60px;
+        }
+      }
+      .more-choice {
+        left: 10px;
+        bottom: 20px;
+        &:after {
+          display: none;
+        }
+      }
+      .box-more, .box-send {
+        position: absolute;
+        top: 80px;
+
+        &.box-send{
+          right: 0;
+        }
+      }
+    }
+    .modal-dialog {
+      top: -330px;
+    }
+  }
 }
