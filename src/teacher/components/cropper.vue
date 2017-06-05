@@ -9,14 +9,18 @@
       <button type="button" class="button cancle" @click="cancle">取消</button>
     </div>
 
-    <div style="padding:20px;">
+    <div class="cropper-cover">
       <div class="show">
         <div class="picture" :style="'backgroundImage:url('+headerImage+')'">
         <!--<div class="picture">-->
           <!--<img :src="headerImage" alt="" style="width: 100%;">-->
+          <div v-if="!headerImage">
+            <i class="iconfont icon-icons01"></i><br />
+            点击上传图片
+          </div>
         </div>
       </div>
-      <div style="margin-top:20px;">
+      <div class="cropper-button">
         <input type="file" id="change" accept="image" @change="change">
         <label for="change"></label>
       </div>
@@ -159,7 +163,7 @@
     height: 100px;
     overflow: hidden;
     position: relative;
-    border: 1px solid #d5d5d5;
+    border: 1px solid #e6eaf2;
   }
   .cropper .picture {
     width: 100%;
@@ -506,5 +510,41 @@
   .cropper-disabled .cropper-line,
   .cropper-disabled .cropper-point {
     cursor: not-allowed;
+  }
+
+  .cropper-cover {
+    position: relative;
+    overflow: hidden;
+
+    .picture {
+      >div {
+        padding-top: 24px;
+        color: #aaa;
+        font-size: 12px;
+        text-align: center;
+
+        .iconfont {
+          font-size: 24px;
+        }
+      }
+    }
+
+    .cropper-button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index:6;
+      opacity: 0;
+
+      input{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+    }
   }
 </style>
