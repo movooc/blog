@@ -134,4 +134,19 @@ export const fetchOrderConfirm = ({commit}, body) => {
     })
 };
 
+export const fetchWXConfig = ({commit}, query) => {
+  const url = `${_prefix}/lesson-shareConfig`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return Promise.resolve(json.data);
+      }
+      return Promise.reject(new Error('Fetch_WX_Config failure'))
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+
 
