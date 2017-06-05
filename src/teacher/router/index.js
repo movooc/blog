@@ -48,25 +48,37 @@ export default [
       {
         path: '/course/list',
         name: 'list',
-        component: list
+        component: list,
+        meta: {
+          pageTitle: '易课-课程列表'
+        }
       },
       // 课程详情页
       {
         path: '/course/:lesson_sn/detail',
         name: 'detail',
-        component: detail
+        component: detail,
+        meta: {
+          pageTitle: '易课-课程详情'
+        }
       },
       // 创建课程
       {
         path: '/course/create',
         name: 'create',
-        component: create
+        component: create,
+        meta: {
+          pageTitle: '易课-课程创建'
+        }
       },
       // 编辑课程
       {
         path: '/course/edit/:lesson_sn',
         name: 'edit',
-        component: create
+        component: create,
+        meta: {
+          pageTitle: '易课-课程编辑'
+        }
       }
     ]
   }

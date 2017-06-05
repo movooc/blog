@@ -9,6 +9,7 @@ import store from './vuex/store';
 import routes from './router';
 import { Vueinterceptors } from '@teacher/assets/js/middleware';
 import VeeValidate, { Validator } from 'vee-validate';
+import SetWechatTitle from '@lib/js/setWechatTitle';
 import '@lib/css/font.styl';
 import 'normalize.css';
 
@@ -44,6 +45,12 @@ const router = new VueRouter({
   'linkActiveClass': 'active',
   //mode:'history',
   routes,
+});
+
+/* change title */
+router.afterEach((transition) => {
+  let title = transition.meta.pageTitle;
+  SetWechatTitle(title);
 });
 
 /* el app */
