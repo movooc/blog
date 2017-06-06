@@ -4,7 +4,7 @@
   <div class="live-page">
     <div class="live-sms-header" v-if="isPC">授课区
       <span class="end" @click="showHandle(true)" v-if="isOwner && lessonInfo.step != 'finish'">
-        <i class="iconfont icon-over"></i>
+        <i class="iconfont icon-jieshu"></i>
         结束授课
       </span>
     </div>
@@ -28,7 +28,7 @@
             <div class="speaker-name" v-text="msg.nickname"></div>
             <div class="sms-content" v-for="con in msg.content">
               <div class="content-text" v-text="con.text" v-if="con.type==msg.MSG_ELEMENT_TYPE.GROUP_TIP"></div>
-              <div class="content-text" v-text="con.text" v-if="con.type==msg.MSG_ELEMENT_TYPE.TEXT"></div>
+              <div class="content-text" v-html="textFormat(con.text)" v-if="con.type==msg.MSG_ELEMENT_TYPE.TEXT"></div>
               <div class="content-text" v-if="con.type==msg.MSG_ELEMENT_TYPE.FILE">
                 <a v-for="file in con.fileArr" :href="file.url" target="__blank">点击下载</a>
               </div>
@@ -172,7 +172,10 @@
       },
       showHandle(show) {
         this.handleShow = show;
-      }
+      },
+      textFormat(value){
+        return value.replace(/\n/g, '<br>');
+      },
     }
   };
 
