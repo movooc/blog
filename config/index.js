@@ -40,7 +40,7 @@ module.exports = {
         },
         onProxyReq(proxyReq, req, res) {
           // req.headers['X-SESS'] = '58f5e18810316-55902dbf0a814f0.47989593';
-          proxyReq.setHeader('X-SESS', '58f9ebeea1419-10592e1dfbb89530.64883402');
+          proxyReq.setHeader('X-SESS', '58f5e18810316-559361ead344d27.64914596');
           let ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36';
           proxyReq.setHeader('User-Agent', ua);
 

@@ -1,7 +1,7 @@
 <template>
   <div class="l-recorder" v-if="!isSending">
     <span class="iconfont icon-mic" @click="toggleRecorder" :class="{'active':active}"></span>
-    <a id="save"></a>
+    <audio id="save"></audio>
   </div>
 </template>
 
@@ -16,7 +16,8 @@
     },
     data() {
       return {
-        active: false
+        active: false,
+
       };
     },
     computed: {
@@ -31,7 +32,7 @@
     methods: {
       toggleRecorder(){
           toggleRecording(this);
-      },
+      }
     },
   };
 </script>

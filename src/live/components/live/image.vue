@@ -94,6 +94,7 @@
   .is-pc
     .show-image
       .img-box
+        overflow-y: auto;
         img
           width: auto;
           min-width: 300px;
