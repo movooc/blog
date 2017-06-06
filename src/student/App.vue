@@ -24,6 +24,20 @@ export default {
     VFooter
   },
   created() {
+    // 请求配置接口
+    if(wx){
+      this.$store.dispatch('fetchWXConfig', {url:encodeURIComponent(window.location.href)}).then((result)=>{
+        // 微信操作
+        wx.config({
+          debug: false,
+          appId: result.appId,
+          timestamp: result.timestamp,
+          nonceStr: result.nonceStr,
+          signature: result.signature,
+          jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+        });
+      });
+    }
     // 获取用户信息
     this.$store.dispatch('fetchUserInfo').then((data) => {
       console.log('success');
