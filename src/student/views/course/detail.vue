@@ -17,8 +17,6 @@
   import { mapGetters } from 'vuex';
   import vButton from '@student/views/course/button.vue';
 
-  var shareLink = (process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'/?#'):'/student.html/?#');
-
   export default{
     name: 'detail',
     components: {
@@ -76,68 +74,44 @@
         document.body.appendChild(iframe);
       },
       wxConfig(data) {
-        //
-        let params = this.$route.query;
-        shareLink = `${shareLink}${this.$route.path}`;
-        //params.origin = `share`;
-        //
-        let count = 0;
-        for(let p in params){
-          if(count){
-            shareLink = `${shareLink}&${p}=${params[p]}`;
-          }else{
-            shareLink = `${shareLink}?${p}=${params[p]}`;
-          }
-          count++;
-        }
         // 请求配置接口
-        this.$store.dispatch('fetchWXConfig', {url:encodeURIComponent(shareLink)}).then((result)=>{
-          // 微信操作
-          try{
-            wx.config({
-              debug: false,
-              appId: result.appId,
-              timestamp: result.timestamp,
-              nonceStr: result.nonceStr,
-              signature: result.signature,
-              jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+        // 微信操作
+        try{
+          wx.ready(() => {
+            // 微信发送给朋友
+            wx.onMenuShareAppMessage({
+              title: data.title, // 分享标题
+              desc: data.brief, // 分享描述
+              link: `${window.location.href}&origin=share`, // 分享链接
+              imgUrl: 'https://assets.sandbox.yike.fm/static/student/_static/student/img/logo.png', // 分享图标
+              type: '', // 分享类型,music、video或link，不填默认为link
+              dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+              success: () => {
+                // 用户确认分享后执行的回调函数
+                console.log('success');
+              },
+              cancel: () => {
+                // 用户取消分享后执行的回调函数
+                console.log('cancel');
+              }
             });
-            wx.ready(() => {
-              // 微信发送给朋友
-              wx.onMenuShareAppMessage({
-                title: data.title, // 分享标题
-                desc: data.brief, // 分享描述
-                link: shareLink, // 分享链接
-                imgUrl: 'https://assets.sandbox.yike.fm/static/student/_static/student/img/logo.png', // 分享图标
-                type: '', // 分享类型,music、video或link，不填默认为link
-                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-                success: () => {
-                  // 用户确认分享后执行的回调函数
-                  console.log('success');
-                },
-                cancel: () => {
-                  // 用户取消分享后执行的回调函数
-                  console.log('cancel');
-                }
-              });
-              // 分享到朋友圈
-              wx.onMenuShareTimeline({
-                title: data.title, // 分享标题
-                link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                imgUrl: 'https://assets.sandbox.yike.fm/static/student/_static/student/img/center.png', // 分享图标
-                success: () => {
-                  // 用户确认分享后执行的回调函数
-                  console.log('success');
-                },
-                cancel: () => {
-                  // 用户取消分享后执行的回调函数
-                  console.log('cancel');
-                }
-              });
+            // 分享到朋友圈
+            wx.onMenuShareTimeline({
+              title: data.title, // 分享标题
+              link: `${window.location.href}&origin=share`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              imgUrl: 'https://assets.sandbox.yike.fm/static/student/_static/student/img/center.png', // 分享图标
+              success: () => {
+                // 用户确认分享后执行的回调函数
+                console.log('success');
+              },
+              cancel: () => {
+                // 用户取消分享后执行的回调函数
+                console.log('cancel');
+              }
+            });
 
-            });
-          }catch(e){};
-        });
+          });
+        }catch(e){};
       }
     },
   }

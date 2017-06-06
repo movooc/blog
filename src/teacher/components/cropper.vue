@@ -535,7 +535,7 @@
       left: 0;
       bottom: 0;
       right: 0;
-      z-index:6;
+      z-index:5;
       opacity: 0;
 
       input{

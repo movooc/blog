@@ -2,7 +2,12 @@
   <!-- live start -->
   <!--<div class="live-page" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">-->
   <div class="live-page">
-    <div class="live-sms-header" v-if="isPC">授课区<i class="iconfont icon-over" @click="showHandle(true)" v-if="isOwner && lessonInfo.step != 'finish'"></i></div>
+    <div class="live-sms-header" v-if="isPC">授课区
+      <span class="end" @click="showHandle(true)" v-if="isOwner && lessonInfo.step != 'finish'">
+        <i class="iconfont icon-over"></i>
+        结束授课
+      </span>
+    </div>
     <div class="live-sms-left" v-if="isPC"></div>
     <!--<div class="live-sms-right" v-if="isPC"></div>-->
     <!-- player -->
