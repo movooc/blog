@@ -1,64 +1,54 @@
 <template>
   <div class="l-chatbox owner">
     <div class="box" v-if="lessonInfo.step!='finish'">
-      <span class="box-more">
-        <button @click="showModule">
-          <span class="iconfont icon-list"></span>
-        </button>
+      <span class="box-more" @click="showImage">
+        <span class="iconfont icon-picture"></span>
+      </span>
+      <span class="box-more recorder" v-if="isPC">
+        <v-recorder class="reorder"></v-recorder>
       </span>
       <div class="box-msg">
         <textarea v-model="msgVal" placeholder="请输入文字或粘贴图片..." @blur="v_blur" @paste="v_paste"></textarea>
         <v-recorder class="reorder" v-if="!isPC"></v-recorder>
       </div>
       <button class="box-send" @click="sendMsg">发送</button>
-      <v-recorder class="reorder" v-if="isPC"></v-recorder>
       <div class="more-choice" v-if="moduleShow">
-        <!--<a class="close" href="javascript:;" @click="moduleShow = !moduleShow">&times</a>-->
         <button @click="showImage">上传图片</button>
         <button @click="showFile">上传文件</button>
       </div>
     </div>
     <!-- 遮罩层 -->
     <div class="modal-dialog" v-if="imgShow">
-      <div class="modal-header">发送图片</div>
+      <!--<div class="modal-header">发送图片</div>-->
       <div class="modal-body">
         <div class="modal-img">
-          <span>选择</span>
-          <input id="upd_pic" type="file" @change="imgOnChange" />
-          <p>
-            <span>预览:</span>
-            <a :href="imgInfo.src" target="_blank"><img v-if="imgInfo.show" v-bind:src="imgInfo.src" style="width:30%" /></a>
+          <p class="modal-preview">
+            <i class="iconfont icon-icons01" v-if="!imgInfo.src"></i>
+            <a class="preview" href="javascript:;"><img v-if="imgInfo.show" v-bind:src="imgInfo.src" /></a>
+            <input id="upd_pic" type="file" @change="imgOnChange" />
           </p>
-          <p>
-            <span>发送进度:</span>
-            <span class="progress">
-              <em v-bind:style="widthStyle"></em>
-            </span>
-          </p>
-          <button class="upload" @click="startUploadImg" v-if="!startSend">开始发送</button>
-          <button class="upload" @click="cancleUploadImg" v-if="!startSend">取消发送</button>
+          <button class="upload" @click="startUploadImg" v-if="!startSend">发送图片</button>
+          <button class="cancle" @click="cancleUploadImg" v-if="!startSend">&#88;</button>
           <button class="upload" v-if="startSend">正在发送...</button>
+          <span class="progress">
+            <em v-bind:style="widthStyle"></em>
+          </span>
         </div>
       </div>
     </div>
     <!-- 截图遮罩层 -->
     <div class="modal-dialog" v-if="pasteInfo.show">
-      <div class="modal-header">截图的图片</div>
       <div class="modal-body">
         <div class="modal-img">
-          <p>
-            <span>预览:</span>
-            <a :href="pasteInfo.src" target="_blank"><img v-bind:src="pasteInfo.src" style="width:30%" /></a>
+          <p class="modal-preview">
+            <a class="preview" :href="pasteInfo.src" target="_blank"><img v-bind:src="pasteInfo.src" /></a>
           </p>
-          <p>
-            <span>发送进度:</span>
-            <span class="progress">
-              <em v-bind:style="widthStyle"></em>
-            </span>
-          </p>
-          <button class="upload" @click="startUploadPaste" v-if="!startSend">开始发送</button>
-          <button class="upload" @click="canclePasteImg" v-if="!startSend">取消发送</button>
+          <button class="upload" @click="startUploadPaste" v-if="!startSend">发送图片</button>
+          <button class="cancle" @click="canclePasteImg" v-if="!startSend">&#88;</button>
           <button class="upload" v-if="startSend">正在发送...</button>
+          <span class="progress">
+            <em v-bind:style="widthStyle"></em>
+          </span>
         </div>
       </div>
     </div>
