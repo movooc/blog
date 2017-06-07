@@ -8,13 +8,15 @@
       <li class="head">
         <span>开课时间</span>
         <span>标题</span>
+        <span>收益</span>
         <span>状态</span>
         <span class="handle">操作</span>
       </li>
       <li v-for="list in lists">
-        <span>{{list.tms_update}}</span>
+        <span>{{list.plan.dtm_start}}</span>
         <a href="javascript:;" v-if="list.step != 'submit'" @click="enterLesson(list.sn)">{{list.title}}</a>
         <span v-if="list.step == 'submit'">{{list.title}}</span>
+        <span class="price">&#65509;{{list.revenue}}</span>
         <span>
           <span v-if="list.step == 'submit'">审核中</span>
           <span v-if="list.step == 'denied'">审核不通过</span>
@@ -98,6 +100,9 @@
       }
       &:nth-child(2n+3) {
         background: #F7F7F7;
+      }
+      .price {
+        color: #fb617f;
       }
       >*{
         display: -webkit-box;

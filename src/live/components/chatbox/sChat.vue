@@ -14,7 +14,7 @@
       <button class="box-send" @click="sendMsg" v-if="commentShow">发送</button>
       <div class="more-choice" v-if="moduleShow">
         <button @click="backHome">回到首页</button>
-        <button @click="showEva" v-if="!isEvaluate">评价</button>
+        <button @click="showEva" v-if="!isEvaluate && !lessonInfo.rated">评价</button>
         <button @click="showRefund" v-if="lessonInfo.price">申请退款</button>
       </div>
     </div>
