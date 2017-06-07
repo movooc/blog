@@ -1,7 +1,6 @@
 <template>
   <div class="l-recorder" v-if="!isSending">
     <span class="iconfont icon-mic" @click="toggleRecorder" :class="{'active':active}"></span>
-    <audio id="save"></audio>
   </div>
 </template>
 
@@ -17,7 +16,6 @@
     data() {
       return {
         active: false,
-
       };
     },
     computed: {

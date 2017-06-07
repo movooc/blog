@@ -31,6 +31,7 @@ const state = {
   userAvatar: null,
   playingAudio: null,
   cancleRecord: false,
+  blobRecord: null,
   liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,''):'/api'),
   studentHost:(process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'?'):'/student.html?'),
   teacherHost:(process.env.NODE_ENV=='production'?process.env.TEACHER_HOST.replace(/\/$/,''):'/teacher.html'),
@@ -48,6 +49,9 @@ const mutations = {
   },
   UPDATE_RECORDING(state, show){
     state.recording = show;
+  },
+  UPDATE_BLOB_RECORDING(state, blob){
+    state.blobRecord = blob;
   },
   UPDATE_SENDING(state, show){
     state.sending = show;

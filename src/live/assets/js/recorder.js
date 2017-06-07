@@ -31,21 +31,25 @@ function gotBuffers( buffers ) {
 function doneEncoding( blob ) {
   var url = (window.URL || window.webkitURL).createObjectURL(blob);
   var link = document.getElementById("save");
-  link.href = url;
-  link.download = "myRecording" + ((recIndex<10)?"0":"") + recIndex + ".wav" || 'output.wav';
+  link.setAttribute('src', url);
+  //link.href = url;
+  //link.download = 'myRecording' + ((recIndex<10)?'0':'') + recIndex + '.wav' || 'output.wav';
   recIndex++;
+  // 更新录音资源
+  ctx.$store.commit('UPDATE_BLOB_RECORDING', blob);
+  ctx = null;
   // 开始上传
   // 打开上传状态
-  ctx.$store.commit('UPDATE_SENDING', true);
-  ctx.$store.commit('UPDATE_SENDING_WIDTH', 0);
-  uploadSound(blob, (err, data) => {
-    ctx.$store.commit('UPDATE_SENDING', false);
-    if(err)alert(err.ErrorInfo);
-    console.log('上传成功!');
-  }, (loadedSize, totalSize) => {
-    let sendWidth = `${(loadedSize / totalSize) * 100}%`;
-    ctx.$store.commit('UPDATE_SENDING_WIDTH', sendWidth);
-  });
+  // ctx.$store.commit('UPDATE_SENDING', true);
+  // ctx.$store.commit('UPDATE_SENDING_WIDTH', 0);
+  // uploadSound(blob, (err, data) => {
+  //   ctx.$store.commit('UPDATE_SENDING', false);
+  //   if(err)alert(err.ErrorInfo);
+  //   console.log('上传成功!');
+  // }, (loadedSize, totalSize) => {
+  //   let sendWidth = `${(loadedSize / totalSize) * 100}%`;
+  //   ctx.$store.commit('UPDATE_SENDING_WIDTH', sendWidth);
+  // });
 }
 
 function gotStream(stream) {
@@ -78,6 +82,9 @@ function inspectRecording(self) {
     self.active = false;
     self.$store.commit('UPDATE_RECORDING', false);
     self.$store.commit('UPDATE_CANCLE_RECORD', false);
+    // 更新录音资源
+    self.$store.commit('UPDATE_BLOB_RECORDING', null);
+    self = null;
     starting = false;
     return audioRecorder.stop();
   }
@@ -86,7 +93,6 @@ function inspectRecording(self) {
   if(diff >= 3){
     // stop recording
     self.active = false;
-    self.$store.commit('UPDATE_RECORDING', false);
     starting = false;
     audioRecorder.stop();
     return audioRecorder.getBuffers( gotBuffers );
@@ -99,17 +105,19 @@ function inspectRecording(self) {
 
 export const toggleRecording = function( self ) {
   //
-  ctx = self;
+  if(!ctx)ctx = self;
   //
-  if (self.active) {
+  if (ctx.active) {
     // stop recording
-    self.active = false;
-    self.$store.commit('UPDATE_RECORDING', false);
+    ctx.active = false;
     audioRecorder.stop();
     // 结束监测
     starting = false;
     // 录制时间是否过短
     if(new Date().getTime() - startTimer < 1000){
+      // 清空
+      ctx.$store.commit('UPDATE_RECORDING', false);
+      ctx = null;
       alert('录制时间过短!');
     }else{
       audioRecorder.getBuffers( gotBuffers );
@@ -119,13 +127,13 @@ export const toggleRecording = function( self ) {
     if (!audioRecorder)
       return;
     startTimer = new Date().getTime();
-    self.active = true;
-    self.$store.commit('UPDATE_RECORDING', true);
+    ctx.active = true;
+    ctx.$store.commit('UPDATE_RECORDING', true);
     audioRecorder.clear();
     audioRecorder.record();
     // 开始监测
     starting = true;
-    inspectRecording(self);
+    inspectRecording(ctx);
   }
 };
 

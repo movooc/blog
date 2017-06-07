@@ -70,8 +70,8 @@
         </div>
       </div>
     </div>
-    <recording :show="isRecording"></recording>
-    <sending :show="isSending" :width="width"></sending>
+    <recording v-if="isRecording"></recording>
+    <!--<sending :show="isSending" :width="width"></sending>-->
   </div>
 </template>
 
@@ -81,7 +81,7 @@
   import { checkPic, checkFile, checkPastePic } from '@lib/js/mUtils';
   import vRecorder from '@live/components/recorder/index.vue';
   import Recording from '@live/components/loading/recording.vue';
-  import Sending from '@live/components/loading/sending.vue';
+  //import Sending from '@live/components/loading/sending.vue';
 
   export default
   {
@@ -89,7 +89,7 @@
     components: {
       vRecorder,
       Recording,
-      Sending
+      //Sending
     },
     data() {
       return {
@@ -121,7 +121,7 @@
       ...mapState({
         lessonInfo: 'lessonInfo',
         isRecording: 'recording',
-        isSending: 'sending',
+        //isSending: 'sending',
         width: 'sendWidth'
       })
     },
