@@ -19,7 +19,6 @@
     </div>
     <!-- 遮罩层 -->
     <div class="modal-dialog" v-if="imgShow">
-      <!--<div class="modal-header">发送图片</div>-->
       <div class="modal-body">
         <div class="modal-img">
           <p class="modal-preview">
@@ -225,6 +224,11 @@
       startUploadImg() {
         var uploadFiles = document.getElementById('upd_pic');
         var file = uploadFiles.files[0];
+
+        //先检查图片类型和大小
+        if (!file) {
+          return alert('请先上传图片!');
+        }
         // 开始上传
         this.startSend = true;
         //上传图片

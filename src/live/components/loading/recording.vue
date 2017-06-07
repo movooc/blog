@@ -2,8 +2,7 @@
   <div class="loading">
     <div class="loading-dialog">
       <div class="loading-audio">
-        <!--<img src="https://assets.sandbox.yike.fm/static/live/_static/live/img/qrcode.png" />-->
-        <img src="/static/_static/live/img/recorder.gif" v-show="!blobRecord" />
+        <img src="https://assets.sandbox.yike.fm/static/live/_static/live/img/recorder.gif" v-show="!blobRecord" />
         <span v-show="blobRecord" class="audition">试听</span>
         <audio id="save" controls v-show="blobRecord"></audio>
       </div>
