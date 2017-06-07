@@ -1,8 +1,10 @@
 <template>
   <div class="l-chatbox owner">
     <div class="box" v-if="lessonInfo.step!='finish'">
-      <span class="box-more" @click="showImage">
-        <span class="iconfont icon-picture"></span>
+      <span class="box-more">
+        <span class="iconfont icon-picture">
+          <input type="file" @change="selectImage" />
+        </span>
       </span>
       <span class="box-more recorder" v-if="isPC">
         <v-recorder class="reorder"></v-recorder>
@@ -97,8 +99,10 @@
         fileShow: false,
         moduleShow: false,
         startSend: false,
+        picture: null,
         isPC: isPC,
         imgInfo: {
+          file: null,
           src: '',
           show: false,
         },
@@ -193,22 +197,34 @@
       showModule() {
         this.moduleShow = !this.moduleShow;
       },
+      selectImage(event) {
+        // 开始预览
+        this.imgOnChange(event);
+      },
       imgOnChange(event) {
         if (!window.File || !window.FileList || !window.FileReader) {
           alert("您的浏览器不支持File Api");
           return;
         }
-
+        //
         var uploadFiles = event.target;
         var file = uploadFiles.files[0];
-        var fileSize = file.size;
         var el = this;
-
-        //先检查图片类型和大小
-        if (!checkPic(uploadFiles, fileSize)) {
+        // 是否有选择文件
+        if(!file){
           return;
         }
-
+        //先检查图片类型和大小
+        if (!checkPic(uploadFiles, file.size)) {
+          return;
+        }
+        // 显示
+        this.showImage();
+        // 开始预览
+        this.previewImg(el, file);
+        uploadFiles.value = '';
+      },
+      previewImg(el, file) {
         //预览图片
         var reader = new FileReader();
         reader.onload = (function (file) {
@@ -216,14 +232,14 @@
             el.imgInfo.show = true;
             el.imgInfo.src = this.result;
             el.imgInfo.filename = file.name;
+            el.imgInfo.file = file;
           };
         })(file);
         //预览图片
         reader.readAsDataURL(file);
       },
       startUploadImg() {
-        var uploadFiles = document.getElementById('upd_pic');
-        var file = uploadFiles.files[0];
+        var file = this.imgInfo.file;
 
         //先检查图片类型和大小
         if (!file) {

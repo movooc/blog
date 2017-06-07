@@ -48,7 +48,7 @@
             </div>
           </div>
           <div class="live-system" v-if="msg.isSystem && !isOwner">
-            <p>---{{msg.message}}---</p>
+            <p>{{msg.message}}</p>
           </div>
         </li>
       </ul>
@@ -61,6 +61,8 @@
     <!-- handle -->
     <v-handle :callBack="showHandle" :show="handleShow"></v-handle>
     <show-image v-show="showImg" :img="liveImg"></show-image>
+    <!-- evaluate -->
+    <v-evaluate v-if="!isOwner && evaluateShow"></v-evaluate>
   </div>
 </template>
 
@@ -75,6 +77,7 @@
   import vChatbox from '@live/components/chatbox/index.vue';
   import sChatbox from '@live/components/chatbox/sChat.vue';
   import vAudio from '@live/components/audio/index.vue';
+  import vEvaluate from '@live/components/live/evaluate.vue';
 
   export default
   {
@@ -92,6 +95,7 @@
       vAudio,
       vPlayer,
       vHandle,
+      vEvaluate,
       showImage,
     },
     data() {
@@ -116,6 +120,7 @@
         'loadingImg',
         'playingAudio',
         'commentShow',
+        'evaluateShow'
       ])
     },
     mounted(){

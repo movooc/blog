@@ -111,3 +111,23 @@ export const fetchEndLesson = ({commit}, body) => {
       return Promise.reject(error)
     })
 };
+
+/*开始评价*/
+export const fetchEvaluate = ({commit}, body) => {
+  const url = `${_prefix}/lesson-rating.api`;
+  // 开始请求
+  commit('UPDATE_LOADING', true);
+  return _post({ url, body }, commit)
+    .then((json) => {
+      commit('UPDATE_LOADING', false);
+      if (json.error == 0) {
+        commit('UPDATE_EVALUATE_SHOW', false);
+        commit('UPDATE_IS_EVALUATE', true);
+        return Promise.resolve();
+      }
+      return Promise.reject(json.error);
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};

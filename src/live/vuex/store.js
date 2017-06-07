@@ -17,6 +17,7 @@ const state = {
   isOwner : false,
   commentShow: false,
   refundShow: false,
+  evaluateShow: false,
   isHeader: true,
   userInfo: null,
   lessonInfo: null,
@@ -32,6 +33,7 @@ const state = {
   playingAudio: null,
   cancleRecord: false,
   blobRecord: null,
+  isEvaluate: false,
   liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,''):'/api'),
   studentHost:(process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'?'):'/student.html?'),
   teacherHost:(process.env.NODE_ENV=='production'?process.env.TEACHER_HOST.replace(/\/$/,''):'/teacher.html'),
@@ -128,6 +130,12 @@ const mutations = {
   // 正在播放的audio
   UPDATE_CANCLE_RECORD(state, record){
     state.cancleRecord = record;
+  },
+  UPDATE_EVALUATE_SHOW(state, show){
+    state.evaluateShow = show;
+  },
+  UPDATE_IS_EVALUATE(state, eva){
+    state.isEvaluate = eva;
   },
 };
 

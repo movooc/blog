@@ -12,8 +12,9 @@
       </div>
       <v-refund></v-refund>
       <button class="box-send" @click="sendMsg" v-if="commentShow">发送</button>
-      <div class="more-choice" v-if="moduleShow" :class="{'is-free':!lessonInfo.price}">
+      <div class="more-choice" v-if="moduleShow">
         <button @click="backHome">回到首页</button>
+        <button @click="showEva" v-if="!isEvaluate">评价</button>
         <button @click="showRefund" v-if="lessonInfo.price">申请退款</button>
       </div>
     </div>
@@ -43,7 +44,8 @@
       ...mapState([
         'commentShow',
         'lessonInfo',
-        'studentHost'
+        'studentHost',
+        'isEvaluate'
       ])
     },
     methods: {
@@ -74,6 +76,10 @@
       },
       showRefund() {
         this.$store.commit('UPDATE_REFUND_SHOW', true);
+      },
+      showEva() {
+        this.$store.commit('UPDATE_EVALUATE_SHOW', true);
+        this.moduleShow = false;
       },
       backHome() {
         window.location.href = this.studentHost;

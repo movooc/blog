@@ -7,12 +7,12 @@
         <audio id="save" controls v-show="blobRecord"></audio>
       </div>
       <div class="is-recording">
-        <button @click="stopRecording" v-if="!stop">停止录音</button>
-        <button v-if="stop && !blobRecord">录音中...</button>
-        <button @click="startUpload" v-if="blobRecord">发送</button>
-
         <button @click="cancleRecording" v-if="!blobRecord">取消</button>
         <button @click="cancleBlobRecording" v-if="blobRecord">取消</button>
+        <!--开始-->
+        <button @click="stopRecording" v-if="!stop">停止</button>
+        <button v-if="stop && !blobRecord">录音中...</button>
+        <button @click="startUpload" v-if="blobRecord">发送</button>
       </div>
       <button class="cancle" @click="cancleRecording" v-if="!blobRecord">&#88;</button>
       <button class="cancle" @click="cancleBlobRecording" v-if="blobRecord && !uploading">&#88;</button>
