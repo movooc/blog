@@ -795,8 +795,8 @@ function convertHistoryTextMsg(content) {
 function convertImageMsg(content) {
   var bigImage, oriImage;
   var smallImage = content.getImage(webim.IMAGE_TYPE.SMALL);//小图
-  // bigImage = content.getImage(webim.IMAGE_TYPE.LARGE);//大图
-  // oriImage = content.getImage(webim.IMAGE_TYPE.ORIGIN);//原图
+  bigImage = content.getImage(webim.IMAGE_TYPE.LARGE);//大图
+  oriImage = content.getImage(webim.IMAGE_TYPE.ORIGIN);//原图
   if (!bigImage) {
     bigImage = smallImage;
   }
@@ -810,8 +810,8 @@ function convertImageMsg(content) {
 function convertHistoryImageMsg(content) {
   var bigImage, oriImage;
   var smallImage = content.ImageInfoArray[2];//小图
-  // bigImage = content.getImage(webim.IMAGE_TYPE.LARGE);//大图
-  // oriImage = content.getImage(webim.IMAGE_TYPE.ORIGIN);//原图
+  bigImage = content.ImageInfoArray[1];//大图
+  oriImage = content.ImageInfoArray[0];//原图
   if (!bigImage) {
     bigImage = smallImage;
   }

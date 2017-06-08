@@ -132,7 +132,7 @@
       },
       showLiveImage(img){
         this.showImg = true;
-        this.liveImg = img;
+        this.liveImg = img.split('#')[2];
       },
       pullMsgs() {
         if(this.lesson){
