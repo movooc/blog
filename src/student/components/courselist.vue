@@ -106,6 +106,7 @@
         .list-img{
           position: relative;
           width: 100%;
+          height: 300px;
           border-radius: 15px;
           -webkit-border-radius: 15px;
           text-align: center;

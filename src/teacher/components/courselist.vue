@@ -20,7 +20,7 @@
         <span>
           <span v-if="list.step == 'submit'">审核中</span>
           <span v-if="list.step == 'denied'">审核不通过</span>
-          <span v-if="list.step == 'closed'">上架</span>
+          <span v-if="list.step == 'closed'">已下架</span>
           <span v-if="list.step == 'opened'">开放中</span>
           <span v-if="list.step == 'onlive'">授课中</span>
           <span v-if="list.step == 'repose'">交流中</span>
