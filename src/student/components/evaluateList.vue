@@ -3,7 +3,6 @@
     <li v-for="list in lists">
       <div class="e-textures clearfix">
         <div class="e-img pull-left">
-          <!--<img src="/static/_static/student/img/loading.gif" />-->
           <img :src="list.user.avatar" />
         </div>
         <div class="e-text pull-left">
