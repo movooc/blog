@@ -33,8 +33,7 @@ VueFilterMoment();
 /* lazy load */
 Vue.use(VueLazyload, {
   //error: 'dist/error.png',
-  //loading: 'https://assets.sandbox.yike.fm/static/student/_static/student/img/loading.gif',
-  loading: '/static/_static/student/img/loading.gif',
+  loading: 'https://assets.sandbox.yike.fm/static/student/_static/student/img/loading.gif',
   try: 3 // default 1
 });
 
