@@ -7,7 +7,6 @@ import FastClick from 'fastclick';
 import App from './App';
 import store from './vuex/store';
 import routes from './router';
-// import infiniteScroll from 'vue-infinite-scroll';  // 引入滑动模块
 // import { Vueinterceptors } from '@live/assets/js/middleware';
 import '@lib/js/rem';
 import '@lib/css/font.styl';

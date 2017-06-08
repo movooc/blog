@@ -40,8 +40,6 @@
         this.score = data.avg_score || 0;
         this.rated = data.rated_count || 0;
         this.isShow = true;
-        console.log(data);
-        console.log(this.score);
       }, (error) => {
         alert(error);
         console.log('fail');
