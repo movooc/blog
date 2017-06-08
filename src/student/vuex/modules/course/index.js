@@ -4,6 +4,7 @@ import mutations from './mutations'
 
 const state = {
   courseList: [],
+  evaluateList: [],
   enroll: {},
   order: null,
   openInfo: null,

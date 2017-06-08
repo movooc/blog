@@ -15,6 +15,7 @@ if(process.env.NODE_ENV == 'production'){
   var detail = r => require.ensure([], () => r(require('../views/course/detail')), 'student/student-courseDetail');
   var brief = r => require.ensure([], () => r(require('../views/course/brief')), 'student/student-courseBrief');
   var notice = r => require.ensure([], () => r(require('../views/course/notice')), 'student/student-courseNotice');
+  var evaluate = r => require.ensure([], () => r(require('../views/course/evaluate')), 'student/student-courseEvaluate');
   /*user*/
   var user = r => require.ensure([], () => r(require('../views/user/index')), 'student/student-user');
   var userCenter = r => require.ensure([], () => r(require('../views/user/center')), 'student/student-userCenter');
@@ -31,6 +32,7 @@ if(process.env.NODE_ENV == 'production'){
   var detail = require('../views/course/detail');
   var brief = require('../views/course/brief');
   var notice = require('../views/course/notice');
+  var evaluate = require('../views/course/evaluate');
   /*user*/
   var user = require('../views/user/index');
   var userCenter = require('../views/user/center');
@@ -99,6 +101,14 @@ export default [
             component: notice,
             meta: {
               pageTitle: '易课-课程须知'
+            }
+          },
+          {
+            path: '/course/detail/evaluate',
+            name: 'evaluate',
+            component: evaluate,
+            meta: {
+              pageTitle: '易课-课程评价'
             }
           }
         ]

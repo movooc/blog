@@ -6,7 +6,7 @@
     <div class="tab" v-if="courseDetail">
       <router-link :to="{name:'brief',query:{lesson_sn:courseDetail.sn}}" replace>介绍</router-link>
       <router-link :to="{name:'notice',query:{lesson_sn:courseDetail.sn}}" replace>须知</router-link>
-      <!--<router-link to="/course/L5900888378d29/comment" replace>评价</router-link>-->
+      <router-link :to="{name:'evaluate',query:{lesson_sn:courseDetail.sn}}" replace>评价</router-link>
     </div>
     <router-view v-if="courseDetail"></router-view>
     <v-button :isEnroll="isEnroll" :courseDetail="courseDetail" :liveHost="liveHost"></v-button>

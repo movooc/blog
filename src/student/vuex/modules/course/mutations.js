@@ -5,6 +5,7 @@ import {
   FETCH_LESSON_ENROLL,
   FETCH_ORDER_CONFIRM,
   UPDATE_COURSE_SCROLL,
+  FETCH_EVALUATE_LIST,
 } from './mutation-type'
 
 import { convertToArray } from '@lib/js/mUtils';
@@ -33,6 +34,11 @@ const mutations = {
   // 改变滚度条位置
   [UPDATE_COURSE_SCROLL](state, top) {
     state.courseScrollTop = top;
+  },
+  // 获得评价列表信息
+  [FETCH_EVALUATE_LIST](state, data) {
+    // state.evaluateList = convertToArray(state.evaluateList, data);
+    state.evaluateList = [ ...data ]
   },
 };
 export default mutations;

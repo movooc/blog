@@ -8,6 +8,7 @@ import App from './App';
 import store from './vuex/store';
 import routes from './router';
 import { Vueinterceptors, VueFilterMoment } from '@student/assets/js/middleware';
+import VueLazyload from 'vue-lazyload';
 import SetWechatTitle from '@lib/js/setWechatTitle';
 import '@lib/js/rem';
 import '@lib/css/font.styl';
@@ -29,6 +30,13 @@ Vue.use(vueResource);
 Vueinterceptors();
 /* set vue moment */
 VueFilterMoment();
+/* lazy load */
+Vue.use(VueLazyload, {
+  //error: 'dist/error.png',
+  //loading: 'https://assets.sandbox.yike.fm/static/student/_static/student/img/loading.gif',
+  loading: '/static/_static/student/img/loading.gif',
+  try: 3 // default 1
+});
 
 /* bind router */
 const router = new VueRouter({

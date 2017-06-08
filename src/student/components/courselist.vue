@@ -5,7 +5,7 @@
         <a href="javascript:;" @click="enterLesson(list.sn)">
           <div class="list-title" v-text="list.title"></div>
           <div class="list-img">
-            <img :src="list.cover" alt="">
+            <img v-lazy="list.cover" />
             <span class="list-status" v-if="list.step == 'opened'">
               {{`${list.plan.dtm_now}#${list.plan.dtm_start}` | moment}}
             </span>
@@ -108,11 +108,18 @@
           width: 100%;
           border-radius: 15px;
           -webkit-border-radius: 15px;
+          text-align: center;
           overflow: hidden;
 
           img{
             width: 100%;
             max-height: 300px;
+          }
+          img[lazy=loading] {
+            width: 100px;
+          }
+          img[lazy=loaded] {
+            width: 100%;
           }
         }
         .list-content{
