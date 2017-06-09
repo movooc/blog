@@ -1,7 +1,5 @@
 <template>
   <div class="app">
-    <!--<v-header></v-header>-->
-    <!--<nav-bar></nav-bar>-->
     <div class="loading" v-show="loading"></div>
     <div>
       <router-view></router-view>
