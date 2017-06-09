@@ -60,11 +60,11 @@
       };
     },
     updated(){
-      let vComment = document.getElementById('comment-body');
-      if(!vComment)return;
-      setTimeout(()=>{
-        vComment.scrollTop = vComment.scrollHeight;
-      },100);
+//      let vComment = document.getElementById('comment-body');
+//      if(!vComment)return;
+//      setTimeout(()=>{
+//        vComment.scrollTop = vComment.scrollHeight;
+//      },100);
     },
     computed: {
       ...mapState([
