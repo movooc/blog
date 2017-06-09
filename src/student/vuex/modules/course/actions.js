@@ -135,7 +135,7 @@ export const fetchOrderConfirm = ({commit}, body) => {
 };
 
 export const fetchWXConfig = ({commit}, query) => {
-  const url = `${_prefix}/lesson-shareConfig`;
+  const url = `${_prefix}/weixin-jsConfig.api`;
 
   return _get({ url, query }, commit)
     .then((json) => {
