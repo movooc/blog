@@ -176,7 +176,8 @@
             //
             self.firstLoad = false;
             // 记住正在播放的audio
-            self.$store.commit('UPDATE_PLAYER', self.mu.$Audio);
+            //self.$store.commit('UPDATE_PLAYER', self.mu.$Audio);
+            self.$store.commit('UPDATE_PLAYER', self);
             return self.mu.play();
           }
           self.buffering = true;
@@ -190,8 +191,17 @@
             let time = new Date().getTime();
             // 是否已经加载好
             if(self.mu.$Audio.readyState < 2){
-              if((time-timeStart) > 2000 && count<1){
-                if(isWeiXin){
+              if(isWeiXin && count<1){
+                timeStart = new Date().getTime();
+                WeixinJSBridge.invoke('getNetworkType', {}, (e) => {
+                  self.mu.$Audio.play();
+                  count++;
+                });
+              }else if((time-timeStart) > 4000){
+                self.buffering = false;
+                self.pause();
+                return;
+                /*if(isWeiXin){
                   timeStart = new Date().getTime();
                   WeixinJSBridge.invoke('getNetworkType', {}, (e) => {
                     self.mu.$Audio.play();
@@ -201,7 +211,7 @@
                   self.buffering = false;
                   self.pause();
                   return;
-                }
+                }*/
               }
               setTimeout(function(){observerAudio();}, 1000);
             }else{
@@ -214,7 +224,7 @@
                 self.played = true;
               }
               // 记住正在播放的audio
-              self.$store.commit('UPDATE_PLAYER', self.mu.$Audio);
+              self.$store.commit('UPDATE_PLAYER', self);
               // 开始播放
               self.mu.play();
               self.firstLoad = false;
@@ -222,7 +232,7 @@
           })();
         }else{
           // 记住正在播放的audio
-          self.$store.commit('UPDATE_PLAYER', self.mu.$Audio);
+          self.$store.commit('UPDATE_PLAYER', self);
           self.mu.play();
         }
       },
