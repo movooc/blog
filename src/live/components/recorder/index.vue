@@ -21,7 +21,8 @@
     computed: {
       ...mapState({
         isSending: 'sending',
-        cancleRecord: 'cancleRecord'
+        cancleRecord: 'cancleRecord',
+        playingAudio: 'playingAudio'
       })
     },
     created() {
@@ -29,7 +30,12 @@
     },
     methods: {
       toggleRecorder(){
-          toggleRecording(this);
+        // 关闭正在播放的语音
+        if(this.playingAudio && this.playingAudio.state.playing){
+          this.playingAudio.pause();
+        }
+        // 开始录音
+        toggleRecording(this);
       }
     },
   };

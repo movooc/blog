@@ -131,8 +131,12 @@
         //this.$store.commit('UPDATE_MENUSHOW');
       },
       showLiveImage(img){
-        this.showImg = true;
-        this.liveImg = img.split('#')[2];
+        if(isPC){
+          window.open(img.split('#')[2]);
+        }else{
+          this.showImg = true;
+          this.liveImg = img.split('#')[2];
+        }
       },
       pullMsgs() {
         if(this.lesson){

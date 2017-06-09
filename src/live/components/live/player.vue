@@ -31,7 +31,8 @@
           vScroll = document.getElementById('live-body');
           vSms = document.getElementById('live_sms_list');
         };
-        let index = this.playingAudio.dataset.index;
+        let player = this.playingAudio.mu.$Audio;
+        let index = player.dataset.index;
         let liHeight = vSms.children[index].offsetTop;
         if(!isPC){
           liHeight -= 100;
