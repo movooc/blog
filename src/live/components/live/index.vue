@@ -133,6 +133,11 @@
       showLiveImage(img){
         if(isPC){
           window.open(img.split('#')[2]);
+        }else if(isWeiXin){
+          wx.previewImage({
+            current: img,
+            urls: [this.liveImg = img.split('#')[2]]
+          });
         }else{
           this.showImg = true;
           this.liveImg = img.split('#')[2];
