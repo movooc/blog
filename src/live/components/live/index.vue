@@ -1,6 +1,5 @@
 <template>
   <!-- live start -->
-  <!--<div class="live-page" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">-->
   <div class="live-page">
     <div class="live-sms-header" v-if="isPC">授课区
       <span class="end" @click="showHandle(true)" v-if="isOwner && lessonInfo.step != 'finish'">
