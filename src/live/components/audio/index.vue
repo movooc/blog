@@ -186,6 +186,7 @@
           // 计时开始
           let timeStart = new Date().getTime();
           let count = 0;
+          let reCount = 0;
           // observer 是否可以播放
           (function observerAudio() {
             let time = new Date().getTime();
@@ -193,14 +194,21 @@
             if(self.mu.$Audio.readyState < 2){
               if(isWeiXin && count<1){
                 timeStart = new Date().getTime();
+                // ios开始加载
+                //self.mu.$Audio.load();
                 WeixinJSBridge.invoke('getNetworkType', {}, (e) => {
                   self.mu.$Audio.play();
                   count++;
                 });
-              }else if((time-timeStart) > 4000){
-                self.buffering = false;
-                self.pause();
-                return;
+              }else if((time-timeStart) > 2000){
+                if(reCount<1){
+                  self.mu.$Audio.load();
+                }else{
+                  self.buffering = false;
+                  self.pause();
+                  return;
+                }
+                reCount++;
                 /*if(isWeiXin){
                   timeStart = new Date().getTime();
                   WeixinJSBridge.invoke('getNetworkType', {}, (e) => {
