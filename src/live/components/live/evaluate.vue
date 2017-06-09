@@ -10,7 +10,7 @@
         <v-star @updateStarNum="changeStarNum"></v-star>
       </div>
       <div class="textarea">
-        <textarea v-model="data.remark" placeholder="亲，课程还不错吧？最满意的是什么地方呢？"></textarea>
+        <textarea v-model="data.remark" placeholder="亲，写下你对课程的看法吧！"></textarea>
       </div>
       <button @click="submitEva">提交</button>
       <div class="close" @click="oncolse">
@@ -58,10 +58,15 @@
         if(!this.data.score)return alert('请选择星级!');
         // 评价开始
         this.$store.dispatch('fetchEvaluate', this.data).then(() => {
+          this.$store.commit('UPDATE_EVALUATE_SHOW', false);
+          //this.$store.commit('UPDATE_IS_EVALUATE', true);
           alert('评价成功!');
         }, (error) => {
-          alert(error);
-          console.log('fail');
+          if(error == -1){
+            this.$store.commit('UPDATE_EVALUATE_SHOW', false);
+            //this.$store.commit('UPDATE_IS_EVALUATE', true);
+            alert('本课程你已经评价过！');
+          }
         });
       },
       changeStarNum(num) {

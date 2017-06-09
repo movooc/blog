@@ -121,8 +121,6 @@ export const fetchEvaluate = ({commit}, body) => {
     .then((json) => {
       commit('UPDATE_LOADING', false);
       if (json.error == 0) {
-        commit('UPDATE_EVALUATE_SHOW', false);
-        commit('UPDATE_IS_EVALUATE', true);
         return Promise.resolve();
       }
       return Promise.reject(json.error);
