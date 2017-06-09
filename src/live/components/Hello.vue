@@ -48,7 +48,13 @@
           lesson_info: JSON.parse(this.open.lesson_info),
         };
         // 添加
-        return setStore(this.open.lesson_sn, opt);
+        setStore(this.open.lesson_sn, opt);
+        // 缓存历史记录
+        try{
+          this.$store.dispatch('fetchHistory', {lesson_sn:this.open.lesson_sn}).then(()=>{});
+        }catch(e){}
+        //
+        return;
       }
 
       // 数据处理

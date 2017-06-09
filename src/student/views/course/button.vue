@@ -72,6 +72,7 @@
               this.canEnter = true;
               this.paying = false;
               alert('报名成功！');
+              window.location.reload();
             }
           }, (err) => {
             this.paying = false;
