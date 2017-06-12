@@ -226,7 +226,7 @@
         // 微信操作
         try{
           wx.ready(() => {
-            let shareLink = `${this.studentHost}#/course/detail/brief?lesson_sn=${data.sn}&origin=share&share_url=${encodeURIComponent('?#/course/detail/brief?lesson_sn='+data.sn)}`;
+            let shareLink = `${this.studentHost}origin=share&share_url=${encodeURIComponent('?#/course/detail/brief?lesson_sn='+data.sn)}#/course/detail/brief?lesson_sn=${data.sn}`;
             // 微信发送给朋友
             wx.onMenuShareAppMessage({
               title: data.title, // 分享标题

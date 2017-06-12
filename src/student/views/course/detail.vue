@@ -31,6 +31,7 @@
     data() {
       return {
         liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,'/live'):'/live.html'),
+        studentHost: (process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'?'):'/student.html?'),
         lessons: '',
         courseDetail: null,
         isEnroll: null,
@@ -78,7 +79,7 @@
         // 微信操作
         try{
           wx.ready(() => {
-            let shareLink = `${window.location.href}&origin=share&share_url=${encodeURIComponent('?#/'+window.location.href.split('#')[1])}`;
+            let shareLink = `${this.studentHost}origin=share&share_url=${encodeURIComponent('?#/course/detail/brief?lesson_sn='+data.sn)}#/course/detail/brief?lesson_sn=${data.sn}`;
             // 微信发送给朋友
             wx.onMenuShareAppMessage({
               title: data.title, // 分享标题
