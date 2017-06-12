@@ -34,6 +34,7 @@ const state = {
   cancleRecord: false,
   blobRecord: null,
   isEvaluate: false,
+  boxMoreShow: false,
   liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,''):'/api'),
   studentHost:(process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'?'):'/student.html?'),
   teacherHost:(process.env.NODE_ENV=='production'?process.env.TEACHER_HOST.replace(/\/$/,''):'/teacher.html'),
@@ -136,6 +137,9 @@ const mutations = {
   },
   UPDATE_IS_EVALUATE(state, eva){
     state.isEvaluate = eva;
+  },
+  UPDATE_BOX_MORE(state, show){
+    state.boxMoreShow = show;
   },
 };
 

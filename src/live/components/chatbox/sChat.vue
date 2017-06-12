@@ -12,7 +12,7 @@
       </div>
       <v-refund></v-refund>
       <button class="box-send" @click="sendMsg" v-if="commentShow">发送</button>
-      <div class="more-choice" v-if="moduleShow">
+      <div class="more-choice" v-if="boxMoreShow">
         <button @click="backHome">回到首页</button>
         <button @click="showEva" v-if="!isEvaluate && !lessonInfo.rated">评价课程</button>
         <button @click="showRefund" v-if="lessonInfo.price">申请退款</button>
@@ -45,7 +45,8 @@
         'commentShow',
         'lessonInfo',
         'studentHost',
-        'isEvaluate'
+        'isEvaluate',
+        'boxMoreShow',
       ])
     },
     methods: {
@@ -64,15 +65,20 @@
       },
       showComment() {
         this.$store.commit('UPDATE_COMMETN_SHOW', true);
-        if(!vScroll){
+        // 更多菜单
+        if(this.boxMoreShow){
+          this.$store.commit('UPDATE_BOX_MORE', false);
+        }
+        /*if(!vScroll){
           vScroll = document.getElementById('live-body');
-        };
+        };*/
         //setTimeout(()=>{
         //  vScroll.scrollTop = vScroll.scrollHeight;
         //}, 400);
       },
       showModule() {
-        this.moduleShow = !this.moduleShow;
+        this.$store.commit('UPDATE_BOX_MORE', !this.boxMoreShow);
+        //this.moduleShow = !this.moduleShow;
       },
       showRefund() {
         this.$store.commit('UPDATE_REFUND_SHOW', true);

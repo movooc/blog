@@ -74,6 +74,7 @@
         'commentMessageInfo',
         'userAvatar',
         'lessonInfo',
+        'boxMoreShow',
       ])
     },
     mounted () {
@@ -84,6 +85,10 @@
     methods: {
       hideComment() {
         this.$store.commit('UPDATE_COMMETN_SHOW', false);
+        // 更多菜单
+        if(this.boxMoreShow){
+          this.$store.commit('UPDATE_BOX_MORE', false);
+        }
       },
       pullHistory() {
         var opt = {

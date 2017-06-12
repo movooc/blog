@@ -12,7 +12,7 @@
     <!-- player -->
     <v-player v-if="playingAudio"></v-player>
     <!-- live entity -->
-    <div class="live-body" id="live-body" :class="{'owner':isOwner}">
+    <div class="live-body" id="live-body" :class="{'owner':isOwner}" @click="handleBody">
       <!--<p class="pullMsgs" v-if="canPullMsgs"><a href="javascript:;" @click="pullMsgs">点击拉取历史消息</a></p>-->
       <!--<p class="pullMsgs" v-if="!canPullMsgs"><span>已经无历史消息</span></p>-->
       <!-- header -->
@@ -119,7 +119,8 @@
         'loadingImg',
         'playingAudio',
         'commentShow',
-        'evaluateShow'
+        'evaluateShow',
+        'boxMoreShow',
       ])
     },
     mounted(){
@@ -189,6 +190,11 @@
       textFormat(value){
         return value.replace(/\n/g, '<br>');
       },
+      handleBody() {
+        if(this.boxMoreShow){
+          this.$store.commit('UPDATE_BOX_MORE', false);
+        }
+      }
     }
   };
 
