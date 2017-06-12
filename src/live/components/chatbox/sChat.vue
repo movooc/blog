@@ -37,7 +37,6 @@
     data() {
       return {
         msgVal: '',
-        moduleShow: false,
       };
     },
     computed: {
@@ -78,14 +77,13 @@
       },
       showModule() {
         this.$store.commit('UPDATE_BOX_MORE', !this.boxMoreShow);
-        //this.moduleShow = !this.moduleShow;
       },
       showRefund() {
         this.$store.commit('UPDATE_REFUND_SHOW', true);
       },
       showEva() {
         this.$store.commit('UPDATE_EVALUATE_SHOW', true);
-        this.moduleShow = false;
+        this.$store.commit('UPDATE_BOX_MORE', false);
       },
       backHome() {
         window.location.href = this.studentHost;
