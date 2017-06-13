@@ -170,9 +170,9 @@
         if(!this.data.brief)return alert('请填写课程介绍！');
         //
         if(this.data.lesson_sn){
-          if(!/^data:image/g.test(this.data.cover)){
+          /*if(!/^data:image/g.test(this.data.cover)){
             delete this.data['cover'];
-          }
+          }*/
           this.$store.dispatch('fetchCourseModify', { ...this.data }).then((json) => {
             // 发起创建请求
             alert('编辑成功!');

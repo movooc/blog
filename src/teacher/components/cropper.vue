@@ -45,6 +45,7 @@
       },
       data () {
         return {
+          backImage:'',
           headerImage:'',
           picValue:'',
           cropper:'',
@@ -107,8 +108,9 @@
           // Round
           roundedCanvas = this.getRoundedCanvas(croppedCanvas);
 
-          this.headerImage = roundedCanvas.toDataURL();
-          this.callback(this.headerImage);
+          this.backImage = roundedCanvas.toDataURL();
+          // 开始上传图片
+          this.getToken(this.backImage);
 
         },
         cancle () {
@@ -137,8 +139,47 @@
 
           return canvas;
         },
-        postImg () {
-          //这边写图片的上传
+        getToken (base64Url) {
+          // 获取七牛token
+          this.$store.dispatch('fetchQiniuToken').then((data) => {
+            // 图片的上传
+            this.postImg(data, base64Url);
+          }, (err) => {
+            alert(err.message);
+          });
+        },
+        postImg (data, base64Url) {
+          //创建formData对象
+          var formData = new FormData();
+          formData.append('file', this.dataURLtoBlob(base64Url));
+          formData.append('key', data.key);
+          formData.append('token', data.token);
+          // 开始上传
+          this.$store.commit('START_LOADING');
+          // 开始上传图片
+          this.$http.post(data.upload, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }).then((json) => {
+            if (json.ok) {
+              this.headerImage = this.backImage;
+              this.callback(json.body.key);
+              return this.$store.commit('FINISH_LOADING');
+            }
+            new Error('Fetch_Open_Info failure')
+          }).catch((error) => {
+            alert('上传图片失败!');
+            return this.$store.commit('FINISH_LOADING');
+          });
+        },
+        dataURLtoBlob(dataurl) {
+          var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+              bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+          while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+          }
+          return new Blob([u8arr], { type: mime });
         }
       }
     }

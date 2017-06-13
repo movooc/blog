@@ -131,3 +131,19 @@ export const fetchCourseModify = ({commit}, body) => {
       return Promise.reject(error)
     })
 };
+// 获得七牛云token
+export const fetchQiniuToken = ({commit}, query) => {
+  const url = `${_prefix}/lesson-cover_draft.api`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return Promise.resolve(json.data);
+      }
+      return Promise.reject(new Error('Fetch_Open_Info failure'))
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+
