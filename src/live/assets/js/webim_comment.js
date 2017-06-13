@@ -94,6 +94,7 @@ export const onMsgNotify = function(newMsgList) {
             this.$store.commit('UPDATE_USER_AVATAR', opt);
             this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
           }else{
+            this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
             throw new Error('there is no avatar');
           }
         }catch(e){
@@ -106,7 +107,6 @@ export const onMsgNotify = function(newMsgList) {
               let opt = {};
               opt[msg.account] = data.avatar;
               this.$store.commit('UPDATE_USER_AVATAR', opt);
-              this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
             }
           },(err)=>{});
         }
