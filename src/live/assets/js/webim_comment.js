@@ -89,9 +89,9 @@ export const onMsgNotify = function(newMsgList) {
           let avatar = this.$store.state.userAvatar[msg.account];
           if(avatar){
             msg.avatar = avatar;
-            let opt = {};
-            opt[msg.account] = avatar;
-            this.$store.commit('UPDATE_USER_AVATAR', opt);
+            // let opt = {};
+            // opt[msg.account] = avatar;
+            // this.$store.commit('UPDATE_USER_AVATAR', opt);
             this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
           }else{
             this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
@@ -103,7 +103,7 @@ export const onMsgNotify = function(newMsgList) {
           this.$http.get(userUrl).then((json)=>{
             if(json.ok){
               let data = json.body.data;
-              msg.avatar = data.avatar;
+              //msg.avatar = data.avatar;
               let opt = {};
               opt[msg.account] = data.avatar;
               this.$store.commit('UPDATE_USER_AVATAR', opt);

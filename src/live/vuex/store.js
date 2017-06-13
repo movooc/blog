@@ -122,7 +122,7 @@ const mutations = {
     state.loadingImg = avatar;
   },
   UPDATE_USER_AVATAR(state, avatars){
-    state.userAvatar = { ...avatars };
+    state.userAvatar = { ...state.userAvatar, ...avatars };
   },
   // 正在播放的audio
   UPDATE_PLAYER(state, player){
