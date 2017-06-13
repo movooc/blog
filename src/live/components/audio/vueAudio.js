@@ -82,7 +82,7 @@ class VueAudio {
         if (options.volume) {
             this.setVolume(options.volume)
         }
-        this.loadState()
+        this.preload()
     }
 
     loadState () {
@@ -162,6 +162,25 @@ class VueAudio {
             this.state.volume = Math.round(number * 100) / 100
             this.$Audio.volume = this.state.volume
         }
+    }
+
+    preload () {
+      if (this.state.startLoad) {
+        if (!this.state.playing && this.$Audio.readyState >= 2) {
+          this.$Audio.play();
+          this.$Audio.pause();
+          Cov.on(this.$Audio, 'timeupdate', this.updateLoadState.bind(this))
+        } else {
+          Cov.on(this.$Audio, 'loadeddata', () => {
+            this.preload()
+          })
+        }
+      } else {
+        this.init(this.tmp.src, this.tmp.options);
+        Cov.on(this.$Audio, 'loadeddata', () => {
+          this.preload()
+        })
+      }
     }
 
     setTime (time) {

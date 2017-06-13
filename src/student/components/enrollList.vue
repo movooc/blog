@@ -13,21 +13,21 @@
               {{list.lesson.participants}}
             </div>
             <div class="list-status clearfix">
-              <span class="pull-right" v-if="list.event == 'enroll'">已报名</span>
-              <span class="pull-right" v-if="list.event == 'browse'">未报名</span>
-              <span class="pull-right" v-if="list.event == 'access'">听课中</span>
-              <span class="pull-right" v-if="list.event == 'cancel'">已退出</span>
-              <span class="pull-right" v-if="list.event == 'refund'">已退款</span>
-              <span v-if="list.lesson.step == 'submit'">未开放</span>
+              <!--<span class="pull-right" v-if="list.event == 'enroll'">已报名</span>-->
+              <!--<span class="pull-right" v-if="list.event == 'browse'">未报名</span>-->
+              <!--<span class="pull-right" v-if="list.event == 'access'">听课中</span>-->
+              <!--<span class="pull-right" v-if="list.event == 'cancel'">已退出</span>-->
+              <span class="pull-right l-red" v-if="list.event == 'refund'">已退款</span>
+              <!--<span v-if="list.lesson.step == 'submit'">未开放</span>-->
               <span v-if="list.lesson.step == 'opened'" class="opened">{{`${list.lesson.plan.dtm_now}#${list.lesson.plan.dtm_start}` | moment}}</span>
-              <span v-if="list.lesson.step == 'onlive'">直播中</span>
-              <span v-if="list.lesson.step == 'repose'">交流中</span>
-              <span v-if="list.lesson.step == 'finish'">已结束</span>
+              <span class="l-red" v-if="list.lesson.step == 'onlive'">授课中</span>
+              <span class="l-red" v-if="list.lesson.step == 'repose'">授课中</span>
+              <!--<span v-if="list.lesson.step == 'finish'">已结束</span>-->
             </div>
           </div>
         </a>
-        <div class="list-handler clearfix" v-if="list.i_refund == 1">
-          <!--<button class="pull-right blue">评价</button>-->
+        <div class="list-handler clearfix" v-if="list.refund_mode == 'appeal'">
+          <button class="pull-right blue">评价</button>
           <button class="pull-right" @click="refund(list.lesson.sn)">退款</button>
         </div>
       </li>
@@ -97,6 +97,10 @@
   @import '~@lib/css/index.styl';
 
   .enroll-list{
+    .l-red {
+      color: #FB6666;
+    }
+
     .lesson {
       margin: 0;
       padding: 0;
@@ -197,7 +201,7 @@
           width: 400px;
           >span{
             color: #3C4A55;
-            &.opened {
+            &.opened, &.l-red {
               color: #fb6666;
             }
           }
