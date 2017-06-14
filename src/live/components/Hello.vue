@@ -55,9 +55,9 @@
           this.$store.dispatch('fetchHistory', {lesson_sn:this.open.lesson_sn}).then(()=>{});
           // 调用接口
           // 清除
-          removeStore(`wxConfig`);
+          //removeStore(`wxConfig`);
           // 调用分享
-          this.fetchWXConfig(opt.lesson_info);
+          //this.fetchWXConfig(opt.lesson_info);
         }catch(e){}
         //
         return;
@@ -184,7 +184,8 @@
         // 请求配置接口
         if(wx){
           // 判断是否有storage
-          let wxConfig = getStore(`wxConfig`);
+          let wxConfig = null && getStore(`wxConfig`);
+          //
           if(wxConfig){
             // 微信操作
             wx.config({
@@ -212,7 +213,7 @@
                 jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
               });
               // 存储wxConfig
-              setStore(`wxConfig`, result);
+              //setStore(`wxConfig`, result);
               // 分享
               setTimeout(()=>{
                 this.handleWXConfig(data);
