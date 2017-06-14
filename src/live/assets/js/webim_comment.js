@@ -94,11 +94,13 @@ export const onMsgNotify = function(newMsgList) {
             // this.$store.commit('UPDATE_USER_AVATAR', opt);
             this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
           }else{
-            this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
+
             throw new Error('there is no avatar');
           }
         }catch(e){
           userUrl = `${userUrl}${msg.account}`;
+          // 开始发送消息
+          this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
           // 获取用户信息
           this.$http.get(userUrl).then((json)=>{
             if(json.ok){
