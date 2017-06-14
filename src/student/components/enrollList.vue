@@ -4,7 +4,7 @@
       <li v-for="list in lists">
         <a href="javascript:;" class="item" @click="enterDetail(list.lesson.sn)">
           <div class="list-img">
-            <img :src="list.lesson.cover" />
+            <img :src="`${list.lesson.cover}|cover.history`" />
           </div>
           <div class="list-content">
             <div class="list-title" v-text="list.lesson.title"></div>

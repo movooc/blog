@@ -1,7 +1,7 @@
 <template>
   <section class="content detail">
     <div class="detail-img">
-      <img :src="courseDetail && courseDetail.cover" />
+      <img :src="courseDetail && courseDetail.cover && `${courseDetail.cover}|cover`" />
     </div>
     <div class="tab" v-if="courseDetail">
       <router-link :to="{name:'brief',query:{lesson_sn:courseDetail.sn}}" replace>介绍</router-link>

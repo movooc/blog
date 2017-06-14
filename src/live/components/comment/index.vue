@@ -222,9 +222,9 @@
               //
               let data = json.body.data;
               msg.avatar = data.avatar;
+              this.$store.commit('UPDATE_HISTORY_COMMENT_MESSAGE', msg);
               // 更新头像存储
               this.updateAvatar(msg.account, data.avatar);
-              this.$store.commit('UPDATE_HISTORY_COMMENT_MESSAGE', msg);
               // 继续递归
               this.recursion(++i, length, msgList);
             }
