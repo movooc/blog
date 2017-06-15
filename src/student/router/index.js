@@ -16,12 +16,15 @@ if(process.env.NODE_ENV == 'production'){
   var brief = r => require.ensure([], () => r(require('../views/course/brief')), 'student/student-courseBrief');
   var notice = r => require.ensure([], () => r(require('../views/course/notice')), 'student/student-courseNotice');
   var evaluate = r => require.ensure([], () => r(require('../views/course/evaluate')), 'student/student-courseEvaluate');
+  var evaluateLesson = r => require.ensure([], () => r(require('../views/course/evaluate-lesson')), 'student/student-courseEvaluateLesson');
   /*user*/
   var user = r => require.ensure([], () => r(require('../views/user/index')), 'student/student-user');
   var userCenter = r => require.ensure([], () => r(require('../views/user/center')), 'student/student-userCenter');
   var guarantee = r => require.ensure([], () => r(require('../views/user/guarantee')), 'student/student-guarantee');
   var enrolled = r => require.ensure([], () => r(require('../views/user/enroll')), 'student/student-userEnroll');
   var advise = r => require.ensure([], () => r(require('../views/user/advise')), 'student/student-userAdvise');
+  /*refund*/
+  var refund = r => require.ensure([], () => r(require('../views/refund/index')), 'student/student-courseNotice');
 
 }else{
   /*home*/
@@ -33,12 +36,15 @@ if(process.env.NODE_ENV == 'production'){
   var brief = require('../views/course/brief');
   var notice = require('../views/course/notice');
   var evaluate = require('../views/course/evaluate');
+  var evaluateLesson = require('../views/course/evaluate-lesson');
   /*user*/
   var user = require('../views/user/index');
   var userCenter = require('../views/user/center');
   var guarantee = require('../views/user/guarantee');
   var enrolled = require('../views/user/enroll');
   var advise = require('../views/user/advise');
+  /*refund*/
+  var refund = require('../views/refund/index');
 }
 
 export default [
@@ -112,7 +118,25 @@ export default [
             }
           }
         ]
-      }
+      },
+      // 评价某课程
+      {
+        path: '/course/evaluate/:lesson_sn',
+        name: 'evaluate-lesson',
+        component: evaluateLesson,
+        meta: {
+          pageTitle: '易课-评价课程'
+        }
+      },
+      // 退款
+      {
+        path: '/course/refund/:lesson_sn/:mode',
+        name: 'refund',
+        component: refund,
+        meta: {
+          pageTitle: '易课-申请退款'
+        }
+      },
     ]
   },
   {
