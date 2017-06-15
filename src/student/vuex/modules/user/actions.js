@@ -65,21 +65,6 @@ export const fetchEnrollList = ({commit}, query) => {
     })
 };
 
-export const fetchRefundCourse = ({commit}, body) => {
-  const url = `${_prefix}/lesson-refund-freely`;
-
-  return _post({ url, body }, commit)
-    .then((json) => {
-      if (json.error == 0) {
-        return Promise.resolve();
-      }
-      return Promise.reject(new Error('Fetch_Refund_Course failure'))
-    })
-    .catch((error) => {
-      return Promise.reject(error)
-    })
-};
-
 export const fetchAdvise = ({commit}, body) => {
   const url = `${_prefix}/feedback-submit.api`;
 
