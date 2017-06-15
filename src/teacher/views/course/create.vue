@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="control">
-      <span class="word"><em>*&nbsp;</em>封面</span>
+      <span class="word">封面</span>
       <div class="text">
         <!--<input name="cover" type="file" @change="imgOnChange" />-->
         <!--<p class="img"><img :src="data.cover"></p>-->
@@ -79,6 +79,7 @@
         //croppable: false,
         //panel: false,
         canUseCrop: false,
+        coverChange: false,
         data: {
           title: '',
           dtm_start: '',
@@ -89,6 +90,7 @@
           lesson_sn: '',
         },
         callbackCropper: (url)=>{
+          this.coverChange = true;
           this.data.cover = url;
         }
       }
@@ -166,8 +168,11 @@
         if(!this.data.dtm_start)return alert('请填写开播时间！');
         if(!this.data.duration)return alert('请填写持续时长！');
         if(this.data.price === '')return alert('请填写价格！');
-        if(!this.data.cover)return alert('请选择封面！');
+        /*if(!this.data.cover)return alert('请选择封面！');*/
         if(!this.data.brief)return alert('请填写课程介绍！');
+        if(!this.coverChange){
+          delete this.data['cover'];
+        }
         //
         if(this.data.lesson_sn){
           /*if(!/^data:image/g.test(this.data.cover)){
