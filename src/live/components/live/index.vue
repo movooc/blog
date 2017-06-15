@@ -19,7 +19,7 @@
       <l-header></l-header>
       <!-- message entity -->
       <ul class="live-sms-list" id="live_sms_list" v-bind:class="{'commentShow':commentShow}">
-        <li v-for="(msg, index) in messageInfo">
+        <li v-for="(msg, index) in messageInfo" :class="{'is-system':msg.isSystem}">
           <div class="user-img" v-if="!msg.isSystem">
             <img :src="loadingImg" width="45px">
           </div>

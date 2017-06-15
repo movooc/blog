@@ -31,6 +31,7 @@
 <script>
   import Cropper from 'cropperjs';
   import 'cropperjs/dist/cropper.css';
+  import { checkPastePic } from '@lib/js/mUtils';
   var cFile = null;
 
   export default{
@@ -46,6 +47,8 @@
       data () {
         return {
           backImage:'',
+          compress: false,
+          type: '',
           headerImage:'',
           picValue:'',
           cropper:'',
@@ -84,6 +87,15 @@
         change (e) {
           let files = e.target.files || e.dataTransfer.files;
           if (!files.length) return;
+          let file = files[0];
+          //先检查图片类型和大小
+          if (!checkPastePic(files, file.size)) {
+            return;
+          }
+          // 是否需要压缩
+          this.compress = (file.size/1024 > 1024) ? true : false;
+          //
+          this.type = file.type;
           this.panel = true;
           this.picValue = files[0];
 
@@ -107,8 +119,12 @@
           croppedCanvas = this.cropper.getCroppedCanvas();
           // Round
           roundedCanvas = this.getRoundedCanvas(croppedCanvas);
-
-          this.backImage = roundedCanvas.toDataURL();
+          // 是否开始压缩
+          if(this.compress){
+            this.backImage = roundedCanvas.toDataURL(this.type, 0.92);
+          }else{
+            this.backImage = roundedCanvas.toDataURL(this.type);
+          }
           // 开始上传图片
           this.getToken(this.backImage);
 

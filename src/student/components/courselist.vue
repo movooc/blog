@@ -5,7 +5,7 @@
         <a href="javascript:;" @click="enterLesson(list.sn)">
           <div class="list-title" v-text="list.title"></div>
           <div class="list-img">
-            <img :src="`${list.cover}!cover`" />
+            <img v-lazy="`${list.cover}!cover`" />
             <span class="list-status" v-if="list.step == 'opened'">
               {{`${list.plan.dtm_now}#${list.plan.dtm_start}` | moment}}
             </span>

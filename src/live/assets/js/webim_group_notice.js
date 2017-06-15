@@ -1,3 +1,5 @@
+// scroll
+let vScroll = null;
 //监听 解散群 系统消息
 export function onDestoryGroupNotify(notify) {
     webim.Log.warn("执行 解散群 回调：" + JSON.stringify(notify));
@@ -53,6 +55,12 @@ function showGroupSystemMsg(type, typeCh, group_id, group_name, msg_content, msg
   //
   try{
     let content = JSON.parse(msg_content);
+    // 是不是当前群的消息
+    let avChatRoomId = this.lessonInfo.sn;
+    if(avChatRoomId){
+      let roomId = group_id.split('-')[0];
+      if(avChatRoomId != roomId)return;
+    }
     // 组装消息
     let msg = {
       isSystem: true
@@ -62,9 +70,36 @@ function showGroupSystemMsg(type, typeCh, group_id, group_name, msg_content, msg
       case 'hint':
         msg.message = content.data;
         this.$store.commit('UPDATE_MESSAGE', msg);
+        if(this.isOwner)return;
+        this.$nextTick(()=>{
+          inspectScroll();
+        });
         break;
       default:
         break;
     }
   }catch(e){}
 };
+
+//监测滚动条区域
+function inspectScroll() {
+  if(!vScroll){
+    vScroll = document.getElementById('live-body');
+  }
+  //
+  try{
+    // 探测范围
+    setTimeout(()=>{
+      let scrollHeight = vScroll.scrollHeight;
+      let offsetHeight = vScroll.offsetHeight;
+      let scrollTop    = vScroll.scrollTop;
+      //
+      if(scrollHeight > offsetHeight){
+        // 一屏
+        if(scrollHeight - offsetHeight - scrollTop < (offsetHeight*2)/3){
+          vScroll.scrollTop = scrollHeight;
+        }
+      }
+    },200);
+  }catch(e){}
+}

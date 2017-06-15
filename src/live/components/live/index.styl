@@ -48,6 +48,9 @@ li
     position: relative;
     display: block;
     padding: 40px 34px 0 120px;
+    &.is-system
+      padding-top: 0;
+      padding-bottom: 0;
     .live-system
       color: #aaa;
       px2px(font-size, 30px);
@@ -248,6 +251,10 @@ li
   }
   .live-sms-list {
     li {
+      &.is-system {
+      padding-top: 0;
+      padding-bottom: 0;
+      }
       .live-system {
         font-size: 14px;
       }
