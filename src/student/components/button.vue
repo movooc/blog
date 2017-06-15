@@ -11,7 +11,7 @@
       name: 's-button',
       props: {
         text: {
-          type: Boolean
+          type: String
         },
         callBack: {
           type: null
