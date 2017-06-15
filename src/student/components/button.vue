@@ -1,7 +1,7 @@
 <template>
   <div class="button">
     <div class="submit">
-      <button @click="clickEvent">提交</button>
+      <button @click="clickEvent">{{text || "提交"}}</button>
     </div>
   </div>
 </template>
