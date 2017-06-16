@@ -15,7 +15,7 @@
       <div class="more-choice" v-if="boxMoreShow">
         <button @click="backHome">回到首页</button>
         <button @click="showEva" v-if="!isEvaluate && !lessonInfo.rated">评价课程</button>
-        <button @click="showRefund" v-if="lessonInfo.price">申请退款</button>
+        <button @click="showRefund" v-if="lessonInfo.event != 'refund' && lessonInfo.price">申请退款</button>
       </div>
     </div>
   </div>
@@ -79,7 +79,18 @@
         this.$store.commit('UPDATE_BOX_MORE', !this.boxMoreShow);
       },
       showRefund() {
-        this.$store.commit('UPDATE_REFUND_SHOW', true);
+        // 组装
+        let params = {
+          lesson_sn: this.lessonInfo.sn,
+          mode: this.lessonInfo.refund_mode,
+          title: this.lessonInfo.title,
+          price: this.lessonInfo.price,
+          teacher: this.lessonInfo.teacher.name,
+        };
+        params = JSON.stringify(params);
+        // 跳转
+        window.location.href = `${this.studentHost}#/course/refund?params=${params}`;
+        //this.$store.commit('UPDATE_REFUND_SHOW', true);
       },
       showEva() {
         this.$store.commit('UPDATE_EVALUATE_SHOW', true);
