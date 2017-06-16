@@ -130,7 +130,7 @@ export default [
       },
       // 退款
       {
-        path: '/course/refund/:lesson_sn/:mode',
+        path: '/course/refund',
         name: 'refund',
         component: refund,
         meta: {
