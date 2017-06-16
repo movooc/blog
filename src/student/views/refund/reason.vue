@@ -1,10 +1,10 @@
 <template>
-  <section class="refund">
+  <section class="refund" v-if="event">
     <div class="refund-reason">
       <p>退款理由</p>
-      <p>{{data.teacher}}拒绝了你<br>理由：{{reason}}</p>
+      <p>{{data.teacher}}拒绝了你<br>理由：{{event.remark}}</p>
     </div>
-    <s-button v-if="isApply" :callBack="goToRefund" :text="text"></s-button>
+    <s-button v-if="refund_mode == 'apply'" :callBack="goToRefund" :text="text"></s-button>
   </section>
 </template>
 
@@ -25,8 +25,7 @@
     },
     data() {
       return {
-        reason: '就是要拒绝',
-        isApply: false,
+        event: null,
         text: '申诉退款',
         data: {
           lesson_sn: '',
@@ -39,7 +38,7 @@
     },
     created() {
       let query = this.$route.query.params;
-      this.isApply = query.isApply;
+      this.event = query.event;
       // data
       this.data.lesson_sn = query.lesson_sn;
       this.data.mode = query.mode;

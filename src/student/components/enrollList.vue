@@ -26,11 +26,11 @@
             </div>
           </div>
         </a>
-        <div class="list-handler clearfix" v-if="list.event != 'refund' && !list.refund_info && (!list.rated || list.lesson.price > 0)">
+        <div class="list-handler clearfix" v-if="list.refund_mode && list.event != 'refund' && !list.refund_info && (!list.rated || list.lesson.price > 0)">
           <button class="pull-right blue" @click="enterEvaluate(list.lesson.sn)" v-if="!list.rated">评价</button>
           <button class="pull-right" @click="refund(list)" v-if="(!list.refund_info && list.event != 'refund' && list.lesson.price > 0)">退款</button>
         </div>
-        <div class="list-handler clearfix" v-if="list.refund_info && list.refund_info.apply && list.refund_info.apply.status != 'agree'">
+        <div class="list-handler clearfix" v-if="list.refund_mode && list.refund_info && list.refund_info.apply && !list.refund_info.appeal && list.refund_info.apply.status != 'agree'">
           <span class="pull-right status" v-if="list.refund_info.apply.status == 'start' || list.refund_info.apply.status == 'pending'">退款申请中...</span>
           <div class="pull-right status clearfix" v-if="list.refund_info.apply.status == 'reject'">
             <!--<button class="pull-right blue" @click="enterEvaluate(list.lesson.sn)" v-if="!list.rated">评价</button>-->
@@ -38,7 +38,7 @@
             <button class="pull-right" @click="goReason(list)">查看</button>
           </div>
         </div>
-        <div class="list-handler clearfix" v-if="list.refund_info && list.refund_info.appeal && list.refund_info.appeal.status != 'agree'">
+        <div class="list-handler clearfix" v-if="list.refund_mode && list.refund_info && list.refund_info.appeal && list.refund_info.appeal.status != 'agree'">
           <span class="pull-right status" v-if="list.refund_info.appeal.status == 'start' || list.refund_info.appeal.status == 'pending'">退款申诉中...</span>
           <span class="pull-right status clearfix" v-if="list.refund_info.appeal.status == 'reject'">
             <span class="reject">你的退款申请被拒绝</span>
@@ -106,7 +106,8 @@
             title: list.lesson.title,
             price: list.lesson.price,
             teacher: list.lesson.teacher.name,
-            isApply: Boolean(list.refund_info.apply),
+            //isApply: Boolean(list.refund_info.apply),
+            event: list.refund_mode == 'apply' ? list.refund_info.apply : list.refund_info.appeal,
           };
           //
           this.$router.push({ name: 'reason', query: {params:params} });
