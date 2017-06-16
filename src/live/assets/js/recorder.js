@@ -90,7 +90,7 @@ function inspectRecording(self) {
   }
   let endTimer = new Date().getTime();
   let diff = (endTimer - startTimer)/60000;
-  if(diff >= 3){
+  if(diff >= 2.73){
     // stop recording
     self.active = false;
     starting = false;
@@ -114,7 +114,7 @@ export const toggleRecording = function( self ) {
     // 结束监测
     starting = false;
     // 录制时间是否过短
-    if(new Date().getTime() - startTimer < 1000){
+    if(new Date().getTime() - startTimer < 3000){
       // 清空
       ctx.$store.commit('UPDATE_RECORDING', false);
       ctx = null;
