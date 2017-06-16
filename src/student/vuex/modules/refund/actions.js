@@ -50,9 +50,11 @@ const _post = ({ url, body }, commit) => {
     })
 };
 
-export const fetchRefundCourse = ({commit}, body) => {
-  const url = `${_prefix}/lesson-refund-freely`;
-
+export const fetchRefundCourse = ({commit}, submitData) => {
+  const url = `${_prefix}/${submitData.url}`;
+  // 转换
+  let body = submitData.data;
+  // 开始请求
   return _post({ url, body }, commit)
     .then((json) => {
       if (json.error == 0) {

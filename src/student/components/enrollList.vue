@@ -26,9 +26,19 @@
             </div>
           </div>
         </a>
-        <div class="list-handler clearfix" v-if="!list.rated || (list.event != 'refund' && list.lesson.price > 0)">
+        <div class="list-handler clearfix" v-if="!list.refund_info && (!list.rated || (list.event != 'refund' && list.lesson.price > 0))">
           <button class="pull-right blue" @click="enterEvaluate(list.lesson.sn)" v-if="!list.rated">评价</button>
-          <button class="pull-right" @click="refund(list)" v-if="(list.event != 'refund' && list.lesson.price > 0)">退款</button>
+          <button class="pull-right" @click="refund(list)" v-if="(!list.refund_info && list.event != 'refund' && list.lesson.price > 0)">退款</button>
+        </div>
+        <div class="list-handler clearfix" v-if="list.refund_info && list.refund_info.apply">
+          <span class="pull-right status" v-if="list.refund_info.apply.status == 'start' || list.refund_info.apply.status == 'pending'">退款处理中...</span>
+          <span class="pull-right status" v-if="list.refund_info.apply.status == 'agree'">已同意</span>
+          <span class="pull-right status" v-if="list.refund_info.apply.status == 'reject'">已拒绝</span>
+        </div>
+        <div class="list-handler clearfix" v-if="list.refund_info && list.refund_info.appeal">
+          <span class="pull-right status" v-if="list.refund_info.appeal.status == 'start' || list.refund_info.appeal.status == 'pending'">退款处理中...</span>
+          <span class="pull-right status" v-if="list.refund_info.appeal.status == 'agree'">已同意</span>
+          <span class="pull-right status" v-if="list.refund_info.appeal.status == 'reject'">已拒绝</span>
         </div>
       </li>
       <li class="no-enroll" v-if="!lists.length">
@@ -214,6 +224,11 @@
               color: #12B7F5;
               border-color: #12B7F5;
             }
+          }
+          .status{
+            padding-top: 8px;
+            color: #9ca7c1;
+            px2px(font-size, 32px);
           }
         }
       }
