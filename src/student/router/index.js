@@ -25,6 +25,7 @@ if(process.env.NODE_ENV == 'production'){
   var advise = r => require.ensure([], () => r(require('../views/user/advise')), 'student/student-userAdvise');
   /*refund*/
   var refund = r => require.ensure([], () => r(require('../views/refund/index')), 'student/student-courseNotice');
+  var reason = r => require.ensure([], () => r(require('../views/refund/reason')), 'student/student-courseReason');
 
 }else{
   /*home*/
@@ -45,6 +46,7 @@ if(process.env.NODE_ENV == 'production'){
   var advise = require('../views/user/advise');
   /*refund*/
   var refund = require('../views/refund/index');
+  var reason = require('../views/refund/reason');
 }
 
 export default [
@@ -135,6 +137,15 @@ export default [
         component: refund,
         meta: {
           pageTitle: '易课-申请退款'
+        }
+      },
+      // 退款理由
+      {
+        path: '/course/reason',
+        name: 'reason',
+        component: reason,
+        meta: {
+          pageTitle: '易课-退款理由'
         }
       },
     ]

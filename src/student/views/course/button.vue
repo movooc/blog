@@ -1,11 +1,11 @@
 <template>
   <div class="button">
-    <div class="enroll" v-if="!paying && courseDetail && (isEnroll == 'enroll' || isEnroll == 'access')">
+    <div class="enroll" v-if="!paying && courseDetail && (isEnroll == 'enroll' || isEnroll == 'access' || isEnroll == 'leave')">
       <button class="enter" @click="startLesson" v-if="courseDetail.step == 'onlive' || courseDetail.step == 'repose' || courseDetail.step == 'finish'">进入课堂</button>
       <button disabled v-if="courseDetail.step == 'opened'">{{`${courseDetail.plan.dtm_now}#${courseDetail.plan.dtm_start}` | moment}}开课</button>
       <button disabled v-if="courseDetail.step == 'closed'">已下架</button>
     </div>
-    <div class="enroll" v-if="!paying && (isEnroll == 'browse' || isEnroll == 'leave')">
+    <div class="enroll" v-if="!paying && (isEnroll == 'browse')">
       <button class="free" v-if="courseDetail && courseDetail.price == 0 && !canEnter" @click="callWeiXinPay">免费报名</button>
       <button class="pay" v-if="courseDetail && courseDetail.price > 0 && !canEnter" @click="callWeiXinPay">付费报名</button>
       <button class="enter" v-if="canEnter && courseDetail && (courseDetail.step == 'onlive' || courseDetail.step == 'repose')" @click="startLesson">进入课堂</button>

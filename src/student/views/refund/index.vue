@@ -21,7 +21,7 @@
     <div class="refund-reason" v-if="mode != 'freely'">
       <p>退款理由</p>
       <div class="textarea">
-        <textarea placeholder="请填写足够充分的退款理由" v-model="data.reason" @keydown="keydownEvent"></textarea>
+        <textarea placeholder="请填写足够充分的退款理由" v-model="data.reason" @blur="blurEvent"></textarea>
         <p>{{words}}/1000</p>
       </div>
     </div>
@@ -92,7 +92,7 @@
         // 开启退款状态
         this.$store.dispatch('fetchRefundCourse', body).then(() => {
           this.refunding = false;
-          alert('退款成功');
+          this.mode == 'freely' ? alert('退款成功!') : alert('退款申请提交成功!');
           this.$router.push({ name: 'enrolled' });
         }, (err) => {
           // 关闭退款状态
@@ -100,7 +100,7 @@
           alert('退款失败!');
         });
       },
-      keydownEvent() {
+      blurEvent() {
         let length = trimStr(this.data.reason).length;
         if(length > 1000){
           length = 1000;
