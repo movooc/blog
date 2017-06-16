@@ -26,9 +26,9 @@
             </div>
           </div>
         </a>
-        <div class="list-handler clearfix" v-if="list.refund_mode == 'appeal'">
-          <button class="pull-right blue">评价</button>
-          <button class="pull-right" @click="refund(list.lesson.sn)">退款</button>
+        <div class="list-handler clearfix" v-if="!list.rated || (list.event != 'refund' && list.lesson.price > 0)">
+          <button class="pull-right blue" @click="enterEvaluate(list.lesson.sn)" v-if="!list.rated">评价</button>
+          <button class="pull-right" @click="refund(list)" v-if="(list.event != 'refund' && list.lesson.price > 0)">退款</button>
         </div>
       </li>
       <li class="no-enroll" v-if="!lists.length">
@@ -36,18 +36,18 @@
         <router-link to="/course">现在就去</router-link>
       </li>
     </ul>
-    <loading :show="refunding"></loading>
+    <!--<loading :show="refunding"></loading>-->
   </div>
 </template>
 
 <script>
     import { mapGetters } from 'vuex';
-    import Loading from '@student/components/loading';
+    //import Loading from '@student/components/loading';
 
     export default{
       name: 'enroll-list',
       components: {
-        Loading
+        //Loading
       },
       props: {
         lists: {
@@ -61,33 +61,27 @@
       },
       data() {
         return {
-          refunding: false,
+          //refunding: false,
         }
       },
       methods: {
         enterDetail(lesson_sn) {
           this.$router.push({ name: 'detail', query: { lesson_sn: lesson_sn }})
         },
-        refund(lesson_sn) {
-          let body = {
-            lesson_sn,
+        enterEvaluate(lesson_sn) {
+          this.$router.push({ name: 'evaluate-lesson', params: {lesson_sn:lesson_sn} });
+        },
+        refund(list) {
+          // 组装
+          let params = {
+            lesson_sn: list.lesson.sn,
+            mode: list.refund_mode,
+            title: list.lesson.title,
+            price: list.lesson.price,
+            teacher: list.lesson.teacher.name,
           };
-          // 开启退款状态
-          this.refunding = true;
-          this.$store.dispatch('fetchRefundCourse', body).then(() => {
-            // 关闭退款状态
-            this.refunding = false;
-            // 重新获取列表
-            this.$store.dispatch('fetchEnrollList').then(() => {
-              console.log('success');
-            }, () => {
-              console.log('fail');
-            });
-          }, (err) => {
-            // 关闭退款状态
-            this.refunding = false;
-            alert('退款失败!');
-          });
+          //
+          this.$router.push({ name: 'refund', query: {params:params} });
         }
       }
     }

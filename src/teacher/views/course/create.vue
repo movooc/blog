@@ -8,7 +8,7 @@
       <span class="word"><em>*&nbsp;</em>标题</span>
       <div class="text">
         <input name="title" type="text" v-model="data.title" />
-        <p class="limit">限20个字</p>
+        <p class="limit">限36个字符</p>
       </div>
     </div>
     <div class="control">
@@ -62,7 +62,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { checkPic } from '@lib/js/mUtils';
+  import { checkPic, strlen, trimStr } from '@lib/js/mUtils';
   import vCropper from '@teacher/components/cropper.vue';
   import cCalendar from '@teacher/views/course/calendar.vue';
 
@@ -163,6 +163,7 @@
       },
       completeCreate() {
         if(!this.data.title)return alert('请填写标题！');
+        if(strlen(trimStr(this.data.title)) > 36)return alert('标题文字过长!');
         //开播时间赋值
         this.data.dtm_start = this.calendarInfo.value;
         if(!this.data.dtm_start)return alert('请填写开播时间！');
