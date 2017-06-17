@@ -35,6 +35,8 @@ const state = {
   blobRecord: null,
   isEvaluate: false,
   boxMoreShow: false,
+  recorderStatus: false,
+  recorderTimer: '0:01',
   liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,''):'/api'),
   studentHost:(process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'?'):'/student.html?'),
   teacherHost:(process.env.NODE_ENV=='production'?process.env.TEACHER_HOST.replace(/\/$/,''):'/teacher.html'),
@@ -140,6 +142,12 @@ const mutations = {
   },
   UPDATE_BOX_MORE(state, show){
     state.boxMoreShow = show;
+  },
+  UPDATE_RECORDER_STATUS(state, stop){
+    state.recorderStatus = stop;
+  },
+  UPDATE_RECORDER_TIMER(state, time){
+    state.recorderTimer = time;
   },
 };
 

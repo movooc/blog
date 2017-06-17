@@ -4,14 +4,15 @@
       <div class="loading-audio">
         <img src="https://assets.sandbox.yike.fm/static/live/_static/live/img/recorder.gif" v-show="!blobRecord" />
         <span v-show="blobRecord" class="audition">试听</span>
+        <div class="time" v-if="!recorderStatus" v-text="recorderTimer"></div>
         <audio id="save" controls v-show="blobRecord"></audio>
       </div>
       <div class="is-recording">
         <button @click="cancleRecording" v-if="!blobRecord">取消</button>
         <button @click="cancleBlobRecording" v-if="blobRecord">取消</button>
         <!--开始-->
-        <button @click="stopRecording" v-if="!stop">停止</button>
-        <button v-if="stop && !blobRecord">录音中...</button>
+        <button @click="stopRecording" v-if="!recorderStatus">停止</button>
+        <button v-if="recorderStatus && !blobRecord">录音中...</button>
         <button @click="startUpload" v-if="blobRecord">发送</button>
       </div>
       <button class="cancle" @click="cancleRecording" v-if="!blobRecord">&#88;</button>
@@ -36,7 +37,7 @@
     },
     data(){
       return {
-        stop: false,
+        //stop: false,
         sendWidth: 0,
         uploading: false,
       }
@@ -44,7 +45,13 @@
     computed: {
       ...mapState({
         blobRecord: 'blobRecord',
+        recorderStatus: 'recorderStatus',
+        recorderTimer: 'recorderTimer',
       })
+    },
+    created() {
+      this.$store.commit('UPDATE_RECORDER_STATUS', false);
+      this.$store.commit('UPDATE_RECORDER_TIMER', '0:01');
     },
     methods: {
       cancleRecording() {
@@ -55,7 +62,7 @@
         this.$store.commit('UPDATE_BLOB_RECORDING', null);
       },
       stopRecording() {
-        this.stop = true;
+        this.$store.commit('UPDATE_RECORDER_STATUS', true);
         toggleRecording();
       },
       startUpload() {
@@ -109,6 +116,8 @@
         img
           margin-top: 25px;
           display: inline-block;
+        .time
+          color: #fff;
       .cancle
         position: absolute;
         right: -6px;

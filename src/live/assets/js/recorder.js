@@ -14,6 +14,10 @@ var audioInput = null,
 
 // 定义录制时间
 var startTimer = 0;
+// 定义显示时间
+var showTimer = 0;
+var timeMinute = 0;
+var timeSecond = 0;
 // 开始监测状态
 var starting = false;
 
@@ -74,8 +78,28 @@ function gotStream(stream) {
   zeroGain.connect( audioContext.destination );
 }
 
+function caculateTime() {
+  try {
+    let diff = 0;
+    console.log(audioRecorder.context.currentTime);
+    if(timeSecond >= 30){
+      diff = Math.ceil(audioRecorder.context.currentTime - showTimer + 1);
+    }else{
+      diff = Math.ceil((new Date().getTime() - startTimer)/1000);
+    }
+    //
+    timeMinute = parseInt(diff/60);
+    timeSecond = diff%60 || 1;
+    let seconds = timeSecond < 10 ? `0${timeSecond}` : timeSecond;
+    // 更新
+    ctx.$store.commit('UPDATE_RECORDER_TIMER', `${timeMinute}:${seconds}`);
+  }catch(e){}
+}
+
 function inspectRecording(self) {
   if(!starting)return;
+  // 计时器
+  caculateTime();
   // 取消发送
   if(self.cancleRecord){
     // stop recording
@@ -88,10 +112,10 @@ function inspectRecording(self) {
     starting = false;
     return audioRecorder.stop();
   }
-  let endTimer = new Date().getTime();
-  let diff = (endTimer - startTimer)/60000;
-  if(diff >= 2.73){
+  // 时间大于3分钟
+  if(timeMinute >= 3){
     // stop recording
+    self.$store.commit('UPDATE_RECORDER_STATUS', true);
     self.active = false;
     starting = false;
     audioRecorder.stop();
@@ -127,6 +151,10 @@ export const toggleRecording = function( self ) {
     if (!audioRecorder)
       return;
     startTimer = new Date().getTime();
+    showTimer = audioRecorder.context.currentTime;
+    //
+    timeMinute = 0;
+    timeSecond = 0;
     ctx.active = true;
     ctx.$store.commit('UPDATE_RECORDING', true);
     audioRecorder.clear();
