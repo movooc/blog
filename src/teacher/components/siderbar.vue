@@ -27,13 +27,13 @@
           我的课程
         </router-link>
       </li>
-      <!--<li>-->
-        <!--<router-link to="/profit">-->
-          <!--<i class="iconfont icon-earning"></i>-->
-          <!--&nbsp;&nbsp;-->
-          <!--查看收益-->
-        <!--</router-link>-->
-      <!--</li>-->
+      <li>
+        <router-link to="/handle">
+          <i class="iconfont icon-chuli"></i>
+          &nbsp;&nbsp;
+          处理中心
+        </router-link>
+      </li>
     </ul>
   </div>
 </template>
