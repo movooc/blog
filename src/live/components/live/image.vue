@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import AlloyFinger from 'AlloyFinger';
+  import AlloyFinger from 'alloyfinger';
   var pinchImg = null;
   var imgBox = null;
 

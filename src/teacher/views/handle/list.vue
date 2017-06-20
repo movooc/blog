@@ -75,7 +75,7 @@
         let query = {
           page: this.$route.params.page,
           status: this.mode,
-          limit: 2,
+          //limit: 2,
         };
         // 获取已处理列表
         this.$store.dispatch('fetchHandleList', query).then((data) => {

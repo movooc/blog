@@ -29,7 +29,7 @@
 <script type="text/javascript">
   import { mapState } from 'vuex';
   import { setStore, getStore } from '@lib/js/mUtils';
-  import VueAudio from './VueAudio.js';
+  import VueAudio from './vueAudio.js';
 
   const pad = (val) => {
     val = Math.floor(val)

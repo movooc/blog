@@ -17,7 +17,7 @@
               <!--<span class="pull-right" v-if="list.event == 'browse'">未报名</span>-->
               <!--<span class="pull-right" v-if="list.event == 'access'">听课中</span>-->
               <!--<span class="pull-right" v-if="list.event == 'cancel'">已退出</span>-->
-              <span class="pull-right l-red" v-if="list.event == 'refund'">已退款</span>
+              <!--<span class="pull-right l-red" v-if="list.event == 'refund'">已退款</span>-->
               <!--<span v-if="list.lesson.step == 'submit'">未开放</span>-->
               <span v-if="list.lesson.step == 'opened'" class="opened">{{`${list.lesson.plan.dtm_now}#${list.lesson.plan.dtm_start}` | moment}}</span>
               <span class="l-red" v-if="list.lesson.step == 'onlive'">授课中</span>
@@ -26,6 +26,9 @@
             </div>
           </div>
         </a>
+        <div class="list-handler clearfix" v-if="list.event == 'refund'">
+          <span class="pull-right status red">已退款</span>
+        </div>
         <div class="list-handler clearfix" v-if="list.refund_mode && list.event != 'refund' && !list.refund_info && (!list.rated || list.lesson.price > 0)">
           <button class="pull-right blue" @click="enterEvaluate(list.lesson.sn)" v-if="!list.rated">评价</button>
           <button class="pull-right" @click="refund(list)" v-if="(!list.refund_info && list.event != 'refund' && list.lesson.price > 0)">退款</button>
@@ -251,6 +254,9 @@
             px2px(line-height, 32px);
             .reject {
               px2px(line-height, 58px);
+            }
+            &.red {
+              color: #fb6666;
             }
           }
         }
