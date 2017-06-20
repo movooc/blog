@@ -119,8 +119,8 @@ function caculateTime() {
         if(timeSecond < 25){
           diff = diff + 10;
         }else if(timeSecond >= 25 && timeSecond <= 30){
-          diff = diff + 10 + (timeSecond - 25)*0.8;
-        }else if(timeSecond > 30 && timeSecond <= 44) {
+          diff = diff + 10 + (timeSecond - 25)*0.6;
+        }else if(timeSecond > 30 && timeSecond <= 46) {
           diff = diff + 14;
         }
         break;
