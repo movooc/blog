@@ -102,12 +102,13 @@
           // 组装
           let params = {
             lesson_sn: list.lesson.sn,
-            mode: list.refund_mode,
             title: list.lesson.title,
             price: list.lesson.price,
             teacher: list.lesson.teacher.name,
             //isApply: Boolean(list.refund_info.apply),
-            event: list.refund_mode == 'apply' ? list.refund_info.apply : list.refund_info.appeal,
+            cur_mode: list.refund_info.appeal ? 'appeal' : 'apply',
+            mode: list.refund_mode,
+            event: list.refund_info,
           };
           //
           this.$router.push({ name: 'reason', query: {params:params} });

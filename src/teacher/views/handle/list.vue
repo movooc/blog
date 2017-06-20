@@ -20,7 +20,7 @@
         </dl>
         <dl class="reason" v-if="mode">
           <dt>退款理由</dt>
-          <dd v-text="">我要退款我要退款我要退款</dd>
+          <dd v-text="handList.ticket.content.remark"></dd>
         </dl>
         <span class="s-button" v-if="mode && handList.ticket.i_status == 'reject'">已拒绝</span>
         <span class="s-button agree" v-if="mode && handList.ticket.i_status == 'agree'">已同意</span>
@@ -92,17 +92,18 @@
         let value = trimStr(this.$refs[`text-${id}`][0].value);
         let len = strlen(value);
         //
-        if(!len){
+        if(!len && operate){
           return alert('请填写处理意见！');
         }
-        if(len > 255){
+        if(len > 255 && operate){
           return alert('填写的意见过长！');
         }
         let body = {
           operate: operate,
           id: id,
-          remark: value,
+          //remark: value,
         };
+        if(operate)body.remark = value;
         // 获取已处理列表
         this.$store.dispatch('fetchHandleAction', body).then((data) => {
           // 刷新列表

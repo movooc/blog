@@ -145,7 +145,7 @@ export default [
         name: 'reason',
         component: reason,
         meta: {
-          pageTitle: '易课-退款理由'
+          pageTitle: '易课-处理结果'
         }
       },
     ]
