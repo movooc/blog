@@ -27,13 +27,13 @@
           我的课程
         </a>
       </li>
-      <!--<li>-->
-        <!--<a href="https://teacher.sandbox.yike.fm">-->
-          <!--<i class="iconfont icon-earning"></i>-->
-          <!--&nbsp;&nbsp;-->
-          <!--查看收益-->
-        <!--</a>-->
-      <!--</li>-->
+      <li>
+        <a :href="`${teacherHost}#/handle`">
+          <i class="iconfont icon-chuli"></i>
+          &nbsp;&nbsp;
+          处理中心
+        </a>
+      </li>
     </ul>
   </div>
 </template>

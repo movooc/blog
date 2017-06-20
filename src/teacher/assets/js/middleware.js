@@ -1,4 +1,8 @@
 import Vue from 'vue';
+import moment from 'moment';
+
+// 切换成中文版本
+moment.locale('zh-cn');
 
 export const Vueinterceptors = function () {
   Vue.http.interceptors.push(function(request, next) {
@@ -8,4 +12,17 @@ export const Vueinterceptors = function () {
       //console.log(response);
     });
   });
+};
+
+// filter moment
+export const VueFilterMoment = function () {
+  Vue.filter('moment', function (value) {
+    //
+    let dateArr = value.split('#');
+    if(dateArr.length < 2){
+      return moment(dateArr[0]).startOf('minutes').fromNow();
+    }else{
+      return moment(dateArr[1]).startOf('minutes').from(dateArr[0]);
+    }
+  })
 };

@@ -13,6 +13,11 @@ if(process.env.NODE_ENV == 'production'){
   var list = r => require.ensure([], () => r(require('../views/course/list')), 'teacher/teacher-courseList');
   var detail = r => require.ensure([], () => r(require('../views/course/detail')), 'teacher/teacher-courseDetail');
   var create = r => require.ensure([], () => r(require('../views/course/create')), 'teacher/teacher-courseCreate');
+  /*处理中心*/
+  var handle = r => require.ensure([], () => r(require('../views/handle/index')), 'teacher/teacher-handle');
+  var handleHas = r => require.ensure([], () => r(require('../views/handle/handle-has')), 'teacher/teacher-handleHas');
+  var handleWill = r => require.ensure([], () => r(require('../views/handle/handle-will')), 'teacher/teacher-handleWill');
+  var handleList = r => require.ensure([], () => r(require('../views/handle/list')), 'teacher/teacher-handleList');
 
 }else{
   //
@@ -21,6 +26,11 @@ if(process.env.NODE_ENV == 'production'){
   var list = require('../views/course/list');
   var detail = require('../views/course/detail');
   var create = require('../views/course/create');
+  /*处理中心*/
+  var handle = require('../views/handle/index');
+  var handleHas = require('../views/handle/handle-has');
+  var handleWill = require('../views/handle/handle-will');
+  var handleList = require('../views/handle/list');
 }
 
 export default [
@@ -81,5 +91,62 @@ export default [
         }
       }
     ]
-  }
+  },
+  {
+    path: '/handle',
+    name: 'index',
+    component: handle,
+    children: [
+      {
+        path: '',
+        redirect: '/handle/has'
+      },
+      // 已处理列表
+      {
+        path: '/handle/has',
+        name: 'handle-has',
+        component: handleHas,
+        meta: {
+          pageTitle: '易课-处理中心'
+        },
+        children: [
+          {
+            path: '',
+            redirect: '/handle/has/1'
+          },
+          {
+            path: '/handle/has/:page',
+            name: 'handle-has-list',
+            component: handleList,
+            meta: {
+              pageTitle: '易课-处理中心'
+            }
+          },
+        ]
+      },
+      // 未处理列表
+      {
+        path: '/handle/will',
+        name: 'handle-will',
+        component: handleWill,
+        meta: {
+          pageTitle: '易课-处理中心'
+        },
+        children: [
+          {
+            path: '',
+            redirect: '/handle/will/1'
+          },
+          {
+            path: '/handle/will/:page',
+            name: 'handle-will-list',
+            component: handleList,
+            meta: {
+              pageTitle: '易课-处理中心'
+            }
+          },
+        ]
+      },
+    ]
+  },
 ];

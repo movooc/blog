@@ -81,7 +81,7 @@ function gotStream(stream) {
 function caculateTime() {
   try {
     let diff = 0;
-    console.log(audioRecorder.context.currentTime);
+    //
     if(timeSecond >= 30){
       diff = Math.ceil(audioRecorder.context.currentTime - showTimer + 1);
     }else{
@@ -90,6 +90,45 @@ function caculateTime() {
     //
     timeMinute = parseInt(diff/60);
     timeSecond = diff%60 || 1;
+    // 分类
+    switch (timeMinute){
+      case 0:
+        //
+        if(timeSecond >= 25 && timeSecond <= 30){
+          timeSecond = (timeSecond - 25)*0.6;
+        }else if(timeSecond > 30 && timeSecond < 55) {
+          timeSecond = 3;
+        }else if(timeSecond >= 55) {
+          timeSecond = (timeSecond - 55)*1;
+        };
+        break;
+      case 1:
+        //
+        if(timeSecond < 25){
+          timeSecond = 5;
+        }else if(timeSecond >= 25 && timeSecond <= 30){
+          timeSecond = (timeSecond - 25)*1.6;
+        }else if(timeSecond > 30 && timeSecond < 55) {
+          timeSecond = 8;
+        }else if(timeSecond >= 55) {
+          timeSecond = (timeSecond - 55)*2;
+        };
+        break;
+      case 2:
+        //
+        if(timeSecond < 25){
+          timeSecond = 10;
+        }else if(timeSecond >= 25 && timeSecond <= 30){
+          timeSecond = (timeSecond - 25)*3;
+        }else if(timeSecond > 30 && timeSecond < 44) {
+          timeSecond = 14;
+        }
+        break;
+      default:
+        break;
+    }
+    timeSecond = Math.round(timeSecond);
+    //
     let seconds = timeSecond < 10 ? `0${timeSecond}` : timeSecond;
     // 更新
     ctx.$store.commit('UPDATE_RECORDER_TIMER', `${timeMinute}:${seconds}`);
@@ -112,8 +151,8 @@ function inspectRecording(self) {
     starting = false;
     return audioRecorder.stop();
   }
-  // 时间大于3分钟
-  if(timeMinute >= 3){
+  // 时间大于2分44秒
+  if(timeMinute >= 2 && timeSecond >= 44){
     // stop recording
     self.$store.commit('UPDATE_RECORDER_STATUS', true);
     self.active = false;
