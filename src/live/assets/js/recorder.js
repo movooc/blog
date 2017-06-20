@@ -89,49 +89,51 @@ function caculateTime() {
     }
     //
     timeMinute = parseInt(diff/60);
-    timeSecond = diff%60 || 1;
+    timeSecond = diff%60;
     // 分类
     switch (timeMinute){
       case 0:
         //
-        if(timeSecond >= 25 && timeSecond <= 30){
-          timeSecond = (timeSecond - 25)*0.6;
-        }else if(timeSecond > 30 && timeSecond < 55) {
-          timeSecond = 3;
-        }else if(timeSecond >= 55) {
-          timeSecond = (timeSecond - 55)*1;
+        if(timeSecond >= 27 && timeSecond <= 30){
+          diff = diff + (timeSecond - 27)*0.6;
+        }else if(timeSecond > 30 && timeSecond < 57) {
+          diff = diff + 2;
+        }else if(timeSecond >= 57) {
+          diff = diff + 2 + (timeSecond - 57)*1;
         };
         break;
       case 1:
         //
         if(timeSecond < 25){
-          timeSecond = 5;
-        }else if(timeSecond >= 25 && timeSecond <= 30){
-          timeSecond = (timeSecond - 25)*1.6;
-        }else if(timeSecond > 30 && timeSecond < 55) {
-          timeSecond = 8;
-        }else if(timeSecond >= 55) {
-          timeSecond = (timeSecond - 55)*2;
+          diff = diff + 5;
+        }else if(timeSecond >= 25 && timeSecond <= 28){
+          diff = diff + 5 + (timeSecond - 24)*0.6;
+        }else if(timeSecond > 28 && timeSecond < 57) {
+          diff = diff + 8;
+        }else if(timeSecond >= 57) {
+          diff = diff + 10;
         };
         break;
       case 2:
         //
         if(timeSecond < 25){
-          timeSecond = 10;
+          diff = diff + 10;
         }else if(timeSecond >= 25 && timeSecond <= 30){
-          timeSecond = (timeSecond - 25)*3;
-        }else if(timeSecond > 30 && timeSecond < 44) {
-          timeSecond = 14;
+          diff = diff + 10 + (timeSecond - 25)*0.8;
+        }else if(timeSecond > 30 && timeSecond <= 44) {
+          diff = diff + 14;
         }
         break;
       default:
         break;
     }
-    timeSecond = Math.round(timeSecond);
+    // caculate again
+    let _timeMinute = parseInt(diff/60);
+    let _timeSecond = Math.ceil(diff%60);
     //
-    let seconds = timeSecond < 10 ? `0${timeSecond}` : timeSecond;
+    let seconds = _timeSecond < 10 ? `0${_timeSecond}` : _timeSecond;
     // 更新
-    ctx.$store.commit('UPDATE_RECORDER_TIMER', `${timeMinute}:${seconds}`);
+    ctx.$store.commit('UPDATE_RECORDER_TIMER', `${_timeMinute}:${seconds}`);
   }catch(e){}
 }
 
