@@ -127,6 +127,8 @@ function caculateTime() {
       default:
         break;
     }
+    /*// 分类
+    diff += timeMinute*5 + parseInt(timeSecond/12);*/
     // caculate again
     let _timeMinute = parseInt(diff/60);
     let _timeSecond = Math.ceil(diff%60);
