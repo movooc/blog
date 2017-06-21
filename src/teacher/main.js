@@ -7,7 +7,7 @@ import FastClick from 'fastclick';
 import App from './App';
 import store from './vuex/store';
 import routes from './router';
-import { Vueinterceptors, VueFilterMoment } from '@teacher/assets/js/middleware';
+import { Vueinterceptors, VueFilterMoment, VueFilterSpecKey } from '@teacher/assets/js/middleware';
 import VeeValidate, { Validator } from 'vee-validate';
 import SetWechatTitle from '@lib/js/setWechatTitle';
 import '@lib/css/font.styl';
@@ -41,6 +41,8 @@ Vue.use(VeeValidate, vueConfig);
 Vueinterceptors();
 /* set vue moment */
 Vue.use(VueFilterMoment);
+/* set vue spec key */
+Vue.use(VueFilterSpecKey);
 
 /* bind router */
 const router = new VueRouter({

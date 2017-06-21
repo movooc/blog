@@ -34,6 +34,13 @@
           处理中心
         </router-link>
       </li>
+      <li>
+        <router-link to="/data">
+          <i class="iconfont icon-shuju"></i>
+          &nbsp;&nbsp;
+          数据中心
+        </router-link>
+      </li>
     </ul>
   </div>
 </template>

@@ -18,6 +18,10 @@ if(process.env.NODE_ENV == 'production'){
   var handleHas = r => require.ensure([], () => r(require('../views/handle/handle-has')), 'teacher/teacher-handleHas');
   var handleWill = r => require.ensure([], () => r(require('../views/handle/handle-will')), 'teacher/teacher-handleWill');
   var handleList = r => require.ensure([], () => r(require('../views/handle/list')), 'teacher/teacher-handleList');
+  /*数据中心*/
+  var data = r => require.ensure([], () => r(require('../views/data/index')), 'teacher/teacher-data');
+  var dataCourse = r => require.ensure([], () => r(require('../views/data/course')), 'teacher/teacher-dataCourse');
+  var dataOrigin = r => require.ensure([], () => r(require('../views/data/origin')), 'teacher/teacher-dataOrigin');
 
 }else{
   //
@@ -31,6 +35,10 @@ if(process.env.NODE_ENV == 'production'){
   var handleHas = require('../views/handle/handle-has');
   var handleWill = require('../views/handle/handle-will');
   var handleList = require('../views/handle/list');
+  /*数据中心*/
+  var data = require('../views/data/index');
+  var dataCourse = require('../views/data/course');
+  var dataOrigin = require('../views/data/origin');
 }
 
 export default [
@@ -99,7 +107,7 @@ export default [
     children: [
       {
         path: '',
-        redirect: '/handle/has'
+        redirect: '/handle/will'
       },
       // 已处理列表
       {
@@ -146,6 +154,35 @@ export default [
             }
           },
         ]
+      },
+    ]
+  },
+  {
+    path: '/data',
+    name: 'data',
+    component: data,
+    children: [
+      {
+        path: '',
+        redirect: '/data/course'
+      },
+      // 数据中心
+      {
+        path: '/data/course',
+        name: 'data-course',
+        component: dataCourse,
+        meta: {
+          pageTitle: '易课-数据中心'
+        }
+      },
+      // 数据来源首页
+      {
+        path: '/data/origin/:lesson_sn/:origin_id',
+        name: 'data-origin',
+        component: dataOrigin,
+        meta: {
+          pageTitle: '易课-数据中心'
+        }
       },
     ]
   },

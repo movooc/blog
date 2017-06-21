@@ -34,6 +34,13 @@
           处理中心
         </a>
       </li>
+      <li>
+        <a :href="`${teacherHost}#/data`">
+          <i class="iconfont icon-shuju"></i>
+          &nbsp;&nbsp;
+          数据中心
+        </a>
+      </li>
     </ul>
   </div>
 </template>
