@@ -33,7 +33,24 @@ export const fetchUserInfo = ({commit}, query) => {
   return _get({ url, query }, commit)
     .then((json) => {
       if (json.error == 0) {
-        return commit('FETCH_USER_INFO', json.data)
+        return Promise.resolve(json.data);
+        //return commit('FETCH_USER_INFO', json.data);
+      }
+      return Promise.reject(new Error('FETCH_USER_INFO failure'))
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+// 获得统计信息
+export const fetchStatsOverview = ({commit}, query) => {
+  const url = `${_prefix}/stats-overview.api`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return Promise.resolve(json.data);
+        //return commit('FETCH_USER_INFO', json.data);
       }
       return Promise.reject(new Error('FETCH_USER_INFO failure'))
     })

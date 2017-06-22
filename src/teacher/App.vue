@@ -33,8 +33,14 @@ export default {
   },
   created() {
     // 获取用户信息
-    this.$store.dispatch('fetchUserInfo').then((data) => {
-      console.log('success');
+    this.$store.dispatch('fetchUserInfo').then((data1) => {
+      this.$store.dispatch('fetchStatsOverview').then((data2) => {
+        this.$store.commit('FETCH_USER_INFO', { ...data1, ...data2});
+        console.log('success');
+      }, (err) => {
+        alert(err.message);
+      });
+
     }, (err) => {
       alert(err.message);
     });
