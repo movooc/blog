@@ -10,7 +10,7 @@
         <span>标题</span>
         <span>收益</span>
         <span>状态</span>
-        <span class="handle">操作</span>
+        <span class="handle-btn">操作</span>
       </li>
       <li v-for="list in lists">
         <span>{{list.plan.dtm_start}}</span>
@@ -27,8 +27,10 @@
           <span v-if="list.step == 'finish'">已结束</span>
         </span>
         <div class="handle">
-          <a href="javascript:;" @click="editLesson(list.sn)" v-if="list.step != 'submit'">编辑</a>
-          <span v-if="list.step == 'submit' || list.step == 'denied'">编辑</span>
+          <!--<a href="javascript:;" @click="editLesson(list.sn)" v-if="list.step != 'submit' && list.step != 'denied'">编辑</a>-->
+          <a href="javascript:;" @click="enterLesson(list.sn)" v-if="list.step != 'submit' && list.step != 'denied'">进入详情</a>
+          <span v-if="list.step == 'submit'">暂无操作</span>
+          <span v-if="list.step == 'denied'">审核未通过</span>
         </div>
       </li>
     </ul>
@@ -48,7 +50,7 @@
       computed: {
       },
       created() {
-          this.$store.commit('CHANGE_IS_NOTICE', false);
+        this.$store.commit('CHANGE_IS_NOTICE', false);
       },
       data() {
         return {}
@@ -98,9 +100,9 @@
       &.head {
         background: #E3E3E3;
       }
-      &:nth-child(2n+3) {
+      /*&:nth-child(2n+3) {
         background: #F7F7F7;
-      }
+      }*/
       .price {
         color: #fb617f;
       }
@@ -119,6 +121,10 @@
           border: 0 none;
         }
         &.handle{
+          -webkit-box-flex: 3;
+          box-flex: 3;
+        }
+        &.handle-btn{
           -webkit-box-flex: 3;
           box-flex: 3;
         }

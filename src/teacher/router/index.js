@@ -13,6 +13,7 @@ if(process.env.NODE_ENV == 'production'){
   var list = r => require.ensure([], () => r(require('../views/course/list')), 'teacher/teacher-courseList');
   var detail = r => require.ensure([], () => r(require('../views/course/detail')), 'teacher/teacher-courseDetail');
   var create = r => require.ensure([], () => r(require('../views/course/create')), 'teacher/teacher-courseCreate');
+  var share = r => require.ensure([], () => r(require('../views/course/share')), 'teacher/teacher-courseShare');
   /*处理中心*/
   var handle = r => require.ensure([], () => r(require('../views/handle/index')), 'teacher/teacher-handle');
   var handleHas = r => require.ensure([], () => r(require('../views/handle/handle-has')), 'teacher/teacher-handleHas');
@@ -30,6 +31,7 @@ if(process.env.NODE_ENV == 'production'){
   var list = require('../views/course/list');
   var detail = require('../views/course/detail');
   var create = require('../views/course/create');
+  var share = require('../views/course/share');
   /*处理中心*/
   var handle = require('../views/handle/index');
   var handleHas = require('../views/handle/handle-has');
@@ -96,6 +98,15 @@ export default [
         component: create,
         meta: {
           pageTitle: '易课-课程编辑'
+        }
+      },
+      // 分享课程
+      {
+        path: '/course/share/:lesson_sn',
+        name: 'share',
+        component: share,
+        meta: {
+          pageTitle: '易课-课程分享'
         }
       }
     ]

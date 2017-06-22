@@ -146,4 +146,19 @@ export const fetchQiniuToken = ({commit}, query) => {
       return Promise.reject(error)
     })
 };
+// 获得分享数据
+export const fetchShareInvite = ({commit}, query) => {
+  const url = `${_prefix}/share-invite.api`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return Promise.resolve(json.data);
+      }
+      return Promise.reject(new Error('Fetch_Share_Invite failure'))
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
 

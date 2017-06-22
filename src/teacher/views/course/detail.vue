@@ -6,6 +6,7 @@
         <span class="title-handle pull-right" @click="backToCourse">返回</span>
         <span class="title-handle pull-right" @click="startLesson" v-if="courseDetail.step=='opened'">点击开课</span>
         <span class="title-handle pull-right" @click="startLesson" v-if="courseDetail.step=='onlive' || courseDetail.step=='repose' || courseDetail.step=='finish'">进入直播</span>
+        <span class="title-handle pull-right" @click="shareLesson(courseDetail.sn)">分享课程</span>
       </div>
       <div class="lesson-content clearfix">
         <div class="lesson-img">
@@ -111,6 +112,10 @@
         }, (err) => {
           alert(err.message);
         });
+      },
+      shareLesson(lesson_sn){
+        //
+        this.$router.push({ name: 'share', params: {lesson_sn:lesson_sn} });
       },
       backToCourse() {
         this.$router.push({ name: 'course' })
