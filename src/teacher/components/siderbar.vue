@@ -7,8 +7,8 @@
       <div class="bar-text pull-left">
         <h4 v-text="userInfo.name"></h4>
         <div class="total">
-          <span>课程总数<br />0</span>&nbsp;&nbsp;&nbsp;
-          <span>收听总数<br />0</span>
+          <span>课程总数<br />{{userInfo | specKey('teacher.lesson.count')}}</span>&nbsp;&nbsp;&nbsp;
+          <span>听课人数<br />{{userInfo | specKey('teacher.access.unique')}}</span>
         </div>
       </div>
     </div>
