@@ -15,7 +15,7 @@ var audioInput = null,
 // 定义录制时间
 var startTimer = 0;
 // 定义显示时间
-var showTimer = 0;
+//var showTimer = 0;
 var timeMinute = 0;
 var timeSecond = 0;
 // 开始监测状态
@@ -82,53 +82,12 @@ function caculateTime() {
   try {
     let diff = 0;
     //
-    if(timeSecond >= 30){
-      diff = Math.ceil(audioRecorder.context.currentTime - showTimer + 1);
-    }else{
-      diff = Math.ceil((new Date().getTime() - startTimer)/1000);
-    }
+    diff = Math.ceil((new Date().getTime() - startTimer)/1000);
     //
     timeMinute = parseInt(diff/60);
     timeSecond = diff%60;
     // 分类
-    switch (timeMinute){
-      case 0:
-        //
-        if(timeSecond >= 27 && timeSecond <= 30){
-          diff = diff + (timeSecond - 27)*0.6;
-        }else if(timeSecond > 30 && timeSecond < 57) {
-          diff = diff + 2;
-        }else if(timeSecond >= 57) {
-          diff = diff + 2 + (timeSecond - 57)*1;
-        };
-        break;
-      case 1:
-        //
-        if(timeSecond < 25){
-          diff = diff + 5;
-        }else if(timeSecond >= 25 && timeSecond <= 28){
-          diff = diff + 5 + (timeSecond - 24)*0.6;
-        }else if(timeSecond > 28 && timeSecond < 57) {
-          diff = diff + 8;
-        }else if(timeSecond >= 57) {
-          diff = diff + 10;
-        };
-        break;
-      case 2:
-        //
-        if(timeSecond < 25){
-          diff = diff + 10;
-        }else if(timeSecond >= 25 && timeSecond <= 30){
-          diff = diff + 10 + (timeSecond - 25)*0.6;
-        }else if(timeSecond > 30 && timeSecond <= 46) {
-          diff = diff + 14;
-        }
-        break;
-      default:
-        break;
-    }
-    /*// 分类
-    diff += timeMinute*5 + parseInt(timeSecond/12);*/
+    diff = diff + timeMinute*5 + parseInt(timeSecond/12);
     // caculate again
     let _timeMinute = parseInt(diff/60);
     let _timeSecond = Math.ceil(diff%60);
@@ -156,7 +115,7 @@ function inspectRecording(self) {
     return audioRecorder.stop();
   }
   // 时间大于2分44秒
-  if(timeMinute >= 2 && timeSecond >= 44){
+  if(timeMinute >= 2 && timeSecond >= 46){
     // stop recording
     self.$store.commit('UPDATE_RECORDER_STATUS', true);
     self.active = false;
@@ -194,7 +153,7 @@ export const toggleRecording = function( self ) {
     if (!audioRecorder)
       return;
     startTimer = new Date().getTime();
-    showTimer = audioRecorder.context.currentTime;
+    //showTimer = audioRecorder.context.currentTime;
     //
     timeMinute = 0;
     timeSecond = 0;
