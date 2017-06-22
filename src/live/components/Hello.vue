@@ -130,6 +130,8 @@
           this.$store.commit('UPDATE_AVATAR', jsonData.lesson_info.teacher.avatar);
           // 分享
           this.fetchWXConfig(jsonData.lesson_info);
+          // 获取统计消息
+          this.fetchStats();
         }catch(e){};
       },
       handleAsynData() {
@@ -169,6 +171,8 @@
                 this.open.groupId = this.open.teach;
                 this.open.discuss = this.open.discuss;
                 this.$store.commit('UPDATE_USERINFO', this.open);
+                // 获取统计消息
+                this.fetchStats();
               }
             },(err)=>{
               console.log(err);
@@ -260,6 +264,19 @@
               }
             });
 
+          });
+        }catch(e){};
+      },
+      fetchStats() {
+        try{
+          let statsUrl = `${this.liveHost}/stats-overview.api`;
+          // 获取统计信息
+          this.$http.get(statsUrl).then((json)=>{
+            if(json.ok){
+              this.$store.commit('UPDATE_STATSINFO', json.body.data);
+            }
+          },(err)=>{
+            console.log(err);
           });
         }catch(e){};
       }

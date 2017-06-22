@@ -37,6 +37,7 @@ const state = {
   boxMoreShow: false,
   recorderStatus: false,
   recorderTimer: '0:01',
+  statsInfo: {},
   liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,''):'/api'),
   studentHost:(process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'?'):'/student.html?'),
   teacherHost:(process.env.NODE_ENV=='production'?process.env.TEACHER_HOST.replace(/\/$/,''):'/teacher.html'),
@@ -148,6 +149,9 @@ const mutations = {
   },
   UPDATE_RECORDER_TIMER(state, time){
     state.recorderTimer = time;
+  },
+  UPDATE_STATSINFO(state, info){
+    state.statsInfo = { ...info };
   },
 };
 

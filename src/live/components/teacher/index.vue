@@ -7,8 +7,8 @@
       <div class="bar-text pull-left">
         <h4 v-text="teacherInfo.name"></h4>
         <div class="total">
-          <span>课程总数<br />0</span>&nbsp;&nbsp;&nbsp;
-          <span>收听总数<br />0</span>
+          <span>课程总数<br />{{statsInfo['teacher.lesson.count'] || 0}}</span>&nbsp;&nbsp;&nbsp;
+          <span>听课人数<br />{{statsInfo['teacher.access.unique'] || 0}}</span>
         </div>
       </div>
     </div>
@@ -52,7 +52,8 @@
     computed: {
       ...mapState([
         'teacherInfo',
-        'teacherHost'
+        'teacherHost',
+        'statsInfo'
       ])
     },
     props: {

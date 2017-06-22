@@ -62,6 +62,8 @@
             alert(err.SrcErrorInfo);
             window.location.href = this.studentHost;
           }
+          alert(err.ErrorInfo);
+          console.log(err);
         }else{
           // 进群成功
           this.joinGroup();
