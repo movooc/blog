@@ -50,7 +50,7 @@
         </div>
       </li>
       <li class="no-enroll" v-if="!lists.length">
-        <p>快去课程列表选择优质课程报名吧</p>
+        <p>暂无已报名课程，快去选择优质课程报名吧</p>
         <router-link to="/course">现在就去</router-link>
       </li>
     </ul>

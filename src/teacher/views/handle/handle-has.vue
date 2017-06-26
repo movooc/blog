@@ -1,6 +1,6 @@
 <template>
   <section class="handle-has">
-    <p class="center" v-if="!getHandleList.total">暂无处理列表</p>
+    <p class="center" v-if="!getHandleList.total">暂无已处理退款申请</p>
     <router-view :mode="mode"></router-view>
     <v-paging :page="getHandleList.page" :total="getHandleList.totalPage" :url="willUrl" v-if="getHandleList && getHandleList.total"></v-paging>
   </section>

@@ -19,9 +19,9 @@
         <span class="price">&#65509;{{list.revenue}}</span>
         <span>
           <span v-if="list.step == 'submit'">审核中</span>
-          <span v-if="list.step == 'denied'">审核不通过</span>
+          <span v-if="list.step == 'denied'">未通过</span>
           <span v-if="list.step == 'closed'">已下架</span>
-          <span v-if="list.step == 'opened'">开放中</span>
+          <span v-if="list.step == 'opened'">报名中</span>
           <span v-if="list.step == 'onlive'">授课中</span>
           <span v-if="list.step == 'repose'">交流中</span>
           <span v-if="list.step == 'finish'">已结束</span>

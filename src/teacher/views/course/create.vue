@@ -51,9 +51,9 @@
       <!--我已阅读并同意《讲师须知》的内容-->
       <p>
         <i class="iconfont icon-dot"></i>&nbsp;&nbsp;授课内容不得违反国家法律法规<br />
-        <i class="iconfont icon-dot"></i>&nbsp;&nbsp;课程审核通过后即开放报名，修改课程名称、介绍需要再次审核<br />
         <i class="iconfont icon-dot"></i>&nbsp;&nbsp;课堂分为授课区和讨论区，学员可在讨论区交流<br />
-        <i class="iconfont icon-dot"></i>&nbsp;&nbsp;课程结束后，可选择是否开放课后交流时间，与学员进一步探讨
+        <i class="iconfont icon-dot"></i>&nbsp;&nbsp;课程结束后，可选择是否开放课后交流时间，与学员进一步探讨<br />
+        <i class="iconfont icon-dot"></i>&nbsp;&nbsp;课程审核通过后即开放报名，修改课程信息需要再次审核
       </p>
     </div>
     <p class="button"><button @click="completeCreate">提交审核</button></p>

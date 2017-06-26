@@ -4,14 +4,14 @@
       <li v-for="list in lists">
         <a href="javascript:;" @click="enterLesson(list.sn)">
           <div class="list-title" v-text="list.title"></div>
-          <div class="list-img">
+          <div class="list-img" v-if="list.cover">
             <img v-lazy="`${list.cover}!cover`" />
-            <span class="list-status" v-if="list.step == 'opened'">
+            <!--<span class="list-status" v-if="list.step == 'opened'">
               {{`${list.plan.dtm_now}#${list.plan.dtm_start}` | moment}}
             </span>
             <span class="list-status" v-if="list.step == 'onlive'">
               直播中
-            </span>
+            </span>-->
             <!--<span class="list-status">-->
               <!--<span v-if="list.step == 'submit'">未开放</span>-->
               <!--<span v-if="list.step == 'opened'">{{`${list.plan.dtm_now}#${list.plan.dtm_start}` | moment}}</span>-->
@@ -20,14 +20,29 @@
               <!--<span v-if="list.step == 'finish'">已结束</span>-->
             <!--</span>-->
           </div>
+          <div class="list-brief">
+            {{list.brief}}
+          </div>
           <div class="list-content">
-            <div class="price">
-              &#65509;{{list.price}}
+            <div class="l-name">
+              <i class="iconfont icon-jiangshi"></i>
+              {{list.teacher.name}}
             </div>
-            <div class="date">
-              <i class="iconfont icon-people"></i>
+            <div>
+              <i class="iconfont icon-xueyuan1"></i>
               {{list.participants}}
-              &nbsp;
+            </div>
+            <div>
+              <i class="iconfont icon-jiage1"></i>
+              {{list.price}}
+            </div>
+            <div class="right">
+              <span class="timer" v-if="list.step == 'opened'">
+                {{`${list.plan.dtm_now}#${list.plan.dtm_start}` | moment}}
+              </span>
+              <span class="onlive" v-if="list.step == 'onlive'">
+                直播中
+              </span>
             </div>
           </div>
         </a>
@@ -101,10 +116,11 @@
         .list-title{
           padding: 33px 0 15px;
           color: #3C4A55;
-          px2px(font-size, 34px);
+          px2px(font-size, 36px);
         }
         .list-img{
           position: relative;
+          padding-bottom: 16px;
           width: 100%;
           height: 300px;
           border-radius: 15px;
@@ -123,12 +139,46 @@
             width: 100%;
           }
         }
+        .list-brief{
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          max-height: 77px;
+          color: #9ca7c1;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          px2px(font-size, 30px);
+          px2px(line-height, 40px);
+        }
         .list-content{
           padding: 26px 0;
           overflow: hidden;
           px2px(font-size, 30px);
 
-          .price{
+          >*{
+            float: left;
+            padding-right: 15px;
+            color: #9ca7c1;
+            &.right {
+              float: right;
+            }
+            .iconfont{
+              px2px(font-size, 28px);
+            }
+          }
+          .l-name {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+          }
+          .onlive {
+            color: #2dc17b;
+          }
+          .timer {
+            color: #fb7070;
+          }
+          /*.price{
             float: left;
             color: #fb6666;
             clear: both;
@@ -139,7 +189,7 @@
             .iconfont{
               px2px(font-size, 32px);
             }
-          }
+          }*/
         }
         .list-status{
           position: absolute;

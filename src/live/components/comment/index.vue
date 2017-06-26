@@ -13,7 +13,7 @@
           <li>
             <div class="user-content">
               <div class="con-text" v-if="lessonInfo.step!='finish'">
-                <a href="javascript:;" @click="pullHistory" v-if="canPullMsgs"><i class="iconfont icon-click"></i>&nbsp;查看历史</a>
+                <a href="javascript:;" @click="pullHistory" v-if="canPullMsgs"><i class="iconfont icon-click"></i>&nbsp;查看历史（更多消息）</a>
                 <span class="no-msg" v-if="!canPullMsgs">-没有更多了-</span>
               </div>
               <div class="con-text" v-if="lessonInfo.step=='finish'">

@@ -8,9 +8,9 @@
     <div>
       长按识别二维码
       <br />
-      关注易灵公众号
+      关注易课公众号
       <br />
-      获得更多课程&nbsp;
+      获取更多课程&nbsp;
     </div>
     <div>
       <img :src="`${assetsHost}/static/student/_static/student/img/qrcode.png`" />

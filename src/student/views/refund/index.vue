@@ -1,5 +1,15 @@
 <template>
   <section class="refund">
+    <div class="refund-warn">
+      <p>向讲师提交退款申请</p>
+      <div class="refund-list">
+        <ul>
+          <li>&middot;&nbsp;提交退款申请后不能评价课程</li>
+          <li>&middot;&nbsp;退款后不能收听课程</li>
+          <li>&middot;&nbsp;退款后不能再次购买</li>
+        </ul>
+      </div>
+    </div>
     <div class="refund-info">
       <dl>
         <dt>课程</dt>

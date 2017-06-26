@@ -1,7 +1,7 @@
 <template>
   <section class="advise">
     <div class="text">
-      <textarea cols="30" rows="10" placeholder="请描述你的问题，我们会尽快和您联系" v-model="data.text" @blur="blurEvent"></textarea>
+      <textarea cols="30" rows="10" placeholder="请描述你遇到的问题或者对易课的建议" v-model="data.text" @blur="blurEvent"></textarea>
     </div>
     <div class="img clearfix">
       <div class="add-img cursor">
