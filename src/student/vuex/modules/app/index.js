@@ -5,6 +5,7 @@ import mutations from './mutations'
 const state = {
   userInfo: {},
   loading: false,
+  assetsHost: (process.env.ASSETS_HOST?process.env.ASSETS_HOST:'https://assets.sandbox.yike.fm/'),
 }
 
 export default{

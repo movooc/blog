@@ -13,14 +13,21 @@
       获得更多课程&nbsp;
     </div>
     <div>
-      <img src="https://assets.sandbox.yike.fm/static/student/_static/student/img/qrcode.png" />
+      <img :src="`${assetsHost}/static/student/_static/student/img/qrcode.png`" />
     </div>
   </div>
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+
     export default{
       name: 'qr-code',
+      computed: {
+        ...mapGetters({
+          assetsHost: 'getAssetsHost',
+        })
+      },
       methods: {
         backToHome() {
           this.$router.push({ name: 'course' });

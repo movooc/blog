@@ -2,6 +2,7 @@ var path = require('path');
 var config = require('../config');
 var glob = require('glob');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var assetsHost = process.env.ASSETS_HOST ? process.env.ASSETS_HOST : 'https://assets.sandbox.yike.fm/';
 
 exports.assetsPath = function (_path) {
   var assetsSubDirectory = process.env.NODE_ENV === 'production'
@@ -52,8 +53,8 @@ exports.cssLoaders = function (options) {
     less: generateLoaders('less'),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
-    stylus: generateLoaders('stylus'),
-    styl: generateLoaders('stylus')
+    stylus: generateLoaders('stylus', { define: {userCenterImg:`${assetsHost}static/student/_static/student/img/center.png`} }),
+    styl: generateLoaders('stylus', { define: {userCenterImg:`${assetsHost}static/student/_static/student/img/center.png`} })
   }
 };
 

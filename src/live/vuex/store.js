@@ -41,6 +41,7 @@ const state = {
   liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,''):'/api'),
   studentHost:(process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'?'):'/student.html?'),
   teacherHost:(process.env.NODE_ENV=='production'?process.env.TEACHER_HOST.replace(/\/$/,''):'/teacher.html'),
+  assetsHost:(process.env.ASSETS_HOST ? process.env.ASSETS_HOST : 'https://assets.sandbox.yike.fm/'),
 };
 
 /* mutations serials */

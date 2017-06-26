@@ -24,7 +24,7 @@
           <li v-for="comment in commentMessageInfo">
             <div class="user-img">
               <img v-if="userAvatar[comment.account]" :src="userAvatar[comment.account]" alt="">
-              <img v-if="!userAvatar[comment.account]" src="https://assets.sandbox.yike.fm/static/live/_static/live/img/comment_default.png" alt="">
+              <img v-if="!userAvatar[comment.account]" :src="`${assetsHost}static/live/_static/live/img/comment_default.png`" alt="">
             </div>
             <div class="user-content">
               <div class="con-title" v-text="comment.nickname" :class="{'is-self':comment.isSelfSend}"></div>
@@ -76,6 +76,7 @@
         'userAvatar',
         'lessonInfo',
         'boxMoreShow',
+        'assetsHost',
       ])
     },
     mounted () {
