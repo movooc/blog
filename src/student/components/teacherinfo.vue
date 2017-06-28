@@ -10,7 +10,14 @@
       </div>
       <div class="t-text">
         <div v-text="teacher.name"></div>
-        <p v-text="teacher.about"></p>
+        <div class="t-word" :class="{'word-fold':wordFold}">
+          <div class="t-word-con break-word" v-html="textFormat(teacher.about)" ref="t-word" :class="{'fold':(!showWord && wordFold)}"></div>
+          <span class="unfold" @click="toggleFold" v-if="wordFold">
+            <i class="iconfont icon-chevron-down" v-if="!showWord"></i>
+            <i class="iconfont icon-chevron-up" v-if="showWord"></i>
+            {{showWord?'收起':'展开'}}
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -25,12 +32,24 @@
         type: Object
       }
     },
-    created() {
-
+    data() {
+      return {
+        showWord: false,
+        wordFold: false,
+      };
+    },
+    mounted() {
+      this.wordFold = (this.$refs['t-word'].offsetHeight>182?true:false);
     },
     methods: {
-    }
-  }
+      textFormat(value){
+        return value.replace(/\n/g, '<br>');
+      },
+      toggleFold() {
+        this.showWord = !this.showWord;
+      },
+    },
+  };
 
 </script>
 
@@ -81,14 +100,34 @@
       }
       .t-text {
         width: 550px;
-        :first-child {
+        >:first-child {
           color: #12b7f5;
           px2px(font-size, 40px);
         }
-        :last-child {
+        >:last-child {
           color: #70788C;
           margin: 10px 0 10px;
           px2px(font-size, 32px);
+        }
+        .word-fold {
+          padding-bottom: 35px;
+        }
+      }
+    }
+    .t-word {
+      position: relative;
+      .unfold {
+        px2px(left, -55px);
+      }
+      .t-word-con {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: initial;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        px2px(line-height, 40px);
+        &.fold{
+          -webkit-line-clamp: 3;
         }
       }
     }

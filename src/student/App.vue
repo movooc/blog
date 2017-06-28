@@ -66,4 +66,8 @@ export default {
   .pull-right {
     float: right;
   }
+  .break-word {
+    word-wrap: break-word;
+    overflow: hidden;
+  }
 </style>

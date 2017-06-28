@@ -1,6 +1,6 @@
 <template>
   <section class="refund">
-    <div class="refund-warn">
+    <div class="refund-warn" v-if="mode != 'freely'">
       <p>向讲师提交退款申请</p>
       <div class="refund-list">
         <ul>

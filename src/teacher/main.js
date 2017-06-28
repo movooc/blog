@@ -10,6 +10,7 @@ import routes from './router';
 import { Vueinterceptors, VueFilterMoment, VueFilterSpecKey } from '@teacher/assets/js/middleware';
 import VeeValidate, { Validator } from 'vee-validate';
 import SetWechatTitle from '@lib/js/setWechatTitle';
+import VueLazyload from 'vue-lazyload';
 import '@lib/css/font.styl';
 import 'normalize.css';
 
@@ -43,6 +44,12 @@ Vueinterceptors();
 Vue.use(VueFilterMoment);
 /* set vue spec key */
 Vue.use(VueFilterSpecKey);
+/* lazy load */
+Vue.use(VueLazyload, {
+  //error: 'dist/error.png',
+  loading: `${process.env.ASSETS_HOST?process.env.ASSETS_HOST:'https://assets.sandbox.yike.fm/'}static/student/_static/student/img/loading.gif`,
+  try: 3, // default 1
+});
 
 /* bind router */
 const router = new VueRouter({

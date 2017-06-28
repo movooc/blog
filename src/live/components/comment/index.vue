@@ -13,7 +13,7 @@
           <li>
             <div class="user-content">
               <div class="con-text" v-if="lessonInfo.step!='finish'">
-                <a href="javascript:;" @click="pullHistory" v-if="canPullMsgs"><i class="iconfont icon-click"></i>&nbsp;查看历史（更多消息）</a>
+                <a href="javascript:;" @click="pullHistory" v-if="canPullMsgs"><i class="iconfont icon-click"></i>&nbsp;查看更多消息</a>
                 <span class="no-msg" v-if="!canPullMsgs">-没有更多了-</span>
               </div>
               <div class="con-text" v-if="lessonInfo.step=='finish'">
@@ -59,13 +59,6 @@
         isPC,
         canPullMsgs: true,
       };
-    },
-    updated(){
-//      let vComment = document.getElementById('comment-body');
-//      if(!vComment)return;
-//      setTimeout(()=>{
-//        vComment.scrollTop = vComment.scrollHeight;
-//      },100);
     },
     computed: {
       ...mapState([
@@ -189,6 +182,10 @@
 
         // 初始化webim数据
         exportInitData(initData);
+        // 获取历史消息
+        setTimeout(() => {
+          this.pullHistory();
+        }, 500);
       },
       updateAvatar(account, avatar){
         //

@@ -13,7 +13,8 @@
         <!--开始-->
         <button @click="stopRecording" v-if="!recorderStatus">停止</button>
         <button v-if="recorderStatus && !blobRecord">录音中...</button>
-        <button @click="startUpload" v-if="blobRecord">发送</button>
+        <button @click="startUpload" v-if="blobRecord && !uploading">发送</button>
+        <button v-if="uploading">发送中...</button>
       </div>
       <button class="cancle" @click="cancleRecording" v-if="!blobRecord">&#88;</button>
       <button class="cancle" @click="cancleBlobRecording" v-if="blobRecord && !uploading">&#88;</button>

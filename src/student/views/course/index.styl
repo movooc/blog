@@ -92,7 +92,7 @@
             border-top: 4px solid #12B7F5;
             -webkit-transform: rotate(135deg); /*箭头方向可以自由切换角度*/
             transform: rotate(135deg);
-          &.unfold
+          &.g-unfold
             &:after
               margin-top: 0px;
               -webkit-transform: rotate(-45deg);
@@ -122,6 +122,8 @@
         color: #3c4a55;
         px2px(font-size, 42px);
       .brief-con
+        position: relative;
+        padding: 25px 0 40px;
         border-bottom: 1px solid #e6eaf2;
       p
         margin: 0;
@@ -147,4 +149,31 @@
         dd
           margin-left: 0;
           color: #70788C;
-
+    .unfold
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      color: #12b7f5;
+      text-align: center;
+      &:after
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        content: '';
+        z-index: 1;
+        background: #fff;
+        -webkit-mask-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#ff0000), to(rgba(0, 0, 255, 0)));
+      .iconfont
+        px2px(font-size, 32px);
+    .b-text
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: initial;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      px2px(line-height, 40px);
+      &.fold
+        -webkit-line-clamp: 5;

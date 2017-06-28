@@ -15,6 +15,7 @@ var sdkAppID = null,
   curPlayAudio = null,
   openEmotionFlag = false,
   vScroll = null,
+  cScroll = null,
   vSms = null;
 
 //初始化数据
@@ -53,13 +54,6 @@ export const onBigGroupMsgNotify = function(msgList) {
 //newMsgList 为新消息数组，结构为[Msg]
 export const onMsgNotify = function(newMsgList) {
   //
-  if(!vScroll){
-    vScroll = document.getElementById('live-body');
-  }
-  // if(!vSms){
-  //   vSms = document.getElementById('live_sms_list');
-  // }
-  //
   for (var i = newMsgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
     var msg = newMsgList[i];
     var accountNick = msg.getFromAccountNick();
@@ -77,6 +71,14 @@ export const onMsgNotify = function(newMsgList) {
     }catch(e){
       return;
     }
+    // live body area
+    if(!vScroll){
+      vScroll = document.getElementById('live-body');
+    }
+    // comment area
+    if(!cScroll){
+      cScroll = document.getElementById('comment-body');
+    }
     // 是当前群消息 开始操作
     msg = assembleMsg(msg);
     // start
@@ -89,28 +91,33 @@ export const onMsgNotify = function(newMsgList) {
           let avatar = this.$store.state.userAvatar[msg.account];
           if(avatar){
             msg.avatar = avatar;
-            // let opt = {};
-            // opt[msg.account] = avatar;
-            // this.$store.commit('UPDATE_USER_AVATAR', opt);
+            //
             this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
+            //
+            this.$nextTick(()=>{
+              inspectCommentScroll();
+            });
           }else{
-
+            //
             throw new Error('there is no avatar');
           }
         }catch(e){
-          userUrl = `${userUrl}${msg.account}`;
           // 开始发送消息
+          this.$store.commit('UPDATE_USER_AVATAR', {[msg.account]:''});
           this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
+          //
+          this.$nextTick(()=>{
+            inspectCommentScroll();
+          });
           // 获取用户信息
-          this.$http.get(userUrl).then((json)=>{
-            if(json.ok){
-              let data = json.body.data;
-              //msg.avatar = data.avatar;
-              let opt = {};
-              opt[msg.account] = data.avatar;
-              this.$store.commit('UPDATE_USER_AVATAR', opt);
-            }
-          },(err)=>{});
+          setTimeout(()=>{
+            this.$http.get(`${userUrl}${msg.account}`).then((json)=>{
+              if(json.ok){
+                let data = json.body.data;
+                this.$store.commit('UPDATE_USER_AVATAR', {[msg.account]:data.avatar});
+              }
+            },(err)=>{});
+          }, 100);
         }
 
       }else{
@@ -978,8 +985,27 @@ function inspectScroll() {
       //
       if(scrollHeight > offsetHeight){
         // 一屏
-        if(scrollHeight - offsetHeight - scrollTop < (offsetHeight*2)/3){
+        if(scrollHeight - offsetHeight - scrollTop < offsetHeight){
           vScroll.scrollTop = scrollHeight;
+        }
+      }
+    },200);
+  }catch(e){}
+}
+
+//监测讨论区滚动条区域
+function inspectCommentScroll() {
+  try{
+    // 探测范围
+    setTimeout(()=>{
+      let scrollHeight = cScroll.scrollHeight;
+      let offsetHeight = cScroll.offsetHeight;
+      let scrollTop    = cScroll.scrollTop;
+      //
+      if(scrollHeight > offsetHeight){
+        // 三分二屏
+        if(scrollHeight - offsetHeight - scrollTop < (offsetHeight*2)/3){
+          cScroll.scrollTop = scrollHeight;
         }
       }
     },200);

@@ -18,19 +18,19 @@
       <li>
         <router-link to="/user/enrolled">
           <i class="iconfont icon-buy"></i>
-          <span>已报名的课程</span>
+          <span>已报名课程</span>
           <span class="arrow"></span>
         </router-link>
       </li>
     </ul>
     <ul>
-      <li>
+      <!-- <li>
         <router-link to="/user/guarantee">
           <i class="iconfont icon-info"></i>
           <span>课程保障</span>
           <span class="arrow"></span>
         </router-link>
-      </li>
+      </li> -->
       <li>
         <router-link to="/user/advise">
           <i class="iconfont icon-comment"></i>

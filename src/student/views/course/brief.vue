@@ -10,7 +10,7 @@
         </div>
         <p class="info-price">
           <span class="price">&#65509;{{course.price}}&nbsp;<em></em></span>
-          <span class="guarantee" @click="showGuar = !showGuar" v-bind:class="{ unfold: showGuar }">课程保障</span>
+          <span class="guarantee" @click="showGuar = !showGuar" v-bind:class="{ 'g-unfold': showGuar }">课程保障</span>
         </p>
         <div class="guarantee-text" v-show="showGuar">
           <dl>
@@ -19,7 +19,7 @@
           </dl>
           <dl>
             <dt>消息通知：</dt>
-            <dd>关注易课公众号后可及时接收课程通知</dd>
+            <dd>关注易灵微课公众号后可及时接收课程通知</dd>
           </dl>
           <dl>
             <dt>限时退款：</dt>
@@ -37,7 +37,16 @@
       </div>
       <div class="lesson-brief">
         <div class="brief-title">简介</div>
-        <p class="brief-con" v-text="course.brief"></p>
+        <div class="brief-con">
+          <div class="b-text break-word" ref="b-text" :class="{'fold':(!showBrief && briefFold)}">
+            {{course.brief}}
+          </div>
+          <span class="unfold" @click="toggleFold" v-if="briefFold">
+            <i class="iconfont icon-chevron-down" v-if="!showBrief"></i>
+            <i class="iconfont icon-chevron-up" v-if="showBrief"></i>
+            {{showBrief?'收起':'展开'}}
+          </span>
+        </div>
       </div>
       <teacher-info :teacher="course.teacher"></teacher-info>
       <qr-code></qr-code>
@@ -60,7 +69,9 @@
       return {
         course: null,
         showGuar: false,
-      }
+        showBrief: false,
+        briefFold: false,
+      };
     },
     computed: {
       ...mapGetters({
@@ -68,16 +79,19 @@
       })
     },
     created() {
-      //获取路由参数
+      // 获取路由参数
       let query = this.$route.query;
       this.course = this.courseDetail[query.lesson_sn];
     },
+    mounted() {
+      this.briefFold = (this.$refs['b-text'].offsetHeight>302?true:false);
+    },
     methods: {
       toggleFold() {
-
-      }
-    }
-  }
+        this.showBrief = !this.showBrief;
+      },
+    },
+  };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

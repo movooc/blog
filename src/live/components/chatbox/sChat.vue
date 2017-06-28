@@ -68,12 +68,6 @@
         if(this.boxMoreShow){
           this.$store.commit('UPDATE_BOX_MORE', false);
         }
-        /*if(!vScroll){
-          vScroll = document.getElementById('live-body');
-        };*/
-        //setTimeout(()=>{
-        //  vScroll.scrollTop = vScroll.scrollHeight;
-        //}, 400);
       },
       showModule() {
         this.$store.commit('UPDATE_BOX_MORE', !this.boxMoreShow);

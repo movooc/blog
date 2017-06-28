@@ -1,7 +1,7 @@
 <template>
   <section class="advise">
     <div class="text">
-      <textarea cols="30" rows="10" placeholder="请描述你遇到的问题或者对易课的建议" v-model="data.text" @blur="blurEvent"></textarea>
+      <textarea cols="30" rows="10" placeholder="请描述你遇到的问题或者对易灵微课的建议" v-model="data.text" @blur="blurEvent"></textarea>
     </div>
     <div class="img clearfix">
       <div class="add-img cursor">
@@ -75,7 +75,7 @@
         }
         // 开始请求
         this.$store.dispatch('fetchAdvise', this.data).then(() => {
-          alert('反馈成功!感谢你对易课的关注与支持，我们将认真对待你的建议与反馈。');
+          alert('反馈成功!感谢你对易灵微课的关注与支持，我们将认真对待你的建议与反馈。');
           this.$router.push({ name: 'user'});
         }, () => {
           alert('提交失败!');
