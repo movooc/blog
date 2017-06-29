@@ -269,72 +269,72 @@ function getGroupInfo (group_id, cbOK, cbErr) {
 
 // 发送并接收消息
 function sendMsgCallBack (msgtosend, callback) {
-    // 未登录
-    if (!loginInfo.identifier) {
-      alert('请填写帐号和票据');
-      return callback('请先登录!');
-    }
+  // 未登录
+  if (!loginInfo.identifier) {
+    alert('请填写帐号和票据');
+    return callback('请先登录!');
+  }
 
-    // 是否成功进入房间
-    if (!selToID) {
-      return callback('您还没有进入房间，暂不能聊天!');
-    }
-    //获取消息内容
-    var msgtosend = msgtosend;
-    var msgLen = _webim.Tool.getStrBytes(msgtosend);
+  // 是否成功进入房间
+  if (!selToID) {
+    return callback('您还没有进入房间，暂不能聊天!');
+  }
+  //获取消息内容
+  var msgtosend = msgtosend;
+  var msgLen = _webim.Tool.getStrBytes(msgtosend);
 
-    if (msgtosend.length < 1) {
-      return callback('发送的消息不能为空!');
-    }
+  if (msgtosend.length < 1) {
+    return callback('发送的消息不能为空!');
+  }
 
-    var maxLen, errInfo;
-    if (selType == _webim.SESSION_TYPE.GROUP) {
-      maxLen = _webim.MSG_MAX_LENGTH.GROUP;
-      errInfo = "消息长度超出限制(最多" + Math.round(maxLen / 3) + "汉字)";
-    } else {
-      maxLen = _webim.MSG_MAX_LENGTH.C2C;
-      errInfo = "消息长度超出限制(最多" + Math.round(maxLen / 3) + "汉字)";
-    }
-    if (msgLen > maxLen) {
-      return callback(errInfo);
-    }
+  var maxLen, errInfo;
+  if (selType == _webim.SESSION_TYPE.GROUP) {
+    maxLen = _webim.MSG_MAX_LENGTH.GROUP;
+    errInfo = "消息长度超出限制(最多" + Math.round(maxLen / 3) + "汉字)";
+  } else {
+    maxLen = _webim.MSG_MAX_LENGTH.C2C;
+    errInfo = "消息长度超出限制(最多" + Math.round(maxLen / 3) + "汉字)";
+  }
+  if (msgLen > maxLen) {
+    return callback(errInfo);
+  }
 
-    if (!selSess) {
-      selSess = new _webim.Session(selType, selToID, selToID, loginInfo.headurl, Math.round(new Date().getTime() / 1000));
+  if (!selSess) {
+    selSess = new _webim.Session(selType, selToID, selToID, loginInfo.headurl, Math.round(new Date().getTime() / 1000));
+  }
+  var isSend = true;//是否为自己发送
+  var seq = -1;//消息序列，-1表示sdk自动生成，用于去重
+  var random = Math.round(Math.random() * 4294967296);//消息随机数，用于去重
+  var msgTime = Math.round(new Date().getTime() / 1000);//消息时间戳
+  var subType;//消息子类型
+  if (selType == _webim.SESSION_TYPE.GROUP) {
+    //群消息子类型如下：
+    //_webim.GROUP_MSG_SUB_TYPE.COMMON-普通消息,
+    //_webim.GROUP_MSG_SUB_TYPE.LOVEMSG-点赞消息，优先级最低
+    //_webim.GROUP_MSG_SUB_TYPE.TIP-提示消息(不支持发送，用于区分群消息子类型)，
+    //_webim.GROUP_MSG_SUB_TYPE.REDPACKET-红包消息，优先级最高
+    subType = _webim.GROUP_MSG_SUB_TYPE.COMMON;
+  } else {
+    //C2C消息子类型如下：
+    //_webim.C2C_MSG_SUB_TYPE.COMMON-普通消息,
+    subType = _webim.C2C_MSG_SUB_TYPE.COMMON;
+  }
+
+  var msg = new _webim.Msg(selSess, isSend, seq, random, msgTime, loginInfo.identifier, subType, loginInfo.identifierNick);
+
+  // add file
+  msg.addCustom({data: msgtosend, desc: 'COMMENT'});
+
+  _webim.sendMsg(msg, function (resp) {
+    if (selType == _webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
+      // showMsg(msg);
     }
-    var isSend = true;//是否为自己发送
-    var seq = -1;//消息序列，-1表示sdk自动生成，用于去重
-    var random = Math.round(Math.random() * 4294967296);//消息随机数，用于去重
-    var msgTime = Math.round(new Date().getTime() / 1000);//消息时间戳
-    var subType;//消息子类型
-    if (selType == _webim.SESSION_TYPE.GROUP) {
-      //群消息子类型如下：
-      //_webim.GROUP_MSG_SUB_TYPE.COMMON-普通消息,
-      //_webim.GROUP_MSG_SUB_TYPE.LOVEMSG-点赞消息，优先级最低
-      //_webim.GROUP_MSG_SUB_TYPE.TIP-提示消息(不支持发送，用于区分群消息子类型)，
-      //_webim.GROUP_MSG_SUB_TYPE.REDPACKET-红包消息，优先级最高
-      subType = _webim.GROUP_MSG_SUB_TYPE.COMMON;
-    } else {
-      //C2C消息子类型如下：
-      //_webim.C2C_MSG_SUB_TYPE.COMMON-普通消息,
-      subType = _webim.C2C_MSG_SUB_TYPE.COMMON;
-    }
-
-    var msg = new _webim.Msg(selSess, isSend, seq, random, msgTime, loginInfo.identifier, subType, loginInfo.identifierNick);
-
-    // add file
-    msg.addCustom({data: msgtosend, desc: 'COMMENT'});
-
-    _webim.sendMsg(msg, function (resp) {
-      if (selType == _webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
-        // showMsg(msg);
-      }
-      _webim.Log.info('发消息成功');
-      callback(null, assembleMsg(msg));
-    }, function (err) {
-      _webim.Log.error('发消息失败:' + err.ErrorInfo);
-      callback(err);
-    });
+    _webim.Log.info('发消息成功');
+    callback(null, assembleMsg(msg));
+  }, function (err) {
+    _webim.Log.error('发消息失败:' + err.ErrorInfo);
+    callback(err);
+  });
 };
 
 // 封装消息
