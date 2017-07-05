@@ -1,12 +1,15 @@
 <template>
   <section class="refund">
-    <div class="refund-warn" v-if="mode != 'freely'">
-      <p>向讲师提交退款申请</p>
+    <div class="refund-warn">
+      <p v-if="mode =='freely'">无条件退款 </p>
+      <p v-if="mode =='apply'">向讲师提交退款申请</p>
+      <p v-if="mode =='appeal'">向平台提交退款申诉</p>
       <div class="refund-list">
         <ul>
-          <li>&middot;&nbsp;提交退款申请后不能评价课程</li>
-          <li>&middot;&nbsp;退款后不能收听课程</li>
-          <li>&middot;&nbsp;退款后不能再次购买</li>
+          <li v-if="mode=='freely'">&middot;&nbsp;退款后不能评价课程</li>
+          <li v-if="mode =='apply'">&middot;&nbsp;提交退款申请后不能评价课程</li>
+          <li>&middot;&nbsp;退款成功后不能再次购买课程</li>
+          <li>&middot;&nbsp;退款成功后不能继续观看课程</li>
         </ul>
       </div>
     </div>
@@ -14,6 +17,10 @@
       <dl>
         <dt>课程</dt>
         <dd v-text="title"></dd>
+      </dl>
+      <dl v-if="mode=='freely'">
+        <dt>讲师</dt>
+        <dd v-text="teacher">{{teacher}}</dd>
       </dl>
       <dl>
         <dt>金额</dt>
@@ -72,17 +79,34 @@
       }
     },
     created() {
-      let query = this.$route.query.params;
+      let query = this.$route.query;
       try{
         if(typeof(query) === 'string'){
           query = JSON.parse(query);
         }
         this.data.lesson_sn = query.lesson_sn;
+        // 判断来源
+        if(query.origin == 'live'){
+          //
+          this.$store.dispatch('fetchCourseDetail', {lesson_sn:query.lesson_sn}).then((result) => {
+            // 赋值
+            this.mode = result.refund_mode;
+            this.title = result.title;
+            this.teacher = result.teacher.name;
+            this.price = result.price;
+            this.text = (this.mode == 'freely')?'申请退款':(this.mode == 'apply')? '提交申请' :'提交申诉';
+          }, () => {
+            console.log('fail');
+          });
+          // 返回
+          return;
+        }
+        //
         this.mode = query.mode;
         this.title = query.title;
         this.teacher = query.teacher;
         this.price = query.price;
-        this.text = (this.mode == 'freely')?'退款':'提交申请';
+        this.text = (this.mode == 'freely')?'申请退款':(this.mode == 'apply')? '提交申请' :'提交申诉';
 
       }catch(e){}
     },

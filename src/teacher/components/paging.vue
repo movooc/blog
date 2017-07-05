@@ -17,18 +17,18 @@
       name: 'v-paging',
       props: {
         page: {
-          type: Number
+          type: Number,
         },
         total: {
-          type: Number
+          type: Number,
         },
         url: {
           type: String,
-        }
+        },
       },
       methods: {
-      }
-    }
+      },
+    };
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

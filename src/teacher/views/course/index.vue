@@ -13,6 +13,7 @@
     },
     created() {
       //this.$store.dispatch('changeHomeInfo', '欢迎欢迎!');
+      this.$store.commit('CHANGE_IS_NOTICE', false);
     },
   }
 </script>

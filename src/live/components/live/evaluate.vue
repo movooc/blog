@@ -22,6 +22,7 @@
 
 <script>
   import {mapState} from 'vuex';
+  import swal from 'sweetalert';
   import vStar from '@live/components/star/index.vue';
 
   export default
@@ -53,19 +54,35 @@
       },
       submitEva() {
         //
-        if(!this.data.lesson_sn)return alert('参数错误!');
+        if(!this.data.lesson_sn)return swal({
+          title: '错误提醒',
+          text: '参数错误',
+          confirmButtonText: "知道了"
+        });
         //
-        if(!this.data.score)return alert('请选择星级!');
+        if(!this.data.score)return swal({
+          title: '错误提醒',
+          text: '请选择星级',
+          confirmButtonText: "知道了"
+        });
         // 评价开始
         this.$store.dispatch('fetchEvaluate', this.data).then(() => {
           this.$store.commit('UPDATE_EVALUATE_SHOW', false);
           //this.$store.commit('UPDATE_IS_EVALUATE', true);
-          alert('评价成功!');
+          swal({
+            title: '错误提醒',
+            text: '评价成功',
+            confirmButtonText: "知道了"
+          });
         }, (error) => {
           if(error == -1){
             this.$store.commit('UPDATE_EVALUATE_SHOW', false);
             //this.$store.commit('UPDATE_IS_EVALUATE', true);
-            alert('本课程你已经评价过！');
+            swal({
+              title: '错误提醒',
+              text: '本课程你已经评价过',
+              confirmButtonText: "知道了"
+            });
           }
         });
       },

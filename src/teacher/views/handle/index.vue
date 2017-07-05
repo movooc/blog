@@ -1,6 +1,6 @@
 <template>
   <section class="handle">
-    <h4>处理中心</h4>
+    <div class="handle-title">退款处理</div>
     <div class="box-body">
       <div class="box-tab">
         <router-link class="button" to="/handle/will">未处理</router-link>
@@ -32,9 +32,8 @@
 <style lang="stylus" rel="stylesheet/stylus">
   .handle {
     background: #fff;
-    h4 {
-      margin: 0;
-      padding: 15px 25px;
+    .handle-title {
+      padding: 20px;
       font-size: 16px;
     }
   }

@@ -20,6 +20,7 @@
   import vTeacher from '@live/components/teacher/index.vue';
   import { removeStore } from '@lib/js/mUtils';
   import {mapState} from 'vuex';
+  import swal from 'sweetalert';
 
   export default
   {
@@ -59,10 +60,20 @@
             window.location.reload();
           };
           if(err.ErrorCode == 10016){
-            alert(err.SrcErrorInfo);
-            window.location.href = this.studentHost;
+            return swal({
+              title: '错误提醒',
+              text: err.ErrorCode,
+              confirmButtonText: "知道了"
+            }, ()=>{
+              window.location.href = this.studentHost;
+            });
           }
-          alert(err.ErrorInfo);
+          /*alert(err.ErrorInfo);*/
+          swal({
+            title: '错误提醒',
+            text: err.ErrorInfo,
+            confirmButtonText: "知道了"
+          });
           console.log(err);
         }else{
           // 进群成功
@@ -76,7 +87,11 @@
         this.$store.commit('UPDATE_LOADING', false);
         this.entering = false;
         exportCommentInit((err, data)=>{
-          if(err)return alert(err.ErrorInfo);
+          if(err)return swal({
+            title: '错误提醒',
+            text: err.ErrorInfo,
+            confirmButtonText: "知道了"
+          });
         });
       }
     },

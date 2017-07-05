@@ -1,4 +1,5 @@
 import { trimStr } from '@lib/js/mUtils';
+import swal from 'sweetalert';
 
 var sdkAppID = null,
   accountType = null,
@@ -281,7 +282,12 @@ function getGroupInfo (group_id, cbOK, cbErr) {
       }
     },
     function (err) {
-      alert(err.ErrorInfo);
+      /*alert(err.ErrorInfo);*/
+      swal({
+        title: '错误提醒',
+        text: err.ErrorInfo,
+        confirmButtonText: "知道了"
+      });
     }
   );
 };
@@ -323,7 +329,12 @@ function handlderMsg(msg) {
             'LastedMsgTime': msg.getTime()//消息时间戳
           };
           webim.c2CMsgReaded(opts);
-          alert('收到一条c2c消息(好友消息或者全员推送消息): 发送人=' + fromAccountNick + ", 内容=" + contentHtml);
+          /*alert('收到一条c2c消息(好友消息或者全员推送消息): 发送人=' + fromAccountNick + ", 内容=" + contentHtml);*/
+          swal({
+            title: '错误提醒',
+            text: '收到一条c2c消息(好友消息或者全员推送消息): 发送人=' + fromAccountNick + ", 内容=" + contentHtml,
+            confirmButtonText: "知道了"
+          });
           break;
       }
       break;
@@ -368,7 +379,12 @@ function sendPic(images, imgName) {
     }
     webim.Log.info('发消息成功');
   }, function (err) {
-    alert(err.ErrorInfo);
+    //
+    swal({
+      title: '错误提醒',
+      text: err.ErrorInfo,
+      confirmButtonText: "知道了"
+    });
   });
 };
 
@@ -400,7 +416,11 @@ function sendFile(file, fileName) {
     }
     webim.Log.info('发消息成功');
   }, function (err) {
-    alert(err.ErrorInfo);
+    swal({
+      title: '错误提醒',
+      text: err.ErrorInfo,
+      confirmButtonText: "知道了"
+    });
   });
 }
 
@@ -432,7 +452,11 @@ function sendSound(file, fileName) {
     }
     webim.Log.info('发消息成功');
   }, function (err) {
-    alert(err.ErrorInfo);
+    swal({
+      title: '错误提醒',
+      text: err.ErrorInfo,
+      confirmButtonText: "知道了"
+    });
   });
 }
 
@@ -446,7 +470,11 @@ function sendMsgCallBack (msgtosend, callback) {
         //调用tls登录服务
         tlsLogin();
       } else {//独立模式
-        alert('请填写帐号和票据');
+        swal({
+          title: '错误提醒',
+          text: '请填写帐号和票据',
+          confirmButtonText: "知道了"
+        });
       }
       return callback('请先登录!');
     }
@@ -946,7 +974,11 @@ function quitBigGroup(groupId) {
 
     },
     function (err) {
-      alert(err.ErrorInfo);
+      swal({
+        title: '错误提醒',
+        text: err.ErrorInfo,
+        confirmButtonText: "知道了"
+      });
     }
   );
 }

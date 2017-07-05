@@ -13,6 +13,8 @@ import SetWechatTitle from '@lib/js/setWechatTitle';
 import VueLazyload from 'vue-lazyload';
 import '@lib/css/font.styl';
 import 'normalize.css';
+import 'sweetalert/dist/sweetalert.css';
+import '@lib/css/sweetalert.styl';
 
 /*
  * fastclick

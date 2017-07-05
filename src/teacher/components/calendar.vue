@@ -399,7 +399,7 @@
           ])
         }
         //
-        this.$store.commit('CHANGE_CALENDAR', {value: this.value,show:false});
+        this.$store.commit('CHANGE_CALENDAR', {value: this.value.replace(/:\d{2}$/g, ''),show:false});
       },
       // 隐藏控件
       cancel() {

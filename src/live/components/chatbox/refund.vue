@@ -15,6 +15,7 @@
 
 <script type="text/javascript">
   import { mapState } from 'vuex';
+  import swal from 'sweetalert';
 
   export default
   {
@@ -45,8 +46,15 @@
           // 关闭退款状态
           this.refunding = false;
           this.$store.commit('UPDATE_REFUND_SHOW', false);
-          alert('退款成功!现在要将您送回课程列表!');
-          window.location.href = this.studentHost;
+          /*alert('退款成功!现在要将您送回课程列表!');*/
+          swal({
+            title: '错误提醒',
+            text: '退款成功!现在要将您送回课程列表!',
+            confirmButtonText: "好的"
+          }, ()=>{
+            window.location.href = this.studentHost;
+          });
+
         }, (err) => {
           // 关闭退款状态
           this.refunding = false;
@@ -54,13 +62,25 @@
           // 错误类型
           switch(err){
             case '1':
-              alert('退款失败!');
+              swal({
+                title: '错误提醒',
+                text: '退款失败!',
+                confirmButtonText: "知道了"
+              });
               break;
             case '2':
-              alert('退款失败!');
+              swal({
+                title: '错误提醒',
+                text: '退款失败!',
+                confirmButtonText: "知道了"
+              });
               break;
             case '3':
-              alert('超过退款时间范围内，不允许退款!');
+              swal({
+                title: '错误提醒',
+                text: '超过退款时间范围内，不允许退款!',
+                confirmButtonText: "知道了"
+              });
               break;
             default:
               console.log('default');

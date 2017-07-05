@@ -41,6 +41,17 @@
 
       // 设置data-dpr属性，留作的css hack之用
       docEl.setAttribute('data-dpr', dpr);
+      // 设置class
+      docEl.getElementsByTagName('body')[0].setAttribute('class', 'is-mobile');
+      // 重写alert
+      window.alert = function(name){
+        var iframe = document.createElement("IFRAME");
+        iframe.style.display="none";
+        iframe.setAttribute("src", 'data:text/plain,');
+        document.documentElement.appendChild(iframe);
+        window.frames[0].window.alert(name);
+        iframe.parentNode.removeChild(iframe);
+      };
     }else{
       // 设置成pc属性
       overEl.innerHTML = 'body{overflow-y: auto;}';

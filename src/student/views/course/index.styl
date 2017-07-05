@@ -14,6 +14,8 @@
       img
         width: 100%;
         max-height: 530px;
+      img[lazy=error]
+        display: none;
     .tab
       display: -webkit-box;
       display: box;
@@ -45,20 +47,23 @@
       .info-detail
         display: -webkit-box;
         display: box;
-        padding-bottom: 36px;
-        border-bottom: 1px solid #e6eaf2;
+        padding-bottom: 24px;
         px2px(font-size, 30px);
         >*
-          display: -webkit-box;
-          display: box;
+          display: block;
           color: #9CA7C1;
           -webkit-box-flex: 1;
           box-flex: 1;
-          justify-content: center;
+          //justify-content: center;
         .iconfont
           px2px(font-size, 28px);
           &.icon-people
             px2px(font-size, 32px);
+            position right;
+        >:last-child
+          text-align: right;
+      .info-detail+.info-detail
+        border-bottom: 1px solid #e6eaf2;
       .info-price
         position: relative;
         margin: 0;
@@ -70,14 +75,21 @@
             color: #9CA7C1;
             text-decoration:line-through;
             px2px(font-size, 32px);
-        .guarantee
+        .price-free
+          color: #2dc17b;
+          px2px(font-size, 32px);
+          em
+            color: #9CA7C1;
+            text-decoration:line-through;
+            px2px(font-size, 32px);
+        .guarantee, .g-refund
           position: absolute;
           right: 0;
           padding: 12px 18px;
           background: #f7f9fc;
           border-radius: 50px;
           -webkit-border-radius: 50px;
-          color: #12B7F5;
+          color: #3c4a55;
           px2px(top, 28px);
           &:after
             position: relative;
@@ -88,8 +100,8 @@
             width: 10px;
             height: 10px;
             vertical-align: middle;
-            border-right: 4px solid #12B7F5;
-            border-top: 4px solid #12B7F5;
+            border-right: 4px solid #3c4a55;
+            border-top: 4px solid #3c4a55;
             -webkit-transform: rotate(135deg); /*箭头方向可以自由切换角度*/
             transform: rotate(135deg);
           &.g-unfold
@@ -97,6 +109,10 @@
               margin-top: 0px;
               -webkit-transform: rotate(-45deg);
               transform: rotate(-45deg);
+        .g-refund
+          px2px(right, 200px);
+          &:after
+            display: none;
       .guarantee-text
         padding: 20px 0;
         px2px(font-size, 28px);
@@ -108,8 +124,8 @@
           dt,dd
             display: flex;
             display: -webkit-flex;
-          dt
-            color: #12b7f5;
+          /*dt
+            color: #3c4a55;*/
           dd
             margin-left: 0;
             -webkit-flex: 1;
@@ -168,6 +184,8 @@
         -webkit-mask-image: -webkit-gradient(linear, 0 0, 0 bottom, from(#ff0000), to(rgba(0, 0, 255, 0)));
       .iconfont
         px2px(font-size, 32px);
+      .icon-chevron-down, .icon-chevron-up
+        px2px(font-size, 42px);
     .b-text
       display: -webkit-box;
       -webkit-box-orient: vertical;

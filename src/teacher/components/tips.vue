@@ -1,14 +1,28 @@
 <template>
-  <header class="header">
-    <div class="container">
-      <h1>易灵微课</h1>
+  <header class="tips" v-if="show">
+    <div class="t-container" :style="">
+      {{text}}
     </div>
   </header>
 </template>
 
 <script>
     export default{
-      name: 'v-header',
+      name: 'v-tips',
+      props: {
+        text: {
+          type: String,
+        },
+        show: {
+          type: String,
+        },
+        offsetX: {
+          type: Number,
+        },
+        offsetY: {
+          type: Number,
+        },
+      },
       methods: {
       }
     }

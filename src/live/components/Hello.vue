@@ -62,6 +62,14 @@
         //
         return;
       }
+      // 老师端首次进入
+      if(decodeQueryString('teacherEnter')){
+        // 清除
+        removeStore(this.open.lesson_sn);
+        // 新url
+        let newUrl = window.location.href.replace(/&teacherEnter=[^&]*/, '');
+        window.history.pushState(null, null, newUrl);
+      }
 
       // 数据处理
       var jsonData = getStore(this.open.lesson_sn);
@@ -112,7 +120,7 @@
           jsonData.lesson_info.teach = this.open.teach;
           jsonData.lesson_info.discuss = this.open.discuss;
           // 改变title
-          SetWechatTitle(`易课-${jsonData.lesson_info.title}`);
+          SetWechatTitle(`易灵微课-${jsonData.lesson_info.title}`);
           // 用户信息
           //this.open.sn = jsonData.user_info.sn;
           this.open.name = jsonData.user_info.name;
@@ -163,7 +171,7 @@
                 // 存储usersig
                 setStore(data.sn, this.open.userSig);
                 // 改变title
-                SetWechatTitle(`易课-${jsonOpt.lesson_info.title}`);
+                SetWechatTitle(`易灵微课-${jsonOpt.lesson_info.title}`);
                 // 重组用户信息
                 this.open.sn = data.sn;
                 this.open.name = data.name;

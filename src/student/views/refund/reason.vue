@@ -1,15 +1,5 @@
 <template>
   <section class="refund" v-if="event">
-    <div class="refund-warn">
-      <p>向讲师提交退款申请</p>
-      <div class="refund-list">
-        <ul>
-          <li>&middot;&nbsp;&nbsp;提交退款申请后不能评价课程</li>
-          <li>&middot;&nbsp;&nbsp;退款后不能收听课程</li>
-          <li>&middot;&nbsp;&nbsp;退款后不能再次购买</li>
-        </ul>
-      </div>
-    </div>
     <div class="refund-info">
       <dl>
         <dt>课程</dt>
@@ -85,7 +75,7 @@
       }
     },
     created() {
-      let query = this.$route.query.params;
+      let query = this.$route.query;
       //
       try{
         if(typeof(query) === 'string'){
@@ -105,7 +95,7 @@
     },
     methods: {
       goToRefund() {
-        this.$router.push({ name: 'refund', query: {params:this.data} });
+        this.$router.replace({ name: 'refund', query: {...this.data} });
       },
     },
   }

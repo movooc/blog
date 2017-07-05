@@ -8,7 +8,7 @@
       <router-link :to="{name:'notice',query:{lesson_sn:courseDetail.sn}}" replace>须知</router-link>
       <router-link :to="{name:'evaluate',query:{lesson_sn:courseDetail.sn}}" replace>评价</router-link>
     </div>
-    <router-view v-if="courseDetail"></router-view>
+    <router-view :isEnroll="isEnroll" v-if="courseDetail"></router-view>
     <v-button :isEnroll="isEnroll" :courseDetail="courseDetail" :liveHost="liveHost"></v-button>
   </section>
 </template>
@@ -79,12 +79,15 @@
         // 微信操作
         try{
           wx.ready(() => {
-            let shareLink = `${this.studentHost}origin=share&share_url=${encodeURIComponent('?#/course/detail/brief?lesson_sn='+data.sn)}#/course/detail/brief?lesson_sn=${data.sn}`;
-            // 微信发送给朋友
+
+            let shareAppMessageLink = `${this.studentHost}origin=wxShare-message&share_url=${encodeURIComponent('?#/course/detail/brief?lesson_sn='+data.sn)}#/course/detail/brief?lesson_sn=${data.sn}`;
+            let shareTimelineLink = `${this.studentHost}origin=wxShare-timeline&share_url=${encodeURIComponent('?#/course/detail/brief?lesson_sn='+data.sn)}#/course/detail/brief?lesson_sn=${data.sn}`;
+
+              // 微信发送给朋友
             wx.onMenuShareAppMessage({
               title: data.title, // 分享标题
               desc: data.brief, // 分享描述
-              link: shareLink, // 分享链接
+              link: shareAppMessageLink, // 分享链接
               imgUrl: this.courseDetail.cover, // 分享图标
               type: '', // 分享类型,music、video或link，不填默认为link
               dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -100,7 +103,7 @@
             // 分享到朋友圈
             wx.onMenuShareTimeline({
               title: data.title, // 分享标题
-              link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              link: shareTimelineLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
               imgUrl: this.courseDetail.cover, // 分享图标
               success: () => {
                 // 用户确认分享后执行的回调函数

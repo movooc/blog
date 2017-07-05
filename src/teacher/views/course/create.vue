@@ -1,7 +1,7 @@
 <template>
   <section class="content-create">
     <div class="title clearfix">
-      我的课程>{{data.lesson_sn?"课程编辑":"课程创建"}}
+      课程列表>{{data.lesson_sn?"课程编辑":"课程创建"}}
       <span class="title-handle pull-right" @click="back">返回</span>
     </div>
     <div class="control">
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="control">
-      <span class="word"><em>*&nbsp;</em>开播时间</span>
+      <span class="word"><em>*&nbsp;</em>开课时间</span>
       <div class="text">
         <c-calendar :defaultValue="data.dtm_start"></c-calendar>
       </div>
@@ -65,6 +65,7 @@
   import { checkPic, strlen, trimStr } from '@lib/js/mUtils';
   import vCropper from '@teacher/components/cropper.vue';
   import cCalendar from '@teacher/views/course/calendar.vue';
+  import swal from 'sweetalert';
 
   export default{
     name: 'create',
@@ -126,7 +127,11 @@
     methods: {
       imgOnChange(event) {
         if (!window.File || !window.FileList || !window.FileReader) {
-          alert("您的浏览器不支持File Api");
+          swal({
+            title: '错误提醒',
+            text: '您的浏览器不支持File Api',
+            confirmButtonText: "知道了"
+          });
           return;
         }
 
@@ -152,25 +157,55 @@
         reader.readAsDataURL(file);
       },
       priceBlur() {
-        this.data.price = this.data.price.match(/\d*(\.\d{0,2})?/)[0];
+        /*this.data.price = this.data.price.match(/\d*(\.\d{0,2})?/)[0];*/
+        this.data.price = this.data.price.match(/\d*/)[0];
         if(this.data.price && this.data.price > 5000){
-          alert('价格金额不可以大于5000,请重新填写!');
+          swal({
+            title: '错误提醒',
+            text: '价格金额不可以大于5000,请重新填写',
+            confirmButtonText: "知道了"
+          });
           this.data.price = '';
         }
       },
       durationBlur() {
-        this.data.duration = this.data.duration.match(/\d*(\.\d{0,1})?/)[0];
+        /*this.data.duration = this.data.duration.match(/\d*(\.\d{0,1})?/)[0];*/
+        this.data.duration = this.data.duration.match(/\d{0,2}/)[0];
       },
       completeCreate() {
-        if(!this.data.title)return alert('请填写标题！');
-        if(strlen(trimStr(this.data.title)) > 36)return alert('标题文字过长!');
+        if(!this.data.title)return swal({
+          title: '错误提醒',
+          text: '请填写标题',
+          confirmButtonText: "知道了"
+        });
+        if(strlen(trimStr(this.data.title)) > 36)return swal({
+          title: '错误提醒',
+          text: '标题文字过长',
+          confirmButtonText: "知道了"
+        });
         //开播时间赋值
         this.data.dtm_start = this.calendarInfo.value;
-        if(!this.data.dtm_start)return alert('请填写开播时间！');
-        if(!this.data.duration)return alert('请填写持续时长！');
-        if(this.data.price === '')return alert('请填写价格！');
+        if(!this.data.dtm_start)return swal({
+          title: '错误提醒',
+          text: '请填写开播时间',
+          confirmButtonText: "知道了"
+        });
+        if(!this.data.duration)return swal({
+          title: '错误提醒',
+          text: '请填写持续时长',
+          confirmButtonText: "知道了"
+        });
+        if(this.data.price === '')return swal({
+          title: '错误提醒',
+          text: '请填写价格',
+          confirmButtonText: "知道了"
+        });
         /*if(!this.data.cover)return alert('请选择封面！');*/
-        if(!this.data.brief)return alert('请填写课程介绍！');
+        if(!this.data.brief)return swal({
+          title: '错误提醒',
+          text: '请填写课程介绍',
+          confirmButtonText: "知道了"
+        });
         if(!this.coverChange){
           delete this.data['cover'];
         }
@@ -181,20 +216,40 @@
           }*/
           this.$store.dispatch('fetchCourseModify', { ...this.data }).then((json) => {
             // 发起创建请求
-            alert('编辑成功!');
-            this.$router.push({ name: 'list' });
+            swal({
+              title: '',
+              text: '课程编辑信息已提交，正在审核中',
+              confirmButtonText: "确定"
+            },()=>{
+              this.$router.push({ name: 'list' });
+            });
+
           }, (err) => {
-            alert(err.message);
+            swal({
+              title: '错误提醒',
+              text: err.message,
+              confirmButtonText: "确定"
+            });
           });
 
         }else{
           delete this.data['lesson_sn'];
           this.$store.dispatch('fetchCourseCreate', { ...this.data }).then((json) => {
             // 发起创建请求
-            alert('已提交审核，通过后将开放报名!');
-            this.$router.push({ name: 'list' });
+            swal({
+              title: '',
+              text: '已提交审核，通过后将开放报名',
+              confirmButtonText: "确定"
+            },()=>{
+              this.$router.push({ name: 'list' });
+            });
           }, (err) => {
-            alert(err.message);
+            //
+            swal({
+              title: '错误提醒',
+              text: err.message,
+              confirmButtonText: "确定"
+            });
           });
         }
       },

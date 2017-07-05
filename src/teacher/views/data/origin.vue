@@ -47,7 +47,8 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex';
+  import swal from 'sweetalert';
 
   export default{
     name: 'data-origin',
@@ -82,7 +83,11 @@
         this.$store.dispatch('fetchDataOrigin', params).then((data) => {
           console.log('success');
         }, (err) => {
-          alert(err.message);
+          swal({
+            title: '错误提醒',
+            text: err.message,
+            confirmButtonText: "知道了"
+          });
         });
       }
     },

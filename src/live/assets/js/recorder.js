@@ -1,4 +1,6 @@
 import { uploadSound } from '@live/assets/js/webim';
+import swal from 'sweetalert';
+
 /*-----*/
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
@@ -144,7 +146,12 @@ export const toggleRecording = function( self ) {
       // 清空
       ctx.$store.commit('UPDATE_RECORDING', false);
       ctx = null;
-      alert('录制时间过短!');
+      /*alert('录制时间过短!');*/
+      swal({
+        title: '错误提醒',
+        text: '录制时间过短',
+        confirmButtonText: "知道了"
+      });
     }else{
       audioRecorder.getBuffers( gotBuffers );
     }

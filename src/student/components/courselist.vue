@@ -20,8 +20,7 @@
               <!--<span v-if="list.step == 'finish'">已结束</span>-->
             <!--</span>-->
           </div>
-          <div class="list-brief">
-            {{list.brief}}
+          <div class="list-brief" v-html="textFormat(list.brief)">
           </div>
           <div class="list-content">
             <div class="l-name">
@@ -32,16 +31,22 @@
               <i class="iconfont icon-xueyuan1"></i>
               {{list.participants}}
             </div>
-            <div>
-              <i class="iconfont icon-jiage1"></i>
+            <div v-if="list.price">
+              <i  class="iconfont icon-jiage1"></i>
               {{list.price}}
+            </div>
+            <div v-if="list.price == 0">
+              免费
             </div>
             <div class="right">
               <span class="timer" v-if="list.step == 'opened'">
                 {{`${list.plan.dtm_now}#${list.plan.dtm_start}` | moment}}
               </span>
               <span class="onlive" v-if="list.step == 'onlive'">
-                直播中
+                授课中
+              </span>
+              <span class="onlive" v-if="list.step == 'repose'">
+                交流中
               </span>
             </div>
           </div>
@@ -73,9 +78,12 @@
       methods: {
         enterLesson(lesson_sn) {
           this.$router.push({ name: 'detail', query: { lesson_sn: lesson_sn }})
-        }
-      }
-    }
+        },
+        textFormat(value){
+          return value.replace(/\n/g, '<br>');
+        },
+      },
+    };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -122,21 +130,21 @@
           position: relative;
           padding-bottom: 16px;
           width: 100%;
-          height: 300px;
-          border-radius: 15px;
-          -webkit-border-radius: 15px;
+          /*height: 300px;*/
           text-align: center;
           overflow: hidden;
 
           img{
             width: 100%;
-            max-height: 300px;
-          }
-          img[lazy=loading] {
-            width: 100px;
+            height: 300px;
+            border-radius: 15px;
+            -webkit-border-radius: 15px;
           }
           img[lazy=loaded] {
             width: 100%;
+          }
+          img[lazy=error] {
+            display: none;
           }
         }
         .list-brief{

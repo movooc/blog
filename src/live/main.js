@@ -11,6 +11,9 @@ import routes from './router';
 import '@lib/js/rem';
 import '@lib/css/font.styl';
 import 'normalize.css';
+import 'sweetalert/dist/sweetalert.css';
+import '@lib/css/sweetalert.styl';
+import '@lib/css/sweetalert-mobile.styl';
 
 /*
  * fastclick

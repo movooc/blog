@@ -1,12 +1,12 @@
 <template>
   <div class="l-chatbox">
-    <div class="box" v-if="lessonInfo.step!='finish'">
+    <div class="box">
       <span class="box-more">
         <button @click="showModule">
           <span class="iconfont icon-list"></span>
         </button>
       </span>
-      <div class="box-msg">
+      <div class="box-msg" :class="{'is-finish':(lessonInfo.step=='finish' || lessonInfo.step=='closed')}">
         <button class="comment" @click="showComment" v-if="!commentShow">讨论区</button>
         <input v-model="msgVal" placeholder="请输入文字..." @focus="focusEvent" />
       </div>
@@ -15,7 +15,7 @@
       <div class="more-choice" v-if="boxMoreShow">
         <button @click="backHome">回到首页</button>
         <button @click="showEva" v-if="!isEvaluate && !lessonInfo.rated">评价课程</button>
-        <button @click="showRefund" v-if="lessonInfo.event != 'refund' && lessonInfo.price">申请退款</button>
+        <button @click="showRefund" v-if="lessonInfo.event != 'refund' && lessonInfo.price && !lessonInfo.refund_info">申请退款</button>
       </div>
     </div>
   </div>
@@ -25,6 +25,7 @@
   import { mapState } from 'vuex';
   import { vSendMsg } from '@live/assets/js/webim_comment';
   import vRefund from '@live/components/chatbox/refund';
+  import swal from 'sweetalert';
   // scroll
   var vScroll = null;
 
@@ -56,8 +57,13 @@
             this.commentShow || this.showComment();
           }else{
             if(err.ErrorCode == 10007){
-              alert('您已被踢出群！现在要将您送回课程列表!');
-              window.location.href = this.studentHost;
+              swal({
+                  title: '错误提醒',
+                  text: '您已被踢出群！现在要将您送回课程列表!',
+                  confirmButtonText: "知道了"
+                }, ()=>{
+                  window.location.href = this.studentHost;
+              });
             }
           }
         });
@@ -81,10 +87,15 @@
           price: this.lessonInfo.price,
           teacher: this.lessonInfo.teacher.name,
         };
-        params = JSON.stringify(params);
+        let paramsStr = `lesson_sn=${params.lesson_sn}&origin=live`;
+        /*let count = 0;*/
+        // 组装
+        /*for (let p in params){
+          paramsStr = (count++) ? `${paramsStr}&${p}=${encodeURIComponent(params[p])}` : `${p}=${encodeURIComponent(params[p])}`;
+        };*/
+
         // 跳转
-        window.location.href = `${this.studentHost}#/course/refund?params=${params}`;
-        //this.$store.commit('UPDATE_REFUND_SHOW', true);
+        window.location.href = `${this.studentHost}#/course/refund?${paramsStr}`;
       },
       showEva() {
         this.$store.commit('UPDATE_EVALUATE_SHOW', true);

@@ -15,7 +15,7 @@
           <span class="unfold" @click="toggleFold" v-if="wordFold">
             <i class="iconfont icon-chevron-down" v-if="!showWord"></i>
             <i class="iconfont icon-chevron-up" v-if="showWord"></i>
-            {{showWord?'收起':'展开'}}
+            <!--{{showWord?'收起':'展开'}}-->
           </span>
         </div>
       </div>
@@ -101,7 +101,7 @@
       .t-text {
         width: 550px;
         >:first-child {
-          color: #12b7f5;
+          /*color: #12b7f5;*/
           px2px(font-size, 40px);
         }
         >:last-child {

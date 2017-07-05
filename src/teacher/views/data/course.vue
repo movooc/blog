@@ -1,6 +1,6 @@
 <template>
-  <section class="data-course course-list">
-    <div class="data-title">课程数据</div>
+  <section class="data-course">
+    <div class="data-title">数据中心</div>
     <ul>
       <li class="head">
         <span>课程</span>
@@ -25,7 +25,8 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex';
+  import swal from 'sweetalert';
 
   export default{
     name: 'data-course',
@@ -39,7 +40,11 @@
       this.$store.dispatch('fetchDataCourse').then((data) => {
         console.log('success');
       }, (err) => {
-        alert(err.message);
+        swal({
+          title: '错误提醒',
+          text: err.message,
+          confirmButtonText: "知道了"
+        });
       });
     },
     methods: {

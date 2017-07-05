@@ -19,11 +19,12 @@
 </template>
 
 <script>
-import SiderBar from './components/siderbar'
-import VHeader from './components/header'
-import VNotice from './components/notice'
+import SiderBar from './components/siderbar';
+import VHeader from './components/header';
+import VNotice from './components/notice';
 import { setCookie } from '@lib/js/mUtils';
-import { mapGetters } from 'vuex'
+import swal from 'sweetalert';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -38,11 +39,21 @@ export default {
         this.$store.commit('FETCH_USER_INFO', { ...data1, ...data2});
         console.log('success');
       }, (err) => {
-        alert(err.message);
+        /*alert(err.message);*/
+        swal({
+          title: '错误提醒',
+          text: err.message,
+          confirmButtonText: "知道了"
+        });
       });
 
     }, (err) => {
-      alert(err.message);
+      /*alert(err.message);*/
+      swal({
+        title: '错误提醒',
+        text: err.message,
+        confirmButtonText: "知道了"
+      });
     });
   },
   computed: mapGetters({
@@ -58,7 +69,7 @@ export default {
     background: #EFEFF4;
   .container
     margin: 0 auto;
-    width: 1200px;
+    width: 1300px;
   .clearfix:after
     content: ".";
     display: block;
@@ -67,7 +78,7 @@ export default {
     visibility: hidden;
   .box
     float:right;
-    width: 900px;
+    width: 1000px;
   .mt20
     margin-top: 20px;
   .pull-left {
@@ -75,6 +86,10 @@ export default {
   }
   .pull-right {
     float: right;
+  }
+  .break-word {
+    word-wrap: break-word;
+    overflow: hidden;
   }
   .loading
     position: fixed;

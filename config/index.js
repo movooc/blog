@@ -31,7 +31,7 @@ module.exports = {
     proxyTable: {
       '/api':{
         target: 'https://teacher.sandbox.yike.fm',
-        // target: 'https://sandbox.yike.fm',
+        target: 'https://sandbox.yike.fm',
         target: 'https://student.sandbox.yike.fm',
         secure: false,
         changeOrigin: true,
@@ -40,7 +40,7 @@ module.exports = {
         },
         onProxyReq(proxyReq, req, res) {
           // req.headers['X-SESS'] = '58f5e18810316-55902dbf0a814f0.47989593';
-          proxyReq.setHeader('X-SESS', '58f5e18810316-55952295a3bf356.62586051');
+          proxyReq.setHeader('X-SESS', 'U59032d1d44156-19595b5eff927376.28264816');
           let ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36';
           proxyReq.setHeader('User-Agent', ua);
 

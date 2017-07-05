@@ -155,7 +155,7 @@ export const fetchEvaluteList = ({commit}, query) => {
   return _get({ url, query }, commit)
     .then((json) => {
       if (json.error == 0) {
-        commit('FETCH_EVALUATE_LIST', json.data);
+        // commit('FETCH_EVALUATE_LIST', json.data);
         return Promise.resolve(json.data);
       }
       return Promise.reject(new Error('Fetch_Evaluate_List failure'))

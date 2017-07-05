@@ -31,6 +31,7 @@
   import { toggleRecording } from '@live/assets/js/recorder';
   import { uploadSound } from '@live/assets/js/webim';
   import { mapState } from 'vuex';
+  import swal from 'sweetalert';
 
   export default {
     name: 'recording',
@@ -73,7 +74,11 @@
         this.uploading = true;
         //
         uploadSound(this.blobRecord, (err, data) => {
-          if(err)alert(err.ErrorInfo);
+          if(err)swal({
+            title: '错误提醒',
+            text: err.ErrorInfo,
+            confirmButtonText: "知道了"
+          });
           this.$store.commit('UPDATE_RECORDING', false);
           this.$store.commit('UPDATE_BLOB_RECORDING', null);
           console.log('上传成功!');

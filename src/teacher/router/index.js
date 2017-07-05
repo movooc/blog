@@ -64,22 +64,26 @@ export default [
         path: '',
         redirect: '/course/list'
       },
+      {
+        path: '/course/:lesson_sn/detail',
+        redirect: '/course/:lesson_sn/detail/1'
+      },
       // 课程列表页
       {
         path: '/course/list',
         name: 'list',
         component: list,
         meta: {
-          pageTitle: '易课-课程列表'
+          pageTitle: '易灵微课-课程列表'
         }
       },
       // 课程详情页
       {
-        path: '/course/:lesson_sn/detail',
+        path: '/course/:lesson_sn/detail/:page',
         name: 'detail',
         component: detail,
         meta: {
-          pageTitle: '易课-课程详情'
+          pageTitle: '易灵微课-课程详情'
         }
       },
       // 创建课程
@@ -88,7 +92,7 @@ export default [
         name: 'create',
         component: create,
         meta: {
-          pageTitle: '易课-课程创建'
+          pageTitle: '易灵微课-课程创建'
         }
       },
       // 编辑课程
@@ -97,7 +101,7 @@ export default [
         name: 'edit',
         component: create,
         meta: {
-          pageTitle: '易课-课程编辑'
+          pageTitle: '易灵微课-课程编辑'
         }
       },
       // 分享课程
@@ -106,7 +110,7 @@ export default [
         name: 'share',
         component: share,
         meta: {
-          pageTitle: '易课-课程分享'
+          pageTitle: '易灵微课-课程分享'
         }
       }
     ]
@@ -126,7 +130,7 @@ export default [
         name: 'handle-has',
         component: handleHas,
         meta: {
-          pageTitle: '易课-处理中心'
+          pageTitle: '易灵微课-处理中心'
         },
         children: [
           {
@@ -138,7 +142,7 @@ export default [
             name: 'handle-has-list',
             component: handleList,
             meta: {
-              pageTitle: '易课-处理中心'
+              pageTitle: '易灵微课-处理中心'
             }
           },
         ]
@@ -149,7 +153,7 @@ export default [
         name: 'handle-will',
         component: handleWill,
         meta: {
-          pageTitle: '易课-处理中心'
+          pageTitle: '易灵微课-处理中心'
         },
         children: [
           {
@@ -161,7 +165,7 @@ export default [
             name: 'handle-will-list',
             component: handleList,
             meta: {
-              pageTitle: '易课-处理中心'
+              pageTitle: '易灵微课-处理中心'
             }
           },
         ]
@@ -183,7 +187,7 @@ export default [
         name: 'data-course',
         component: dataCourse,
         meta: {
-          pageTitle: '易课-数据中心'
+          pageTitle: '易灵微课-数据中心'
         }
       },
       // 数据来源首页
@@ -192,7 +196,7 @@ export default [
         name: 'data-origin',
         component: dataOrigin,
         meta: {
-          pageTitle: '易课-数据中心'
+          pageTitle: '易灵微课-数据中心'
         }
       },
     ]

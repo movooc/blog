@@ -1,6 +1,6 @@
 <template>
-  <div class="l-chatbox owner">
-    <div class="box" v-if="lessonInfo.step!='finish'">
+  <div class="l-chatbox owner" :class="{'is-finish':(lessonInfo.step=='finish' || lessonInfo.step=='closed')}">
+    <div class="box" v-if="lessonInfo.step!='finish' && lessonInfo.step!='closed'">
       <span class="box-more">
         <span class="iconfont icon-picture">
           <input type="file" @change="selectImage" />
@@ -82,7 +82,7 @@
   import { checkPic, checkFile, checkPastePic } from '@lib/js/mUtils';
   import vRecorder from '@live/components/recorder/index.vue';
   import Recording from '@live/components/loading/recording.vue';
-  //import Sending from '@live/components/loading/sending.vue';
+  import swal from 'sweetalert';
 
   export default
   {
@@ -166,7 +166,11 @@
       },
       showPasteImage(item) {
         if (!window.File || !window.FileList || !window.FileReader) {
-          alert("您的浏览器不支持File Api");
+          swal({
+            title: '错误提醒',
+            text: '您的浏览器不支持File Api',
+            confirmButtonText: "知道了"
+          });
           return;
         }
         let el = this;
@@ -203,7 +207,11 @@
       },
       imgOnChange(event) {
         if (!window.File || !window.FileList || !window.FileReader) {
-          alert("您的浏览器不支持File Api");
+          swal({
+            title: '错误提醒',
+            text: '您的浏览器不支持File Api',
+            confirmButtonText: "知道了"
+          });
           return;
         }
         //
@@ -243,13 +251,21 @@
 
         //先检查图片类型和大小
         if (!file) {
-          return alert('请先上传图片!');
+          return swal({
+            title: '错误提醒',
+            text: '请先上传图片',
+            confirmButtonText: "知道了"
+          });
         }
         // 开始上传
         this.startSend = true;
         //上传图片
         uploadImage(file, (err, data) => {
-          if(err)alert(err.ErrorInfo);
+          if(err)swal({
+            title: '错误提醒',
+            text: err.ErrorInfo,
+            confirmButtonText: "知道了"
+          });
           this.imgShow = false;
           this.moduleShow = false;
           this.widthStyle.width = 0;
@@ -274,7 +290,11 @@
         this.startSend = true;
         //上传图片
         uploadImage(this.pasteInfo.blob, (err, data) => {
-          if(err)alert(err.ErrorInfo);
+          if(err)swal({
+            title: '错误提醒',
+            text: err.ErrorInfo,
+            confirmButtonText: "知道了"
+          });
           this.pasteInfo.blob = null;
           this.pasteInfo.show = false;
           this.pasteInfo.src = '';
@@ -294,7 +314,11 @@
       },
       fileOnChange(event) {
         if (!window.File || !window.FileList || !window.FileReader) {
-          alert("您的浏览器不支持File Api");
+          swal({
+            title: '错误提醒',
+            text: '您的浏览器不支持File Api',
+            confirmButtonText: "知道了"
+          });
           return;
         }
 
@@ -312,13 +336,21 @@
         var file = uploadFiles.files[0];
 
         if(!file){
-          return alert('请选择文件!');
+          return swal({
+            title: '错误提醒',
+            text: '请选择文件',
+            confirmButtonText: "知道了"
+          });
         }
         // 开始上传
         this.startSend = true;
         //上传文件
         uploadFile(file, (err, data) => {
-          if(err)alert(err.ErrorInfo);
+          if(err)swal({
+            title: '错误提醒',
+            text: err.ErrorInfo,
+            confirmButtonText: "知道了"
+          });
           this.fileShow = false;
           this.moduleShow = false;
           this.widthFileStyle.width = 0;

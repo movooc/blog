@@ -1,4 +1,5 @@
 import { trimStr } from '@lib/js/mUtils';
+import swal from 'sweetalert';
 
 var _webim = { ...webim };
 
@@ -262,7 +263,11 @@ function getGroupInfo (group_id, cbOK, cbErr) {
       }
     },
     function (err) {
-      alert(err.ErrorInfo);
+      swal({
+        title: '错误提醒',
+        text: err.ErrorInfo,
+        confirmButtonText: "知道了"
+      });
     }
   );
 };
@@ -271,8 +276,13 @@ function getGroupInfo (group_id, cbOK, cbErr) {
 function sendMsgCallBack (msgtosend, callback) {
   // 未登录
   if (!loginInfo.identifier) {
-    alert('请填写帐号和票据');
-    return callback('请先登录!');
+    return swal({
+      title: '错误提醒',
+      text: '请填写帐号和票据',
+      confirmButtonText: "知道了"
+    }, ()=>{
+      callback('请先登录!');
+    });
   }
 
   // 是否成功进入房间

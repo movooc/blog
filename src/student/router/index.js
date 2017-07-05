@@ -55,7 +55,7 @@ export default [
     name: 'index',
     component: home,
     meta: {
-      pageTitle: '易课'
+      pageTitle: '易灵微课'
     },
     children: [
       {
@@ -79,7 +79,7 @@ export default [
         name: 'list',
         component: list,
         meta: {
-          pageTitle: '易课-课程列表'
+          pageTitle: '易灵微课-课程列表'
         }
       },
       // 课程详情页
@@ -88,7 +88,7 @@ export default [
         name: 'detail',
         component: detail,
         meta: {
-          pageTitle: '易课-课程详情'
+          pageTitle: '易灵微课-课程详情'
         },
         children: [
           {
@@ -100,7 +100,7 @@ export default [
             name: 'brief',
             component: brief,
             meta: {
-              pageTitle: '易课-课程简介'
+              pageTitle: '易灵微课-课程简介'
             }
           },
           {
@@ -108,7 +108,7 @@ export default [
             name: 'notice',
             component: notice,
             meta: {
-              pageTitle: '易课-课程须知'
+              pageTitle: '易灵微课-课程须知'
             }
           },
           {
@@ -116,7 +116,7 @@ export default [
             name: 'evaluate',
             component: evaluate,
             meta: {
-              pageTitle: '易课-课程评价'
+              pageTitle: '易灵微课-课程评价'
             }
           }
         ]
@@ -127,7 +127,7 @@ export default [
         name: 'evaluate-lesson',
         component: evaluateLesson,
         meta: {
-          pageTitle: '易课-评价课程'
+          pageTitle: '易灵微课-评价课程'
         }
       },
       // 退款
@@ -136,7 +136,7 @@ export default [
         name: 'refund',
         component: refund,
         meta: {
-          pageTitle: '易课-申请退款'
+          pageTitle: '易灵微课-申请退款'
         }
       },
       // 退款理由
@@ -145,7 +145,7 @@ export default [
         name: 'reason',
         component: reason,
         meta: {
-          pageTitle: '易课-处理结果'
+          pageTitle: '易灵微课-处理结果'
         }
       },
     ]
@@ -161,7 +161,7 @@ export default [
         name: 'userCenter',
         component: userCenter,
         meta: {
-          pageTitle: '易课-个人中心'
+          pageTitle: '易灵微课-个人中心'
         }
       },
       // 已报名的课程
@@ -170,7 +170,7 @@ export default [
         name: 'enrolled',
         component: enrolled,
         meta: {
-          pageTitle: '易课-已报名的课程'
+          pageTitle: '易灵微课-已报名的课程'
         }
       },
       // 课程保障页
@@ -179,7 +179,7 @@ export default [
         name: 'guarantee',
         component: guarantee,
         meta: {
-          pageTitle: '易课-课程保障'
+          pageTitle: '易灵微课-课程保障'
         }
       },
       // 建议与反馈
@@ -188,7 +188,7 @@ export default [
         name: 'advise',
         component: advise,
         meta: {
-          pageTitle: '易课-建议与反馈'
+          pageTitle: '易灵微课-建议与反馈'
         }
       }
     ]

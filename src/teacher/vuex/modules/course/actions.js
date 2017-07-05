@@ -161,4 +161,20 @@ export const fetchShareInvite = ({commit}, query) => {
       return Promise.reject(error)
     })
 };
+// 获得评价列表
+export const fetchEvaluteList = ({commit}, query) => {
+  const url = `${_prefix}/lesson-rating-list.api`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        commit('FETCH_EVALUATE_LIST', json.data);
+        return Promise.resolve(json.data);
+      }
+      return Promise.reject(new Error('Fetch_Evaluate_List failure'))
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
 

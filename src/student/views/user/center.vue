@@ -5,7 +5,7 @@
         <img :src="userInfo.avatar" />
       </div>
       <div class="name" v-text="userInfo.name"></div>
-      <div class="listen">已经听过2个教程</div>
+      <!--<div class="listen">已经听过2个教程</div>-->
     </div>
     <ul>
       <!--<li>-->

@@ -19,14 +19,14 @@
           <dd v-text="handList.ticket.content.reason"></dd>
         </dl>
         <dl class="reason" v-if="mode">
-          <dt>退款理由</dt>
-          <dd v-text="handList.ticket.content.remark"></dd>
+          <dt>处理意见</dt>
+          <dd v-text="handList.ticket.remark"></dd>
         </dl>
         <span class="s-button" v-if="mode && handList.ticket.i_status == 'reject'">已拒绝</span>
         <span class="s-button agree" v-if="mode && handList.ticket.i_status == 'agree'">已同意</span>
         <span class="timer" v-if="!mode">
           <i class="iconfont icon-jishi"></i>
-          剩余：{{`${handList.ticket.tms_create}#${handList.ticket.tms_end}` | moment}}
+          剩余：{{handList.ticket.tms_end | moment}}
         </span>
       </div>
       <div class="handle-action" v-if="!mode">
@@ -47,6 +47,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import swal from 'sweetalert';
   import { strlen, trimStr } from '@lib/js/mUtils';
 
   export default{
@@ -93,10 +94,18 @@
         let len = strlen(value);
         //
         if(!len && operate){
-          return alert('请填写处理意见！');
+          return swal({
+            title: '错误提醒',
+            text: '请填写处理意见',
+            confirmButtonText: "知道了"
+          });
         }
         if(len > 255 && operate){
-          return alert('填写的意见过长！');
+          return swal({
+            title: '错误提醒',
+            text: '填写的意见过长',
+            confirmButtonText: "知道了"
+          });
         }
         let body = {
           operate: operate,
@@ -110,7 +119,11 @@
           window.location.reload();
           console.log('success');
         }, () => {
-          alert('处理异常!');
+          swal({
+            title: '错误提醒',
+            text: '处理异常',
+            confirmButtonText: "知道了"
+          });
           console.log('fail');
         });
       }
@@ -146,6 +159,7 @@
         }
         dd {
           margin-left: 10px;
+          max-width: 600px;
         }
       }
       .handle-info {

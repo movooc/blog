@@ -2,6 +2,7 @@ import {
   FETCH_COURSE_LIST,
   FETCH_COURSE_DETAIL,
   FETCH_OPEN_INFO,
+  FETCH_EVALUATE_LIST,
 } from './mutation-type'
 
 import { convertToArray } from '@lib/js/mUtils';
@@ -18,6 +19,11 @@ const mutations = {
   // 获得开课信息
   [FETCH_OPEN_INFO](state, data) {
     state.openInfo = { ...state.openInfo, data };
+  },
+  // 获得评价列表信息
+  [FETCH_EVALUATE_LIST](state, data) {
+    // state.evaluateList = convertToArray(state.evaluateList, data);
+    state.evaluateList = data;
   },
 };
 export default mutations;

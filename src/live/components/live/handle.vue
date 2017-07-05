@@ -13,6 +13,7 @@
 
 <script type="text/javascript">
   import { mapState } from 'vuex';
+  import swal from 'sweetalert';
   import { removeStore } from '@lib/js/mUtils';
 
   export default
@@ -45,8 +46,13 @@
         };
         this.$store.dispatch('fetchStartComment', opt).then(() => {
           removeStore(opt.lesson_sn);
-          alert('可以开始学员交流!');
-          window.location.reload();
+          swal({
+              title: '',
+              text: '可以开始与学员交流!',
+              confirmButtonText: "知道了"
+          }, ()=>{
+            window.location.reload();
+          });
         }, () => {
           console.log('fail');
         });
@@ -54,18 +60,29 @@
         this.callBack(false);
       },
       endLesson() {
-        if(!window.confirm('课程结束，您和学员都无法继续发布内容，但仍可回看所有授课区内容')){
-          return;
-        }
-        let opt = {
-          lesson_sn:this.lessonInfo.sn,
-        };
-        this.$store.dispatch('fetchEndLesson', opt).then(() => {
-          removeStore(opt.lesson_sn);
-          alert('课程已结束!');
-          window.location.reload();
-        }, () => {
-          console.log('fail');
+        swal({
+            title: '',
+            text: '课程结束，您和学员都无法继续发布内容，但仍可回看所有授课区内容',
+            confirmButtonText: '确定结束',
+            showCancelButton:true,
+            closeOnConfirm: false,
+            cancelButtonText: '取消结束',
+        }, ()=>{
+          let opt = {
+            lesson_sn:this.lessonInfo.sn,
+          };
+          this.$store.dispatch('fetchEndLesson', opt).then(() => {
+            removeStore(opt.lesson_sn);
+            swal({
+              title: '',
+              text: '课程已结束!',
+              confirmButtonText: "知道了",
+            }, ()=>{
+              window.location.reload();
+            });
+          }, () => {
+            console.log('fail');
+          });
         });
         // 关闭
         this.callBack(false);

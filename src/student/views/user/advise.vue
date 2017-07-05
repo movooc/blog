@@ -12,7 +12,8 @@
       </div>
       <span class="pull-right words" v-text="words" :class="{'overflow':overflow}"></span>
     </div>
-    <s-button :callBack="submitAdvise"></s-button>
+    <s-button v-if="!submiting" :callBack="submitAdvise"></s-button>
+    <s-button v-if="submiting" :callBack="submitTips" :text="'正在提交...'"></s-button>
   </section>
 </template>
 
@@ -34,6 +35,7 @@
         },
         words: 500,
         overflow: false,
+        submiting: false,
       }
     },
     methods: {
@@ -73,13 +75,19 @@
         if(length > 500){
           return alert('字数超过限制!');
         }
+        // 改变提交状态
+        this.submiting = true;
         // 开始请求
         this.$store.dispatch('fetchAdvise', this.data).then(() => {
           alert('反馈成功!感谢你对易灵微课的关注与支持，我们将认真对待你的建议与反馈。');
           this.$router.push({ name: 'user'});
         }, () => {
+          this.submiting = false;
           alert('提交失败!');
         });
+      },
+      submitTips() {
+        console.log('正在请求!');
       },
       blurEvent() {
         let length = trimStr(this.data.text).length;

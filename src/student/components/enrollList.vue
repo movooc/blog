@@ -9,10 +9,11 @@
           <div class="list-content">
             <div class="list-title" v-text="list.lesson.title"></div>
             <div class="appointment">
-              <i class="iconfont icon-people"></i>
-              {{list.lesson.participants}}
+              <!--<i class="iconfont icon-people"></i>-->
+              <!--{{list.lesson.participants}}-->
+              {{ list.lesson.teacher | specKey('name') }}
             </div>
-            <div class="list-status clearfix">
+            <div class="list-status new-status clearfix">
               <!--<span class="pull-right" v-if="list.event == 'enroll'">已报名</span>-->
               <!--<span class="pull-right" v-if="list.event == 'browse'">未报名</span>-->
               <!--<span class="pull-right" v-if="list.event == 'access'">听课中</span>-->
@@ -20,9 +21,10 @@
               <!--<span class="pull-right l-red" v-if="list.event == 'refund'">已退款</span>-->
               <!--<span v-if="list.lesson.step == 'submit'">未开放</span>-->
               <span v-if="list.lesson.step == 'opened'" class="opened">{{`${list.lesson.plan.dtm_now}#${list.lesson.plan.dtm_start}` | moment}}</span>
-              <span class="l-red" v-if="list.lesson.step == 'onlive'">授课中</span>
-              <span class="l-red" v-if="list.lesson.step == 'repose'">授课中</span>
-              <!--<span v-if="list.lesson.step == 'finish'">已结束</span>-->
+              <span class="l-green" v-if="list.lesson.step == 'onlive'">授课中</span>
+              <span class="l-green" v-if="list.lesson.step == 'repose'">交流中</span>
+              <span class="l-gray" v-if="list.lesson.step == 'closed'">已下架</span>
+              <span class="l-gray" v-if="list.lesson.step == 'finish'" v-text="formatTime(list.lesson.plan.dtm_start)"></span>
             </div>
           </div>
         </a>
@@ -30,7 +32,7 @@
           <span class="pull-right status red">已退款</span>
         </div>
         <div class="list-handler clearfix" v-if="list.refund_mode && list.event != 'refund' && !list.refund_info && (!list.rated || list.lesson.price > 0)">
-          <button class="pull-right blue" @click="enterEvaluate(list.lesson.sn)" v-if="!list.rated">评价课程</button>
+          <button class="pull-right" @click="enterEvaluate(list.lesson.sn)" v-if="!list.rated">评价课程</button>
           <button class="pull-right" @click="refund(list)" v-if="(!list.refund_info && list.event != 'refund' && list.lesson.price > 0)">申请退款</button>
         </div>
         <div class="list-handler clearfix" v-if="list.refund_mode && list.refund_info && list.refund_info.apply && !list.refund_info.appeal && list.refund_info.apply.status != 'agree'">
@@ -44,7 +46,7 @@
         <div class="list-handler clearfix" v-if="list.refund_mode && list.refund_info && list.refund_info.appeal && list.refund_info.appeal.status != 'agree'">
           <span class="pull-right status" v-if="list.refund_info.appeal.status == 'start' || list.refund_info.appeal.status == 'pending'">退款申诉中...</span>
           <span class="pull-right status clearfix" v-if="list.refund_info.appeal.status == 'reject'">
-            <span class="reject">你的退款申请被拒绝</span>
+            <span class="reject">你的退款申诉被拒绝</span>
             <button class="pull-right" @click="goReason(list)">查看</button>
           </span>
         </div>
@@ -99,7 +101,10 @@
             teacher: list.lesson.teacher.name,
           };
           //
-          this.$router.push({ name: 'refund', query: {params:params} });
+          this.$router.push({ name: 'refund', query: {...params} });
+        },
+        formatTime(value) {
+          return value.split(' ')[0];
         },
         goReason(list) {
           // 组装
@@ -114,7 +119,7 @@
             event: list.refund_info,
           };
           //
-          this.$router.push({ name: 'reason', query: {params:params} });
+          this.$router.push({ name: 'reason', query: {...params} });
         }
       }
     }
@@ -190,7 +195,7 @@
         }
         .list-title{
           padding: 0 0 15px;
-          width: 400px;
+          width: 320px;
           color: #3C4A55;
           text-overflow:ellipsis;
           white-space:nowrap;
@@ -200,22 +205,23 @@
         .list-img{
           position: relative;
           margin-right: 18px;
-          width: 280px;
-          height: 180px;
-          border-radius: 15px;
-          -webkit-border-radius: 15px;
+          width: 352px;
+          height: 240px;
           overflow: hidden;
 
           img{
             display: block;
             width: 100%;
             height: 180px;
+            border-radius: 15px;
+            -webkit-border-radius: 15px;
           }
         }
         .list-content{
           px2px(font-size, 30px);
 
           .appointment{
+            padding-top: 20px;
             px2px(font-size, 26px);
             color: #AAA;
             .iconfont {
@@ -226,10 +232,19 @@
         .list-status{
           padding-top: 65px;
           width: 400px;
+          &.new-status{
+            padding-top: 45px;
+          }
           >span{
             color: #3C4A55;
             &.opened, &.l-red {
               color: #fb6666;
+            }
+            &.l-gray {
+              color: #aaa;
+            }
+            &.l-green {
+              color: #2dc17b;
             }
           }
         }
@@ -237,7 +252,7 @@
           padding: 19px 0;
           button{
             margin-left: 19px;
-            padding: 10px 45px;
+            padding: 10px 20px;
             background: transparent;
             border: 1px solid #aaa;
             border-radius: 60px;

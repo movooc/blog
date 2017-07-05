@@ -45,7 +45,7 @@
       submitEva() {
         if(!this.data.lesson_sn)return alert('参数错误!');
         if(!this.data.score){
-          return alert('请选择星级!')
+          return alert('请选择评价星级')
         }
         // 评价开始
         this.$store.dispatch('fetchEvaluate', this.data).then(() => {

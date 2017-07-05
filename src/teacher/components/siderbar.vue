@@ -24,14 +24,14 @@
         <router-link to="/course">
           <i class="iconfont icon-menu"></i>
           &nbsp;&nbsp;
-          我的课程
+          课程列表
         </router-link>
       </li>
       <li>
         <router-link to="/handle">
           <i class="iconfont icon-chuli"></i>
           &nbsp;&nbsp;
-          处理中心
+          退款处理
         </router-link>
       </li>
       <li>

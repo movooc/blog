@@ -7,7 +7,7 @@
         邀请链接
       </p>
       <div class="input">
-        <input type="text" ref="copy" />
+        <input type="text" ref="copy" v-bind:value="share_url"/>
         <button @click="copyEvent">复制</button>
       </div>
     </div>
@@ -15,19 +15,21 @@
       <div class="l-wxcode pull-left">
         <p>
           <i class="iconfont icon-yuanhuan"></i>
-          课程详情页二维码
+          课程二维码
         </p>
         <div class="code">
-          <img :src="qrcode" alt="">
+          <img v-lazy="qrcode" alt="">
+          <span class="code-loading">正在生成中...</span>
         </div>
       </div>
       <div class="r-wxcode pull-left">
         <p>
           <i class="iconfont icon-yuanhuan"></i>
-          介绍图片
+          课程邀请卡
         </p>
         <div class="code">
-          <img :src="card" alt="" />
+          <img v-lazy="card" alt="" />
+          <span class="code-loading">正在生成中...</span>
         </div>
       </div>
     </div>
@@ -44,7 +46,8 @@
     data(){
       return {
         card: '',
-        qrcode: ''
+        qrcode: '',
+        share_url:''
       }
     },
     created() {
@@ -53,6 +56,7 @@
       this.$store.dispatch('fetchShareInvite', params).then((data) => {
         this.card = data.card;
         this.qrcode = data.qrcode;
+        this.share_url = data.share_url;
         console.log('success');
       }, () => {
         console.log('fail');
@@ -70,9 +74,17 @@
           succeeded = false;
         }
         if (succeeded) {
-          alert('复制成功!');
+            swal({
+                title: '',
+                text: '复制成功',
+                confirmButtonText: "知道了"
+            });
         } else {
-          alert('复制失败!');
+            swal({
+                title: '错误提醒',
+                text: '复制失败',
+                confirmButtonText: "知道了"
+            });
         }
       }
     }
@@ -91,7 +103,7 @@
       background: #fafafb;
       .input
         position: relative;
-        padding: 6px 16px;
+        padding: 6px 100px 6px 16px;
         border: 1px solid #E6EAF2;
         background: #fff;
         border-radius: 20px;
@@ -101,11 +113,14 @@
           font-size: 16px;
           border: 0 none;
           outline: none;
+          &[disabled]{
+            background: #fff;
+          }
         button
           position: absolute;
           right: 0;
           top: 0;
-          padding: 7px 32px;
+          padding: 8px 32px;
           color: #fff;
           background: #12B7F5;
           border: 0 none;
@@ -115,16 +130,35 @@
     .share-box
       padding: 20px 0;
     .l-wxcode, .r-wxcode
+      position: relative;
       width: 50%;
+      .code-loading
+        position: absolute;
+        left: 122px;
+        z-index: 1;
+      img
+        position: relative;
+        z-index: 2;
     .l-wxcode
       >*
         padding-left: 100px;
       img
-        width: 200px;
         border: 1px solid #fafafb;
+      img[lazy=loading] {
+        width: 20px;
+      }
+      img[lazy=loaded] {
+        width: 200px;
+      }
     .r-wxcode
-      img
+      img[lazy=loading] {
+        width: 20px;
+      }
+      img[lazy=loaded] {
         width: 300px;
+      }
+      .code-loading
+        left: 22px;
     .icon-yuanhuan
       color: #12B7F5;
 </style>

@@ -43,6 +43,8 @@
         overflow: auto;
         overflow-x: hidden;
         border: 1px solid #E6EAF2;
+        &.is-finish
+          visibility: hidden;
 
         textarea, input
           position: relative;
@@ -383,5 +385,9 @@
         }
       }
     }
+  }
+  &.is-finish {
+    top: 630px;
+    height: 30px;
   }
 }

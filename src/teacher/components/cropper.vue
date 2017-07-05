@@ -2,11 +2,13 @@
   <div class="cropper">
     <!-- 遮罩层 -->
     <div class="container" v-show="panel">
-      <div>
+      <div class="container-image">
         <img id="image" :src="url" alt="Picture">
       </div>
-      <button type="button" class="button" @click="crop">确定</button>
-      <button type="button" class="button cancle" @click="cancle">取消</button>
+      <div class="container-button">
+        <button type="button" class="button cancle" @click="cancle">取消</button>
+        <button type="button" class="button" @click="crop">确定</button>
+      </div>
     </div>
 
     <div class="cropper-cover">
@@ -31,6 +33,7 @@
 <script>
   import Cropper from 'cropperjs';
   import 'cropperjs/dist/cropper.css';
+  import swal from 'sweetalert';
   import { checkPastePic } from '@lib/js/mUtils';
   var cFile = null;
 
@@ -67,6 +70,7 @@
           viewMode: 1,
           background:false,
           zoomable:false,
+          autoCropArea: 1,
           ready: () => {
             this.croppable = true;
           }
@@ -161,7 +165,12 @@
             // 图片的上传
             this.postImg(data, base64Url);
           }, (err) => {
-            alert(err.message);
+            /*alert(err.message);*/
+            swal({
+              title: '错误提醒',
+              text: err.message,
+              confirmButtonText: "知道了"
+            });
           });
         },
         postImg (data, base64Url) {
@@ -185,8 +194,15 @@
             }
             new Error('Fetch_Open_Info failure')
           }).catch((error) => {
-            alert('上传图片失败!');
-            return this.$store.commit('FINISH_LOADING');
+            /*alert('上传图片失败!');
+            return this.$store.commit('FINISH_LOADING');*/
+            swal({
+              title: '错误提醒',
+              text: '上传图片失败!',
+              confirmButtonText: "知道了"
+            },()=>{
+              this.$store.commit('FINISH_LOADING');
+            });
           });
         },
         dataURLtoBlob(dataurl) {
@@ -202,17 +218,33 @@
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
-  .cropper .button {
+  .cropper .container-button {
     position: absolute;
-    right: 10px;
-    top: 10px;
-    width: 80px;
+    display: -webkit-box;
+    display: box;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     height: 40px;
-    border:none;
     border-radius: 5px;
-    background:white;
-    &.cancle {
-      right: 100px;
+    button {
+      display: -webkit-box;
+      display: box;
+      -webkit-box-flex: 1;
+      box-flex: 1;
+      box-align: center;
+      -webkit-box-align: center;
+      -webkit-box-pack: center;
+      background: white;
+      cursor: pointer;
+      color: #12b7f5;
+      border: none;
+      &.cancle {
+        color: #3c4a55;
+      }
+    }
+    button+button{
+      border-left: 1px solid #aaa;
     }
   }
   .cropper .show {
@@ -232,15 +264,21 @@
   }
   .cropper .container {
     position: fixed;
-    padding-top: 60px;
+    padding: 20px 20px 60px;
+    width: 350px;
+    height: auto;
     left: 0;
-    top: 0;
+    top: 150px;
     right: 0;
-    bottom: 0;
     background:rgba(0,0,0,1);
     z-index: 12;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
+    -moz-box-shadow:0px 0px 18px #333333;
+    -webkit-box-shadow:0px 0px 18px #333333;
+    box-shadow:0px 0px 18px #333333;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
   }
 
   .cropper #image {

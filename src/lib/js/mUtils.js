@@ -314,13 +314,19 @@ export const checkPic = (obj, fileSize) => {
   var photoExt = obj.value.substr(obj.value.lastIndexOf(".") + 1).toLowerCase();//获得文件后缀名
   var pos = picExts.indexOf(photoExt);
   if (pos < 0) {
-    alert("您选中的文件不是图片，请重新选择");
-    return false;
+      return swal({
+          title: '错误提醒',
+          text: '您选中的文件不是图片，请重新选择',
+          confirmButtonText: "知道了"
+      });
   }
   var fileSize = Math.round(fileSize / 1024 * 100) / 100; //单位为KB
   if (fileSize > 5 * 1024) {
-    alert("您选择的图片大小超过限制(最大为5M)，请重新选择");
-    return false;
+      return swal({
+          title: '错误提醒',
+          text: '您选择的图片大小超过限制(最大为5M)，请重新选择',
+          confirmButtonText: "知道了"
+      });
   }
   return true;
 };
@@ -329,8 +335,11 @@ export const checkPic = (obj, fileSize) => {
 export const checkPastePic = (obj, fileSize) => {
   var fileSize = Math.round(fileSize / 1024 * 100) / 100; //单位为KB
   if (fileSize > 5 * 1024) {
-    alert("您截取的图片大小超过限制(最大为5M)，请重新选择");
-    return false;
+      return swal({
+          title: '错误提醒',
+          text: '您选择的图片大小超过限制(最大为5M)，请重新选择',
+          confirmButtonText: "知道了"
+      });
   }
   return true;
 };
@@ -342,17 +351,26 @@ export const checkFile = (file, fileSize) => {
   var ext = value.substr(value.lastIndexOf(".") + 1).toLowerCase();//获得文件后缀名
   var pos = legalExts.indexOf(ext);
   if (pos < 0) {
-     alert("您选中的文件类型非法，请重新选择");
-     return false;
+      return swal({
+          title: '错误提醒',
+          text: '您选中的文件类型非法，请重新选择',
+          confirmButtonText: "知道了"
+      });
   }
   var fileSize = Math.round(fileSize / 1024 * 100) / 100; //单位为KB
   if (fileSize <= 0) {
-    alert("您选择的文件大小内容为空，请重新选择");
-    return false;
+      return swal({
+          title: '错误提醒',
+          text: '您选择的文件大小内容为空，请重新选择',
+          confirmButtonText: "知道了"
+      });
   }
   if (fileSize > 20 * 1024) {
-    alert("您选择的文件大小超过限制(最大为20M)，请重新选择");
-    return false;
+      return swal({
+          title: '错误提醒',
+          text: '您选择的文件大小超过限制(最大为20M)，请重新选择',
+          confirmButtonText: "知道了"
+      });
   }
   return true;
 };

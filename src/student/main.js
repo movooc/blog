@@ -7,8 +7,9 @@ import FastClick from 'fastclick';
 import App from './App';
 import store from './vuex/store';
 import routes from './router';
-import { Vueinterceptors, VueFilterMoment } from '@student/assets/js/middleware';
+import { Vueinterceptors, VueFilterMoment, VueFilterSpecKey } from '@student/assets/js/middleware';
 import VueLazyload from 'vue-lazyload';
+import VueScroller from 'vue-scroller';
 import SetWechatTitle from '@lib/js/setWechatTitle';
 import '@lib/js/rem';
 import '@lib/css/font.styl';
@@ -33,9 +34,13 @@ VueFilterMoment();
 /* lazy load */
 Vue.use(VueLazyload, {
   //error: 'dist/error.png',
-  loading: `${process.env.ASSETS_HOST?process.env.ASSETS_HOST:'https://assets.sandbox.yike.fm/'}static/student/_static/student/img/loading.gif`,
+  loading: `${process.env.ASSETS_HOST?process.env.ASSETS_HOST:'https://assets.sandbox.yike.fm/'}static/student/_static/student/img/lazy-loading.gif`,
   try: 3 // default 1
 });
+/* scroll load middleware */
+Vue.use(VueScroller);
+/* set vue spec key */
+Vue.use(VueFilterSpecKey);
 
 /* bind router */
 const router = new VueRouter({

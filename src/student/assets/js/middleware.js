@@ -27,3 +27,15 @@ export const VueFilterMoment = function () {
 
   })
 };
+
+// filter moment
+export const VueFilterSpecKey = function () {
+  Vue.filter('specKey', function (data, param) {
+    //
+    let value = 0;
+    try{
+      value = data[param];
+    }catch(e){}
+    return (value || 0);
+  })
+};
