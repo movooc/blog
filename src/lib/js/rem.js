@@ -28,7 +28,7 @@
 
     // weixin
     isWeiXin = mySystem.wx;
-
+    //
     dpr = window.devicePixelRatio || 1;
     rem = isPC ? 75 : docEl.clientWidth * dpr / 10;
     scale = 1 / dpr;
@@ -51,6 +51,16 @@
         document.documentElement.appendChild(iframe);
         window.frames[0].window.alert(name);
         iframe.parentNode.removeChild(iframe);
+      };
+      //重写confirm方法，去掉地址显示
+      window.confirm = function(name){
+        var iframe = document.createElement("IFRAME");
+        iframe.style.display="none";
+        iframe.setAttribute("src", 'data:text/plain,');
+        document.documentElement.appendChild(iframe);
+        var result = window.frames[0].window.confirm(name);
+        iframe.parentNode.removeChild(iframe);
+        return result;
       };
     }else{
       // 设置成pc属性

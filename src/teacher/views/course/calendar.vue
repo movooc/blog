@@ -1,6 +1,6 @@
 <template>
   <section class="calendar">
-    <input class="input" size="50" type="text" @click.stop="open($event,'picker3')" v-model="calendarInfo.value" />
+    <input class="input" size="50" type="text" @click.stop="open($event,'picker3')" v-model="calendarInfo.value" readonly />
     <v-calendar
       :type="calendar.type"
       :value.sync="calendar.value"

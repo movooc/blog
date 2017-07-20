@@ -38,6 +38,13 @@
           <span class="arrow"></span>
         </router-link>
       </li>
+      <li>
+        <router-link to="/user/about">
+          <i class="iconfont icon-comment"></i>
+          <span>关于我们</span>
+          <span class="arrow"></span>
+        </router-link>
+      </li>
     </ul>
   </section>
 </template>

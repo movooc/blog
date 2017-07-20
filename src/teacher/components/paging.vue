@@ -54,7 +54,7 @@
       -webkit-border-radius: 50%;
       &.active {
         color: #fff;
-        background: #FEB64D;
+        background: #12b7f5;
       }
     }
   }

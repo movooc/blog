@@ -56,7 +56,7 @@
 
     li {
       position: relative;
-      margin-top: 20px;
+      margin-top: 10px;
       padding: 7px 10px 8px 60px;
       background: #EAEFF7;
       border-radius: 20px;
@@ -104,6 +104,11 @@
             border-radius: 40px;
             -webkit-border-radius: 40px;
           }
+          .forbin {
+            display: none;
+            color: #12b7f5;
+            cursor: pointer;
+          }
           a{
             color: #aaa;
             text-decoration: none;
@@ -118,6 +123,15 @@
           .no-msg {
             color: #aaa;
             px2px(font-size, 28px);
+          }
+        }
+      }
+      &:hover {
+        .user-content {
+          .con-text {
+            .forbin {
+              display: inline-block;
+            }
           }
         }
       }
@@ -161,6 +175,7 @@
       font-size: 16px;
 
       li {
+        margin-top: 5px;
         padding: 8px 0 8px 45px;
         border-radius: 10px;
         -webkit-border-radius: 10px;

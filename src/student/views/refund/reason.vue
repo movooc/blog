@@ -89,7 +89,7 @@
         this.data.title = query.title;
         this.data.teacher = query.teacher;
         this.data.price = query.price;
-        this.text = '提交申诉';
+        this.text = '发起申诉';
 
       }catch(e){}
     },

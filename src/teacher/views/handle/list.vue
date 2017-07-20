@@ -23,6 +23,7 @@
           <dd v-text="handList.ticket.remark"></dd>
         </dl>
         <span class="s-button" v-if="mode && handList.ticket.i_status == 'reject'">已拒绝</span>
+        <span class="s-button" v-if="mode && !handList.ticket.i_status">转平台</span>
         <span class="s-button agree" v-if="mode && handList.ticket.i_status == 'agree'">已同意</span>
         <span class="timer" v-if="!mode">
           <i class="iconfont icon-jishi"></i>
@@ -211,7 +212,7 @@
         .action {
           position: absolute;
           right: -8px;
-          top: 0;
+          top: 8px;
           font-size: 14px;
           button {
             border: 0 none;

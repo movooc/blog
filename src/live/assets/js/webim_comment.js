@@ -96,7 +96,7 @@ export const onMsgNotify = function(newMsgList) {
             this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
             //
             this.$nextTick(()=>{
-              inspectCommentScroll();
+              inspectCommentScroll.call(this);
             });
           }else{
             //
@@ -108,7 +108,7 @@ export const onMsgNotify = function(newMsgList) {
           this.$store.commit('UPDATE_COMMENT_MESSAGE', msg);
           //
           this.$nextTick(()=>{
-            inspectCommentScroll();
+            inspectCommentScroll.call(this);
           });
           // 获取用户信息
           setTimeout(()=>{
@@ -224,6 +224,15 @@ export const pullHistoryGroupMsgs = (opt, cbOk, cbErr) => {
       }
     );
   });
+};
+
+// 禁言接口设置
+export const forbidSendCommentMsg = (group_id, accounts, cbOk, cbErr) => {
+  webim.forbidSendMsg({
+    'GroupId' : group_id,
+    'Members_Account': accounts,
+    'ShutUpTime': 10800,
+  }, cbOk, cbErr);
 };
 
 // 读取群组基本资料-高级接口
@@ -1005,6 +1014,7 @@ function inspectScroll() {
 
 //监测讨论区滚动条区域
 function inspectCommentScroll() {
+  //
   try{
     // 探测范围
     setTimeout(()=>{
@@ -1016,8 +1026,28 @@ function inspectCommentScroll() {
         // 三分二屏
         if(scrollHeight - offsetHeight - scrollTop < (offsetHeight*2)/3){
           cScroll.scrollTop = scrollHeight;
+          // 判断是否在限制范围内
+          handleOverflow.call(this);
         }
       }
     },200);
   }catch(e){}
+}
+
+// 移除掉溢出的范围
+function handleOverflow() {
+  // 新的组合
+  let temp = [...this.commentMessageInfo];
+  let newMsg = [];
+  let limit = 50;
+  // 是否符合溢出条件
+  if(temp.length > limit){
+    for(let i=1,l=temp.length;i<=limit;i++){
+      newMsg.unshift(temp[l-i]);
+    }
+    // 修改讨论区消息
+    this.$store.commit('RESET_COMMENT_MESSAGE', newMsg);
+    // 还可以拉取
+    this.canPullMsgs = true;
+  }
 }

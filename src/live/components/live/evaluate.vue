@@ -14,7 +14,7 @@
       </div>
       <button @click="submitEva">提交</button>
       <div class="close" @click="oncolse">
-        <span>&#88;</span>
+        <span><i class="iconfont icon-guanbi"></i></span>
       </div>
     </div>
   </div>
@@ -69,21 +69,33 @@
         this.$store.dispatch('fetchEvaluate', this.data).then(() => {
           this.$store.commit('UPDATE_EVALUATE_SHOW', false);
           //this.$store.commit('UPDATE_IS_EVALUATE', true);
+          //
           swal({
-            title: '错误提醒',
+            title: '',
             text: '评价成功',
             confirmButtonText: "知道了"
           });
         }, (error) => {
-          if(error == -1){
-            this.$store.commit('UPDATE_EVALUATE_SHOW', false);
-            //this.$store.commit('UPDATE_IS_EVALUATE', true);
-            swal({
+          if(error == 1){
+            return swal({
               title: '错误提醒',
-              text: '本课程你已经评价过',
+              text: '未听课不能评价',
               confirmButtonText: "知道了"
             });
           }
+          if(error == 2){
+            return swal({
+              title: '错误提醒',
+              text: '您已经评价过，不能重复评价',
+              confirmButtonText: "知道了"
+            });
+          }
+          //
+          swal({
+            title: '错误提醒',
+            text: '网络连接异常',
+            confirmButtonText: "知道了"
+          });
         });
       },
       changeStarNum(num) {
@@ -116,7 +128,7 @@
       border-radius: 12px;
       -webkit-border-radius: 12px;
       .star
-        padding: 60px 0 20px;
+        padding: 30px 0 20px;
       .eva-title
         padding: 38px 0;
         color: #3C4A55;
@@ -154,11 +166,13 @@
         text-align: center;
         span
           display: inline-block;
-          padding: 5px 18px;
+          padding: 12px 18px;
           color: #fff;
           border: 3px solid #fff;
           border-radius: 100%;
           -webkit-border-radius: 100%;
           px2px(font-size, 60px);
+          .iconfont
+            px2px(font-size, 60px);
 
 </style>

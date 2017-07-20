@@ -42,6 +42,9 @@
               <span class="timer" v-if="list.step == 'opened'">
                 {{`${list.plan.dtm_now}#${list.plan.dtm_start}` | moment}}
               </span>
+              <span v-if="list.step == 'finish'">
+                已结束
+              </span>
               <span class="onlive" v-if="list.step == 'onlive'">
                 授课中
               </span>
@@ -52,6 +55,9 @@
           </div>
         </a>
         <!--<router-link :to="{ name: 'detail', params: { lesson_sn: list.sn }}">点击开始{{list.title}}</router-link>-->
+      </li>
+      <li class="last" v-if="showBottom">
+        暂无更多课程，敬请期待
       </li>
     </ul>
   </div>
@@ -70,14 +76,30 @@
       computed: {
         ...mapGetters({
           courseList: 'getCourseListInfo',
+          showBottom: 'getShowBottom',
         })
       },
       data() {
-        return {}
+        return {
+          /*showBottom: false,*/
+          studentShareHost: (process.env.NODE_ENV=='production'?process.env.STUDENT_HOST:'/student.html?'),
+        }
+      },
+      updated() {
+        this.inpectRepeat();
       },
       methods: {
         enterLesson(lesson_sn) {
-          this.$router.push({ name: 'detail', query: { lesson_sn: lesson_sn }})
+          if (process.env.NODE_ENV=='production'){
+            window.location.href = `${this.studentShareHost}share?lesson_sn=${lesson_sn}`;
+          } else {
+            this.$router.push({ name: 'detail', query: { lesson_sn: lesson_sn }});
+          }
+        },
+        inpectRepeat() {
+          this.$nextTick(() => {
+            this.$store.commit('UPDATE_SHOW_BOTTOM', true);
+          })
         },
         textFormat(value){
           return value.replace(/\n/g, '<br>');
@@ -110,11 +132,20 @@
         background: #fff;
         overflow: hidden;
         border-width: 1px 0 1px 0;
-        border-color: #E6EAF2;
+        border-color: #f2f4f7;
         border-style: solid;
 
         &:first-child {
           border-top-width: 0;
+        }
+
+        &.last {
+          background: transparent;
+          /*background-color:#f2f4f7;*/
+          border: 0 none;
+          text-align: center;
+          color: #999;
+          margin-top:60px;
         }
 
         a{
@@ -137,8 +168,8 @@
           img{
             width: 100%;
             height: 300px;
-            border-radius: 15px;
-            -webkit-border-radius: 15px;
+            border-radius: 10px;
+            -webkit-border-radius: 10px;
           }
           img[lazy=loaded] {
             width: 100%;
@@ -155,13 +186,13 @@
           color: #9ca7c1;
           overflow: hidden;
           text-overflow:ellipsis;
-          px2px(font-size, 30px);
+          px2px(font-size, 28px);
           px2px(line-height, 40px);
         }
         .list-content{
           padding: 26px 0;
           overflow: hidden;
-          px2px(font-size, 30px);
+          px2px(font-size, 26px);
 
           >*{
             float: left;
@@ -171,7 +202,7 @@
               float: right;
             }
             .iconfont{
-              px2px(font-size, 28px);
+              px2px(font-size, 26px);
             }
           }
           .l-name {

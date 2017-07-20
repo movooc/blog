@@ -39,7 +39,7 @@
       };
     },
     mounted() {
-      this.wordFold = (this.$refs['t-word'].offsetHeight>182?true:false);
+      this.wordFold = (this.$refs['t-word'].offsetHeight>115?true:false);
     },
     methods: {
       textFormat(value){
@@ -66,7 +66,8 @@
       padding: 38px 0 30px;
 
       :first-child {
-        px2px(font-size, 42px);
+        color: #3c4a55;
+        px2px(font-size, 36px);
       }
       .focus {
         position: absolute;
@@ -82,7 +83,7 @@
     }
 
     .t-con {
-      padding-bottom: 30px;
+      padding-bottom: 15px;
       overflow: hidden;
 
       >* {
@@ -101,8 +102,8 @@
       .t-text {
         width: 550px;
         >:first-child {
-          /*color: #12b7f5;*/
-          px2px(font-size, 40px);
+          color: #3c4a55;
+          px2px(font-size, 36px);
         }
         >:last-child {
           color: #70788C;
@@ -118,6 +119,7 @@
       position: relative;
       .unfold {
         px2px(left, -55px);
+        px2px(bottom, -15px);
       }
       .t-word-con {
         display: -webkit-box;
@@ -125,7 +127,9 @@
         -webkit-line-clamp: initial;
         overflow: hidden;
         text-overflow: ellipsis;
-        px2px(line-height, 40px);
+        color: #70788c;
+        px2px(font-size, 30px);
+        px2px(line-height, 38px);
         &.fold{
           -webkit-line-clamp: 3;
         }

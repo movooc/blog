@@ -98,6 +98,9 @@ const mutations = {
       state.commentMessageInfo = [data, ...state.commentMessageInfo];
     }
   },
+  RESET_COMMENT_MESSAGE(state, data){
+    state.commentMessageInfo = [...data];
+  },
   //
   UPDATE_MENUSHOW(state, data){
     state.menuShow = data;

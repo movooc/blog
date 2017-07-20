@@ -7,8 +7,8 @@
       <div class="bar-text pull-left">
         <h4 v-text="userInfo.name"></h4>
         <div class="total">
-          <span>课程总数<br />{{userInfo | specKey('teacher.lesson.count')}}</span>&nbsp;&nbsp;&nbsp;
-          <span>听课人数<br />{{userInfo | specKey('teacher.access.unique')}}</span>
+          <span>已开课程<br />{{userInfo | specKey('teacher.lesson.count')}}</span>&nbsp;&nbsp;&nbsp;
+          <span>听课人次<i class="iconfont icon-wenhao" title="单人单课为一次"></i><br />{{userInfo | specKey('teacher.access.unique')}}</span>
         </div>
       </div>
     </div>
@@ -66,6 +66,11 @@
     width: 270px;
     height: 544px;
     background: #fff;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-box-shadow:0px 2px 10px #dddddd;
+    -webkit-box-shadow:0px 2px 10px #dddddd;
+    box-shadow:0px 2px 10px #dddddd;
 
     a {
       text-decoration: none;
@@ -111,6 +116,9 @@
     .bar-text {
       h4 {
         margin-bottom: 10px;
+      }
+      .icon-wenhao {
+        color: #12b7f5;
       }
     }
     .total {

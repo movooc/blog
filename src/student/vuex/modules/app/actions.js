@@ -35,9 +35,9 @@ export const fetchUserInfo = ({commit}, query) => {
       if (json.error == 0) {
         return commit('FETCH_USER_INFO', json.data)
       }
-      return Promise.reject(new Error('FETCH_USER_INFO failure'))
+      return Promise.reject(json);
     })
     .catch((error) => {
-      return Promise.reject(error)
+      return Promise.reject(error);
     })
 };

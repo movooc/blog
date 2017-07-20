@@ -51,6 +51,7 @@
   import { mapGetters } from 'vuex';
   import { trimStr } from '@lib/js/mUtils';
   import sButton from '@student/components/button';
+  import swal from 'sweetalert';
 
   export default{
     name: 'refund',
@@ -113,7 +114,11 @@
     methods: {
       submitRefund() {
         if(this.mode != 'freely' && !this.data.reason){
-          return alert('请填写退款理由！');
+          return swal({
+            title: '错误提醒',
+            text: '请填写退款理由!',
+            confirmButtonText: '知道了'
+          });
         }
         // 确认退款
         if(!confirm('您确定要退款吗？'))return;
@@ -126,12 +131,31 @@
         // 开启退款状态
         this.$store.dispatch('fetchRefundCourse', body).then(() => {
           this.refunding = false;
-          this.mode == 'freely' ? alert('退款成功!') : alert('退款申请提交成功!');
-          this.$router.push({ name: 'enrolled' });
+          //
+          this.mode == 'freely' ? swal({
+            title: '',
+            text: '退款成功!',
+            confirmButtonText: '知道了'
+          },()=>{
+            this.$router.push({ name: 'enrolled' });
+          }) :
+          swal({
+            title: '',
+            text: '退款申请提交成功!',
+            confirmButtonText: '知道了'
+          },()=>{
+            this.$router.push({ name: 'enrolled' });
+          });
+
         }, (err) => {
           // 关闭退款状态
           this.refunding = false;
-          alert('退款失败!');
+          //
+          swal({
+            title: '',
+            text: (err.message ? err.message : '网络链接出错!'),
+            confirmButtonText: '知道了'
+          });
         });
       },
       blurEvent() {

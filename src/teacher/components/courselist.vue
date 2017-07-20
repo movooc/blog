@@ -11,6 +11,7 @@
         <span>课程评分</span>
         <span>报名人数</span>
         <span>课程收入</span>
+        <span>分成收入</span>
         <span class="handle-btn">操作</span>
       </li>
       <li v-for="list in lists">
@@ -50,18 +51,19 @@
         <span>{{ list.stats | specKey('lesson.rate.avg') }}</span>
         <span>{{ list.stats | specKey('lesson.enroll.unique') }}</span>
         <span>&#65509;{{ list.stats | specKey('lesson.income.sum') }}</span>
+        <span>&#65509;{{ list.stats | specKey('lesson.payoff.sum') }}</span>
         <div class="handle-btn">
-          <a class="handle-item" href="javascript:;" title="进入直播" @click="openLesson(list.sn)" v-if="list.step != 'submit'"><i class="iconfont icon-zhengzaishouke"></i></a>
-          <span v-if="list.step == 'submit'"><i class="iconfont icon-zhengzaishouke submit"></i></span>
+          <a class="handle-item" href="javascript:;" :title="(list.step=='opened')?'点击开课':'进入直播'" @click="checkLesson(list)" v-if="list.step != 'submit' && list.step != 'denied'"><i class="iconfont icon-yuanchengshouke"></i></a>
+          <span v-if="list.step == 'submit' || list.step == 'denied'"><i class="iconfont icon-yuanchengshouke submit"></i></span>
+          &nbsp;
+          <a class="handle-item" href="javascript:;" title="进入详情" @click="enterLesson(list.sn)" v-if="list.step != 'submit'"><i class="iconfont icon-xiangqing"></i></a>
+          <span v-if="list.step == 'submit'"><i class="iconfont icon-xiangqing submit"></i></span>
           &nbsp;
           <a class="handle-item" href="javascript:;" title="编辑课程" @click="editLesson(list.sn)" v-if="list.step != 'submit'"><i class="iconfont icon-htmal5icon16"></i></a>
           <span v-if="list.step == 'submit'"><i class="iconfont icon-htmal5icon16 submit"></i></span>
           &nbsp;
-          <a class="handle-item" href="javascript:;" title="分享课程" @click="shareLesson(list.sn)" v-if="list.step != 'submit'"><i class="iconfont icon-share"></i></a>
-          <span v-if="list.step == 'submit'"><i class="iconfont icon-share submit"></i></span>
-          &nbsp;
-          <a class="handle-item" href="javascript:;" title="进入详情" @click="enterLesson(list.sn)" v-if="list.step != 'submit'"><i class="iconfont icon-xiangqing"></i></a>
-          <span v-if="list.step == 'submit'"><i class="iconfont icon-xiangqing submit"></i></span>
+          <a class="handle-item" href="javascript:;" title="分享课程" @click="shareLesson(list.sn)" v-if="list.step != 'submit' && list.step != 'denied'"><i class="iconfont icon-fenxiang1"></i></a>
+          <span v-if="list.step == 'submit' || list.step == 'denied'"><i class="iconfont icon-fenxiang1 submit"></i></span>
         </div>
       </li>
     </ul>
@@ -90,6 +92,22 @@
         return {};
       },
       methods: {
+        checkLesson(lesson){
+          if(lesson.step=='opened'){
+            swal({
+              title: '',
+              text: '确定要现在开课吗？\n开课后会给已报名学员推送开课通知。',
+              confirmButtonText: '确定',
+              showCancelButton:true,
+              closeOnConfirm: false,
+              cancelButtonText: '取消',
+            }, ()=>{
+              this.openLesson(lesson.sn);
+            });
+          }else{
+            this.openLesson(lesson.sn);
+          }
+        },
         openLesson(lesson_sn) {
           // 开始课程
           // 获得开课信息
@@ -171,7 +189,7 @@
         display: box;
         -webkit-box-flex: 1;
         box-flex: 1;
-        width: 150px;
+        width: 98px;
         color: #757F98;
         justify-content: center;
         word-break: break-all;
@@ -200,21 +218,25 @@
               position: absolute;
               font-size: 14px;
               color: #757F98;
-              &.icon-zhengzaishouke {
-                top: 4px;
-                left: 6px;
+              &.icon-yuanchengshouke {
+                top: 3px;
+                left: 7px;
+                font-size: 16px;
               }
               &.icon-htmal5icon16 {
-                top: 3px;
-                left: 8px;
+                top: 4px;
+                left: 6px;
+                font-size: 18px;
               }
-              &.icon-share {
-                top: 3px;
-                left: 7px;
+              &.icon-fenxiang1 {
+                top: 2px;
+                left: 6px;
+                font-size: 16px;
               }
               &.icon-xiangqing {
-                top: 3px;
-                left: 7px;
+                top: 2px;
+                left: 8px;
+                font-size: 12px;
               }
             }
             .submit {

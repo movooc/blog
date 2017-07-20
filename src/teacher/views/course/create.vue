@@ -276,6 +276,7 @@
         border: 0 none;
         border-radius: 10px;
         background: #12b7f5;
+        cursor: pointer;
 
     .img
       img

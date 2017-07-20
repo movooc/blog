@@ -4,7 +4,8 @@
       <li v-for="list in lists">
         <a href="javascript:;" class="item" @click="enterDetail(list.lesson.sn)">
           <div class="list-img">
-            <img :src="`${list.lesson.cover}!cover`" />
+            <img v-if="list.lesson.cover" :src="`${list.lesson.cover}!cover`" />
+            <img v-if="!list.lesson.cover" :src="`${assetsHost}/static/student/_static/student/img/default.png`" />
           </div>
           <div class="list-content">
             <div class="list-title" v-text="list.lesson.title"></div>
@@ -29,7 +30,7 @@
           </div>
         </a>
         <div class="list-handler clearfix" v-if="list.event == 'refund'">
-          <span class="pull-right status red">已退款</span>
+          <span class="pull-right status red pdtb19">已退款</span>
         </div>
         <div class="list-handler clearfix" v-if="list.refund_mode && list.event != 'refund' && !list.refund_info && (!list.rated || list.lesson.price > 0)">
           <button class="pull-right" @click="enterEvaluate(list.lesson.sn)" v-if="!list.rated">评价课程</button>
@@ -37,17 +38,23 @@
         </div>
         <div class="list-handler clearfix" v-if="list.refund_mode && list.refund_info && list.refund_info.apply && !list.refund_info.appeal && list.refund_info.apply.status != 'agree'">
           <span class="pull-right status" v-if="list.refund_info.apply.status == 'start' || list.refund_info.apply.status == 'pending'">退款申请中...</span>
-          <div class="pull-right status clearfix" v-if="list.refund_info.apply.status == 'reject'">
+          <div class="pull-right status w100 clearfix" v-if="list.refund_info.apply.status == 'reject'">
             <!--<button class="pull-right blue" @click="enterEvaluate(list.lesson.sn)" v-if="!list.rated">评价</button>-->
-            <span class="reject">你的退款申请被拒绝</span>
-            <button class="pull-right" @click="goReason(list)">查看</button>
+            <span class="reject">
+              <i class="iconfont icon-jinggao"></i>
+              你的退款申请被拒绝
+            </span>
+            <button class="pull-right" @click="goReason(list)">&nbsp;&nbsp;&nbsp;&nbsp;查看&nbsp;&nbsp;&nbsp;&nbsp;</button>
           </div>
         </div>
         <div class="list-handler clearfix" v-if="list.refund_mode && list.refund_info && list.refund_info.appeal && list.refund_info.appeal.status != 'agree'">
           <span class="pull-right status" v-if="list.refund_info.appeal.status == 'start' || list.refund_info.appeal.status == 'pending'">退款申诉中...</span>
-          <span class="pull-right status clearfix" v-if="list.refund_info.appeal.status == 'reject'">
-            <span class="reject">你的退款申诉被拒绝</span>
-            <button class="pull-right" @click="goReason(list)">查看</button>
+          <span class="pull-right status w100 clearfix" v-if="list.refund_info.appeal.status == 'reject'">
+            <span class="reject">
+              <i class="iconfont icon-jinggao"></i>
+              你的退款申诉被拒绝
+            </span>
+            <button class="pull-right" @click="goReason(list)">&nbsp;&nbsp;&nbsp;&nbsp;查看&nbsp;&nbsp;&nbsp;&nbsp;</button>
           </span>
         </div>
       </li>
@@ -76,17 +83,21 @@
       },
       computed: {
         ...mapGetters({
-
+          assetsHost: 'getAssetsHost',
         })
       },
       data() {
         return {
-          //refunding: false,
-        }
+          studentShareHost: (process.env.NODE_ENV=='production'?process.env.STUDENT_HOST:'/student.html?'),
+        };
       },
       methods: {
         enterDetail(lesson_sn) {
-          this.$router.push({ name: 'detail', query: { lesson_sn: lesson_sn }})
+          if (process.env.NODE_ENV=='production'){
+            window.location.href = `${this.studentShareHost}share?lesson_sn=${lesson_sn}`;
+          } else {
+            this.$router.push({ name: 'detail', query: { lesson_sn: lesson_sn }});
+          }
         },
         enterEvaluate(lesson_sn) {
           this.$router.push({ name: 'evaluate-lesson', params: {lesson_sn:lesson_sn} });
@@ -148,7 +159,7 @@
       }
       li{
         position: relative;
-        padding: 38px 24px 0;
+        padding: 54px 24px 0;
         background: #fff;
         overflow: hidden;
         border-width: 1px 0 1px 0;
@@ -181,7 +192,7 @@
         .item {
           display: -webkit-box;
           display: box;
-          padding-bottom: 29px;
+          /*padding-bottom: 29px;*/
 
           >* {
             display: -webkit-box;
@@ -222,10 +233,10 @@
 
           .appointment{
             padding-top: 20px;
-            px2px(font-size, 26px);
+            px2px(font-size, 30px);
             color: #AAA;
             .iconfont {
-              px2px(font-size, 26px);
+              px2px(font-size, 30px);
             }
           }
         }
@@ -233,7 +244,7 @@
           padding-top: 65px;
           width: 400px;
           &.new-status{
-            padding-top: 45px;
+            padding-top: 38px;
           }
           >span{
             color: #3C4A55;
@@ -267,11 +278,23 @@
             color: #9ca7c1;
             px2px(font-size, 32px);
             px2px(line-height, 32px);
+            &.w100 {
+              width: 100%;
+            }
             .reject {
+              color: #fb6666;
               px2px(line-height, 58px);
+              .iconfont {
+                px2px(font-size, 32px);
+                vertical-align: top;
+              }
             }
             &.red {
               color: #fb6666;
+            }
+            &.pdtb19 {
+              padding-top: 19px;
+              padding-bottom: 19px;
             }
           }
         }

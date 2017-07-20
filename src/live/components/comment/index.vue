@@ -30,7 +30,10 @@
               <div class="con-title" v-text="comment.nickname" :class="{'is-self':comment.isSelfSend}"></div>
               <!--<div class="con-time">{{comment.time}} <a href="javascrip:;" v-if="isOwner">操作</a></div>-->
               <div class="con-text" v-for="com in comment.content">
-                <span v-for="co in com.custom" v-text="co.text"></span>
+                <span v-for="co in com.custom">
+                  <span v-text="co.text"></span>
+                  <span class="forbin" @click="fetchForbid(comment.account)" v-if="isOwner">&nbsp;&nbsp;禁言</span>
+                </span>
               </div>
             </div>
           </li>
@@ -41,9 +44,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { onBigGroupMsgNotify, jsonpCallback, onMsgNotify, pullHistoryGroupMsgs, exportInitData } from '@live/assets/js/webim_comment';
+  import { onBigGroupMsgNotify, jsonpCallback, onMsgNotify, pullHistoryGroupMsgs, exportInitData, forbidSendCommentMsg } from '@live/assets/js/webim_comment';
   import { onDestoryGroupNotify, onRevokeGroupNotify, onCustomGroupNotify, onGroupInfoChangeNotify, onKickedGroupNotify } from '@live/assets/js/webim_group_notice';
-  import {mapState} from 'vuex';
+  import { mapState } from 'vuex';
   // spec
   var _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'') : '/api';
   var userUrl = `${_prefix}/user-profile.api?usn=`;
@@ -53,6 +56,11 @@
     name: 'v-comment',
     components: {
 
+    },
+    props: {
+      inComment: {
+        type: Boolean,
+      },
     },
     data() {
       return {
@@ -106,11 +114,46 @@
           console.log(err);
         });
       },
+      fetchForbid(account) {
+        // 禁言该用户
+        swal({
+          title: '',
+          text: '确定要禁言此用户吗？',
+          confirmButtonText: '确定',
+          showCancelButton:true,
+          closeOnConfirm: false,
+          cancelButtonText: '取消',
+        }, ()=>{
+          // 开始禁言
+          forbidSendCommentMsg(this.userInfo.discuss ,[account], (data) => {
+            swal({
+              title: '',
+              text: '禁言成功',
+              confirmButtonText: "知道了"
+            });
+          }, (err) => {
+            if(err.ErrorCode == 10004){
+              return swal({
+                title: '错误提醒',
+                text: '成员不在授课区',
+                confirmButtonText: "知道了"
+              });
+            };
+            swal({
+              title: '错误提醒',
+              text: err.SrcErrorInfo,
+              confirmButtonText: "知道了"
+            });
+          });
+        /*end*/
+        });
+      },
       init(data) {
         // 初始化数据
         let initData = {};
         //官方 demo appid,需要开发者自己修改（托管模式）
-        initData.sdkAppID = data.sdkAppID || 1400026682;
+        initData.sdkAppID = data.sdkAppID || (process.env.SDK_APPID?process.env.SDK_APPID:1400026682); // live
+        //initData.sdkAppID = data.sdkAppID || 1400026682; // sandbox
         initData.accountType = data.accountType || 12098;
         initData.avChatRoomId = data.discuss || '58f45e003d331'; //默认房间群ID//
         //initData.avChatRoomId = '58f45e003d331'; //默认房间群ID//
@@ -182,10 +225,17 @@
 
         // 初始化webim数据
         exportInitData(initData);
-        // 获取历史消息
-        setTimeout(() => {
-          this.pullHistory();
-        }, 500);
+        let checkThis = this;
+        // 初始化历史消息
+        (function checkEnterComment() {
+          if(checkThis.inComment){
+            return checkThis.pullHistory();
+          }
+          //
+          setTimeout(() => {
+            checkEnterComment();
+          }, 500);
+        })();
       },
       updateAvatar(account, avatar){
         //

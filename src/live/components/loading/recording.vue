@@ -16,8 +16,8 @@
         <button @click="startUpload" v-if="blobRecord && !uploading">发送</button>
         <button v-if="uploading">发送中...</button>
       </div>
-      <button class="cancle" @click="cancleRecording" v-if="!blobRecord">&#88;</button>
-      <button class="cancle" @click="cancleBlobRecording" v-if="blobRecord && !uploading">&#88;</button>
+      <button class="cancle" @click="cancleRecording" v-if="!blobRecord"><i class="iconfont icon-guanbi"></i></button>
+      <button class="cancle" @click="cancleBlobRecording" v-if="blobRecord && !uploading"><i class="iconfont icon-guanbi"></i></button>
       <!-- 遮罩 -->
       <div class="uploading" v-if="uploading">
         <span class="progress">
@@ -129,13 +129,16 @@
         position: absolute;
         right: -6px;
         top: -6px;
-        padding: 4px 6px;
+        padding: 6px;
         color: #fff;
         background: #000;
         border: 0 none;
         line-height: 1;
-        border-radius: 10px;
-        -webkit-border-radius: 10px;
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+        cursor: pointer;
+        .icon-guanbi
+          font-size: 14px;
       .is-recording
         position: relative;
         color: #03a9f4;
@@ -157,8 +160,11 @@
           background: #fff;
           border: 0 none;
           cursor: pointer;
+          &:last-child {
+            color: #12b7f5;
+          }
         button+button
-          border-left: 1px solid #aaa;
+          border-left: 1px solid #e6eaf2;
       .progress
         position: absolute;
         bottom: 0;

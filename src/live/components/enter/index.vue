@@ -3,11 +3,11 @@
   <div class="l-enter" :class="{entering}">
     <div class="l-teacher" v-if="isOwner">
       <v-teacher></v-teacher>
-      <p class="title">课程:{{lessonInfo.title}}</p>
-      <v-live :lesson="lessonInfo.teach"></v-live>
+      <p class="title title-lesson">课程:{{lessonInfo.title}}</p>
+      <v-live :lesson="lessonInfo.teach" :inComment="canInComment"></v-live>
     </div>
     <div class="l-student" v-if="!isOwner">
-      <v-live :lesson="lessonInfo.teach"></v-live>
+      <v-live :lesson="lessonInfo.teach" :inComment="canInComment"></v-live>
     </div>
   </div>
 </template>
@@ -28,6 +28,7 @@
     data() {
       return {
         entering: true,
+        canInComment: false,
       }
     },
     components: {
@@ -92,6 +93,8 @@
             text: err.ErrorInfo,
             confirmButtonText: "知道了"
           });
+          // 讨论区加群成功
+          this.canInComment = true;
         });
       }
     },
@@ -103,7 +106,8 @@
     let initData = {};
 
     //官方 demo appid,需要开发者自己修改（托管模式）
-    initData.sdkAppID = data.sdkAppID || 1400026682;
+    initData.sdkAppID = data.sdkAppID || (process.env.SDK_APPID?process.env.SDK_APPID:1400026682); //live
+    //initData.sdkAppID = data.sdkAppID || 1400026682; //sandbox
     initData.accountType = data.accountType || 12098;
 
     initData.avChatRoomId = data.groupId || '58f45e003d331'; //默认房间群ID，群类型必须是直播聊天室（AVChatRoom），这个为官方测试ID(托管模式)

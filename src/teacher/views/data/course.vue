@@ -7,7 +7,9 @@
         <span>报名人数</span>
         <span>听课人数</span>
         <span>退款人数</span>
-        <span>课程收益</span>
+        <span>课程评分</span>
+        <span>课程收入</span>
+        <span>分成收入</span>
         <span class="handle">&nbsp;</span>
       </li>
       <li v-for="item in dataCourse">
@@ -15,7 +17,9 @@
         <span>{{ item.data | specKey('lesson.enroll.unique') }}</span>
         <span>{{ item.data | specKey('lesson.access.unique') }}</span>
         <span>{{ item.data | specKey('lesson.refund.unique') }}</span>
+        <span>{{ item.data | specKey('lesson.rate.avg') }}</span>
         <span class="price">&#65509;{{ item.data | specKey('lesson.income.sum') }}</span>
+        <span class="price">&#65509;{{ item.data | specKey('lesson.payoff.sum') }}</span>
         <div class="handle">
           <a class="button" href="javascript:;" @click="goToOrigin(item.lesson.sn)">来源</a>
         </div>

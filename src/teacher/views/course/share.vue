@@ -33,11 +33,15 @@
         </div>
       </div>
     </div>
+    <div class="footer">
+      <div class="footer-display">讲师可获得以上渠道99%的报名费用</div>
+    </div>
   </section>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex';
+  import swal from 'sweetalert';
 
   export default{
     name: 'share',
@@ -47,7 +51,7 @@
       return {
         card: '',
         qrcode: '',
-        share_url:''
+        share_url:'',
       }
     },
     created() {
@@ -74,17 +78,23 @@
           succeeded = false;
         }
         if (succeeded) {
-            swal({
-                title: '',
-                text: '复制成功',
-                confirmButtonText: "知道了"
-            });
+          swal({
+            title: '',
+            type: 'success',
+            text: '复制成功',
+            timer: 1000,
+            confirmButtonText: '',
+            confirmButtonColor: '#fff',
+          });
         } else {
-            swal({
-                title: '错误提醒',
-                text: '复制失败',
-                confirmButtonText: "知道了"
-            });
+          swal({
+            title: '',
+            type: 'error',
+            text: '复制失败',
+            timer: 600,
+            confirmButtonText: '',
+            confirmButtonColor: '#fff',
+          });
         }
       }
     }
@@ -98,8 +108,18 @@
       margin: 0 20px;
       padding: 15px 0;
       border-bottom: 1px solid #E6EAF2;
+    .footer
+      border-top: 1px dashed #E6EAF2;
+      font-size 16px;
+      color :#3c4a55;
+      height: 76px;
+      text-align: center;
+      position: relative;
+      .footer-display
+        margin-top:30px;
+
     .link-box
-      padding: 30px 150px 48px;
+      padding: 30px 100px 48px;
       background: #fafafb;
       .input
         position: relative;
@@ -127,6 +147,7 @@
           border-radius: 18px;
           -webkit-border-radius: 18px;
           z-index: 1;
+          cursor: pointer;
     .share-box
       padding: 20px 0;
     .l-wxcode, .r-wxcode

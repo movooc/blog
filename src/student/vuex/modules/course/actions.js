@@ -67,7 +67,9 @@ export const fetchCourseList = ({commit}, query) => {
 
 export const fetchCourseDetail = ({commit}, query) => {
   const url = `${_prefix}/lesson-detail.api`;
-
+  // 加个时间戳
+  query['t'] = Date.parse(new Date());
+  // 开始请求
   return _get({ url, query }, commit)
     .then((json) => {
       if (json.error == 0) {
@@ -109,10 +111,10 @@ export const fetchLessonEnroll = ({commit}, body) => {
         commit('FETCH_LESSON_ENROLL', opt);
         return Promise.resolve(json.data);
       }
-      return Promise.reject(new Error('Fetch_Lesson_Enroll failure'))
+      return Promise.reject(json);
     })
     .catch((error) => {
-      return Promise.reject(error)
+      return Promise.reject(error);
     })
 };
 

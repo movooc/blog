@@ -4,6 +4,10 @@
   padding: 0;
   px2px(font-size, 32px);
 
+  .color-9ca7c1
+    color: #9ca7c1;
+  .color-70788c
+    color: #70788c;
   &.detail
     padding-bottom: 100px;
     .detail-img
@@ -32,18 +36,24 @@
         justify-content: center;
         text-decoration: none;
         color: #3c4a55;
-        border-bottom: 1px solid #fff;
+        border-bottom: 2px solid #fff;
         &.active
           color: #12b7f5;
           border-color: #12b7f5;
     .brief-info
       padding: 0 30px;
       background: #fff;
+      border-bottom: 1px solid #e6eaf2;
 
       h4
         margin: 0;
         padding: 35px 0;
         px2px(font-size, 36px);
+      h5
+        margin: 0;
+        padding: 35px 0;
+        font-weight: normal;
+        px2px(font-size, 38px);
       .info-detail
         display: -webkit-box;
         display: box;
@@ -134,12 +144,13 @@
       margin-top: 20px;
       padding: 30px 30px 0;
       background: #fff;
+      border-top: 1px solid #e6eaf2;
       .brief-title
         color: #3c4a55;
-        px2px(font-size, 42px);
+        px2px(font-size, 36px);
       .brief-con
         position: relative;
-        padding: 25px 0 40px;
+        padding: 25px 0 50px;
         border-bottom: 1px solid #e6eaf2;
       p
         margin: 0;
@@ -168,7 +179,7 @@
     .unfold
       position: absolute;
       right: 0;
-      bottom: 0;
+      bottom: 4px;
       width: 100%;
       color: #12b7f5;
       text-align: center;
@@ -176,7 +187,7 @@
         position: absolute;
         left: 0;
         right: 0;
-        top: 0;
+        top: 10px;
         bottom: 0;
         content: '';
         z-index: 1;
@@ -185,13 +196,18 @@
       .iconfont
         px2px(font-size, 32px);
       .icon-chevron-down, .icon-chevron-up
-        px2px(font-size, 42px);
+        px2px(font-size, 50px);
     .b-text
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: initial;
       overflow: hidden;
       text-overflow: ellipsis;
-      px2px(line-height, 40px);
+      px2px(font-size, 30px);
+      px2px(line-height, 38px);
       &.fold
         -webkit-line-clamp: 5;
+    .lesson-more
+      padding: 30px 0;
+      color: #12b7f5;
+      text-align: center;

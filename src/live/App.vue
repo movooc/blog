@@ -60,7 +60,7 @@
     outline:none;
   }
   .app
-    font-family: Microsoft YaHei, Helvetica, Arial, sans-serif;
+    font-family: "华文细黑", "Microsoft YaHei", "微软雅黑";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     height: 100%;

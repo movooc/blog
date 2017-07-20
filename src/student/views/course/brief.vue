@@ -2,10 +2,11 @@
   <section class="course-brief">
     <div v-if="course">
       <div class="brief-info">
-        <h4 v-text="course.title"></h4>
+        <h5 v-text="course.title"></h5>
         <div class="info-detail clearfix">
           <!--<span><em>{{`${course.plan.dtm_now}#${course.plan.dtm_start}` | moment}}</em>&nbsp;开课</span>-->
-          <span>开课时间 : {{formatTimer(course.plan.dtm_start)}}</span>
+          <!--<span>开课时间 : {{formatTimer(course.plan.dtm_start)}}</span>-->
+          <span>开课时间 : {{course.plan.dtm_start}}</span>
           <span><i class="iconfont icon-time"></i>&nbsp;{{course.plan.duration}}小时</span>
         </div>
         <div class="info-detail clearfix">
@@ -19,7 +20,7 @@
         <p class="info-price">
           <span v-if="course.price" class="price">&#65509;{{course.price}}&nbsp;<em></em></span>
           <span v-if="course.price == 0" class="price-free">免费&nbsp;<em></em></span>
-          <span v-if="!course.refund_info && course.price != 0 && isEnroll != 'refund'" class="g-refund" @click="refund">申请退款</span>
+          <span v-if="course.refund_mode && !course.refund_info && course.price != 0 && isEnroll != 'refund' && isEnroll != 'browse' && isEnroll != 'reset'" class="g-refund" @click="refund">申请退款</span>
           <span class="guarantee" @click="showGuar = !showGuar" v-bind:class="{ 'g-unfold': showGuar }">课程保障</span>
         </p>
         <div class="guarantee-text" v-show="showGuar">
@@ -48,7 +49,7 @@
       <div class="lesson-brief">
         <div class="brief-title">简介</div>
         <div class="brief-con">
-          <div class="b-text break-word" ref="b-text" :class="{'fold':(!showBrief && briefFold)}" v-html="textFormat(course.brief)">
+          <div class="b-text break-word color-70788c" ref="b-text" :class="{'fold':(!showBrief && briefFold)}" v-html="textFormat(course.brief)">
           </div>
           <span class="unfold" @click="toggleFold" v-if="briefFold">
             <i class="iconfont icon-chevron-down" v-if="!showBrief"></i>
@@ -59,6 +60,9 @@
       </div>
       <teacher-info :teacher="course.teacher"></teacher-info>
       <qr-code></qr-code>
+      <div class="lesson-more" @click="backToHome">
+        查看更多课程
+      </div>
     </div>
   </section>
 </template>
@@ -98,7 +102,7 @@
       this.course = this.courseDetail[query.lesson_sn];
     },
     mounted() {
-      this.briefFold = (this.$refs['b-text'].offsetHeight>302?true:false);
+      this.briefFold = (this.$refs['b-text'].offsetHeight>191?true:false);
     },
     methods: {
       toggleFold() {
@@ -121,6 +125,9 @@
         };
         //
         this.$router.push({ name: 'refund', query: {...params} });
+      },
+      backToHome() {
+        this.$router.push({ name: 'course' });
       },
     },
   };

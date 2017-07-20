@@ -32,4 +32,6 @@
   .content-list
     padding: 20px;
     background: #fff;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
 </style>

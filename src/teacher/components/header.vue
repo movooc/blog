@@ -19,9 +19,9 @@
     padding: 20px 0;
     background: #fff;
     overflow: hidden;
-    -moz-box-shadow:-1px 3px 11px #949494;
-    -webkit-box-shadow:-1px 3px 11px #949494;
-    box-shadow:-1px 3px 11px #949494;
+    -moz-box-shadow:-1px 3px 11px #dddddd;
+    -webkit-box-shadow:-1px 3px 11px #dddddd;
+    box-shadow:-1px 3px 11px #dddddd;
 
     h1 {
       float: left;

@@ -17,7 +17,8 @@
           <div class="open clearfix">
             <div class="pull-left">
               <p>开课时间</p>
-              <p v-text="formatTimer(courseDetail.plan.dtm_start)"></p>
+              <!--<p v-text="formatTimer(courseDetail.plan.dtm_start)"></p>-->
+              <p v-text="courseDetail.plan.dtm_start"></p>
             </div>
             <div class="pull-left">
               <p>课程状态</p>
@@ -42,7 +43,7 @@
     </div>
     <div class="d-stats">
       <div>
-        <p>已报名的人数&nbsp;<i class="iconfont icon-wenhao" @mouseover="showQues" title="包括退款人数的累计已报名人数"></i></p>
+        <p>报名人数&nbsp;<i class="iconfont icon-wenhao" @mouseover="showQues" title="包括退款人数的累计已报名人数"></i></p>
         <span>{{ courseDetail.stats | specKey('lesson.enroll.unique') }}</span>
       </div>
       <div>
@@ -59,7 +60,7 @@
       </div>
       <div>
         <p>分成收入&nbsp;<i class="iconfont icon-wenhao" title="课程收入扣除1%服务费后按比例分成，讲师导入用户分成100%，平台导入用户分成50%"></i></p>
-        <span>{{ courseDetail.stats | specKey('lesson.income.unique') }}</span>
+        <span>{{ courseDetail.stats | specKey('lesson.payoff.sum') }}</span>
       </div>
     </div>
     <div class="d-teacher">
@@ -80,7 +81,7 @@
           <div class="title title-style">
             <span>课程介绍</span>
           </div>
-          <p class="teacher-brief break-word" v-text="courseDetail.brief"></p>
+          <p class="teacher-brief break-word" v-html="textFormat(courseDetail.brief)"></p>
           <p></p>
         </div>
       </div>
@@ -223,6 +224,9 @@
       },
       formatTimer(value) {
         return value.replace(/^\d{4}-|:\d{2}$/g, '');
+      },
+      textFormat(value){
+        return value.replace(/\n/g, '<br>');
       },
       showQues(){
         //console.log(1212);

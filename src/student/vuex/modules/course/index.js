@@ -10,6 +10,8 @@ const state = {
   openInfo: null,
   courseDetail: null,
   courseScrollTop: 0,
+  canWXShare: 0,
+  showBottom: false,
 };
 
 export default{

@@ -67,6 +67,7 @@ export default {
   body
     margin: 0;
     background: #EFEFF4;
+    font-family: "华文细黑", "Microsoft YaHei", "微软雅黑";
   .container
     margin: 0 auto;
     width: 1300px;

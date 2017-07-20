@@ -6,6 +6,8 @@ import {
   FETCH_ORDER_CONFIRM,
   UPDATE_COURSE_SCROLL,
   FETCH_EVALUATE_LIST,
+  UPDATE_WXSHARE_SHARE,
+  UPDATE_SHOW_BOTTOM,
 } from './mutation-type'
 
 import { convertToArray } from '@lib/js/mUtils';
@@ -38,7 +40,14 @@ const mutations = {
   // 获得评价列表信息
   [FETCH_EVALUATE_LIST](state, data) {
     // state.evaluateList = convertToArray(state.evaluateList, data);
-    state.evaluateList = [ ...data ]
+    state.evaluateList = [ ...data ];
+  },
+  // 获得评价列表信息
+  [UPDATE_WXSHARE_SHARE](state, share) {
+    state.canWXShare = share;
+  },
+  [UPDATE_SHOW_BOTTOM](state, show) {
+    state.showBottom = show;
   },
 };
 export default mutations;

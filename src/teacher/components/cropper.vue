@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="cropper-button">
-        <input type="file" id="change" accept="image" @change="change">
+        <input class="cursor" type="file" id="change" accept="image" @change="change" :title="cover?'已选择图片':'请选择图片'">
         <label for="change"></label>
       </div>
     </div>
@@ -268,7 +268,7 @@
     width: 350px;
     height: auto;
     left: 0;
-    top: 150px;
+    top: 70px;
     right: 0;
     background:rgba(0,0,0,1);
     z-index: 12;
@@ -641,5 +641,8 @@
         right: 0;
       }
     }
+  }
+  .cursor {
+    cursor: pointer;
   }
 </style>

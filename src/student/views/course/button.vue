@@ -1,11 +1,11 @@
 <template>
   <div class="button">
-    <div class="enroll" v-if="!paying && courseDetail && (isEnroll != 'refund' && isEnroll != 'browse')">
+    <div class="enroll" v-if="!paying && courseDetail && (isEnroll != 'refund' && isEnroll != 'browse' && isEnroll != 'reset')">
       <button class="enter" @click="startLesson" v-if="courseDetail.step == 'onlive' || courseDetail.step == 'repose' || courseDetail.step == 'finish' || courseDetail.step == 'closed'">进入课堂</button>
       <button disabled v-if="courseDetail.step == 'opened'">{{`${courseDetail.plan.dtm_now}#${courseDetail.plan.dtm_start}` | moment}}开课</button>
       <!--<button disabled v-if="courseDetail.step == 'closed'">已下架</button>-->
     </div>
-    <div class="enroll" v-if="!paying && (isEnroll == 'browse')">
+    <div class="enroll" v-if="!paying && (isEnroll == 'browse' || isEnroll == 'reset')">
       <button class="free" v-if="courseDetail && courseDetail.price == 0 && !canEnter" @click="callWeiXinPay">免费报名</button>
       <button class="pay" v-if="courseDetail && courseDetail.price > 0 && !canEnter" @click="callWeiXinPay">付费报名</button>
       <button class="enter" v-if="canEnter && courseDetail && (courseDetail.step == 'onlive' || courseDetail.step == 'repose')" @click="startLesson">进入课堂</button>
@@ -17,12 +17,19 @@
     <div class="enroll" v-if="paying">
       <button class="enter">报名中...</button>
     </div>
+    <!--<pay-code :show="payCodeShow" :codeUrl="payUrl" @updatePayCodeShow="updatePayCodeShow"></pay-code>-->
   </div>
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+    import payCode from '@student/components/payCode';
+
     export default{
       name: 'v-button',
+      components: {
+        payCode,
+      },
       props: {
         isEnroll: {
           type: null
@@ -34,12 +41,17 @@
           type: String
         }
       },
+      computed: mapGetters({
+
+      }),
       data() {
         return {
           paying: false,
           enrollData: null,
           canEnter: false,
           query: {},
+          payUrl: '',
+          payCodeShow: false,
         }
       },
       created(){
@@ -71,12 +83,30 @@
             }else{
               this.canEnter = true;
               this.paying = false;
-              alert('报名成功！');
-              window.location.reload();
+              //
+              swal({
+                title: '',
+                text: '报名成功!',
+                confirmButtonText: "知道了"
+              }, ()=>{
+                // 进入课堂
+                //window.location.reload();
+                if(this.courseDetail && this.courseDetail.step == 'opened'){
+                  window.location.reload();
+                }else{
+                  // 进入课堂
+                  this.startLesson();
+                }
+              });
             }
           }, (err) => {
             this.paying = false;
-            alert(err.message);
+            //
+            swal({
+              title: '错误提醒',
+              text: err.message,
+              confirmButtonText: "知道了"
+            });
           });
         },
         lessonAccess() {
@@ -89,7 +119,12 @@
             };
             window.location.href = `${this.liveHost}${params}`;
           }, (err) => {
-            alert(err.message);
+            //
+            swal({
+              title: '错误提醒',
+              text: (err.message ? err.message : '网络链接失败'),
+              confirmButtonText: "知道了"
+            });
           });
         },
         startLesson() {
@@ -117,20 +152,60 @@
             params,
             function (res) {
               WeixinJSBridge.log(res.err_msg);
-              //alert(JSON.stringify(res.err_msg));
+              /*alert(JSON.stringify(res))*/
+              /*swal({
+                title: '',
+                text: JSON.stringify(res),
+                confirmButtonText: "知道了"
+              });*/
               if (res.err_msg == 'get_brand_wcpay_request:ok') {
                 // 关闭付款状态
                 self.paying = false;
                 // 开通直播通道
                 self.canEnter = true;
-                //alert('报名成功！');
-                window.location.reload();
-              }else {
+                // 进入课堂
+                //window.location.reload();
+                // 进入课堂
+                if(self.courseDetail && self.courseDetail.step == 'opened'){
+                  window.location.reload();
+                }else{
+                  // 进入课堂
+                  self.startLesson();
+                }
+              } else if (res.err_msg == 'get_brand_wcpay_request:fail') {
+                // 开始重新支付
+                self.payAgain(self);
+              } else {
                 // 关闭付款状态
                 self.paying = false;
               }
             }
           );
+        },
+        payAgain(ctx){
+          ctx.paying = false;
+          return swal({
+            title: '错误提醒',
+            text: '若遇到支付问题，请长按页面底部二维码，关注易灵微课公众号，从课程列表进入报名',
+            confirmButtonText: "知道了"
+          });
+          // 重新付费开始
+          /*ctx.$store.dispatch('fetchLessonEnroll', {type:'native', ...ctx.query}).then((data)=>{
+            ctx.paying = false;
+            ctx.payCodeShow = true;
+            ctx.payUrl = data.pay_url;
+          }, (err) => {
+            ctx.paying = false;
+            //
+            swal({
+              title: '错误提醒',
+              text: err.message,
+              confirmButtonText: "知道了"
+            });
+          });*/
+        },
+        updatePayCodeShow(show){
+          this.payCodeShow = show;
         }
       }
     }

@@ -23,6 +23,7 @@ if(process.env.NODE_ENV == 'production'){
   var guarantee = r => require.ensure([], () => r(require('../views/user/guarantee')), 'student/student-guarantee');
   var enrolled = r => require.ensure([], () => r(require('../views/user/enroll')), 'student/student-userEnroll');
   var advise = r => require.ensure([], () => r(require('../views/user/advise')), 'student/student-userAdvise');
+  var about = r => require.ensure([], () => r(require('../views/user/about')), 'student/student-userAbout');
   /*refund*/
   var refund = r => require.ensure([], () => r(require('../views/refund/index')), 'student/student-courseNotice');
   var reason = r => require.ensure([], () => r(require('../views/refund/reason')), 'student/student-courseReason');
@@ -44,6 +45,7 @@ if(process.env.NODE_ENV == 'production'){
   var guarantee = require('../views/user/guarantee');
   var enrolled = require('../views/user/enroll');
   var advise = require('../views/user/advise');
+  var about = require('../views/user/about');
   /*refund*/
   var refund = require('../views/refund/index');
   var reason = require('../views/refund/reason');
@@ -180,6 +182,15 @@ export default [
         component: guarantee,
         meta: {
           pageTitle: '易灵微课-课程保障'
+        }
+      },
+      // 关于我们
+      {
+        path: '/user/about',
+        name: 'about',
+        component: about,
+        meta: {
+            pageTitle: '易灵微课-关于我们'
         }
       },
       // 建议与反馈

@@ -43,19 +43,52 @@
         this.data.score = num;
       },
       submitEva() {
-        if(!this.data.lesson_sn)return alert('参数错误!');
+        if(!this.data.lesson_sn)return swal({
+          title: '错误提醒',
+          text: '参数错误!',
+          confirmButtonText: "知道了"
+        });
         if(!this.data.score){
-          return alert('请选择评价星级')
+          return swal({
+            title: '错误提醒',
+            text: '请选择评价星级!',
+            confirmButtonText: "知道了"
+          });
         }
         // 评价开始
         this.$store.dispatch('fetchEvaluate', this.data).then(() => {
-          alert('评价成功!');
-          this.$router.replace({ name: 'evaluate', query: {lesson_sn:this.data.lesson_sn} });
+          swal({
+            title: '',
+            text: '评价成功!',
+            confirmButtonText: "知道了"
+          }, ()=>{
+            this.$router.replace({ name: 'evaluate', query: {lesson_sn:this.data.lesson_sn} });
+          });
         }, (error) => {
-          if(error == -1){
-            alert('本课程你已经评价过！');
-            this.$router.replace({ name: 'enrolled' });
+          if(error == 1){
+            return swal({
+              title: '',
+              text: '未听课不能评价!',
+              confirmButtonText: "知道了"
+            }, ()=>{
+              this.$router.replace({ name: 'enrolled' });
+            });
           }
+          if(error == 2){
+            return swal({
+              title: '',
+              text: '您已经评价过，不能重复评价!',
+              confirmButtonText: "知道了"
+            }, ()=>{
+              this.$router.replace({ name: 'enrolled' });
+            });
+          }
+          //
+          swal({
+            title: '错误提醒',
+            text: '网络连接失败!',
+            confirmButtonText: "知道了"
+          });
         });
       },
     }
@@ -77,7 +110,7 @@
       px2px(font-size, 36px);
     }
     .e-star {
-      padding: 99px 0 34px;
+      padding: 40px 0 34px;
       .v-star {
         .iconfont {
           px2px(font-size, 64px);

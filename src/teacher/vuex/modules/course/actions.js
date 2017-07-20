@@ -93,7 +93,7 @@ export const fetchOpenInfo = ({commit}, body) => {
         // return commit('FETCH_OPEN_INFO', json.data)
         return Promise.resolve(json.data);
       }
-      return Promise.reject(new Error('Fetch_Open_Info failure'))
+      return Promise.reject(json)
     })
     .catch((error) => {
       return Promise.reject(error)

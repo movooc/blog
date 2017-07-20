@@ -25,11 +25,11 @@
         <div class="modal-img">
           <p class="modal-preview">
             <i class="iconfont icon-icons01" v-if="!imgInfo.src"></i>
-            <a class="preview" href="javascript:;"><img v-if="imgInfo.show" v-bind:src="imgInfo.src" /></a>
-            <input id="upd_pic" type="file" @change="imgOnChange" />
+            <a class="preview" href="javascript:;"><img class="cursor" v-if="imgInfo.show" v-bind:src="imgInfo.src" /></a>
+            <input id="upd_pic" type="file" @change="imgOnChange" title="已选择图片" style="cursor:pointer" />
           </p>
           <button class="upload" @click="startUploadImg" v-if="!startSend">发送图片</button>
-          <button class="cancle" @click="cancleUploadImg" v-if="!startSend">&#88;</button>
+          <button class="cancle cursor" @click="cancleUploadImg" v-if="!startSend"><i class="iconfont icon-guanbi"></i></button>
           <button class="upload" v-if="startSend">正在发送...</button>
           <span class="progress">
             <em v-bind:style="widthStyle"></em>
@@ -45,7 +45,7 @@
             <a class="preview" :href="pasteInfo.src" target="_blank"><img v-bind:src="pasteInfo.src" /></a>
           </p>
           <button class="upload" @click="startUploadPaste" v-if="!startSend">发送图片</button>
-          <button class="cancle" @click="canclePasteImg" v-if="!startSend">&#88;</button>
+          <button class="cancle cursor" @click="canclePasteImg" v-if="!startSend"><i class="iconfont icon-guanbi"></i></button>
           <button class="upload" v-if="startSend">正在发送...</button>
           <span class="progress">
             <em v-bind:style="widthStyle"></em>

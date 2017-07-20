@@ -1,19 +1,20 @@
 <template>
   <div class="qrcode">
-    <div @click="backToHome">
+    <!--<div @click="backToHome">
       <i class="iconfont icon-home"></i>
       <br />
       返回首页
-    </div>
+    </div>-->
     <div>
       长按识别二维码
       <br />
-      关注易灵微课
-      <br />
-      获取更多课程&nbsp;
-    </div>
-    <div>
-      <img :src="`${assetsHost}/static/student/_static/student/img/qrcode.png`" />
+      关注易灵微课&nbsp;
+      <!--<br />-->
+      <!--获取更多课程&nbsp;-->
+      <div class="qrcode-img">
+        &nbsp;&nbsp;
+        <img :src="`${assetsHost}/static/student/_static/student/img/qrcode.png`" />
+      </div>
     </div>
   </div>
 </template>
@@ -42,8 +43,10 @@
   .qrcode
     display: -webkit-box;
     display: box;
-    padding: 28px 0;
-    px2px(font-size, 36px);
+    padding: 36px 0;
+    border-top: 1px solid #e6eaf2;
+    background: #fff;
+    px2px(font-size, 32px);
     >*
       display: -webkit-box;
       display: box;
@@ -57,11 +60,17 @@
       px2px(line-height, 50px);
 
       &:first-child
-        color: #12b7f5;
+        /*color: #12b7f5;*/
+        px2px(font-size, 30px);
       &:nth-of-type(2)
         border-left: 1px solid #e6eaf2;
         color: #9ca7c1;
+        px2px(font-size, 30px);
       .iconfont
         px2px(font-size, 80px);
+    .qrcode-img
+      img
+        width: 220px;
+        height: 220px;
 
 </style>

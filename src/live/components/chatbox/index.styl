@@ -45,6 +45,9 @@
         border: 1px solid #E6EAF2;
         &.is-finish
           visibility: hidden;
+        &.c-finish
+          button
+            background: #aaa;
 
         textarea, input
           position: relative;
@@ -245,7 +248,7 @@
   &.owner {
     top: 555px;
     padding: 10px 14px;
-    width: 545px;
+    width: 548px;
     height: 110px;
 
     .box {
@@ -271,18 +274,20 @@
         top: 85px;
 
         &.box-send{
+          top: 81px;
           right: 0;
           padding: 4px 10px;
           height: auto;
           font-size: 14px;
           border-radius: 14px;
           -webkit-border-radius: 14px;
+          cursor: pointer;
         }
       }
       .box-more {
-        top: 86px;
+        top: 82px;
         &.recorder {
-          left: 38px;
+          left: 32px;
         }
         .iconfont {
           display: inline-block;
@@ -317,17 +322,21 @@
         width: 310px;
         height: auto;
         button {
+          cursor: pointer;
           &.cancle {
             position: absolute;
             top: -7px;
             right: -7px;
-            padding: 5px 7px;
+            padding: 6px;
             line-height: 1;
             color: #fff;
             background: #000;
             border-radius: 15px;
             -webkit-border-radius: 15px;
             z-index: 4;
+            .icon-guanbi {
+              font-size: 14px;
+            }
           }
         }
         .modal-preview {
@@ -337,6 +346,8 @@
           height: 160px;
           background: #12b7f5;
           text-align: center;
+          border-radius: 4px 4px 0 0;
+          -webkit-border-radius: 4px 4px 0 0;
           .icon-icons01 {
             display: inline-block;
             margin-top: 60px;
@@ -375,11 +386,12 @@
           padding: 10px 0;
           width: 100%;
           line-height: 1;
+          color: #12b7f5;
           text-align: center;
         }
         .progress {
           position: relative;
-          width: 100%;
+          width: 310px;
           height: 2px;
           vertical-align: top;
         }
@@ -389,5 +401,8 @@
   &.is-finish {
     top: 630px;
     height: 30px;
+  }
+  .cursor {
+    cursor: pointer;
   }
 }

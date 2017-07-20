@@ -3,7 +3,7 @@
   <div class="live-page">
     <div class="live-sms-header" v-if="isPC">授课区
       <span class="end" @click="showHandle(true)" v-if="isOwner && lessonInfo.step != 'finish'">
-        <i class="iconfont icon-jieshu"></i>
+        <!--<i class="iconfont icon-jieshu"></i>-->
         结束授课
       </span>
     </div>
@@ -53,7 +53,7 @@
       </ul>
     </div>
     <!-- comment -->
-    <v-comment></v-comment>
+    <v-comment :inComment="inComment"></v-comment>
     <!-- chatbox -->
     <v-chatbox v-if="isOwner"></v-chatbox>
     <s-chatbox v-if="!isOwner"></s-chatbox>
@@ -83,8 +83,11 @@
     name: 'v-live',
     props: {
       lesson: {
-        type: String
-      }
+        type: String,
+      },
+      inComment: {
+        type: Boolean,
+      },
     },
     components: {
       vComment,

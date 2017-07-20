@@ -6,15 +6,18 @@
           <span class="iconfont icon-list"></span>
         </button>
       </span>
-      <div class="box-msg" :class="{'is-finish':(lessonInfo.step=='finish' || lessonInfo.step=='closed')}">
+      <div class="box-msg" v-if="lessonInfo.step!='finish' && lessonInfo.step!='closed'">
         <button class="comment" @click="showComment" v-if="!commentShow">讨论区</button>
         <input v-model="msgVal" placeholder="请输入文字..." @focus="focusEvent" />
+      </div>
+      <div class="box-msg c-finish" v-if="lessonInfo.step=='finish' || lessonInfo.step=='closed'">
+        <button class="comment" v-if="!commentShow">讨论区</button>
       </div>
       <v-refund></v-refund>
       <button class="box-send" @click="sendMsg" v-if="commentShow">发送</button>
       <div class="more-choice" v-if="boxMoreShow">
         <button @click="backHome">回到首页</button>
-        <button @click="showEva" v-if="!isEvaluate && !lessonInfo.rated">评价课程</button>
+        <button @click="showEva" v-if="!isEvaluate && !lessonInfo.rated && (lessonInfo.event != 'refund')">评价课程</button>
         <button @click="showRefund" v-if="lessonInfo.event != 'refund' && lessonInfo.price && !lessonInfo.refund_info">申请退款</button>
       </div>
     </div>
@@ -63,6 +66,18 @@
                   confirmButtonText: "知道了"
                 }, ()=>{
                   window.location.href = this.studentHost;
+              });
+            }else if(err.ErrorCode == 10017){
+              swal({
+                title: '错误提醒',
+                text: '您已被禁言!',
+                confirmButtonText: "知道了"
+              });
+            }else{
+              swal({
+                title: '错误提醒',
+                text: err.SrcErrorInfo,
+                confirmButtonText: "知道了"
               });
             }
           }

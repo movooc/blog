@@ -5,3 +5,5 @@ export const getLessonEnroll = state => state.enroll;
 export const getOrderConfirm = state => state.order;
 export const getCourseScrollTop = state => state.courseScrollTop;
 export const getEvaluateList = state => state.evaluateList;
+export const getCanWXShare = state => state.canWXShare;
+export const getShowBottom = state => state.showBottom;

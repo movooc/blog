@@ -44,7 +44,12 @@
         this.rated = data.rated_count || 0;
         this.isShow = true;
       }, (error) => {
-        alert(error);
+        //
+        swal({
+          title: '错误提醒',
+          text: error,
+          confirmButtonText: "知道了"
+        });
         console.log('fail');
       });
       // 获得评价列表
@@ -74,8 +79,12 @@
           console.log('获取列表成功!');
         }, (error) => {
           done(true);
-          alert(error);
           console.log('fail');
+          swal({
+            title: '错误提醒',
+            text: error,
+            confirmButtonText: "知道了"
+          });
         });
       },
       infinite(done) {

@@ -5,7 +5,7 @@
       <span v-if="dataOrigin.tier">
         &#124;
         <span v-for="bread in dataOrigin.tier">
-          <span v-if="bread.depth">&#62;</span>
+          <span v-if="bread.depth">&nbsp;&#62;</span>
           <span @click="unfoldOrigin(bread.id)">{{bread.name}}</span>
         </span>
       </span>
@@ -16,7 +16,9 @@
         <span>报名人数</span>
         <span>听课人数</span>
         <span>退款人数</span>
-        <span>课程收益</span>
+        <span>课程评分</span>
+        <span>课程收入</span>
+        <span>分成收入</span>
         <span class="handle">&nbsp;</span>
       </li>
       <li class="total">
@@ -24,7 +26,9 @@
         <span>{{ dataOrigin.total.data | specKey('lesson.enroll.unique') }}</span>
         <span>{{ dataOrigin.total.data | specKey('lesson.access.unique') }}</span>
         <span>{{ dataOrigin.total.data | specKey('lesson.refund.unique') }}</span>
+        <span>{{ dataOrigin.total.data | specKey('lesson.rate.avg') }}</span>
         <span class="price">&#65509;{{ dataOrigin.total.data | specKey('lesson.income.sum') }}</span>
+        <span class="price">&#65509;{{ dataOrigin.total.data | specKey('lesson.payoff.sum') }}</span>
         <span class="handle">
           &nbsp;
         </span>
@@ -37,7 +41,9 @@
         <span>{{ item.data | specKey('lesson.enroll.unique') }}</span>
         <span>{{ item.data | specKey('lesson.access.unique') }}</span>
         <span>{{ item.data | specKey('lesson.refund.unique') }}</span>
+        <span>{{ item.data | specKey('lesson.rate.avg') }}</span>
         <span class="price">&#65509;{{ item.data | specKey('lesson.income.sum') }}</span>
+        <span class="price">&#65509;{{ item.data | specKey('lesson.payoff.sum') }}</span>
         <div class="handle">
           <a class="button" href="javascript:;" @click="unfoldOrigin(item.origin.id)">展开</a>
         </div>
