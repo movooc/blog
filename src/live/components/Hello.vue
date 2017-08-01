@@ -242,7 +242,7 @@
             let shareLink = `${this.studentHost}share_url=${encodeURIComponent('?#/course/detail/brief?lesson_sn='+data.sn)}#/course/detail/brief?lesson_sn=${data.sn}&origin=share`;
             // 微信发送给朋友
             wx.onMenuShareAppMessage({
-              title: data.title, // 分享标题
+              title: `${data.teacher.name} | ${data.title}`, // 分享标题
               desc: data.brief, // 分享描述
               link: shareLink, // 分享链接
               imgUrl: data.cover, // 分享图标
@@ -259,7 +259,7 @@
             });
             // 分享到朋友圈
             wx.onMenuShareTimeline({
-              title: data.title, // 分享标题
+              title: `${data.teacher.name} | ${data.title}`, // 分享标题
               link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
               imgUrl: data.cover, // 分享图标
               success: () => {

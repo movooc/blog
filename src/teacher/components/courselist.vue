@@ -53,7 +53,7 @@
         <span>&#65509;{{ list.stats | specKey('lesson.income.sum') }}</span>
         <span>&#65509;{{ list.stats | specKey('lesson.payoff.sum') }}</span>
         <div class="handle-btn">
-          <a class="handle-item" href="javascript:;" :title="(list.step=='opened')?'点击开课':'进入直播'" @click="checkLesson(list)" v-if="list.step != 'submit' && list.step != 'denied'"><i class="iconfont icon-yuanchengshouke"></i></a>
+          <a class="handle-item" href="javascript:;" :title="(list.step=='opened')?'点击开课':'进入直播'" @click="checkTime(list)" v-if="list.step != 'submit' && list.step != 'denied'"><i class="iconfont icon-yuanchengshouke"></i></a>
           <span v-if="list.step == 'submit' || list.step == 'denied'"><i class="iconfont icon-yuanchengshouke submit"></i></span>
           &nbsp;
           <a class="handle-item" href="javascript:;" title="进入详情" @click="enterLesson(list.sn)" v-if="list.step != 'submit'"><i class="iconfont icon-xiangqing"></i></a>
@@ -72,6 +72,7 @@
 
 <script>
     import { mapGetters } from 'vuex';
+    import moment from 'moment';
     import swal from 'sweetalert';
     // 获得config
     let liveHost = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'/live') : '/live.html';
@@ -92,27 +93,43 @@
         return {};
       },
       methods: {
-        checkLesson(lesson){
-          if(lesson.step=='opened'){
-            swal({
-              title: '',
-              text: '确定要现在开课吗？\n开课后会给已报名学员推送开课通知。',
-              confirmButtonText: '确定',
-              showCancelButton:true,
-              closeOnConfirm: false,
-              cancelButtonText: '取消',
-            }, ()=>{
-              this.openLesson(lesson.sn);
-            });
+        checkTime(lesson) {
+          let diff = this.momentdiff(lesson.plan.dtm_start);
+          // check
+          if(diff){
+            // 可以开课
+            this.checkLesson(lesson);
           }else{
-            this.openLesson(lesson.sn);
+            // 不可以开课
+            swal({
+              title: '开课提醒',
+              text: `正式开课不得早于\t${this.momentAdvance(lesson.plan.dtm_start)}`,
+              confirmButtonText: "知道了"
+            });
           }
         },
-        openLesson(lesson_sn) {
+        checkLesson(lesson){
+          //
+          if(lesson.step=='opened'){
+            swal({
+              title: '开课提醒',
+              text: '确定要现在开课吗？\n开课后会给已报名学员推送开课通知。',
+              confirmButtonText: '确定开课',
+              showCancelButton:true,
+              closeOnConfirm: false,
+              cancelButtonText: '暂不开课',
+            }, ()=>{
+              this.openLesson(lesson);
+            });
+          }else{
+            this.openLesson(lesson);
+          }
+        },
+        openLesson(lesson) {
           // 开始课程
           // 获得开课信息
-          this.$store.dispatch('fetchOpenInfo', {lesson_sn:lesson_sn}).then((data) => {
-            let params = `?isOwner=yes&lesson_sn=${lesson_sn}&teacherEnter=yes`;
+          this.$store.dispatch('fetchOpenInfo', {lesson_sn:lesson.sn}).then((data) => {
+            let params = `?isOwner=yes&lesson_sn=${lesson.sn}&teacherEnter=yes`;
             for(let d in data){
               params = `${params}&${d}=${data[d]}`;
             };
@@ -120,10 +137,9 @@
             // 开始进入课堂
             window.location.href = `${liveHost}${params}`;
           }, (err) => {
-            /*alert(err.message);*/
             swal({
               title: '错误提醒',
-              text: err.message,
+              text: (err.message?err.message:'网络链接失败！'),
               confirmButtonText: "知道了"
             });
           });
@@ -139,6 +155,16 @@
         shareLesson(lesson_sn) {
           // 分享课程
           this.$router.push({ name: 'share', params: {lesson_sn:lesson_sn} });
+        },
+        momentdiff(value) {
+          let advanceTime = moment(value).subtract(15, 'minute');
+          let currentTime = moment();
+          // 当前时间是否可以开课
+          return (currentTime >= advanceTime);
+        },
+        momentAdvance(value) {
+          // 格式化
+          return(moment(value).subtract(15, 'minute').format('YYYY-MM-DD HH:mm'));
         },
       },
     };

@@ -45,6 +45,7 @@
     margin-top: 100px;
     text-align: center;
     color: #12b7f5;
+    background: #f7f9fc;
     px2px(font-size, 36px);
 
 </style>

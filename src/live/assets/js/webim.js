@@ -38,8 +38,8 @@ export const jsonpCallback = (rspData) => {
 
 //监听大群新消息（普通，点赞，提示，红包）
 export const vBigGroupMsgNotify = function(msgList) {
-  for (var i = msgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
-    var msg = msgList[i];
+  for (let i = msgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
+    let msg = msgList[i];
     webim.Log.warn('receive a new avchatroom group msg: ' + msg.getFromAccountNick());
     // 组装消息
     this.$store.commit('UPDATE_MESSAGE', assembleMsg(msg));
@@ -49,8 +49,8 @@ export const vBigGroupMsgNotify = function(msgList) {
 //监听新消息(私聊(包括普通消息、全员推送消息)，普通群(非直播聊天室)消息)事件
 //newMsgList 为新消息数组，结构为[Msg]
 export const onMsgNotify = function(newMsgList) {
-  for (var i = newMsgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
-    var msg = newMsgList[i];
+  for (let i = newMsgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
+    let msg = newMsgList[i];
     webim.Log.warn('receive a new chatroom group msg: ' + msg.getFromAccountNick());
     // 组装消息
     this.$store.commit('UPDATE_MESSAGE', assembleMsg(msg));
@@ -244,6 +244,38 @@ export const pullHistoryGroupMsgs = (opt, cbOk, cbErr) => {
     );
   });
 };
+
+//发送语音消息
+export const sendAudioSound = (file, callback) => {
+  let identifier = loginInfo.identifier;
+  var friendHeadUrl = 'img/friend.jpg';
+  if (!selSess) {
+    selSess = new webim.Session(selType, selToID, selToID, friendHeadUrl, Math.round(new Date().getTime() / 1000));
+  }
+  var msg = new webim.Msg(selSess, true, -1, -1, -1, identifier, 0, loginInfo.identifierNick);
+  // 获取filename
+  var fileName = file.replace(/(.*\/)*([^.]+).*/ig,"$2");
+
+  // add file
+  msg.addCustom({data: file, desc: 'SOUND', ext: fileName});
+  //调用发送文件消息接口
+  webim.sendMsg(msg, function (resp) {
+    if (selType == webim.SESSION_TYPE.C2C) {//私聊时，在聊天窗口手动添加一条发的消息，群聊时，长轮询接口会返回自己发的消息
+      addMsg(msg);
+    }
+    webim.Log.info('发消息成功');
+    // 回调
+    callback(null);
+  }, function (err) {
+    swal({
+      title: '错误提醒',
+      text: err.ErrorInfo,
+      confirmButtonText: "知道了"
+    });
+    // 回调
+    callback('发送失败');
+  });
+}
 
 //读取群组基本资料-高级接口
 function getGroupInfo (group_id, cbOK, cbErr) {

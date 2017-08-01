@@ -24,6 +24,8 @@ if(process.env.NODE_ENV == 'production'){
   var enrolled = r => require.ensure([], () => r(require('../views/user/enroll')), 'student/student-userEnroll');
   var advise = r => require.ensure([], () => r(require('../views/user/advise')), 'student/student-userAdvise');
   var about = r => require.ensure([], () => r(require('../views/user/about')), 'student/student-userAbout');
+  var money = r => require.ensure([], () => r(require('../views/user/money')), 'student/student-userMoney');
+  var moneyDetail = r => require.ensure([], () => r(require('../views/user/money-detail')), 'student/student-userMoneyDetail');
   /*refund*/
   var refund = r => require.ensure([], () => r(require('../views/refund/index')), 'student/student-courseNotice');
   var reason = r => require.ensure([], () => r(require('../views/refund/reason')), 'student/student-courseReason');
@@ -46,6 +48,8 @@ if(process.env.NODE_ENV == 'production'){
   var enrolled = require('../views/user/enroll');
   var advise = require('../views/user/advise');
   var about = require('../views/user/about');
+  var money = require('../views/user/money');
+  var moneyDetail = require('../views/user/money-detail');
   /*refund*/
   var refund = require('../views/refund/index');
   var reason = require('../views/refund/reason');
@@ -201,7 +205,25 @@ export default [
         meta: {
           pageTitle: '易灵微课-建议与反馈'
         }
-      }
+      },
+      // 账户中心
+      {
+        path: '/user/money',
+        name: 'money',
+        component: money,
+        meta: {
+          pageTitle: '易灵微课-账户中心'
+        }
+      },
+      // 账户明细
+      {
+        path: '/user/money/detail',
+        name: 'money-detail',
+        component: moneyDetail,
+        meta: {
+          pageTitle: '易灵微课-余额明细'
+        }
+      },
     ]
   }
 ];

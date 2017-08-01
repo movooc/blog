@@ -7,27 +7,28 @@
     <div class="control">
       <span class="word"><em>*&nbsp;</em>标题</span>
       <div class="text">
-        <input name="title" type="text" v-model="data.title" />
+        <input name="title" type="text" v-model="data.title" :disabled="review_status == 'start' || review_status == 'pending'" />
         <p class="limit">限36个字符</p>
       </div>
     </div>
     <div class="control">
       <span class="word"><em>*&nbsp;</em>开课时间</span>
       <div class="text">
-        <c-calendar :defaultValue="data.dtm_start"></c-calendar>
+        <c-calendar :defaultValue="data.dtm_start" v-if="review_status != 'start' && review_status != 'pending'"></c-calendar>
+        <input name="dtm_start" type="text" v-model="data.dtm_start" disabled v-if="review_status == 'start' || review_status == 'pending'" />
       </div>
     </div>
     <div class="control">
       <span class="word"><em>*&nbsp;</em>预计持续时长</span>
       <div class="text">
         <!--<input name="duration" type="number" min="0" step="0.5" v-model="data.duration" @blur="durationBlur" />-->
-        <input name="duration" type="tel" v-model="data.duration" @blur="durationBlur" />&nbsp;&nbsp;<span>小时</span>
+        <input name="duration" type="tel" v-model="data.duration" @blur="durationBlur" :disabled="review_status == 'start' || review_status == 'pending'" />&nbsp;&nbsp;<span>小时</span>
       </div>
     </div>
     <div class="control">
       <span class="word"><em>*&nbsp;</em>价格</span>
       <div class="text">
-        <input name="price" type="tel" v-model="data.price" @blur="priceBlur" />&nbsp;&nbsp;<span>元</span>
+        <input name="price" type="tel" v-model="data.price" @blur="priceBlur" :disabled="review_status == 'start' || review_status == 'pending'" />&nbsp;&nbsp;<span>元</span>
         <p class="limit">请输入0-5000之间的数，0表示免费</p>
       </div>
     </div>
@@ -37,13 +38,16 @@
         <!--<input name="cover" type="file" @change="imgOnChange" />-->
         <!--<p class="img"><img :src="data.cover"></p>-->
         <!--<p class="limit">请上传尺寸为640*300，大小在100k以内的图片</p>-->
-        <v-cropper v-if="canUseCrop" :callback="callbackCropper" :cover="data.cover"></v-cropper>
+        <v-cropper v-if="canUseCrop && review_status != 'start' && review_status != 'pending'" :callback="callbackCropper" :cover="data.cover"></v-cropper>
+        <div class="edit-cropper" v-if="review_status == 'start' || review_status == 'pending'">
+          <div class="picture" :style="'backgroundImage:url('+data.cover+')'"></div>
+        </div>
       </div>
     </div>
     <div class="control">
       <span class="word"><em>*&nbsp;</em>课程介绍</span>
       <div class="text">
-        <textarea name="intro" id="" cols="30" rows="10" v-model="data.brief"></textarea>
+        <textarea name="intro" id="" cols="30" rows="10" v-model="data.brief" :disabled="review_status == 'start' || review_status == 'pending'"></textarea>
       </div>
     </div>
     <div class="protocol">
@@ -56,7 +60,10 @@
         <i class="iconfont icon-dot"></i>&nbsp;&nbsp;课程审核通过后即开放报名，修改课程信息需要再次审核
       </p>
     </div>
-    <p class="button"><button @click="completeCreate">提交审核</button></p>
+    <p class="button">
+      <button @click="completeCreate" v-if="review_status != 'start' && review_status != 'pending'">提交审核</button>
+      <button class="gray" v-if="review_status == 'start' || review_status == 'pending'">审核中</button>
+    </p>
   </section>
 </template>
 
@@ -81,6 +88,7 @@
         //panel: false,
         canUseCrop: false,
         coverChange: false,
+        review_status: '',
         data: {
           title: '',
           dtm_start: '',
@@ -107,9 +115,10 @@
       this.data.lesson_sn = params.lesson_sn;
       if(this.data.lesson_sn){
         // 开始请求
-        this.$store.dispatch('fetchCourseDetail', params).then((data)=>{
+        this.$store.dispatch('fetchCourseEdit', params).then((data)=>{
           //this.agree = true;
           this.canUseCrop = true;
+          this.review_status = data.review_status;
           this.data.title = data.title || '';
           this.data.dtm_start = data.plan.dtm_start || '';
           this.data.duration = data.plan.duration || '';
@@ -221,7 +230,8 @@
               text: '课程编辑信息已提交，正在审核中',
               confirmButtonText: "确定"
             },()=>{
-              this.$router.push({ name: 'list' });
+              // 当前页面重载
+              window.location.reload();
             });
 
           }, (err) => {
@@ -241,7 +251,8 @@
               text: '已提交审核，通过后将开放报名',
               confirmButtonText: "确定"
             },()=>{
-              this.$router.push({ name: 'list' });
+              // 进入编辑课程
+              this.$router.push({ name: 'edit', params: { lesson_sn: this.data.lesson_sn }});
             });
           }, (err) => {
             //
@@ -277,6 +288,8 @@
         border-radius: 10px;
         background: #12b7f5;
         cursor: pointer;
+        &.gray
+          background: #aaa;
 
     .img
       img
@@ -325,7 +338,19 @@
       .limit
         font-size: 12px;
         color: #aaa;
-
+      .edit-cropper
+        width: 230px;
+        height: 100px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid #e6eaf2;
+        .picture
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-size: cover;
 
     .protocol
       padding: 0 167px;

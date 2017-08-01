@@ -178,3 +178,19 @@ export const fetchEvaluteList = ({commit}, query) => {
     })
 };
 
+// 获得课程编辑信息
+export const fetchCourseEdit = ({commit}, query) => {
+  const url = `${_prefix}/lesson-edit.api`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        commit('FETCH_COURSE_EDIT', json.data)
+        return Promise.resolve(json.data)
+      }
+      return Promise.reject(json)
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};

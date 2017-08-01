@@ -83,7 +83,7 @@
             progress: 0,
             currentTime: 0,
             duration: 0,
-            volume: 0.5,
+            volume: 1,
             loaded: '0',
             durationTimerFormat: '00:00',
             currentTimeFormat: '00:00',

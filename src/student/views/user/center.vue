@@ -22,6 +22,13 @@
           <span class="arrow"></span>
         </router-link>
       </li>
+      <li>
+        <router-link to="/user/money">
+          <i class="iconfont icon-qianbao1"></i>
+          <span>账户中心</span>
+          <span class="arrow"></span>
+        </router-link>
+      </li>
     </ul>
     <ul>
       <!-- <li>
@@ -40,7 +47,7 @@
       </li>
       <li>
         <router-link to="/user/about">
-          <i class="iconfont icon-comment"></i>
+          <i class="iconfont icon-cloud-we"></i>
           <span>关于我们</span>
           <span class="arrow"></span>
         </router-link>

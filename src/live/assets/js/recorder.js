@@ -41,21 +41,76 @@ function doneEncoding( blob ) {
   //link.href = url;
   //link.download = 'myRecording' + ((recIndex<10)?'0':'') + recIndex + '.wav' || 'output.wav';
   recIndex++;
-  // 更新录音资源
-  ctx.$store.commit('UPDATE_BLOB_RECORDING', blob);
-  ctx = null;
   // 开始上传
-  // 打开上传状态
-  // ctx.$store.commit('UPDATE_SENDING', true);
-  // ctx.$store.commit('UPDATE_SENDING_WIDTH', 0);
-  // uploadSound(blob, (err, data) => {
-  //   ctx.$store.commit('UPDATE_SENDING', false);
-  //   if(err)alert(err.ErrorInfo);
-  //   console.log('上传成功!');
-  // }, (loadedSize, totalSize) => {
-  //   let sendWidth = `${(loadedSize / totalSize) * 100}%`;
-  //   ctx.$store.commit('UPDATE_SENDING_WIDTH', sendWidth);
-  // });
+  // 获取七牛token
+  ctx.$store.dispatch('fetchQiniuToken').then((data) => {
+    // 音频的上传
+    postAudio(data, blob);
+  }, (err) => {
+    // 异常
+    swal({
+      title: '错误提醒',
+      text: err.message,
+      confirmButtonText: "知道了"
+    });
+    ctx.$store.commit('UPDATE_RECORDING', false);
+    ctx.$store.commit('UPDATE_BLOB_RECORDING', null);
+  });
+}
+
+function postAudio(data, blob) {
+  //创建formData对象
+  var formData = new FormData();
+  formData.append('file', blob);
+  formData.append('key', data.key);
+  formData.append('token', data.token);
+  // 开始上传音频
+  ctx.$http.post(data.upload, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then((json) => {
+    if (json.ok) {
+      // 更新录音资源
+      ctx.$store.commit('UPDATE_BLOB_RECORDING', blob);
+      // 开始压缩
+      ctx.$store.commit('UPDATE_AUDIO_COMPLETE', false);
+      compressAudio({pid:json.body.persistentId}, data.preview);
+    }
+    new Error('Fetch_Post_Audio failure')
+  }).catch((error) => {
+    swal({
+      title: '错误提醒',
+      text: '上传音频失败!',
+      confirmButtonText: "知道了"
+    },()=>{
+      ctx.$store.commit('UPDATE_RECORDING', false);
+      ctx.$store.commit('UPDATE_BLOB_RECORDING', null);
+      return ctx = null;
+    });
+  });
+}
+
+/*轮询判断压缩音频结果*/
+function compressAudio(query, preview) {
+  // 开始
+  ctx.$store.dispatch('fetchAudioCheck', query).then((json) => {
+    // 音频的上传
+    // 完成压缩
+    if(json.error == 0){
+      ctx.$store.commit('UPDATE_AUDIO_COMPLETE', {file:preview});
+      return ctx = null;
+    }else if(json.error == 1 || json.error == 2){
+      setTimeout(()=>{
+        compressAudio(query, preview);
+      }, 1000);
+    }
+  }).catch((error) => {
+    // 异常
+    ctx.$store.commit('UPDATE_RECORDING', false);
+    ctx.$store.commit('UPDATE_BLOB_RECORDING', null);
+    return ctx = null;
+  });
 }
 
 function gotStream(stream) {

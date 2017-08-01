@@ -7,6 +7,7 @@ const state = {
   openInfo: null,
   courseDetail: null,
   evaluateList: {},
+  courseEdit: null,
 };
 
 export default{

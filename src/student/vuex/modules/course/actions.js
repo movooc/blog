@@ -182,10 +182,9 @@ export const fetchEvaluteTotal = ({commit}, query) => {
     })
 };
 
-/*开始评价*/
 export const fetchEvaluate = ({commit}, body) => {
   const url = `${_prefix}/lesson-rating.api`;
-  // 开始请求
+  // 开始评价
   return _post({ url, body }, commit)
     .then((json) => {
       if (json.error == 0) {
@@ -197,4 +196,21 @@ export const fetchEvaluate = ({commit}, body) => {
       return Promise.reject(error)
     })
 };
+
+/*课程购买*/
+export const fetchLessonPurchase = ({commit}, body) => {
+  const url = `${_prefix}/lesson-purchase.api`;
+  // 开始请求
+  return _post({ url, body }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return Promise.resolve();
+      }
+      return Promise.reject(json);
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+
 

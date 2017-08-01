@@ -60,9 +60,11 @@
       </div>
       <teacher-info :teacher="course.teacher"></teacher-info>
       <qr-code></qr-code>
-      <div class="lesson-more" @click="backToHome">
-        查看更多课程
+      <div class="lesson-more">
+        <div @click="backToHome">查看更多课程</div>
+        <div @click="becomeTeacher">我要成为讲师</div>
       </div>
+
     </div>
   </section>
 </template>
@@ -128,6 +130,13 @@
       },
       backToHome() {
         this.$router.push({ name: 'course' });
+      },
+      becomeTeacher() {
+        swal({
+          title: '提醒',
+          text: '易灵微课目前仍处于内测期，暂未开放讲师注册认证，有意向开课的讲师，可以发送个人介绍到 corp@yike.fm与我们联系。',
+          confirmButtonText: '知道了'
+        });
       },
     },
   };

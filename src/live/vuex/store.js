@@ -38,6 +38,7 @@ const state = {
   recorderStatus: false,
   recorderTimer: '0:01',
   statsInfo: {},
+  audioCompressComplete: false,
   liveHost: (process.env.NODE_ENV=='production'?process.env.LIVE_HOST.replace(/\/$/,''):'/api'),
   studentHost:(process.env.NODE_ENV=='production'?process.env.STUDENT_HOST.replace(/\/$/,'?'):'/student.html?'),
   teacherHost:(process.env.NODE_ENV=='production'?process.env.TEACHER_HOST.replace(/\/$/,''):'/teacher.html'),
@@ -156,6 +157,9 @@ const mutations = {
   },
   UPDATE_STATSINFO(state, info){
     state.statsInfo = { ...info };
+  },
+  UPDATE_AUDIO_COMPLETE(state, status){
+    state.audioCompressComplete = status;
   },
 };
 

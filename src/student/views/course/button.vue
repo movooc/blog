@@ -1,9 +1,9 @@
 <template>
   <div class="button">
     <div class="enroll" v-if="!paying && courseDetail && (isEnroll != 'refund' && isEnroll != 'browse' && isEnroll != 'reset')">
-      <button class="enter" @click="startLesson" v-if="courseDetail.step == 'onlive' || courseDetail.step == 'repose' || courseDetail.step == 'finish' || courseDetail.step == 'closed'">进入课堂</button>
-      <button disabled v-if="courseDetail.step == 'opened'">{{`${courseDetail.plan.dtm_now}#${courseDetail.plan.dtm_start}` | moment}}开课</button>
-      <!--<button disabled v-if="courseDetail.step == 'closed'">已下架</button>-->
+      <button class="enter" @click="startLesson" v-if="courseDetail.step == 'onlive' || courseDetail.step == 'repose' || courseDetail.step == 'finish'">进入课堂</button>
+      <button disabled v-if="courseDetail.step == 'opened'">计划开课:{{`${courseDetail.plan.dtm_now}#${courseDetail.plan.dtm_start}` | moment}}</button>
+      <button disabled v-if="courseDetail.step == 'closed'">已下架</button>
     </div>
     <div class="enroll" v-if="!paying && (isEnroll == 'browse' || isEnroll == 'reset')">
       <button class="free" v-if="courseDetail && courseDetail.price == 0 && !canEnter" @click="callWeiXinPay">免费报名</button>
@@ -17,18 +17,21 @@
     <div class="enroll" v-if="paying">
       <button class="enter">报名中...</button>
     </div>
+    <confirm-pay v-if="payShow" :payInfo="payInfo" @confirmPay="confirmPay"></confirm-pay>
     <!--<pay-code :show="payCodeShow" :codeUrl="payUrl" @updatePayCodeShow="updatePayCodeShow"></pay-code>-->
   </div>
 </template>
 
 <script>
     import { mapGetters } from 'vuex';
+    import confirmPay from '@student/views/course/confirm-pay';
     import payCode from '@student/components/payCode';
 
     export default{
       name: 'v-button',
       components: {
         payCode,
+        confirmPay,
       },
       props: {
         isEnroll: {
@@ -51,6 +54,8 @@
           canEnter: false,
           query: {},
           payUrl: '',
+          payInfo: null,
+          payShow: false,
           payCodeShow: false,
         }
       },
@@ -70,16 +75,22 @@
           // 已请求过
           if(this.enrollData && this.enrollData.order && this.enrollData.price>0){
             // 发起支付请求
-            return this.callpay(this.enrollData.pay_data);
+            return this.payShow = true;
+            // return this.callpay(this.enrollData.pay_data);
           }
           // 报名开始
           this.$store.dispatch('fetchLessonEnroll', query).then((data) => {
             // 数据
             this.enrollData = { ...data };
+            this.payInfo = { ...data };
             // 是否需要付费
             if(data.price > 0){
               // 发起支付请求
-              this.callpay(data.pay_data);
+              if(data.margin < 0){
+                this.callpay(data.pay_data);
+              }else{
+                this.payShow = true;
+              }
             }else{
               this.canEnter = true;
               this.paying = false;
@@ -130,6 +141,55 @@
         startLesson() {
           // 开始课程
           this.lessonAccess();
+        },
+        confirmPay(isPay) {
+          if(isPay){
+            //
+            if(this.enrollData.margin < 0){
+              // 开始微信支付
+              this.callpay(this.enrollData.pay_data);
+            }else{
+              // 普通支付
+              this.generalpay(this.enrollData.order);
+            }
+          }else{
+            this.paying = false;
+          }
+          //
+          this.payShow = false;
+        },
+        generalpay(order){
+          this.$store.dispatch('fetchLessonPurchase', {order:order}).then(()=>{
+            // 付款成功
+            swal({
+              title: '',
+              text: '付款成功',
+              confirmButtonText: "知道了"
+            }, ()=>{
+              // 进入课堂
+              if(this.courseDetail && this.courseDetail.step == 'opened'){
+                setTimeout(()=>{
+                  window.location.reload();
+                }, 500);
+              }else{
+                // 进入课堂
+                this.startLesson();
+              }
+              // 关闭付款状态
+              this.paying = false;
+              // 开通直播通道
+              this.canEnter = true;
+            });
+          }, (err)=>{
+            //
+            swal({
+              title: '错误提醒',
+              text: (err.message ? err.message : '网络链接失败'),
+              confirmButtonText: "知道了"
+            });
+            // 关闭付款状态
+            this.paying = false;
+          });
         },
         callpay(params) {
           if (typeof WeixinJSBridge == "undefined") {

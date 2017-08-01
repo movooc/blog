@@ -10,10 +10,10 @@
         <v-recorder class="reorder"></v-recorder>
       </span>
       <div class="box-msg">
-        <textarea v-model="msgVal" placeholder="请输入文字或粘贴图片..." @blur="v_blur" @paste="v_paste"></textarea>
+        <textarea v-model="msgVal" placeholder="请输入文字或粘贴图片..." @blur="v_blur" @paste="v_paste" @keydown="v_keydown"></textarea>
         <v-recorder class="reorder" v-if="!isPC"></v-recorder>
       </div>
-      <button class="box-send" @click="sendMsg">发送</button>
+      <button class="box-send" @click="sendMsg" title="ctrl+enter或alt+s">发送</button>
       <div class="more-choice" v-if="moduleShow">
         <button @click="showImage">上传图片</button>
         <button @click="showFile">上传文件</button>
@@ -137,6 +137,17 @@
         });
       },
       v_blur() {
+      },
+      v_keydown(event) {
+        let e = event || window.event;
+        // 快捷键 ctrl+enter
+        if(e.ctrlKey && e.keyCode == 13){
+          this.sendMsg();
+        }
+        // 快捷键 alt+s
+        if(e.altKey && e.keyCode == 83){
+          this.sendMsg();
+        }
       },
       v_paste(event) {
         // 添加到事件对象中的访问系统剪贴板的接口

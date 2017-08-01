@@ -8,13 +8,17 @@
         <audio id="save" controls v-show="blobRecord"></audio>
       </div>
       <div class="is-recording">
-        <button @click="cancleRecording" v-if="!blobRecord">取消</button>
-        <button @click="cancleBlobRecording" v-if="blobRecord">取消</button>
+        <button @click="cancleRecording" v-if="!recorderStatus && !blobRecord">取消</button>
+        <button @click="cancleBlobRecording" v-if="audioCompressComplete && blobRecord">取消</button>
+        <!--取消disabled-->
+        <button v-if="recorderStatus && !blobRecord" class="gray cursor-default">取消</button>
+        <button v-if="blobRecord && !audioCompressComplete" class="gray cursor-default">取消</button>
         <!--开始-->
         <button @click="stopRecording" v-if="!recorderStatus">停止</button>
-        <button v-if="recorderStatus && !blobRecord">录音中...</button>
-        <button @click="startUpload" v-if="blobRecord && !uploading">发送</button>
-        <button v-if="uploading">发送中...</button>
+        <button v-if="recorderStatus && !blobRecord" class="gray cursor-default">上传中...</button>
+        <button @click="startUpload" v-if="blobRecord && !uploading && audioCompressComplete">发送</button>
+        <button v-if="uploading" class="gray cursor-default">发送中...</button>
+        <button v-if="blobRecord && !audioCompressComplete" class="gray cursor-default">上传中...</button>
       </div>
       <button class="cancle" @click="cancleRecording" v-if="!blobRecord"><i class="iconfont icon-guanbi"></i></button>
       <button class="cancle" @click="cancleBlobRecording" v-if="blobRecord && !uploading"><i class="iconfont icon-guanbi"></i></button>
@@ -29,7 +33,7 @@
 </template>
 <script>
   import { toggleRecording } from '@live/assets/js/recorder';
-  import { uploadSound } from '@live/assets/js/webim';
+  import { uploadSound, sendAudioSound } from '@live/assets/js/webim';
   import { mapState } from 'vuex';
   import swal from 'sweetalert';
 
@@ -49,6 +53,7 @@
         blobRecord: 'blobRecord',
         recorderStatus: 'recorderStatus',
         recorderTimer: 'recorderTimer',
+        audioCompressComplete: 'audioCompressComplete',
         assetsHost: 'assetsHost',
       })
     },
@@ -72,8 +77,17 @@
         // 开始上传
         // 打开上传状态
         this.uploading = true;
-        //
-        uploadSound(this.blobRecord, (err, data) => {
+        sendAudioSound(this.audioCompressComplete.file, (err)=>{
+          if(err)swal({
+            title: '错误提醒',
+            text: 'err',
+            confirmButtonText: "知道了"
+          });
+          this.$store.commit('UPDATE_RECORDING', false);
+          this.$store.commit('UPDATE_BLOB_RECORDING', null);
+          console.log('上传成功!');
+        });
+        /*uploadSound(this.blobRecord, (err, data) => {
           if(err)swal({
             title: '错误提醒',
             text: err.ErrorInfo,
@@ -84,7 +98,7 @@
           console.log('上传成功!');
         }, (loadedSize, totalSize) => {
           this.sendWidth = `${(loadedSize / totalSize) * 100}%`;
-        });
+        });*/
       }
     }
   };
@@ -148,6 +162,7 @@
           display: -webkit-box;
           display: box;
           padding: 8px 0;
+          width: 100px;
           font-size: 16px;
           line-height: 1;
           -webkit-box-flex: 1;
@@ -162,6 +177,12 @@
           cursor: pointer;
           &:last-child {
             color: #12b7f5;
+          }
+          &.gray {
+            color: #999;
+          }
+          &.cursor-default {
+            cursor: default;
           }
         button+button
           border-left: 1px solid #e6eaf2;

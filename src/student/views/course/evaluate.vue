@@ -60,7 +60,7 @@
         let query = {
           lesson_sn: this.$route.query.lesson_sn,
           cursor: cursor,
-          limit: 2,
+          limit: 5,
         };
         // 获得评价列表
         this.$store.dispatch('fetchEvaluteList', query).then((data) => {

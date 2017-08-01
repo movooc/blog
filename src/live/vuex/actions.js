@@ -145,3 +145,36 @@ export const fetchWXConfig = ({commit}, query) => {
       return Promise.reject(error)
     })
 };
+
+/*获得七牛云token*/
+export const fetchQiniuToken = ({commit}, query) => {
+  const url = `${_prefix}/live-audio_draft.api`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return Promise.resolve(json.data);
+      }
+      return Promise.reject(json)
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+
+
+/*轮询获取压缩地址*/
+export const fetchAudioCheck = ({commit}, query) => {
+  const url = `${_prefix}/live-audio_check.api`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0 || json.error == 1 || json.error == 2) {
+        return Promise.resolve(json);
+      }
+      return Promise.reject(json)
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};

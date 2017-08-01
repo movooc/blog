@@ -25,14 +25,14 @@
         <span class="s-button" v-if="mode && handList.ticket.i_status == 'reject'">已拒绝</span>
         <span class="s-button" v-if="mode && !handList.ticket.i_status">转平台</span>
         <span class="s-button agree" v-if="mode && handList.ticket.i_status == 'agree'">已同意</span>
-        <span class="timer" v-if="!mode">
+        <span class="timer" title="未处理转至平台" v-if="!mode">
           <i class="iconfont icon-jishi"></i>
           剩余：{{handList.ticket.tms_end | moment}}
         </span>
       </div>
       <div class="handle-action" v-if="!mode">
         <div class="textarea">
-          <textarea @blur="blurEvent" placeholder="请您填写处理意见" :ref="`text-${handList.ticket.id}`"></textarea>
+          <textarea @blur="blurEvent" placeholder="如拒绝，请您填写处理意见" :ref="`text-${handList.ticket.id}`"></textarea>
         </div>
         <div class="action">
           <button class="reject" @click="handleEvent(handList.ticket.id, 1)">拒绝</button>

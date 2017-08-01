@@ -41,20 +41,30 @@
     },
     methods: {
       startComment() {
-        let opt = {
-          lesson_sn:this.lessonInfo.sn,
-        };
-        this.$store.dispatch('fetchStartComment', opt).then(() => {
-          removeStore(opt.lesson_sn);
-          swal({
+        // 确定进入学员交流
+        swal({
+          title: '',
+          text: '学员和讲师在3天内可继续发言交流',
+          confirmButtonText: '确定交流',
+          showCancelButton:true,
+          closeOnConfirm: false,
+          cancelButtonText: '取消交流',
+        }, ()=>{
+          let opt = {
+            lesson_sn:this.lessonInfo.sn,
+          };
+          this.$store.dispatch('fetchStartComment', opt).then(() => {
+            removeStore(opt.lesson_sn);
+            swal({
               title: '',
               text: '可以开始与学员交流!',
               confirmButtonText: "知道了"
-          }, ()=>{
-            window.location.reload();
+            }, ()=>{
+              window.location.reload();
+            });
+          }, () => {
+            console.log('fail');
           });
-        }, () => {
-          console.log('fail');
         });
         // 关闭
         this.callBack(false);
@@ -62,7 +72,7 @@
       endLesson() {
         swal({
             title: '',
-            text: '课程结束，您和学员都无法继续发布内容，但仍可回看所有授课区内容',
+            text: '课程结束，学员讲师均不可继续发言，课程回放开启',
             confirmButtonText: '确定结束',
             showCancelButton:true,
             closeOnConfirm: false,
@@ -112,20 +122,21 @@
       margin: 0 auto;
       width: 300px;
       background: #fff;
-      border-radius: 10px;
-      -webkit-border-radius: 10px;
+      border-radius: 6px;
+      -webkit-border-radius: 6px;
       .handle-title
-        padding: 10px;
+        padding: 20px 10px;
         text-align: center;
         border-bottom: 1px solid #D2D3D5;
-        font-size: 16px;
+        font-size: 20px;
+        color: #575757;
       .handle-btn
         >*
           display: block;
-          padding: 10px;
-          font-size: 14px;
+          padding: 15px 10px;
+          font-size: 16px;
           text-align: center;
-          color: #00C200;
+          color: #12b7f5;
           cursor: pointer;
         span+span
           border-top: 1px solid #D2D3D5;

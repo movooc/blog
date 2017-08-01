@@ -43,8 +43,8 @@ export const jsonpCallback = (rspData) => {
 
 //监听大群新消息（普通，点赞，提示，红包）
 export const onBigGroupMsgNotify = function(msgList) {
-  for (var i = msgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
-    var msg = msgList[i];
+  for (let i = msgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
+    let msg = msgList[i];
     _webim.Log.warn('receive a new avchatroom group msg: ' + msg.getFromAccountNick());
     // 组装消息
     this.$store.commit('UPDATE_COMMENT_MESSAGE', assembleMsg(msg));
@@ -55,11 +55,11 @@ export const onBigGroupMsgNotify = function(msgList) {
 //newMsgList 为新消息数组，结构为[Msg]
 export const onMsgNotify = function(newMsgList) {
   //
-  for (var i = newMsgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
-    var msg = newMsgList[i];
-    var accountNick = msg.getFromAccountNick();
-    var _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'') : '/api';
-    var userUrl = `${_prefix}/user-profile.api?usn=`;
+  for (let i = newMsgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
+    let msg = newMsgList[i];
+    let accountNick = msg.getFromAccountNick();
+    let _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'') : '/api';
+    let userUrl = `${_prefix}/user-profile.api?usn=`;
     // 组装消息
     // 是不是当前群的消息
     try{
@@ -210,8 +210,8 @@ export const pullHistoryGroupMsgs = (opt, cbOk, cbErr) => {
         // 重组备份
         let tempList = [];
         // 循环
-        for (var i = msgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
-          var msg = msgList[i];
+        for (let i = msgList.length - 1; i >= 0; i--) {//遍历消息，按照时间从后往前
+          let msg = msgList[i];
           tempList.push(assembleMsg(msg));
         }
 
@@ -426,7 +426,7 @@ function convertMsg(msg) {
   var contents = [], elems, elem, type, content;
   elems = msg.getElems();//获取消息包含的元素数组
 
-  for (var i in elems) {
+  for (let i in elems) {
     elem = elems[i];
     type = elem.getType();//获取元素类型
     contents[i] = {
@@ -480,7 +480,7 @@ function convertHistoryMsg(msg) {
   var contents = [], elems, elem, type, content;
   elems = msg.content;//获取消息包含的元素数组
 
-  for (var i in elems) {
+  for (let i in elems) {
     elem = elems[i];
     type = elem.MsgType;//获取元素类型
     contents[i] = {
@@ -560,7 +560,7 @@ function convertGroupTipMsg(content) {
     case webim.GROUP_TIP_TYPE.JOIN://加入群
       userIdList = content.getUserIdList();
       //text += opUserId + "邀请了";
-      for (var m in userIdList) {
+      for (let m in userIdList) {
         text += userIdList[m] + ",";
         if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
           text += "等" + userIdList.length + "人";
@@ -584,7 +584,7 @@ function convertGroupTipMsg(content) {
     case webim.GROUP_TIP_TYPE.KICK://踢出群
       text += opUserId + "将";
       userIdList = content.getUserIdList();
-      for (var m in userIdList) {
+      for (let m in userIdList) {
         text += userIdList[m] + ",";
         if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
           text += "等" + userIdList.length + "人";
@@ -596,7 +596,7 @@ function convertGroupTipMsg(content) {
     case webim.GROUP_TIP_TYPE.SET_ADMIN://设置管理员
       text += opUserId + "将";
       userIdList = content.getUserIdList();
-      for (var m in userIdList) {
+      for (let m in userIdList) {
         text += userIdList[m] + ",";
         if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
           text += "等" + userIdList.length + "人";
@@ -608,7 +608,7 @@ function convertGroupTipMsg(content) {
     case webim.GROUP_TIP_TYPE.CANCEL_ADMIN://取消管理员
       text += opUserId + "取消";
       userIdList = content.getUserIdList();
-      for (var m in userIdList) {
+      for (let m in userIdList) {
         text += userIdList[m] + ",";
         if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
           text += "等" + userIdList.length + "人";
@@ -622,7 +622,7 @@ function convertGroupTipMsg(content) {
       text += opUserId + "修改了群资料：";
       var groupInfoList = content.getGroupInfoList();
       var type, value;
-      for (var m in groupInfoList) {
+      for (let m in groupInfoList) {
         type = groupInfoList[m].getType();
         value = groupInfoList[m].getValue();
         switch (type) {
@@ -652,7 +652,7 @@ function convertGroupTipMsg(content) {
       text += opUserId + "修改了群成员资料:";
       var memberInfoList = content.getMemberInfoList();
       var userId, shutupTime;
-      for (var m in memberInfoList) {
+      for (let m in memberInfoList) {
         userId = memberInfoList[m].getUserId();
         shutupTime = memberInfoList[m].getShutupTime();
         text += userId + ": ";
@@ -691,7 +691,7 @@ function convertHistoryGroupTipMsg(content) {
     case webim.GROUP_TIP_TYPE.JOIN://加入群
       userIdList = content.getUserIdList();
       //text += opUserId + "邀请了";
-      for (var m in userIdList) {
+      for (let m in userIdList) {
         text += userIdList[m] + ",";
         if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
           text += "等" + userIdList.length + "人";
@@ -715,7 +715,7 @@ function convertHistoryGroupTipMsg(content) {
     case webim.GROUP_TIP_TYPE.KICK://踢出群
       text += opUserId + "将";
       userIdList = content.getUserIdList();
-      for (var m in userIdList) {
+      for (let m in userIdList) {
         text += userIdList[m] + ",";
         if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
           text += "等" + userIdList.length + "人";
@@ -727,7 +727,7 @@ function convertHistoryGroupTipMsg(content) {
     case webim.GROUP_TIP_TYPE.SET_ADMIN://设置管理员
       text += opUserId + "将";
       userIdList = content.getUserIdList();
-      for (var m in userIdList) {
+      for (let m in userIdList) {
         text += userIdList[m] + ",";
         if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
           text += "等" + userIdList.length + "人";
@@ -739,7 +739,7 @@ function convertHistoryGroupTipMsg(content) {
     case webim.GROUP_TIP_TYPE.CANCEL_ADMIN://取消管理员
       text += opUserId + "取消";
       userIdList = content.getUserIdList();
-      for (var m in userIdList) {
+      for (let m in userIdList) {
         text += userIdList[m] + ",";
         if (userIdList.length > WEB_IM_GROUP_TIP_MAX_USER_COUNT && m == maxIndex) {
           text += "等" + userIdList.length + "人";
@@ -753,7 +753,7 @@ function convertHistoryGroupTipMsg(content) {
       text += opUserId + "修改了群资料：";
       var groupInfoList = content.getGroupInfoList();
       var type, value;
-      for (var m in groupInfoList) {
+      for (let m in groupInfoList) {
         type = groupInfoList[m].getType();
         value = groupInfoList[m].getValue();
         switch (type) {
@@ -783,7 +783,7 @@ function convertHistoryGroupTipMsg(content) {
       text += opUserId + "修改了群成员资料:";
       var memberInfoList = content.getMemberInfoList();
       var userId, shutupTime;
-      for (var m in memberInfoList) {
+      for (let m in memberInfoList) {
         userId = memberInfoList[m].getUserId();
         shutupTime = memberInfoList[m].getShutupTime();
         text += userId + ": ";

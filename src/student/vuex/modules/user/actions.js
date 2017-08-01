@@ -79,3 +79,53 @@ export const fetchAdvise = ({commit}, body) => {
       return Promise.reject(error)
     })
 };
+
+// 账户余额
+export const fetchMoneyBalance = ({commit}, query) => {
+  const url = `${_prefix}/pay/money-balance.api`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return commit('FETCH_MONEY_BALANCE', json.data)
+      }
+      return Promise.reject(json)
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+
+// 账单条目
+export const fetchMoneyBill = ({commit}, query) => {
+  const url = `${_prefix}/pay/money-bill.api`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        /*commit('FETCH_MONEY_BILL', json.data)*/
+        return Promise.resolve(json.data)
+      }
+      return Promise.reject(json)
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};
+
+// 余额条目
+export const fetchMoneyDebit = ({commit}, query) => {
+  const url = `${_prefix}/pay/money-debit.api`;
+
+  return _get({ url, query }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        /*commit('FETCH_MONEY_DEBIT', json.data)*/
+        return Promise.resolve(json.data)
+      }
+      return Promise.reject(json)
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};

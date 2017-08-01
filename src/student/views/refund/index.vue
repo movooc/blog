@@ -6,10 +6,10 @@
       <p v-if="mode =='appeal'">向平台提交退款申诉</p>
       <div class="refund-list">
         <ul>
-          <li v-if="mode=='freely'">&middot;&nbsp;退款后不能评价课程</li>
-          <li v-if="mode =='apply'">&middot;&nbsp;提交退款申请后不能评价课程</li>
-          <li>&middot;&nbsp;退款成功后不能再次购买课程</li>
-          <li>&middot;&nbsp;退款成功后不能继续观看课程</li>
+          <li v-if="mode=='freely'">&middot;&nbsp;退款后不能评价本课程</li>
+          <li v-if="mode =='apply'">&middot;&nbsp;提交退款申请后不能评价本课程</li>
+          <li>&middot;&nbsp;退款成功后不能再次购买本课程</li>
+          <li>&middot;&nbsp;退款成功后不能继续观看本课程</li>
         </ul>
       </div>
     </div>
@@ -18,21 +18,13 @@
         <dt>课程</dt>
         <dd v-text="title"></dd>
       </dl>
-      <dl v-if="mode=='freely'">
-        <dt>讲师</dt>
-        <dd v-text="teacher">{{teacher}}</dd>
-      </dl>
       <dl>
         <dt>金额</dt>
         <dd class="price">{{price?`&#65509;${price}`:'免费'}}</dd>
       </dl>
-      <dl v-if="mode == 'apply'">
-        <dt>申请</dt>
-        <dd>向&nbsp;{{teacher}}&nbsp;退款</dd>
-      </dl>
-      <dl v-if="mode == 'appeal'">
-        <dt>申请</dt>
-        <dd>向&nbsp;易课平台&nbsp;退款</dd>
+      <dl>
+        <dt>讲师</dt>
+        <dd>{{teacher}}</dd>
       </dl>
     </div>
     <div class="refund-reason" v-if="mode != 'freely'">

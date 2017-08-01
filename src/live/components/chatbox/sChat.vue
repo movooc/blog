@@ -85,6 +85,11 @@
       },
       showComment() {
         this.$store.commit('UPDATE_COMMETN_SHOW', true);
+        // 讨论区滑动
+        setTimeout(()=>{
+          let cScroll = document.getElementById('comment-body');
+          cScroll.scrollTop = cScroll.offsetHeight;
+        },300);
         // 更多菜单
         if(this.boxMoreShow){
           this.$store.commit('UPDATE_BOX_MORE', false);

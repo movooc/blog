@@ -43,13 +43,13 @@
   .qrcode
     display: -webkit-box;
     display: box;
-    padding: 36px 0;
-    border-top: 1px solid #e6eaf2;
+    padding: 0 25px;
     background: #fff;
     px2px(font-size, 32px);
     >*
       display: -webkit-box;
       display: box;
+      padding: 36px 0;
       -webkit-box-flex: 1;
       box-flex: 1;
       text-align: center;
@@ -57,6 +57,7 @@
       -webkit-box-align: center;
       box-pack: center;
       -webkit-box-pack: center;
+      border-top: 1px solid #d9d9d9;
       px2px(line-height, 50px);
 
       &:first-child
