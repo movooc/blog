@@ -102,6 +102,10 @@
       // 获取路由参数
       let query = this.$route.query;
       this.course = this.courseDetail[query.lesson_sn];
+      // 未购买
+      if(this.course.event == 'browse' || this.course.event == 'reset'){
+        this.showGuar = true;
+      }
     },
     mounted() {
       this.briefFold = (this.$refs['b-text'].offsetHeight>191?true:false);

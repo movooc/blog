@@ -14,11 +14,12 @@
         <button class="comment" v-if="!commentShow">讨论区</button>
       </div>
       <v-refund></v-refund>
-      <button class="box-send" @click="sendMsg" v-if="commentShow">发送</button>
+      <button class="box-send" @click="sendMsg" v-if="commentShow && !msgSending">发送</button>
+      <button class="box-send sending" v-if="commentShow && msgSending">发送</button>
       <div class="more-choice" v-if="boxMoreShow">
         <button @click="backHome">回到首页</button>
         <button @click="showEva" v-if="!isEvaluate && !lessonInfo.rated && (lessonInfo.event != 'refund')">评价课程</button>
-        <button @click="showRefund" v-if="lessonInfo.event != 'refund' && lessonInfo.price && !lessonInfo.refund_info">申请退款</button>
+        <button @click="showRefund" v-if="lessonInfo.event != 'refund' && lessonInfo.price && !lessonInfo.refund_info && lessonInfo.refund_mode">申请退款</button>
       </div>
     </div>
   </div>
@@ -26,6 +27,7 @@
 
 <script type="text/javascript">
   import { mapState } from 'vuex';
+  import { trimStr } from '@lib/js/mUtils';
   import { vSendMsg } from '@live/assets/js/webim_comment';
   import vRefund from '@live/components/chatbox/refund';
   import swal from 'sweetalert';
@@ -41,6 +43,7 @@
     data() {
       return {
         msgVal: '',
+        msgSending: false,
       };
     },
     computed: {
@@ -54,7 +57,15 @@
     },
     methods: {
       sendMsg() {
+        // 打开发送状态
+        if(trimStr(this.msgVal)){
+          this.msgSending = true;
+        }
+        // 开始发送
         vSendMsg(this.msgVal, (err, data) => {
+          // 关闭发送状态
+          this.msgSending = false;
+          //
           if(!err){
             this.msgVal = '';
             this.commentShow || this.showComment();

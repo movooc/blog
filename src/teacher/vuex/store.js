@@ -6,6 +6,7 @@ import Vuex from 'vuex'
 import home from './modules/home'
 import course from './modules/course'
 import handle from './modules/handle'
+import earning from './modules/earning'
 import data from './modules/data'
 import app from './modules/app'
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     home,
     course,
     handle,
+    earning,
     data,
     app,
   },

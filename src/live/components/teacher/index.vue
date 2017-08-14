@@ -31,7 +31,7 @@
         <a :href="`${teacherHost}#/handle`">
           <i class="iconfont icon-chuli"></i>
           &nbsp;&nbsp;
-          处理中心
+          退款处理
         </a>
       </li>
       <li>
@@ -39,6 +39,13 @@
           <i class="iconfont icon-shuju"></i>
           &nbsp;&nbsp;
           数据中心
+        </a>
+      </li>
+      <li>
+        <a :href="`${teacherHost}#/earning`">
+          <i class="iconfont icon-shuju"></i>
+          &nbsp;&nbsp;
+          我的收益
         </a>
       </li>
     </ul>

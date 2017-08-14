@@ -1,11 +1,15 @@
 <template>
   <section class="content-evaluate">
-    <div class="eva-header" v-if="isShow">
+    <div class="eva-header" v-if="isShow && !evaList.length">
       <div class="score" v-text="score"></div>
       <p>{{rated}}人评分</p>
     </div>
     <div class="eva-body" v-if="evaList.length">
       <scroller :on-infinite="infinite" noDataText="没有更多评价" ref="my_scroller">
+        <div class="eva-header" v-if="isShow">
+          <div class="score" v-text="score"></div>
+          <p>{{rated}}人评分</p>
+        </div>
         <evaluate-list :lists="evaList"></evaluate-list>
       </scroller>
     </div>
@@ -115,13 +119,16 @@
       px2px(font-size, 30px);
   .eva-body
     position: relative;
-    height: 600px;
+    height: 650px;
     .no-data-text
       &.active
         top: -24px !important;
         px2px(font-size, 32px);
   ._v-container>._v-content>.loading-layer
-    height: 250px !important;
+    height: 140px !important;
+    .spinner-holder .spinner
+      width: 64px !important;
+      height: 64px !important;
   .score
     padding: 32px 0 0;
     color: #FB6666;

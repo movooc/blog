@@ -27,7 +27,10 @@ export function onKickedGroupNotify(notify) {
   webim.Log.warn("执行 用户自定义系统消息 回调：" + JSON.stringify(notify));
   var reportTypeCh = "[用户自定义系统消息]";
   var content = "您已被踢出群";//群自定义消息数据
-  console.log(content);
+  //
+  let domain = process.env.LIVE_HOST ? `${process.env.LIVE_HOST.replace(/\/$/,'')}/live-offline` : 'https://sandbox.yike.fm/live-offline';
+  let url = encodeURIComponent(window.location.href);
+  window.location.href = `${domain}?url=${url}`;
   //showGroupSystemMsg(notify.ReportType, reportTypeCh, notify.GroupId, notify.GroupName, content, notify.MsgTime);
 };
 //监听 群资料变化 群提示消息

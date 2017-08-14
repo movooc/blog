@@ -1,5 +1,6 @@
 import { trimStr } from '@lib/js/mUtils';
 import swal from 'sweetalert';
+import moment from 'moment';
 
 var _webim = { ...webim };
 
@@ -124,18 +125,45 @@ export const onMsgNotify = function(newMsgList) {
       }else{
         // 老师区
         _webim.Log.warn('receive a new chatroom group msg: ' + accountNick);
-        this.$store.commit('UPDATE_MESSAGE', msg);
-        this.$nextTick(()=>{
-          inspectScroll();
-        });
+        // 是否有头像
+        let avatar = this.$store.state.userAvatar ? this.$store.state.userAvatar[msg.account] : null;
+        if(avatar){
+          msg.avatar = avatar;
+          //
+          this.$store.commit('UPDATE_MESSAGE', msg);
+          //
+          this.$nextTick(()=>{
+            inspectScroll();
+          });
+        }else{
+          // 消息推送
+          this.$store.commit('UPDATE_MESSAGE', msg);
+          //
+          this.$nextTick(()=>{
+            inspectScroll();
+          });
+          //
+          throw new Error('there is no avatar');
+        }
       }
     }catch(e){
       // 老师区
-      _webim.Log.warn('receive a new chatroom group msg: ' + accountNick);
-      this.$store.commit('UPDATE_MESSAGE', msg);
+      // 开始发送消息
+      this.$store.commit('UPDATE_USER_AVATAR', {[msg.account]:''});
+      // this.$store.commit('UPDATE_MESSAGE', msg);
+      //
       this.$nextTick(()=>{
         inspectScroll();
       });
+      // 获取用户信息
+      setTimeout(()=>{
+        this.$http.get(`${userUrl}${msg.account}`).then((json)=>{
+          if(json.ok){
+            let data = json.body.data;
+            this.$store.commit('UPDATE_USER_AVATAR', {[msg.account]:data.avatar});
+          }
+        },(err)=>{});
+      }, 100);
     }
   }
 };
@@ -172,11 +200,13 @@ export const exportAssembleMsg = (msg) => {
     },
     nickname: '',
     account: '',
+    time: '',
     content: []
   };
   // assign
   assemble.account = msg.from_account || '';
   assemble.nickname = msg.accountNick || '未知用户';
+  assemble.time = msg.tms;
   //解析消息
   assemble.content = convertHistoryMsg(msg);
 
@@ -379,7 +409,8 @@ function assembleMsg(msg) {
   assemble.nickname = msg.getFromAccountNick() || '未知用户';
 
   try{
-    assemble.time = new Date(msg.time * 1000).toLocaleString()
+    // assemble.time = new Date(msg.time * 1000).toLocaleString()
+    assemble.time = moment(msg.time * 1000).format('YYYY-MM-DD HH:mm:ss');
   }catch(e){}
 
   //解析消息
@@ -440,7 +471,12 @@ function convertMsg(msg) {
     };
     //
     content = elem.getContent();//获取元素对象
-    contents[i].isComment = content.desc=='COMMENT'?true:false;
+    try{
+      contents[i].isComment = msg.sess._impl.id.split('-')[1]=='D'?true:false;
+    }catch(e){
+      contents[i].isComment = false;
+    }
+    //type
     switch (type) {
       case webim.MSG_ELEMENT_TYPE.TEXT:
         contents[i].text = convertTextMsg(content);
@@ -479,7 +515,7 @@ function convertMsg(msg) {
 function convertHistoryMsg(msg) {
   var contents = [], elems, elem, type, content;
   elems = msg.content;//获取消息包含的元素数组
-
+  //
   for (let i in elems) {
     elem = elems[i];
     type = elem.MsgType;//获取元素类型
@@ -495,7 +531,13 @@ function convertHistoryMsg(msg) {
     };
     //
     content = elem.MsgContent;//获取元素对象
-    contents[i].isComment = content.desc=='COMMENT'?true:false;
+    //
+    try{
+      contents[i].isComment = msg.sess._impl.id.split('-')[1]=='D'?true:false;
+    }catch(e){
+      contents[i].isComment = false;
+    }
+    // type
     switch (type) {
       case webim.MSG_ELEMENT_TYPE.TEXT:
         contents[i].text = convertHistoryTextMsg(content);
@@ -919,6 +961,20 @@ function convertCustomMsg(content) {
         type: 'FILE',
         src : content.data.replace(/#((?!&).)*/g, ''),
         name: content.ext,
+      }];
+      break;
+    case 'QUOTE':
+      return [{
+        id: Math.round(Math.random() * 4294967296),
+        type: 'QUOTE',
+        text : content.data,
+      }];
+      break;
+    case '__SYSTEM__':
+      return [{
+        id: Math.round(Math.random() * 4294967296),
+        type: '__SYSTEM__',
+        text : JSON.parse(content.data).data,
       }];
       break;
     default:

@@ -23,6 +23,9 @@ if(process.env.NODE_ENV == 'production'){
   var data = r => require.ensure([], () => r(require('../views/data/index')), 'teacher/teacher-data');
   var dataCourse = r => require.ensure([], () => r(require('../views/data/course')), 'teacher/teacher-dataCourse');
   var dataOrigin = r => require.ensure([], () => r(require('../views/data/origin')), 'teacher/teacher-dataOrigin');
+  /*我的收益*/
+  var earning = r => require.ensure([], () => r(require('../views/earning/index')), 'teacher/teacher-earning');
+  var earningList = r => require.ensure([], () => r(require('../views/earning/list')), 'teacher/teacher-earningList');
 
 }else{
   //
@@ -41,6 +44,9 @@ if(process.env.NODE_ENV == 'production'){
   var data = require('../views/data/index');
   var dataCourse = require('../views/data/course');
   var dataOrigin = require('../views/data/origin');
+  /*我的收益*/
+  var earning = require('../views/earning/index');
+  var earningList = require('../views/earning/list');
 }
 
 export default [
@@ -200,5 +206,39 @@ export default [
         }
       },
     ]
+  },
+  {
+    path: '/earning',
+    name: 'earning',
+    component: earning,
+    children: [
+      {
+        path: '',
+        redirect: '/earning/list'
+      },
+      // 数据中心
+      {
+        path: '/earning/list',
+        name: 'earning-list',
+        component: earningList,
+        meta: {
+          pageTitle: '易灵微课-我的收益'
+        },
+        children: [
+          {
+            path: '',
+            redirect: '/earning/list/1',
+          },
+          {
+            path: '/earning/list/:page',
+            name: 'earning-list',
+            component: earningList,
+            meta: {
+              pageTitle: '易灵微课-我的收益'
+            }
+          },
+        ]
+      },
+    ],
   },
 ];

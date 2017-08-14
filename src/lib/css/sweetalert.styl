@@ -1,21 +1,38 @@
 body {
   .sweet-alert{
     width: 300px;
+    margin-left: -150px;
+
+    &.showSweetAlert {
+      -webkit-animation: showSweetAlert 0s;
+      animation: showSweetAlert 0s;
+    }
+    &.hideSweetAlert {
+      -webkit-animation: hideSweetAlert 0s;
+      animation: hideSweetAlert 0s;
+    }
     h2 {
       font-weight: normal;
       font-size: 22px;
     }
     .sa-button-container {
+      display: -webkit-box;
+      display: box;
       margin-top: 10px;
       font-size: 0;
       .cancel {
         margin: 0;
         margin-top: 15px;
-        width: 100%;
+        margin-right: 10px;
+        width: 143px;
+        -webkit-box-flex: 1;
+        box-flex: 1;
       }
       .sa-confirm-button-container {
         display: -webkit-box;
         display: box;
+        -webkit-box-flex: 1;
+        box-flex: 1;
         button {
           display: block !important;
           -webkit-box-flex: 1;

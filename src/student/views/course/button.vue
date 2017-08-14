@@ -19,6 +19,7 @@
     </div>
     <confirm-pay v-if="payShow" :payInfo="payInfo" @confirmPay="confirmPay"></confirm-pay>
     <!--<pay-code :show="payCodeShow" :codeUrl="payUrl" @updatePayCodeShow="updatePayCodeShow"></pay-code>-->
+    <focus-code :show="focusCodeShow" @updateFocusCodeShow="updateFocusCodeShow"></focus-code>
   </div>
 </template>
 
@@ -26,11 +27,13 @@
     import { mapGetters } from 'vuex';
     import confirmPay from '@student/views/course/confirm-pay';
     import payCode from '@student/components/payCode';
+    import focusCode from '@student/components/focusCode';
 
     export default{
       name: 'v-button',
       components: {
         payCode,
+        focusCode,
         confirmPay,
       },
       props: {
@@ -57,6 +60,7 @@
           payInfo: null,
           payShow: false,
           payCodeShow: false,
+          focusCodeShow: false,
         }
       },
       created(){
@@ -94,14 +98,17 @@
             }else{
               this.canEnter = true;
               this.paying = false;
+              // 进入课堂
+              if(this.courseDetail.subscribe != 1){
+                return this.focusCodeShow = true;
+              }
               //
               swal({
                 title: '',
                 text: '报名成功!',
                 confirmButtonText: "知道了"
               }, ()=>{
-                // 进入课堂
-                //window.location.reload();
+                // 直接进入
                 if(this.courseDetail && this.courseDetail.step == 'opened'){
                   window.location.reload();
                 }else{
@@ -124,7 +131,7 @@
           // 是否有权限进入课堂
           let query = this.query;
           this.$store.dispatch('fetchLessonAccess', query).then((data) => {
-            let params = `?isOwner=no&lesson_sn=${query.lesson_sn}`;
+            let params = `?isOwner=no&lesson_sn=${query.lesson_sn}&teacherEnter=yes`;
             for(let d in data){
               params = `${params}&${d}=${data[d]}`;
             };
@@ -223,8 +230,10 @@
                 self.paying = false;
                 // 开通直播通道
                 self.canEnter = true;
-                // 进入课堂
-                //window.location.reload();
+                // 判断是否已经关注
+                if(this.courseDetail.subscribe != 1){
+                  return this.focusCodeShow = true;
+                }
                 // 进入课堂
                 if(self.courseDetail && self.courseDetail.step == 'opened'){
                   window.location.reload();
@@ -266,7 +275,18 @@
         },
         updatePayCodeShow(show){
           this.payCodeShow = show;
-        }
+        },
+        updateFocusCodeShow(show) {
+          // 确定
+          if(!show){
+            if(this.courseDetail && this.courseDetail.step == 'opened'){
+              window.location.reload();
+            }else{
+              // 进入课堂
+              this.startLesson();
+            }
+          }
+        },
       }
     }
 </script>

@@ -1,15 +1,30 @@
 <template>
   <!-- 直播入口 -->
-  <div class="l-enter" :class="{entering}">
-    <div class="l-teacher" v-if="isOwner">
-      <v-teacher></v-teacher>
-      <p class="title title-lesson">课程:{{lessonInfo.title}}</p>
-      <v-live :lesson="lessonInfo.teach" :inComment="canInComment"></v-live>
+  <div class="l-entering">
+    <!--pc-->
+    <div class="l-enter" v-if="isPC" :class="{entering}">
+      <div class="l-teacher" v-if="isOwner">
+        <v-teacher></v-teacher>
+        <p class="title title-lesson">课程:{{lessonInfo.title}}</p>
+        <v-live :lesson="lessonInfo.teach" :inComment="canInComment"></v-live>
+      </div>
+      <div class="l-student" v-if="!isOwner">
+        <v-live :lesson="lessonInfo.teach" :inComment="canInComment"></v-live>
+      </div>
     </div>
-    <div class="l-student" v-if="!isOwner">
-      <v-live :lesson="lessonInfo.teach" :inComment="canInComment"></v-live>
+    <!--mobile-->
+    <div class="l-enter" v-if="!isPC">
+      <div class="l-teacher" v-if="isOwner">
+        <v-teacher></v-teacher>
+        <p class="title title-lesson">课程:{{lessonInfo.title}}</p>
+        <v-live :lesson="lessonInfo.teach" :inComment="canInComment"></v-live>
+      </div>
+      <div class="l-student" v-if="!isOwner">
+        <v-live :lesson="lessonInfo.teach" :inComment="canInComment"></v-live>
+      </div>
     </div>
   </div>
+
 </template>
 
 <script type="text/ecmascript-6">
@@ -27,6 +42,7 @@
     name: 'v-enter',
     data() {
       return {
+        isPC,
         entering: true,
         canInComment: false,
       }

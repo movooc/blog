@@ -13,7 +13,8 @@
         <textarea v-model="msgVal" placeholder="请输入文字或粘贴图片..." @blur="v_blur" @paste="v_paste" @keydown="v_keydown"></textarea>
         <v-recorder class="reorder" v-if="!isPC"></v-recorder>
       </div>
-      <button class="box-send" @click="sendMsg" title="ctrl+enter或alt+s">发送</button>
+      <button class="box-send" @click="sendMsg" title="ctrl+enter或alt+s" v-if="!msgSending">发送</button>
+      <button class="box-send" title="ctrl+enter或alt+s" v-if="msgSending">发送中...</button>
       <div class="more-choice" v-if="moduleShow">
         <button @click="showImage">上传图片</button>
         <button @click="showFile">上传文件</button>
@@ -79,7 +80,7 @@
 <script type="text/javascript">
   import { mapState } from 'vuex';
   import { vSendMsg, uploadImage, uploadFile } from '@live/assets/js/webim';
-  import { checkPic, checkFile, checkPastePic } from '@lib/js/mUtils';
+  import { checkPic, checkFile, checkPastePic, trimStr } from '@lib/js/mUtils';
   import vRecorder from '@live/components/recorder/index.vue';
   import Recording from '@live/components/loading/recording.vue';
   import swal from 'sweetalert';
@@ -101,6 +102,7 @@
         startSend: false,
         picture: null,
         isPC: isPC,
+        msgSending: false,
         imgInfo: {
           file: null,
           src: '',
@@ -130,10 +132,17 @@
     },
     methods: {
       sendMsg() {
+        // 打开发送状态
+        if(trimStr(this.msgVal)){
+          this.msgSending = true;
+        }
+        // 开始发送
         vSendMsg(this.msgVal, (err, data) => {
           if(!err){
               this.msgVal = '';
           }
+          // 关闭发送状态
+          this.msgSending = false;
         });
       },
       v_blur() {

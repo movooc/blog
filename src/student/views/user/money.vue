@@ -1,21 +1,21 @@
 <template>
   <section class="user-money">
     <div class="money-con">
-      <div class="money-forward">
-        <div>
-          <!--<i class="iconfont icon-yue1"></i>-->
-          <span>账户余额</span>
-        </div>
-        <div class="price" v-if="moneyBalance">
-          &#65509;{{moneyBalance.balance}}
-          <!--<i class="iconfont icon-open-right"></i>-->
-        </div>
-        <div>
-          <button @click="toMoneyCenter">查看明细</button>
-        </div>
-      </div>
-      <p class="order">订单列表</p>
       <scroller :on-infinite="infinite" noDataText="没有更多记录" ref="my_scroller">
+        <div class="money-forward">
+          <div>
+            <!--<i class="iconfont icon-yue1"></i>-->
+            <span>账户余额</span>
+          </div>
+          <div class="price" v-if="moneyBalance">
+            &#65509;{{moneyBalance.balance}}
+          <!--<i class="iconfont icon-open-right"></i>-->
+          </div>
+          <div>
+            <button @click="toMoneyCenter">查看明细</button>
+          </div>
+        </div>
+        <p class="order">订单列表</p>
         <ul>
           <li v-for="list in moneyBill">
             <div class="clearfix">
@@ -26,7 +26,7 @@
               </div>
             </div>
             <div class="clearfix" v-if="list.balance_var">
-              <span class="pull-right">-&#65509;{{list.balance_var}}</span>
+              <span class="pull-right">&#65509;{{list.balance_var}}</span>
               <span>
                 余额抵扣
               </span>
@@ -135,10 +135,8 @@
     px2px(font-size, 36px);
     .money-con
       ._v-container
-        px2px(top, 370px);
         .loading-layer
-          padding-bottom: 150px;
-          height: 430px !important;
+          height: 200px !important;
         >._v-content>.loading-layer .spinner-holder .spinner
           width: 64px;
           height: 64px;

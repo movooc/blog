@@ -194,3 +194,19 @@ export const fetchCourseEdit = ({commit}, query) => {
       return Promise.reject(error)
     })
 };
+
+// 发送回复评价
+export const fetchLessonRate = ({commit}, body) => {
+  const url = `${_prefix}/lesson-rating-reply.api`;
+
+  return _post({ url, body }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return Promise.resolve(json.data)
+      }
+      return Promise.reject(json)
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};

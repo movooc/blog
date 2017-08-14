@@ -178,3 +178,19 @@ export const fetchAudioCheck = ({commit}, query) => {
       return Promise.reject(error)
     })
 };
+
+/*引用用户*/
+export const fetchQuote = ({commit}, body) => {
+  const url = `${_prefix}/live-quote-text.api`;
+
+  return _post({ url, body }, commit)
+    .then((json) => {
+      if (json.error == 0) {
+        return Promise.resolve(json);
+      }
+      return Promise.reject(json)
+    })
+    .catch((error) => {
+      return Promise.reject(error)
+    })
+};

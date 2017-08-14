@@ -32,6 +32,7 @@
               <div class="con-text" v-for="com in comment.content">
                 <span v-for="co in com.custom">
                   <span v-text="co.text"></span>
+                  <span class="forbin" @click="fetchQuote(comment.account, co.text)" v-if="isOwner">&nbsp;&nbsp;引用</span>
                   <span class="forbin" @click="fetchForbid(comment.account)" v-if="isOwner">&nbsp;&nbsp;禁言</span>
                 </span>
               </div>
@@ -40,12 +41,14 @@
         </ul>
       </div>
     </div>
+    <s-chatbox class="comment-chat" v-if="isPC && isOwner"></s-chatbox>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import { onBigGroupMsgNotify, jsonpCallback, onMsgNotify, pullHistoryGroupMsgs, exportInitData, forbidSendCommentMsg } from '@live/assets/js/webim_comment';
   import { onDestoryGroupNotify, onRevokeGroupNotify, onCustomGroupNotify, onGroupInfoChangeNotify, onKickedGroupNotify } from '@live/assets/js/webim_group_notice';
+  import sChatbox from '@live/components/chatbox/sChat.vue';
   import { mapState } from 'vuex';
   // spec
   var _prefix = process.env.NODE_ENV == 'production' ? process.env.LIVE_HOST.replace(/\/$/,'') : '/api';
@@ -55,7 +58,7 @@
   {
     name: 'v-comment',
     components: {
-
+      sChatbox,
     },
     props: {
       inComment: {
@@ -146,6 +149,41 @@
             });
           });
         /*end*/
+        });
+      },
+      fetchQuote(usn, text) {
+        // 引用该用户
+        swal({
+          title: '',
+          text: '确定要引用此发言吗？',
+          confirmButtonText: '确定',
+          showCancelButton:true,
+          closeOnConfirm: false,
+          cancelButtonText: '取消',
+        }, ()=>{
+          let query = {
+            lesson_sn: this.lessonInfo.sn,
+            usn,
+            text,
+          };
+          // 关闭弹窗
+          swal.close();
+          // 开始引用
+          this.$store.dispatch('fetchQuote', query).then((data) => {
+            console.log('引用成功');
+            /*swal({
+              title: '',
+              text: '引用成功',
+              confirmButtonText: "知道了"
+            });*/
+          }, (err) => {
+            swal({
+              title: '错误提醒',
+              text: err.message || '网络链接失败',
+              confirmButtonText: "知道了"
+            });
+          });
+          /*end*/
         });
       },
       init(data) {

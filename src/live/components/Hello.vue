@@ -44,9 +44,13 @@
         // 清除
         removeStore(this.open.lesson_sn);
         // 组装
-        let opt = {
+        /*let opt = {
           user_info: JSON.parse(this.open.user_info),
           lesson_info: JSON.parse(this.open.lesson_info),
+        };*/
+        let opt = {
+          user_info: this.open.user_info,
+          lesson_info: this.open.lesson_info,
         };
         // 添加
         setStore(this.open.lesson_sn, opt);

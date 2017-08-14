@@ -10,7 +10,8 @@
     </div>
     <router-view :isEnroll="isEnroll" v-if="courseDetail"></router-view>
     <v-button :isEnroll="isEnroll" :courseDetail="courseDetail" :liveHost="liveHost"></v-button>
-    <loading :show="showLoading"></loading>
+    <loading :show="showLoading && false"></loading>
+    <v-ad :show="adShow"></v-ad>
   </section>
 </template>
 
@@ -18,12 +19,14 @@
   import { mapGetters } from 'vuex';
   import vButton from '@student/views/course/button.vue';
   import Loading from '@student/components/loading';
+  import vAd from '@student/components/ad';
 
   export default{
     name: 'detail',
     components: {
       vButton,
       Loading,
+      vAd,
     },
     computed: {
       ...mapGetters({
@@ -42,11 +45,13 @@
         courseDetail: null,
         isEnroll: null,
         showLoading: true,
+        adShow: null,
       };
     },
     created() {
       // 初始化
       this.getDetailInfo();
+      this.adShow = this.getQueryString('ad');
     },
     beforeRouteLeave(to, from, next) {
       //清空现有的iframe
@@ -62,7 +67,8 @@
         let userInfo = { ...this.userInfo };
         let lesson_info = encodeURIComponent(`${JSON.stringify(data)}`);
         let user_info = encodeURIComponent(`${JSON.stringify(userInfo)}`);
-        let lesson = `lesson_info=${lesson_info}&lesson_sn=${query.lesson_sn}&user_info=${user_info}`;
+        /*let lesson = `lesson_info=${lesson_info}&lesson_sn=${query.lesson_sn}&user_info=${user_info}`;*/
+        let lesson = `lesson_info=lesson_info&lesson_sn=${query.lesson_sn}&user_info=user_info`;
         let iframe = document.createElement('iframe');
         let src = `${this.liveHost}?${lesson}`;
         iframe.src = src;
@@ -79,7 +85,7 @@
             let shareAppMessageLink = `${this.studentShareHost}share?lesson_sn=${data.sn}&origin=wxShare-message`;
             let shareTimelineLink = `${this.studentShareHost}share?lesson_sn=${data.sn}&origin=wxShare-timeline`;
             let imgUrl = this.courseDetail.cover ? this.courseDetail.cover : `${this.assetsHost}/static/student/_static/student/img/default-lesson-share.png`;
-              // 微信发送给朋友
+            // 微信发送给朋友
             wx.onMenuShareAppMessage({
               title: `${data.teacher.name} | ${data.title}`, // 分享标题
               desc: data.brief, // 分享描述
@@ -132,7 +138,9 @@
             document.getElementsByTagName('iframe')[0].remove();
           }catch(e){};
           // 把数据写入iframe
-          this.writeIframe(query, data);
+          if(data.step == 'onlive' || data.step == 'repose' || data.step == 'finish'){
+            this.writeIframe(query, data);
+          }
           // 开始调用分享接口
           this.wxShare();
           /*// 微信分享功能
@@ -182,6 +190,12 @@
         } else {
           this.showLoading = false;
         }
+      },
+      getQueryString(name) {
+        var reg = new RegExp('(^|&|\\?)' + name + '=([^&]*)(&|$)', 'i');
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
       },
     },
   }

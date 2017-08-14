@@ -21,6 +21,9 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus" rel="stylesheet/stylus">
   @import 'index.styl';
+
+  .loading
+    background-color: rgba(255,255,255,.4);
 </style>

@@ -51,6 +51,40 @@ li
     &.is-system
       padding-top: 0;
       padding-bottom: 0;
+    &.is-quote
+      -moz-transform:scaleX(-1);
+      -webkit-transform:scaleX(-1);
+      -o-transform:scaleX(-1);
+      transform:scaleX(-1);
+      .user-img
+        -moz-transform:scaleX(-1);
+        -webkit-transform:scaleX(-1);
+        -o-transform:scaleX(-1);
+        transform:scaleX(-1);
+      .live-sms
+        .speaker-name
+          .inline-block
+            display: inline-block;
+            -moz-transform:scaleX(-1);
+            -webkit-transform:scaleX(-1);
+            -o-transform:scaleX(-1);
+            transform:scaleX(-1);
+            .time
+              display: none;
+      .live-sms
+        .sms-content
+          background: #12B7F5;
+          &:after
+            background: #12B7F5;
+          .content-text.custom
+            padding: 0;
+            color: #fff;
+            -moz-transform:scaleX(-1);
+            -webkit-transform:scaleX(-1);
+            -o-transform:scaleX(-1);
+            transform:scaleX(-1);
+            .quote
+              border-bottom: 1px dotted #fff;
     .live-system
       color: #aaa;
       px2px(font-size, 30px);
@@ -74,10 +108,22 @@ li
       position: relative;
       padding-left: 14px;
       .speaker-name
-        color: #aaa;
+        color: #878787;
         padding-bottom: 11px;
         px2px(line-height, 28px);
         px2px(font-size, 26px);
+        .nickname
+          display: inline-block;
+          max-width: 300px;
+          white-space:nowrap;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          vertical-align: middle;
+        .time
+          padding-left: 15px;
+          color: #bdbdbd;
+          vertical-align: middle;
+          px2px(font-size, 22px);
       .sms-content
         position: relative;
         display: table;
@@ -260,6 +306,13 @@ li
       .live-system {
         font-size: 14px;
       }
+      .live-sms {
+        .speaker-name{
+          .time{
+            padding-left: 10px;
+          }
+        }
+      }
     }
   }
   .live-sms-header {
@@ -285,6 +338,9 @@ li
       line-height: 1;
       border-radius: 14px;
       -webkit-border-radius: 14px;
+      &.comment {
+        right: 90px;
+      }
       .iconfont {
         display: inline-block;
         margin-top: 2px;

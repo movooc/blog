@@ -41,6 +41,13 @@
           数据中心
         </router-link>
       </li>
+      <li>
+        <router-link to="/earning">
+          <i class="iconfont icon-earning"></i>
+          &nbsp;&nbsp;
+          我的收益
+        </router-link>
+      </li>
     </ul>
   </div>
 </template>

@@ -10,7 +10,7 @@
             {{list.tms}}
           </div>
           <span class="price" :class="{'positive':(list.amount >= 0)}">
-            <span v-if="list.amount >= 0">+</span><span v-if="list.amount < 0">-</span>&#65509;{{Math.abs(list.amount)}}
+            <span v-if="list.amount >= 0">+</span><span v-if="list.amount < 0">-</span>{{Math.abs(list.amount)}}
           </span>
         </li>
     </ul>
